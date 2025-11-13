@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
 {
-    use HasFactory, SoftDeletes, Searchable;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['course_code', 'course_type_ID', 'Level_id', 'organizer_id', 'course_name', 'venue', 'application_date', 'certification_date', 'certification_number', 'start_date', 'end_date', 'total_hours', 'periods', 'start_time', 'finish_time', 'start_viewing', 'finish_viewing', 'plan_path', 'flier_path', 'capacity', 'entering', 'completed', 'description', 'status', 'created_user_id', 'updated_user_id', 'deleted_at', 'deleted_user_id'];
 
