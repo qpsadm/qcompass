@@ -10,15 +10,15 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        // $search = $request->input('search');
 
-        if ($search) {
-            // Scout を使った全文検索
-            $users = User::search($search)->paginate(10);
-        } else {
-            $users = User::orderBy('id', 'desc')->paginate(10);
-        }
-
+        // if ($search) {
+        //     // Scout を使った全文検索
+        //     $users = User::search($search)->paginate(10);
+        // } else {
+        //     $users = User::orderBy('id', 'desc')->paginate(10);
+        // }
+        $users = User::all(); // すべてのユーザーを取得
         return view('admin.users.index', compact('users'));
     }
 

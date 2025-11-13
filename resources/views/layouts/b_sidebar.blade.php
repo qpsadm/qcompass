@@ -16,16 +16,20 @@
                             <path fill-rule="evenodd" d="M5.23 7.21l4.77 4.77 4.77-4.77" clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <ul id="userSubMenu" class="ml-4 mt-1 space-y-1 hidden">
-                        <li><x-nav-link route="admin.users.list" label="ユーザー一覧" /></li>
-                        {{-- <li><x-nav-link route="admin.role" label="権限管理" /></li> --}}
-                        {{-- <li><x-nav-link route="admin.divisions" label="部署管理" /></li> --}}
-                        {{-- <li><x-nav-link route="admin.course_user" label="ユーザー講座紐付け" /></li> --}}
+
+                    <ul id="userSubMenu" class="ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.users.index') }}">ユーザー一覧</a></li>
+                        {{-- 講座管理 --}}
+                        <li><a href="{{ route('admin.courses.index') }}">講座管理</a></li>
+
                     </ul>
+
+                    {{-- <li><x-nav-link route="admin.role" label="権限管理" /></li> --}}
+                    {{-- <li><x-nav-link route="admin.divisions" label="部署管理" /></li> --}}
+                    {{-- <li><x-nav-link route="admin.course_user" label="ユーザー講座紐付け" /></li> --}}
                 </div>
 
-                {{-- 講座管理 --}}
-                {{-- <x-nav-link route="admin.courses" label="講座管理" /> --}}
+
 
                 {{-- アジェンダ管理 --}}
                 {{-- <x-nav-link route="admin.agendas" label="アジェンダ管理" /> --}}
@@ -60,7 +64,7 @@
 
             {{-- サイドバー折りたたみボタン --}}
             <button id="sidebar-close"
-                class="absolute top-4 -right-4 bg-gray-700 p-2 rounded-full text-white hover:bg-gray-600">
+                class="absolute top-4 -right-4 bg-gray-700 p-2 rounded-r-md text-white hover:bg-gray-600">
                 &laquo;
             </button>
         </aside>
