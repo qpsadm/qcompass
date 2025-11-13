@@ -1,0 +1,165 @@
+@charset 'utf-8';
+
+body {
+    font-size: 16px;
+    color: #000;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    /* border: 1px red solid; */
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    color: #00f;
+    margin: 40px auto;
+}
+
+ul {
+    font-size: 16px;
+    list-style: none;
+}
+
+a {
+    text-decoration-line: none;
+    color: lightcoral;
+}
+
+a:hover {
+    color: rebeccapurple;
+}
+
+.menu {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+hr {
+    margin: 25px 100px;
+    border: 1px dashed #ddd;
+}
+
+.menutitle {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.content {
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto;
+    /* border: 1px blue solid; */
+}
+
+p.container {
+    text-align: center;
+}
+
+table.info {
+    /* width: 800px; */
+    /* margin: 0 auto; */
+    border-collapse: collapse;
+    border: 2px lightsalmon solid;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+table.info tr,
+table.info td {
+    padding: 10px 8px;
+    border: 1px lightsalmon solid;
+}
+
+table.info th {
+    width: 150px;
+    background-color: lightgoldenrodyellow;
+    padding: 8px;
+    border: 1px lightsalmon solid;
+}
+
+td.btn {
+    text-align: center
+}
+
+.text {
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    font-size: 16px;
+    margin: 10px;
+    /* border-bottom: solid 1px #ccc; */
+    color: #0d0d0d;
+}
+
+.message {
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 4px double #ccc;
+    background-color: #fafafa;
+}
+
+msg_title {
+    margin: 10px 20px;
+    color: #999;
+    font-size: 14px;
+}
+
+msg_content {
+    font-size: 16px;
+    margin: 10px 20px;
+    color: #aaa;
+}
+
+label {
+    display: inline-block;
+    width: 73px;
+}
+
+li.error {
+    color: red;
+}
+
+.search {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* pagination */
+nav {
+    /* margin: 10px; */
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+nav span {
+    margin: 5px;
+    font-size: 12pt;
+}
+
+nav a {
+    margin: 5px;
+    font-size: 12pt;
+}
+
+nav div {
+    margin: 0px;
+    font-size: 12pt;
+}
+
+svg {
+    width: 25px;
+    height: 25px;
+    margin-bottom: -7px;
+}
