@@ -27,7 +27,7 @@
                     <td class="border px-4 py-2">{{ $Course->course_name }}</td>
                 </tr>
                 <tr>
-                    <td class="border px-4 py-2 font-medium">会場</td>
+                    <td class="border px-4 py-2 font-medium">実施会場</td>
                     <td class="border px-4 py-2">{{ $Course->venue }}</td>
                 </tr>
                 <tr class="bg-gray-100">
@@ -57,13 +57,14 @@
                         {{ $Course->end_date ? \Carbon\Carbon::parse($Course->end_date)->format('Y-m-d') : '' }}</td>
                 </tr>
                 <tr>
-                    <td class="border px-4 py-2 font-medium">総時間</td>
+                    <td class="border px-4 py-2 font-medium">総授業時間</td>
                     <td class="border px-4 py-2">{{ $Course->total_hours }}</td>
                 </tr>
                 <tr class="bg-gray-100">
-                    <td class="border px-4 py-2 font-medium">期間</td>
+                    <td class="border px-4 py-2 font-medium">時限数</td>
                     <td class="border px-4 py-2">{{ $Course->periods }}</td>
                 </tr>
+
                 <tr>
                     <td class="border px-4 py-2 font-medium">開始時刻</td>
                     <td class="border px-4 py-2">{{ $Course->start_time }}</td>
@@ -73,19 +74,19 @@
                     <td class="border px-4 py-2">{{ $Course->finish_time }}</td>
                 </tr>
                 <tr>
-                    <td class="border px-4 py-2 font-medium">公開開始日</td>
+                    <td class="border px-4 py-2 font-medium">閲覧開始日</td>
                     <td class="border px-4 py-2">
                         {{ $Course->start_viewing ? \Carbon\Carbon::parse($Course->start_viewing)->format('Y-m-d') : '' }}
                     </td>
                 </tr>
                 <tr class="bg-gray-100">
-                    <td class="border px-4 py-2 font-medium">公開終了日</td>
+                    <td class="border px-4 py-2 font-medium">閲覧終了日</td>
                     <td class="border px-4 py-2">
                         {{ $Course->finish_viewing ? \Carbon\Carbon::parse($Course->finish_viewing)->format('Y-m-d') : '' }}
                     </td>
                 </tr>
                 <tr>
-                    <td class="border px-4 py-2 font-medium">計画書パス</td>
+                    <td class="border px-4 py-2 font-medium">日別計画書パス</td>
                     <td class="border px-4 py-2">{{ $Course->plan_path }}</td>
                 </tr>
                 <tr class="bg-gray-100">
@@ -97,15 +98,15 @@
                     <td class="border px-4 py-2">{{ $Course->capacity }}</td>
                 </tr>
                 <tr class="bg-gray-100">
-                    <td class="border px-4 py-2 font-medium">入場者数</td>
+                    <td class="border px-4 py-2 font-medium">入校者数</td>
                     <td class="border px-4 py-2">{{ $Course->entering }}</td>
                 </tr>
                 <tr>
-                    <td class="border px-4 py-2 font-medium">完了者数</td>
+                    <td class="border px-4 py-2 font-medium">修了者数</td>
                     <td class="border px-4 py-2">{{ $Course->completed }}</td>
                 </tr>
                 <tr class="bg-gray-100">
-                    <td class="border px-4 py-2 font-medium">説明</td>
+                    <td class="border px-4 py-2 font-medium">概要・説明</td>
                     <td class="border px-4 py-2">{{ $Course->description }}</td>
                 </tr>
                 <tr>

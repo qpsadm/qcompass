@@ -34,7 +34,7 @@
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
-                <label class="block font-medium mb-1">会場</label>
+                <label class="block font-medium mb-1">実施会場</label>
                 <input type="text" name="venue" value="{{ old('venue', $Course->venue ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
@@ -67,12 +67,12 @@
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
-                <label class="block font-medium mb-1">総時間</label>
+                <label class="block font-medium mb-1">総授業時間</label>
                 <input type="text" name="total_hours" value="{{ old('total_hours', $Course->total_hours ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
-                <label class="block font-medium mb-1">期間</label>
+                <label class="block font-medium mb-1">時限数</label>
                 <input type="text" name="periods" value="{{ old('periods', $Course->periods ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
@@ -98,7 +98,7 @@
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
-                <label class="block font-medium mb-1">計画書パス</label>
+                <label class="block font-medium mb-1">日別計画書パス</label>
                 <input type="text" name="plan_path" value="{{ old('plan_path', $Course->plan_path ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
