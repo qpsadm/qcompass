@@ -145,15 +145,11 @@
                     value="{{ old('updated_user_id', $Course->updated_user_id ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
-            <div class="mb-4">
-                <label class="block font-medium mb-1">削除日時</label>
-                <input type="text" name="deleted_at" value="{{ old('deleted_at', $Course->deleted_at ?? '') }}"
-                    class="border px-2 py-1 w-full rounded">
-            </div>
 
 
             <div class="flex gap-2 mb-8">
                 <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">更新</button>
+                <a href="{{ route('admin.courses.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded">一覧に戻る</a>
             </div>
         </form>
     </div>

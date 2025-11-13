@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use Illuminate\Support\Facades\Auth; // 追加
 
 class CourseController extends Controller
 {
@@ -13,7 +14,6 @@ class CourseController extends Controller
         $query = $request->input('search');
 
         if ($query) {
-            // Scout を使った検索
             $courses = Course::search($query)->paginate(10);
         } else {
             $courses = Course::paginate(10);
@@ -54,12 +54,15 @@ class CourseController extends Controller
             'completed' => 'nullable',
             'description' => 'nullable',
             'status' => 'nullable',
-            'created_user_id' => 'nullable',
-            'updated_user_id' => 'nullable',
             'deleted_at' => 'nullable',
             'deleted_user_id' => 'nullable',
         ]);
+
+        // 作成者IDを追加
+        $validated['created_user_id'] = Auth::id();
+
         Course::create($validated);
+
         return redirect()->route('admin.courses.index')->with('success', 'Course作成完了');
     }
 
@@ -78,6 +81,7 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         $Course = Course::findOrFail($id);
+
         $validated = $request->validate([
             'course_code' => 'nullable',
             'course_type_ID' => 'nullable',
@@ -103,18 +107,28 @@ class CourseController extends Controller
             'completed' => 'nullable',
             'description' => 'nullable',
             'status' => 'nullable',
-            'created_user_id' => 'nullable',
-            'updated_user_id' => 'nullable',
             'deleted_at' => 'nullable',
             'deleted_user_id' => 'nullable',
         ]);
+
+        // 更新者IDを追加
+        $validated['updated_user_id'] = Auth::id();
+
         $Course->update($validated);
+
         return redirect()->route('admin.courses.index')->with('success', 'Course更新完了');
     }
 
     public function destroy($id)
     {
-        Course::findOrFail($id)->delete();
+        $Course = Course::findOrFail($id);
+
+        // 削除者IDをセットしてソフトデリート
+        $Course->deleted_user_id = Auth::id();
+        $Course->save();
+
+        $Course->delete(); // SoftDeletes が有効なら deleted_at がセットされる
+
         return redirect()->route('admin.courses.index')->with('success', 'Course削除完了');
     }
 }

@@ -36,8 +36,13 @@ return new class extends Migration
             $table->enum('status', ['draft', 'published', 'archived']);
 
             // 作成・更新・削除日時
-            $table->timestamps();  // created_at, updated_at
-            $table->softDeletes(); // deleted_at
+            $table->timestamps();       // created_at, updated_at
+            $table->softDeletes();      // deleted_at
+
+            // 作成者・更新者・削除者
+            $table->unsignedBigInteger('created_user_id')->nullable();
+            $table->unsignedBigInteger('updated_user_id')->nullable();
+            $table->unsignedBigInteger('deleted_user_id')->nullable();
         });
     }
 
