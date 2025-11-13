@@ -1,36 +1,65 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="ja">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<body class="bg-gray-50 dark:bg-gray-900 h-screen flex flex-col">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    {{-- ナビバー --}}
+    @include('layouts.navbar')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+    <div class="flex pt-16 flex-1 overflow-hidden">
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+        {{-- サイドバー --}}
+        @include('layouts.sidebar')
+
+        {{-- メインコンテンツ --}}
+        <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 overflow-y-auto">
+            @yield('content')
+        </main>
+
+        {{-- サイドバー開くボタン --}}
+        <button id="sidebar-open" class="fixed top-20 left-0 z-50 p-2 rounded-r bg-gray-800 text-white hidden">
+            &raquo;
+        </button>
+    </div>
+
+    {{-- フッター固定 --}}
+    <footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4">
+        <p class="text-center text-sm">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const closeBtn = document.getElementById('sidebar-close');
+            const openBtn = document.getElementById('sidebar-open');
+
+            // サイドバー閉じる
+            closeBtn.addEventListener('click', () => {
+                sidebar.classList.add('-translate-x-full');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-0');
+                openBtn.classList.remove('hidden');
+            });
+
+            // サイドバー開く
+            openBtn.addEventListener('click', () => {
+                sidebar.classList.remove('-translate-x-full');
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+                openBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+</body>
+
 </html>
