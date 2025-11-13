@@ -2,33 +2,60 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request)
     {
-        return view('auth.login');
+        $courses = Course::all(); // 全コース取得
+        $selected_course = $request->query('course_id'); // URLパラメータ取得
+
+        return view('auth.login', compact('courses', 'selected_course'));
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $request->validate([
+            'login_name' => 'required|string',
+            'password' => 'required|string',
+            'course_id' => 'required|integer',
+        ]);
 
-        $request->session()->regenerate();
+        // ユーザーを名前で検索
+        $user = User::where('name', $request->login_name)->first();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'login_name' => 'ユーザー名かパスワードが正しくありません。',
+            ])->onlyInput('login_name');
+        }
+
+        // 選択されたコースが所属コースか判定
+        if (!$user->courses->contains('id', $request->course_id)) {
+            return back()->withErrors([
+                'course_id' => 'このユーザーは選択されたコースに所属していません。',
+            ])->onlyInput('course_id');
+        }
+
+        // ログイン成功
+        Auth::login($user, $request->filled('remember'));
+        return redirect()->intended('dashboard');
     }
 
     /**
