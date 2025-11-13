@@ -12,12 +12,12 @@
 <body class="bg-gray-50 dark:bg-gray-900 h-screen flex flex-col">
 
     {{-- ナビバー --}}
-    @include('layouts.navbar')
+    @include('layouts.b_navbar')
 
     <div class="flex pt-16 flex-1 overflow-hidden">
 
         {{-- サイドバー --}}
-        @include('layouts.sidebar')
+        @include('layouts.b_sidebar')
 
         {{-- メインコンテンツ --}}
         <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 overflow-y-auto">
@@ -31,9 +31,7 @@
     </div>
 
     {{-- フッター固定 --}}
-    <footer class="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4">
-        <p class="text-center text-sm">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}</p>
-    </footer>
+    @include('layouts.b_footer')
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
