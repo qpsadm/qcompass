@@ -24,7 +24,7 @@
                     <th class="border px-4 py-2">講座名</th>
                     <th class="border px-4 py-2">認定番号</th>
                     <th class="border px-4 py-2">状態</th>
-                    <th class="border px-4 py-2">作成日時</th>
+                    <th class="border px-4 py-2">作成日</th>
                     <th class="border px-4 py-2">操作</th>
                 </tr>
             </thead>
@@ -38,7 +38,7 @@
                         <td class="border px-4 py-2">{{ $Course->course_name }}</td>
                         <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
                         <td class="border px-4 py-2">{{ $Course->status }}</td>
-                        <td class="border px-4 py-2">{{ $Course->created_at }}</td>
+                        <td class="border px-4 py-2">{{ $Course->created_at->format('Y-m-d') }}</td>
                         <td class="border px-4 py-2">
                             <a href="{{ route('admin.courses.show', $Course->id) }}" class="text-green-600">詳細</a>
                             <a href="{{ route('admin.courses.edit', $Course->id) }}" class="text-blue-600 ml-2">編集</a>
