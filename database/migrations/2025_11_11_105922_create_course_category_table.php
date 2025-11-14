@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('course_category', function (Blueprint $table) {
+        Schema::create('course_categorys', function (Blueprint $table) {
             $table->id(); // 主キー
             $table->foreignId('course_id');
             $table->foreignId('category_id');
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('course_category');
+        Schema::dropIfExists('course_categorys');
     }
 };

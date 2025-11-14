@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('agenda_tag', function (Blueprint $table) {
+        Schema::create('agenda_tags', function (Blueprint $table) {
             $table->id(); // 主キー
             $table->foreignId('agenda_id');
             $table->foreignId('tag_id');
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('agenda_tag');
+        Schema::dropIfExists('agenda_tags');
     }
 };

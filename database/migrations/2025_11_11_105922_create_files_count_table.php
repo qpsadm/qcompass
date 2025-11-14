@@ -8,16 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('files_count', function (Blueprint $table) {
+        Schema::create('files_counts', function (Blueprint $table) {
             $table->id();
             $table->integer('count')->default('1000');
-            
+
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('files_count');
+        Schema::dropIfExists('files_counts');
     }
 };

@@ -9,7 +9,7 @@ class CourseTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('course_type')->insert([
+        DB::table('course_types')->insert([
             [
                 'id'   => 1,
                 'name' => 'IT情報',
