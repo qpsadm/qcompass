@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Organizer;
 
@@ -10,12 +11,12 @@ class OrganizerController extends Controller
     public function index()
     {
         $organizer = Organizer::all();
-        return view('organizer.index', compact('organizer'));
+        return view('admin.organizers.index', compact('organizer'));
     }
 
     public function create()
     {
-        return view('organizer.create');
+        return view('admin.organizers.create');
     }
 
     public function store(Request $request)
@@ -24,19 +25,19 @@ class OrganizerController extends Controller
             'name' => 'nullable',
         ]);
         Organizer::create($validated);
-        return redirect()->route('organizer.index')->with('success', 'Organizer作成完了');
+        return redirect()->route('admin.organizers.index')->with('success', 'Organizer作成完了');
     }
 
     public function show($id)
     {
         $Organizer = Organizer::findOrFail($id);
-        return view('organizer.show', compact('Organizer'));
+        return view('admin.organizers.show', compact('Organizer'));
     }
 
     public function edit($id)
     {
         $Organizer = Organizer::findOrFail($id);
-        return view('organizer.edit', compact('Organizer'));
+        return view('admin.organizers.edit', compact('Organizer'));
     }
 
     public function update(Request $request, $id)
@@ -46,12 +47,12 @@ class OrganizerController extends Controller
             'name' => 'nullable',
         ]);
         $Organizer->update($validated);
-        return redirect()->route('organizer.index')->with('success', 'Organizer更新完了');
+        return redirect()->route('admin.organizers.index')->with('success', 'Organizer更新完了');
     }
 
     public function destroy($id)
     {
         Organizer::findOrFail($id)->delete();
-        return redirect()->route('organizer.index')->with('success', 'Organizer削除完了');
+        return redirect()->route('admin.organizers.index')->with('success', 'Organizer削除完了');
     }
 }

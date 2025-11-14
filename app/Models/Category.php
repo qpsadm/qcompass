@@ -23,10 +23,15 @@ class Category extends Model
         'deleted_at',
     ];
 
-    // 再帰的に子カテゴリーを取得
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    // 再帰リレーション
     public function childrenRecursive()
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('childrenRecursive');
+        return $this->children()->with('childrenRecursive');
     }
 
     // 親カテゴリー

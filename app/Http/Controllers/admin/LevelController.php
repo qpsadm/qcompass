@@ -10,8 +10,10 @@ class LevelController extends Controller
 {
     public function index()
     {
-        $Level = Level::all();
-        return view('admin.levels.index', compact('Level'));
+        // コレクション名は複数形にするのが安全
+        $levels = Level::all();
+
+        return view('admin.levels.index', compact('levels'));
     }
 
     public function create()

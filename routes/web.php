@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\UserDetailController;
 use App\Http\Controllers\Admin\LevelController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DailyQuoteController;
-
+use App\Http\Controllers\Admin\OrganizerController;
 
 // 公開ページ
 Route::get('/', function () {
@@ -37,6 +37,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('roles', RoleController::class);
     Route::resource('levels', LevelController::class);
     Route::resource('daily_quotes', DailyQuoteController::class);
+    Route::resource('organizers', OrganizerController::class);
 
     // UserDetail（詳細情報）関連ルート
     Route::prefix('users/{user}')->name('user_details.')->group(function () {
