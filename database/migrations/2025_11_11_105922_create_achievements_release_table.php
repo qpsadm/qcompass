@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('achievements_release', function (Blueprint $table) {
+        Schema::create('achievement_releases', function (Blueprint $table) {
             $table->id(); // 主キー
             $table->foreignId('user_id')->nullable(); // ユーザーID
             $table->foreignId('achievement_master_id')->nullable(); // 実績マスタID
@@ -20,6 +20,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('achievements_release');
+        Schema::dropIfExists('achievement_releases');
     }
 };

@@ -12,7 +12,7 @@ class CourseUserSeeder extends Seeder
     {
         // まずユーザーとコースが存在していることを前提とします
         // ユーザーIDとコースIDを指定して中間テーブルに挿入
-        DB::table('course_user')->insert([
+        DB::table('course_users')->insert([
             [
                 'user_id' => 1,
                 'course_id' => 1,
