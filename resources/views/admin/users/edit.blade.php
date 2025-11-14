@@ -1,116 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">User編集</h1>
-    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+    <div class="container mx-auto p-4" x-data="{ tab: 'basic' }">
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full border border-gray-200 rounded">
-                <tbody>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100 w-1/4">Code</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="code" value="{{ old('code', $user->code ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Name</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Furigana</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="furigana" value="{{ old('furigana', $user->furigana ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Roman Name</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="roman_name" value="{{ old('roman_name', $user->roman_name ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Password</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="password" value="{{ old('password', $user->password ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Role ID</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="role_id" value="{{ old('role_id', $user->role_id ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Courses ID</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="courses_id" value="{{ old('courses_id', $user->courses_id ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Email</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="email" value="{{ old('email', $user->email ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Email Verified At</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="email_verified_at" value="{{ old('email_verified_at', $user->email_verified_at ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Created User ID</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="created_user_id" value="{{ old('created_user_id', $user->created_user_id ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Updated User ID</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="updated_user_id" value="{{ old('updated_user_id', $user->updated_user_id ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr class="border-b">
-                        <th class="text-left px-4 py-2 bg-gray-100">Deleted At</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="deleted_at" value="{{ old('deleted_at', $user->deleted_at ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-left px-4 py-2 bg-gray-100">Deleted User ID</th>
-                        <td class="px-4 py-2">
-                            <input type="text" name="deleted_user_id" value="{{ old('deleted_user_id', $user->deleted_user_id ?? '') }}"
-                                class="border px-2 py-1 w-full rounded">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <h1 class="text-2xl font-bold mb-4">ユーザー編集</h1>
+
+        <!-- タブボタン -->
+        <div class="flex border-b mb-4">
+            <button @click="tab = 'basic'" :class="tab === 'basic' ? 'border-b-2 border-blue-500 text-blue-500' : ''"
+                class="px-4 py-2">
+                基本情報
+            </button>
+            <button @click="tab = 'detail'" :class="tab === 'detail' ? 'border-b-2 border-blue-500 text-blue-500' : ''"
+                class="px-4 py-2">
+                詳細情報
+            </button>
         </div>
 
-        <div class="mt-6">
-            <!-- ボタン -->
-            <div class="mt-6 pb-24">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">更新</button>
-                <a href="{{ route('admin.users.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">一覧に戻る</a>
-            </div>
-    </form>
-</div>
+        <!-- 基本情報タブ -->
+        <div x-show="tab === 'basic'">
+            <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <label>Code</label>
+                <input type="text" name="code" value="{{ $user->code }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>Name</label>
+                <input type="text" name="name" value="{{ $user->name }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>Email</label>
+                <input type="email" name="email" value="{{ $user->email }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>Role ID</label>
+                <input type="number" name="role_id" value="{{ $user->role_id }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>Courses ID</label>
+                <input type="number" name="courses_id" value="{{ $user->courses_id }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">基本情報更新</button>
+            </form>
+        </div>
+
+        <!-- 詳細情報タブ -->
+        <div x-show="tab === 'detail'" class="mt-4">
+            <form action="{{ route('admin.user_details.update', $user->detail->id) }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <label>生年月日</label>
+                <input type="date" name="birthday" value="{{ $user->detail->birthday ?? '' }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>性別</label>
+                <select name="gender" class="border px-2 py-1 rounded w-full mb-2">
+                    <option value="">選択</option>
+                    <option value="male" {{ $user->detail->gender === 'male' ? 'selected' : '' }}>男性</option>
+                    <option value="female" {{ $user->detail->gender === 'female' ? 'selected' : '' }}>女性</option>
+                </select>
+
+                <label>電話番号1</label>
+                <input type="text" name="phone1" value="{{ $user->detail->phone1 ?? '' }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>電話番号2</label>
+                <input type="text" name="phone2" value="{{ $user->detail->phone2 ?? '' }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>住所1</label>
+                <input type="text" name="address1" value="{{ $user->detail->address1 ?? '' }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>住所2</label>
+                <input type="text" name="address2" value="{{ $user->detail->address2 ?? '' }}"
+                    class="border px-2 py-1 rounded w-full mb-2">
+
+                <label>写真</label>
+                <input type="file" name="avatar_path" class="border px-2 py-1 rounded w-full mb-2">
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">詳細情報更新</button>
+            </form>
+        </div>
+    </div>
 @endsection

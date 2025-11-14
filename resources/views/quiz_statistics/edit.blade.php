@@ -1,0 +1,29 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">QuizStatistic編集</h1>
+    <form action="{{ route('quiz_statistics.update', $QuizStatistic->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="mb-4">
+    <label class="block font-medium mb-1">quiz_id</label>
+    <input type="text" name="quiz_id" value="{{ old('quiz_id', $QuizStatistic->quiz_id ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">average_score</label>
+    <input type="text" name="average_score" value="{{ old('average_score', $QuizStatistic->average_score ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">highest_score</label>
+    <input type="text" name="highest_score" value="{{ old('highest_score', $QuizStatistic->highest_score ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">attempts_count</label>
+    <input type="text" name="attempts_count" value="{{ old('attempts_count', $QuizStatistic->attempts_count ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">更新</button>
+    </form>
+</div>
+@endsection

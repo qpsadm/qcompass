@@ -1,0 +1,28 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">AchievementsRelease作成</h1>
+    <form action="{{ route('achievements_release.store') }}" method="POST">
+        @csrf
+        <div class="mb-4">
+    <label class="block font-medium mb-1">user_id</label>
+    <input type="text" name="user_id" value="{{ old('user_id', $AchievementsRelease->user_id ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">achievement_master_id</label>
+    <input type="text" name="achievement_master_id" value="{{ old('achievement_master_id', $AchievementsRelease->achievement_master_id ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">unlocked_at</label>
+    <input type="text" name="unlocked_at" value="{{ old('unlocked_at', $AchievementsRelease->unlocked_at ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+<div class="mb-4">
+    <label class="block font-medium mb-1">condition_met</label>
+    <input type="text" name="condition_met" value="{{ old('condition_met', $AchievementsRelease->condition_met ?? '') }}" class="border px-2 py-1 w-full rounded">
+</div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
+    </form>
+</div>
+@endsection

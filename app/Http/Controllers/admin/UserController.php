@@ -119,4 +119,10 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'ユーザー削除完了');
     }
+
+    public function show($id)
+    {
+        $user = User::with('detail')->findOrFail($id); // ユーザー詳細も取得
+        return view('admin.users.show', compact('user'));
+    }
 }
