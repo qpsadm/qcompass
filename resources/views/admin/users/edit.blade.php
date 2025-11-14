@@ -47,45 +47,55 @@
             </form>
         </div>
 
+
         <!-- 詳細情報タブ -->
         <div x-show="tab === 'detail'" class="mt-4">
-            <form action="{{ route('admin.user_details.update', $user->detail->id) }}" method="POST"
-                enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+            @if ($user->detail)
+                <form action="{{ route('admin.user_details.update', $user->detail->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                <label>生年月日</label>
-                <input type="date" name="birthday" value="{{ $user->detail->birthday ?? '' }}"
-                    class="border px-2 py-1 rounded w-full mb-2">
+                    <label>生年月日</label>
+                    <input type="date" name="birthday" value="{{ $user->detail->birthday ?? '' }}"
+                        class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>性別</label>
-                <select name="gender" class="border px-2 py-1 rounded w-full mb-2">
-                    <option value="">選択</option>
-                    <option value="male" {{ $user->detail->gender === 'male' ? 'selected' : '' }}>男性</option>
-                    <option value="female" {{ $user->detail->gender === 'female' ? 'selected' : '' }}>女性</option>
-                </select>
+                    <label>性別</label>
+                    <select name="gender" class="border px-2 py-1 rounded w-full mb-2">
+                        <option value="">選択</option>
+                        <option value="male" {{ $user->detail->gender === 'male' ? 'selected' : '' }}>男性</option>
+                        <option value="female" {{ $user->detail->gender === 'female' ? 'selected' : '' }}>女性</option>
+                    </select>
 
-                <label>電話番号1</label>
-                <input type="text" name="phone1" value="{{ $user->detail->phone1 ?? '' }}"
-                    class="border px-2 py-1 rounded w-full mb-2">
+                    <label>電話番号1</label>
+                    <input type="text" name="phone1" value="{{ $user->detail->phone1 ?? '' }}"
+                        class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>電話番号2</label>
-                <input type="text" name="phone2" value="{{ $user->detail->phone2 ?? '' }}"
-                    class="border px-2 py-1 rounded w-full mb-2">
+                    <label>電話番号2</label>
+                    <input type="text" name="phone2" value="{{ $user->detail->phone2 ?? '' }}"
+                        class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>住所1</label>
-                <input type="text" name="address1" value="{{ $user->detail->address1 ?? '' }}"
-                    class="border px-2 py-1 rounded w-full mb-2">
+                    <label>住所1</label>
+                    <input type="text" name="address1" value="{{ $user->detail->address1 ?? '' }}"
+                        class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>住所2</label>
-                <input type="text" name="address2" value="{{ $user->detail->address2 ?? '' }}"
-                    class="border px-2 py-1 rounded w-full mb-2">
+                    <label>住所2</label>
+                    <input type="text" name="address2" value="{{ $user->detail->address2 ?? '' }}"
+                        class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>写真</label>
-                <input type="file" name="avatar_path" class="border px-2 py-1 rounded w-full mb-2">
+                    <label>写真</label>
+                    <input type="file" name="avatar_path" class="border px-2 py-1 rounded w-full mb-2">
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">詳細情報更新</button>
-            </form>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">詳細情報更新</button>
+                </form>
+            @else
+                <p>このユーザーには詳細情報が登録されていません。</p>
+                <a href="{{ route('admin.user_details.create', $user->id) }}"
+                    class="bg-green-500 text-white px-4 py-2 rounded mt-2 inline-block">
+                    詳細情報を作成
+                </a>
+            @endif
         </div>
+
     </div>
 @endsection

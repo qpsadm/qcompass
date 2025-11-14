@@ -52,7 +52,7 @@
                         <th class="px-4 py-2 bg-gray-100">作成日時</th>
                         <td class="px-4 py-2">{{ $user->created_at }}</td>
                     </tr>
- 
+
                 </tbody>
             </table>
         </div>
