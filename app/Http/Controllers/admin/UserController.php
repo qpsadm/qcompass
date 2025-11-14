@@ -3,90 +3,120 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Course;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * ユーザー一覧
+     */
+    public function index()
     {
-        // $search = $request->input('search');
+        $user = auth()->user();
 
-        // if ($search) {
-        //     // Scout を使った全文検索
-        //     $users = User::search($search)->paginate(10);
-        // } else {
-        //     $users = User::orderBy('id', 'desc')->paginate(10);
-        // }
-        $users = User::all(); // すべてのユーザーを取得
+        if ($user->role_id == 2) { // 担当講師
+            $users = User::with('detail')
+                ->where('courses_id', $user->courses_id)
+                ->get();
+        } else {
+            $users = User::with('detail')->get();
+        }
+
         return view('admin.users.index', compact('users'));
     }
 
+    /**
+     * ユーザー作成画面
+     */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::all();
+        $courses = Course::all();
+
+        return view('admin.users.create', compact('roles', 'courses'));
     }
 
+    /**
+     * ユーザー登録
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
-            'furigana' => 'nullable',
-            'roman_name' => 'nullable',
-            'password' => 'nullable',
-            'role_id' => 'nullable',
-            'courses_id' => 'nullable',
-            'remember_token' => 'nullable',
-            'email' => 'nullable',
-            'email_verified_at' => 'nullable',
-            'created_user_id' => 'nullable',
-            'updated_user_id' => 'nullable',
-            'deleted_at' => 'nullable',
-            'deleted_user_id' => 'nullable',
+            'code' => 'required|string|max:10',
+            'name' => 'required|string|max:50',
+            'furigana' => 'required|string|max:50',
+            'roman_name' => 'required|string|max:50',
+            'password' => 'required|string|min:6',
+            'role_id' => 'required|exists:roles,id',
+            'courses_id' => 'nullable|exists:courses,id',
+            'email' => 'nullable|email|unique:users,email',
         ]);
+
+        // パスワードをハッシュ化
+        $validated['password'] = Hash::make($validated['password']);
+
+        // 作成者IDを追加
+        $validated['created_user_id'] = auth()->user()->id;
+
         User::create($validated);
-        return redirect()->route('admin.users.index')->with('success', 'User作成完了');
+
+        return redirect()->route('admin.users.index')->with('success', 'ユーザー作成完了');
     }
 
-    public function show($id)
+    /**
+     * ユーザー編集画面
+     */
+    public function edit(User $user)
     {
-        $User = User::findOrFail($id);
-        return view('admin.users.show', compact('User'));
+        $roles = Role::all();
+        $courses = Course::all();
+
+        return view('admin.users.edit', compact('user', 'roles', 'courses'));
     }
 
-    public function edit($id)
+    /**
+     * ユーザー更新
+     */
+    public function update(Request $request, User $user)
     {
-        $User = User::findOrFail($id);
-        return view('admin.users.edit', compact('User'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $User = User::findOrFail($id);
         $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
-            'furigana' => 'nullable',
-            'roman_name' => 'nullable',
-            'password' => 'nullable',
-            'role_id' => 'nullable',
-            'courses_id' => 'nullable',
-            'remember_token' => 'nullable',
-            'email' => 'nullable',
-            'email_verified_at' => 'nullable',
-            'created_user_id' => 'nullable',
-            'updated_user_id' => 'nullable',
-            'deleted_at' => 'nullable',
-            'deleted_user_id' => 'nullable',
+            'code' => 'required|string|max:10',
+            'name' => 'required|string|max:50',
+            'furigana' => 'required|string|max:50',
+            'roman_name' => 'required|string|max:50',
+            'password' => 'nullable|string|min:6',
+            'role_id' => 'required|exists:roles,id',
+            'courses_id' => 'nullable|exists:courses,id',
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
-        $User->update($validated);
-        return redirect()->route('admin.users.index')->with('success', 'User更新完了');
+
+        // パスワードが入力されていればハッシュ化
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $validated['updated_user_id'] = auth()->user()->id;
+
+        $user->update($validated);
+
+        return redirect()->route('admin.users.index')->with('success', 'ユーザー更新完了');
     }
 
-    public function destroy($id)
+    /**
+     * ユーザー削除
+     */
+    public function destroy(User $user)
     {
-        User::findOrFail($id)->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User削除完了');
+        $user->deleted_user_id = auth()->user()->id;
+        $user->save();
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'ユーザー削除完了');
     }
 }

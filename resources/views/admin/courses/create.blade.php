@@ -53,9 +53,9 @@
                     @if ($field['type'] === 'text' || $field['type'] === 'date' || $field['type'] === 'time')
                         <input type="{{ $field['type'] }}" name="{{ $field['name'] }}"
                             value="{{ old($field['name'], $Course->{$field['name']} ?? '') }}"
-                            class="border px-2 py-1 md:w-1/2 rounded">
+                            class="border px-2 py-1 md:w-50 rounded">
                     @elseif($field['type'] === 'select')
-                        <select name="{{ $field['name'] }}" class="border px-2 py-1 md:w-1/2 rounded">
+                        <select name="{{ $field['name'] }}" class="border px-2 py-1 md:w-50 rounded">
                             @foreach ($field['options'] as $key => $label)
                                 <option value="{{ $key }}"
                                     {{ old($field['name'], $Course->{$field['name']} ?? '') == $key ? 'selected' : '' }}>

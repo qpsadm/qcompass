@@ -1,71 +1,134 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">ユーザー作成</h1>
-    <form action="{{ route('admin.users.store') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-            <label class="block font-medium mb-1">ユーザーコード</label>
-            <input type="text" name="code" value="{{ old('code', $User->code ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">氏名</label>
-            <input type="text" name="name" value="{{ old('name', $User->name ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">ふりがな</label>
-            <input type="text" name="furigana" value="{{ old('furigana', $User->furigana ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">ローマ字氏名</label>
-            <input type="text" name="roman_name" value="{{ old('roman_name', $User->roman_name ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">パスワード</label>
-            <input type="text" name="password" value="{{ old('password', $User->password ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">権限</label>
-            <select name="role_id" class="border px-2 py-1 w-full rounded">
-                @foreach($roles as $role)
-                <option value="{{ $role->id }}"
-                    {{ old('role_id', $User->role_id ?? '') == $role->id ? 'selected' : '' }}>
-                    {{ $role->role_name }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">担当講座</label>
-            <select name="courses_id" class="border px-2 py-1 w-full rounded">
-                <option value="">選択してください</option>
-                @foreach($courses as $course)
-                <option value="{{ $course->id }}"
-                    {{ old('courses_id', $user->courses_id ?? '') == $course->id ? 'selected' : '' }}>
-                    {{ $course->course_name }} ({{ $course->course_code }})
-                </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">リメンバートークン</label>
-            <input type="text" name="remember_token" value="{{ old('remember_token', $User->remember_token ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">メールアドレス</label>
-            <input type="text" name="email" value="{{ old('email', $User->email ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">メール確認日時</label>
-            <input type="text" name="email_verified_at" value="{{ old('email_verified_at', $User->email_verified_at ?? '') }}" class="border px-2 py-1 w-full rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block font-medium mb-1">作成者ID</label>
-            <input type="hidden" name="created_user_id" value="{{ auth()->user()->id }}">
-        </div>
+    <div class="container mx-auto p-6 max-w-xl bg-white rounded-lg shadow-md">
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 mb-8 rounded">保存</button>
-    </form>
-</div>
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー作成</h1>
+
+        <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
+            @csrf
+
+            <!-- ユーザーコード -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">ユーザーコード
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <input type="text" name="code" value="{{ old('code') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('code')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- 氏名 -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">氏名
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <input type="text" name="name" value="{{ old('name') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- ふりがな -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">ふりがな
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <input type="text" name="furigana" value="{{ old('furigana') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('furigana')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- ローマ字氏名 -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">ローマ字氏名
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <input type="text" name="roman_name" value="{{ old('roman_name') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('roman_name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- パスワード -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">パスワード
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <input type="password" name="password"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- 権限 -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">権限
+                    <span class="inline-block bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded m1-2">必須</span>
+                </label>
+                <select name="role_id"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">選択してください</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                            {{ $role->role_name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('role_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- 担当講座 -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">担当講座</label>
+                <select name="courses_id"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">選択してください</option>
+                    @foreach ($courses as $course)
+                        <option value="{{ $course->id }}" {{ old('courses_id') == $course->id ? 'selected' : '' }}>
+                            {{ $course->course_name }} ({{ $course->course_code }})
+                        </option>
+                    @endforeach
+                </select>
+                @error('courses_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- メールアドレス -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">メールアドレス</label>
+                <input type="email" name="email" value="{{ old('email') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- 作成者ID -->
+            <input type="hidden" name="created_user_id" value="{{ auth()->user()->id }}">
+
+            <!-- ボタン -->
+            <div class="flex gap-3 mt-4">
+                <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
+                    保存
+                </button>
+                <a href="{{ route('admin.users.index') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
+                    一覧に戻る
+                </a>
+            </div>
+
+        </form>
+    </div>
 @endsection
