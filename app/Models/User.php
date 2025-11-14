@@ -38,9 +38,7 @@ class User extends Authenticatable
         'deleted_user_id',
     ];
 
-    public function detail()
-    {
-        return $this->hasOne(UserDetail::class, 'user_id');
+
 
     protected $hidden = [
         'password',
@@ -54,5 +52,6 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+        
     }
 }
