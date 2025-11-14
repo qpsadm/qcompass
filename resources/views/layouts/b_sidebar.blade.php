@@ -102,7 +102,7 @@
                         <li><a href="{{ route('admin.categories.index') }}">カテゴリー管理</a></li>
                         <li><a href="{{ route('admin.levels.index') }}">タグ管理</a></li>
                         <li><a href="{{ route('admin.levels.index') }}">実績管理</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">今日の一言管理</a></li>
+                        <li><a href="{{ route('admin.daily_quotes.index') }}">今日の一言管理</a></li>
                     </ul>
                 </div>
             </nav>
