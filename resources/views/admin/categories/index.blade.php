@@ -9,12 +9,3 @@
         @include('admin.categories.partials.category-tree', ['categories' => $categories])
     </div>
 @endsection
-document.querySelectorAll('.toggle-children').forEach(btn => {
-btn.addEventListener('click', function() {
-const container = btn.closest('li').querySelector('.children-container');
-if (container) {
-container.classList.toggle('hidden');
-btn.classList.toggle('rotate-90'); // 矢印回転
-}
-});
-});
