@@ -38,8 +38,8 @@
                     ['name' => 'plan_path', 'label' => '日別計画書のパス', 'type' => 'text'],
                     ['name' => 'flier_path', 'label' => 'フライヤーのパス', 'type' => 'text'],
                     ['name' => 'capacity', 'label' => '定員数', 'type' => 'text'],
-                    ['name' => 'entering', 'label' => '入校数', 'type' => 'text'],
-                    ['name' => 'completed', 'label' => '修了数', 'type' => 'text'],
+                    ['name' => 'entering', 'label' => '入校者数', 'type' => 'text'],
+                    ['name' => 'completed', 'label' => '修了者数', 'type' => 'text'],
                     ['name' => 'description', 'label' => '概要・説明', 'type' => 'text'],
                     ['name' => 'status', 'label' => '状態', 'type' => 'text'],
                     ['name' => 'created_user_id', 'label' => '作成者名', 'type' => 'text'],
@@ -53,9 +53,9 @@
                     @if ($field['type'] === 'text' || $field['type'] === 'date' || $field['type'] === 'time')
                         <input type="{{ $field['type'] }}" name="{{ $field['name'] }}"
                             value="{{ old($field['name'], $Course->{$field['name']} ?? '') }}"
-                            class="border px-2 py-1 w-full rounded">
+                            class="border px-2 py-1 md:w-1/2 rounded">
                     @elseif($field['type'] === 'select')
-                        <select name="{{ $field['name'] }}" class="border px-2 py-1 w-full rounded">
+                        <select name="{{ $field['name'] }}" class="border px-2 py-1 md:w-1/2 rounded">
                             @foreach ($field['options'] as $key => $label)
                                 <option value="{{ $key }}"
                                     {{ old($field['name'], $Course->{$field['name']} ?? '') == $key ? 'selected' : '' }}>
