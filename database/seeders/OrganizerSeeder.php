@@ -9,7 +9,7 @@ class OrganizerSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('organizer')->insert([
+        DB::table('organizers')->insert([
             [
                 'id'   => 1,
                 'name' => 'ポリテクセンター',

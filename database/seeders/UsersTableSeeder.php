@@ -48,7 +48,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'admin01@example.com',
                 'password' => Hash::make('Administer'),
                 'courses_id' => 101, // 管理者
-                'role_id' => 101,
+                'role_id' => 9,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

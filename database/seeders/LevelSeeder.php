@@ -9,7 +9,7 @@ class LevelSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('level')->insert([
+        DB::table('levels')->insert([
             [
                 'code' => 'BASIC',
                 'name' => '基礎',

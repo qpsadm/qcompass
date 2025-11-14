@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             CoursesTableSeeder::class,
             UsersTableSeeder::class,
             CourseUserSeeder::class,
+            LevelSeeder::class,
+            CourseTypeSeeder::class,
+            OrganizerSeeder::class,
+            CategoriesTableSeeder::class,
         ]);
     }
 }
