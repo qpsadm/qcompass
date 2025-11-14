@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 // use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     // public function toSearchableArray()
     // {
@@ -38,8 +39,6 @@ class User extends Authenticatable
         'deleted_user_id',
     ];
 
-
-
     protected $hidden = [
         'password',
         'remember_token',
@@ -52,6 +51,14 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
-        
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+    public function detail()
+    {
+        return $this->hasOne(UserDetail::class);
     }
 }
