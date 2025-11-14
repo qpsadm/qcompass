@@ -20,7 +20,7 @@
         @include('layouts.b_sidebar')
 
         {{-- メインコンテンツ --}}
-        <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 overflow-y-auto">
+        <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 overflow-y-auto  pb-24">
             @yield('content')
         </main>
 
