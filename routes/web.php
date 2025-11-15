@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\LevelController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DailyQuoteController;
 use App\Http\Controllers\Admin\OrganizerController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\AgendaController;
 
 // 公開ページ
 Route::get('/', function () {
@@ -49,6 +51,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // カテゴリ管理
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+
+    //タグ管理
+    Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
+
+    Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
+
+    //アジェンダ管理
+    Route::resource('agendas', AgendaController::class);
 });
 
 require __DIR__ . '/auth.php';

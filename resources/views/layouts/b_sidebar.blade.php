@@ -1,6 +1,5 @@
 @auth
 @if (auth()->user()->role_id === 1)
-<!-- サイドバー -->
 <aside id="sidebar"
     class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-blue-300 text-white p-6 flex flex-col z-40 overflow-y-auto hide-scrollbar transition-transform duration-300">
 
@@ -40,26 +39,34 @@
             <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
                 <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li>
                 <li><a href="{{ route('admin.levels.index') }}">講座種類一覧</a></li>
-                {{-- <li><a href="{{ route('admin.course_types.index') }}">講座分野一覧</a></li> --}}
-                {{-- <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li> --}}
             </ul>
         </div>
 
-        {{-- アジェンダ管理（サブメニュー） --}}
-        <div>
-            <button id="userMenuBtn" class="flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" alt="講座管理" class="w-4 h-4 mr-2">
+        {{-- アジェンダ管理 --}}
+        <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                 <span>アジェンダ管理</span>
             </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.agendas.index') }}">アジェンダ一覧</a></li>
+                <li><a href="{{ route('admin.agendas.create') }}">新規作成</a></li>
+            </ul>
         </div>
-        {{-- お知らせ管理（サブメニュー） --}}
-        <div>
-            <button id="userMenuBtn" class="flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" alt="講座管理" class="w-4 h-4 mr-2">
+
+        {{-- お知らせ管理 --}}
+        <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                 <span>お知らせ管理</span>
             </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="#">一覧</a></li>
+                <li><a href="#">新規作成</a></li>
+            </ul>
         </div>
-        {{-- 求人票、資格、学習サイト管理（サブメニュー） --}}
+
+        {{-- 事務管理 --}}
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
                 <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
@@ -71,26 +78,29 @@
                 <li><a href="{{ route('admin.levels.index') }}">学習サイト管理</a></li>
             </ul>
         </div>
-        {{-- クイズ管理（サブメニュー） --}}
-        <div>
-            <button id="userMenuBtn" class="flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" alt="講座管理" class="w-4 h-4 mr-2">
+
+        {{-- クイズ管理 --}}
+        <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                 <span>クイズ管理</span>
             </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="#">一覧</a></li>
+                <li><a href="#">新規作成</a></li>
+            </ul>
         </div>
-        {{-- 質疑応答管理（サブメニュー） --}}
-        <div>
-            <button id="userMenuBtn" class="flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" alt="講座管理" class="w-4 h-4 mr-2">
-                <span>質疑応答管理</span>
-            </button>
-        </div>
-        {{-- 日報管理（サブメニュー） --}}
-        <div>
-            <button id="userMenuBtn" class="flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" alt="講座管理" class="w-4 h-4 mr-2">
+
+        {{-- 日報管理 --}}
+        <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                 <span>日報管理</span>
             </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="#">一覧</a></li>
+                <li><a href="#">新規作成</a></li>
+            </ul>
         </div>
 
         {{-- システム管理 --}}
@@ -101,21 +111,23 @@
             </button>
             <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
                 <li><a href="{{ route('admin.categories.index') }}">カテゴリー管理</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">タグ管理</a></li>
+                <li><a href="{{ route('admin.tags.index') }}">タグ管理</a></li>
                 <li><a href="{{ route('admin.levels.index') }}">実績管理</a></li>
                 <li><a href="{{ route('admin.daily_quotes.index') }}">今日の一言管理</a></li>
             </ul>
         </div>
+
     </nav>
 
-    <!-- メニューとログアウトの間に空白 -->
+    <!-- 空白 -->
     <div class="flex-shrink-0 h-24"></div>
 
-    <!-- ログアウトボタン -->
+    <!-- ログアウト -->
     <div class="mt-auto">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-center">
+            <button type="submit"
+                class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-center">
                 ログアウト
             </button>
         </form>
@@ -123,12 +135,12 @@
 </aside>
 
 <!-- サイドバー開くボタン -->
-<button id="sidebar-open" class="fixed top-20 left-0 bg-gray-800 text-white p-2 rounded-r-md z-50 hidden">
+<button id="sidebar-open"
+    class="fixed top-20 left-0 bg-gray-800 text-white p-2 rounded-r-md z-50 hidden">
     &raquo;
 </button>
 
 <script>
-    // サイドバー開閉
     const sidebar = document.getElementById('sidebar');
     const openBtn = document.getElementById('sidebar-open');
     const closeBtn = document.getElementById('sidebar-close');
@@ -147,13 +159,12 @@
     document.querySelectorAll('.accordion-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const content = btn.nextElementSibling;
-            content.classList.toggle('hidden');
+            if (content) content.classList.toggle('hidden');
         });
     });
 </script>
 
 <style>
-    /* スクロール可能だがスクロールバー非表示 */
     .hide-scrollbar::-webkit-scrollbar {
         display: none;
     }

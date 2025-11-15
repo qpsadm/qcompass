@@ -8,7 +8,6 @@
         <h2 class="font-bold mb-3">親カテゴリを選択</h2>
 
         <ul class="space-y-2">
-
             {{-- 最上位カテゴリ --}}
             <li>
                 <label class="flex items-center gap-2">
@@ -33,7 +32,7 @@
         <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-4" id="categoryForm">
             @csrf
 
-            {{-- ★ ここが重要：実際に送信される parent_id --}}
+            {{-- 実際に送信される parent_id --}}
             <input type="hidden" name="parent_id" id="selectedParent" value="">
 
             <div>
@@ -62,32 +61,4 @@
         </form>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-        // ★ 親カテゴリラジオをクリック → hidden に設定
-        document.querySelectorAll('input[name="parent_select"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('selectedParent').value = this.value;
-            });
-        });
-
-        // 初期値セット
-        const checked = document.querySelector('input[name="parent_select"]:checked');
-        if (checked) {
-            document.getElementById('selectedParent').value = checked.value;
-        }
-
-        // 子カテゴリの折りたたみ
-        document.querySelectorAll('.toggle-children').forEach(button => {
-            button.addEventListener('click', function() {
-                const container = this.closest('li').querySelector('.children-container');
-                if (container) container.classList.toggle('hidden');
-            });
-        });
-    });
-</script>
 @endsection
