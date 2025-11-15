@@ -13,18 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initDeleteModal();
 });
 
-
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const editors = document.querySelectorAll('.ckeditor');
     const tokenMeta = document.querySelector('meta[name="csrf-token"]');
     const csrfToken = tokenMeta ? tokenMeta.getAttribute('content') : '';
 
+    const module = await import('./ckeditor');
+    const ClassicEditor = module.default || module;
+
     editors.forEach(el => {
         ClassicEditor.create(el, {
-            language: 'ja',//  ← これを入れるとボタンが消える場合があるので一旦外す
             ckfinder: {
                 uploadUrl: '/ckeditor/upload?_token=' + csrfToken
             }
