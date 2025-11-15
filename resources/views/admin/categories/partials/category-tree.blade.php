@@ -9,18 +9,15 @@
     @foreach ($categories as $category)
     <li>
         <div class="flex items-center justify-between bg-white rounded-md shadow-sm py-2 px-3 hover:bg-gray-50">
-
             <div class="flex items-center gap-3">
                 <div style="margin-left: {{ $level * 1 }}rem"></div>
 
-                {{-- 折りたたみボタン --}}
                 @if($category->childrenRecursive->isNotEmpty())
                 <button type="button" class="toggle-children w-6 h-6 flex justify-center items-center bg-gray-100 rounded">▶</button>
                 @else
                 <span class="w-6 h-6 inline-block"></span>
                 @endif
 
-                {{-- ラジオボタン（作成画面用） --}}
                 @if($radioName)
                 <input type="radio" name="{{ $radioName }}" value="{{ $category->id }}" class="mr-2">
                 @endif
@@ -49,10 +46,9 @@
                     編集
                 </a>
 
-                {{-- 削除フォーム（JS confirmで簡易確認） --}}
                 <form action="{{ route('admin.categories.destroy', $category->id) }}"
                     method="POST"
-                    onsubmit="return confirm('本当に削除しますか？ 子カテゴリもまとめて削除されます。')">
+                    data-delete>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="px-2 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600">
@@ -63,7 +59,6 @@
             @endif
         </div>
 
-        {{-- 子カテゴリ --}}
         @if($category->childrenRecursive->isNotEmpty())
         <div class="mt-2 ml-8 children-container">
             @include('admin.categories.partials.category-tree', [

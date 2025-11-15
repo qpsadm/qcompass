@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 h-screen flex flex-col">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col">
 
     {{-- ナビバー --}}
     @include('layouts.b_navbar')
@@ -19,8 +19,8 @@
         {{-- サイドバー --}}
         @include('layouts.b_sidebar')
 
-        {{-- メインコンテンツ --}}
-        <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 overflow-y-auto  pb-24">
+        {{-- メインコンテンツ（ここだけスクロール） --}}
+        <main id="mainContent" class="flex-1 transition-all duration-300 ml-64 p-6 pb-24 overflow-y-auto">
             @yield('content')
         </main>
 
@@ -29,8 +29,9 @@
             &raquo;
         </button>
     </div>
-
-    {{-- フッター固定 --}}
+    {{-- ページごとのスクリプト --}}
+    @yield('scripts')
+    {{-- フッター --}}
     @include('layouts.b_footer')
 
     <script>
@@ -41,18 +42,16 @@
             const openBtn = document.getElementById('sidebar-open');
 
             // サイドバー閉じる
-            closeBtn.addEventListener('click', () => {
+            closeBtn?.addEventListener('click', () => {
                 sidebar.classList.add('-translate-x-full');
-                mainContent.classList.remove('ml-64');
-                mainContent.classList.add('ml-0');
+                mainContent.classList.replace('ml-64', 'ml-0');
                 openBtn.classList.remove('hidden');
             });
 
             // サイドバー開く
-            openBtn.addEventListener('click', () => {
+            openBtn?.addEventListener('click', () => {
                 sidebar.classList.remove('-translate-x-full');
-                mainContent.classList.remove('ml-0');
-                mainContent.classList.add('ml-64');
+                mainContent.classList.replace('ml-0', 'ml-64');
                 openBtn.classList.add('hidden');
             });
         });
