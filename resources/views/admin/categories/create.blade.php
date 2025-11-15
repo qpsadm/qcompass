@@ -1,48 +1,93 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Category作成</h1>
-    <form action="{{ route('admin.categories.store') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-    <label class="block font-medium mb-1">code</label>
-    <input type="text" name="code" value="{{ old('code', $Category->code ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">name</label>
-    <input type="text" name="name" value="{{ old('name', $Category->name ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">parent_id</label>
-    <input type="text" name="parent_id" value="{{ old('parent_id', $Category->parent_id ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">top_id</label>
-    <input type="text" name="top_id" value="{{ old('top_id', $Category->top_id ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">level</label>
-    <input type="text" name="level" value="{{ old('level', $Category->level ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">child_count</label>
-    <input type="text" name="child_count" value="{{ old('child_count', $Category->child_count ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">is_show</label>
-    <input type="text" name="is_show" value="{{ old('is_show', $Category->is_show ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">theme_color</label>
-    <input type="text" name="theme_color" value="{{ old('theme_color', $Category->theme_color ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
-<div class="mb-4">
-    <label class="block font-medium mb-1">deleted_at</label>
-    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Category->deleted_at ?? '') }}" class="border px-2 py-1 w-full rounded">
-</div>
+<div class="flex gap-6">
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
-    </form>
+    <!-- 左：親カテゴリ選択 -->
+    <div class="w-1/3 bg-white p-4 rounded shadow">
+        <h2 class="font-bold mb-3">親カテゴリを選択</h2>
+
+        <ul class="space-y-2">
+
+            {{-- 最上位カテゴリ --}}
+            <li>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="parent_select" value="" checked>
+                    親なし（最上位）
+                </label>
+            </li>
+
+            {{-- 階層カテゴリ --}}
+            @include('admin.categories.partials.category-tree', [
+            'categories' => $categories,
+            'showActions' => false,
+            'radioName' => 'parent_select'
+            ])
+        </ul>
+    </div>
+
+    <!-- 右：新規作成フォーム -->
+    <div class="flex-1 p-4 bg-white rounded shadow">
+        <h2 class="text-lg font-bold mb-4">新規カテゴリー作成</h2>
+
+        <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-4" id="categoryForm">
+            @csrf
+
+            {{-- ★ ここが重要：実際に送信される parent_id --}}
+            <input type="hidden" name="parent_id" id="selectedParent" value="">
+
+            <div>
+                <label class="block mb-1 font-semibold">コード</label>
+                <input type="text" name="code" class="w-full border rounded px-3 py-2" value="{{ old('code') }}">
+            </div>
+
+            <div>
+                <label class="block mb-1 font-semibold">カテゴリー名</label>
+                <input type="text" name="name" class="w-full border rounded px-3 py-2" value="{{ old('name') }}">
+            </div>
+
+            <div>
+                <label class="block mb-1 font-semibold">表示フラグ</label>
+                <input type="checkbox" name="is_show" value="1" {{ old('is_show') ? 'checked' : '' }}>
+            </div>
+
+            <div>
+                <label class="block mb-1 font-semibold">テーマカラー</label>
+                <select name="theme_color" class="w-full border rounded px-3 py-2">
+                    <option value="blue" {{ old('theme_color') == 'blue' ? 'selected' : '' }}>Blue</option>
+                </select>
+            </div>
+
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">作成</button>
+        </form>
+    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ★ 親カテゴリラジオをクリック → hidden に設定
+        document.querySelectorAll('input[name="parent_select"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('selectedParent').value = this.value;
+            });
+        });
+
+        // 初期値セット
+        const checked = document.querySelector('input[name="parent_select"]:checked');
+        if (checked) {
+            document.getElementById('selectedParent').value = checked.value;
+        }
+
+        // 子カテゴリの折りたたみ
+        document.querySelectorAll('.toggle-children').forEach(button => {
+            button.addEventListener('click', function() {
+                const container = this.closest('li').querySelector('.children-container');
+                if (container) container.classList.toggle('hidden');
+            });
+        });
+    });
+</script>
 @endsection

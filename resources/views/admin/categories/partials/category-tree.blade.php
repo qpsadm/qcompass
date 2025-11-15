@@ -1,43 +1,76 @@
-@props(['categories', 'level' => 0])
+@props([
+'categories',
+'level' => 0,
+'showActions' => true,
+'radioName' => null
+])
 
 <ul class="space-y-2">
     @foreach ($categories as $category)
-    <li style="padding-left: {{ $level * 20 }}px;">
-        <div class="flex items-center justify-between bg-gray-50 rounded py-1 pr-4 hover:bg-gray-100">
-            <div class="flex items-center gap-2">
-                @if (!empty($category->childrenRecursive) && $category->childrenRecursive->isNotEmpty())
-                <button type="button" class="toggle-children transform transition-transform duration-200">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+    <li>
+        <div class="flex items-center justify-between bg-white rounded-md shadow-sm py-2 px-3 hover:bg-gray-50">
+
+            <div class="flex items-center gap-3">
+                <div style="margin-left: {{ $level * 1 }}rem"></div>
+
+                {{-- 折りたたみボタン --}}
+                @if($category->childrenRecursive->isNotEmpty())
+                <button type="button" class="toggle-children w-6 h-6 flex justify-center items-center bg-gray-100 rounded">▶</button>
                 @else
-                <span class="w-4"></span>
+                <span class="w-6 h-6 inline-block"></span>
                 @endif
-                <span class="font-medium">{{ $category->name }}</span>
+
+                {{-- ラジオボタン（作成画面用） --}}
+                @if($radioName)
+                <input type="radio" name="{{ $radioName }}" value="{{ $category->id }}" class="mr-2">
+                @endif
+
+                <div class="flex flex-col">
+                    <span class="font-medium text-gray-800">{{ $category->name }}</span>
+                    <span class="text-xs text-gray-500">
+                        ID: {{ $category->id }}
+                        /コード: {{ $category->code }}
+                        @if($category->child_count) /子: {{ $category->child_count }} @endif
+                    </span>
+                </div>
             </div>
 
-            <div class="flex gap-2">
+            @if($showActions)
+            <div class="flex items-center gap-2">
+                @if(!empty($category->theme_color))
+                <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded"
+                    style="background-color: {{ $category->theme_color }}; color: #fff;">
+                    {{ $category->theme_color }}
+                </span>
+                @endif
+
                 <a href="{{ route('admin.categories.edit', $category->id) }}"
                     class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
                     編集
                 </a>
-                <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
+
+                {{-- 削除フォーム（JS confirmで簡易確認） --}}
+                <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                    method="POST"
+                    onsubmit="return confirm('本当に削除しますか？ 子カテゴリもまとめて削除されます。')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit"
-                        class="px-2 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600">
+                    <button type="submit" class="px-2 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600">
                         削除
                     </button>
                 </form>
             </div>
+            @endif
         </div>
 
-        @if (!empty($category->childrenRecursive) && $category->childrenRecursive->isNotEmpty())
-        <div class="mt-1 children-container">
+        {{-- 子カテゴリ --}}
+        @if($category->childrenRecursive->isNotEmpty())
+        <div class="mt-2 ml-8 children-container">
             @include('admin.categories.partials.category-tree', [
             'categories' => $category->childrenRecursive,
             'level' => $level + 1,
+            'showActions' => $showActions,
+            'radioName' => $radioName
             ])
         </div>
         @endif

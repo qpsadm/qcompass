@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Category.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -15,28 +13,26 @@ class Category extends Model
         'code',
         'name',
         'parent_id',
-        'top_id',
         'level',
-        'child_count',
+        'top_id',
         'is_show',
-        'theme_color',
-        'deleted_at',
+        'theme_color'
     ];
 
+    // 子カテゴリ
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-    // 再帰リレーション
     public function childrenRecursive()
     {
-        return $this->children()->with('childrenRecursive');
+        return $this->hasMany(Category::class, 'parent_id')->with('childrenRecursive');
     }
 
-    // 親カテゴリー
-    public function parent()
+    // 動的に子数を返す
+    public function getChildCountAttribute()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->childrenRecursive()->count();
     }
 }

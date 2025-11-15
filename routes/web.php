@@ -48,16 +48,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     });
 
     // カテゴリ管理
-    Route::prefix('categories')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('categories.index');
-        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
-        Route::post('/store', [CategoryController::class, 'store'])->name('categories.store');
-        Route::get('/{id}', [CategoryController::class, 'show'])->name('categories.show');
-        Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-        Route::put('/{id}', [CategoryController::class, 'update'])->name('categories.update');
-        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-        Route::put('/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
-    });
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
 });
 
 require __DIR__ . '/auth.php';
