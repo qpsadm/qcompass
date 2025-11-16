@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Agenda詳細</h1>
+    <h1 class="text-2xl font-bold mb-4">アジェンダ詳細</h1>
 
     <table class="table-auto w-full border-collapse">
         <tbody>
@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <td class="border px-4 py-2 font-bold">更新者</td>
-                <td class="border px-4 py-2">{{ $Agenda->updatedUser?->name ?? '不明' }}</td>
+                <td class="border px-4 py-2">{{ $Agenda->updatedUser?->name ?? 'なし' }}</td>
             </tr>
 
         </tbody>
@@ -44,9 +44,6 @@
     <button type="button" id="preview-button" class="bg-green-600 text-white px-3 py-1 rounded mt-2">
         プレビューを見る
     </button>
-
-
-
 
     <div class="flex gap-2 mt-6">
         <a href="{{ route('admin.agendas.edit', $Agenda->id) }}"

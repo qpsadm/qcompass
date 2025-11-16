@@ -30,11 +30,10 @@
         {{-- 内容・概要 (CKEditor) --}}
         <div class="mb-4">
             <label for="description" class="block font-medium mb-1">内容・概要</label>
-            <textarea name="description" id="description" class="ckeditor border px-2 py-1 w-full rounded">
+            <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">
             {{ old('description', $agenda->description ?? '') }}
             </textarea>
         </div>
-
 
         {{-- 表示フラグ --}}
         <div class="mb-4">
@@ -50,7 +49,6 @@
             <select name="accept" class="border px-2 py-1 w-full rounded" required>
                 <option value="yes" {{ old('accept') == 'yes' ? 'selected' : '' }}>承認済み</option>
                 <option value="no" {{ old('accept') == 'no' ? 'selected' : '' }}>下書き</option>
-
             </select>
         </div>
 
@@ -58,13 +56,14 @@
     </form>
 </div>
 
-<script src="{{ asset('assets/js/ckeditor.js') }}"></script>
+{{-- CKEditor 4 CDN を読み込む --}}
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
 <script>
-    ClassicEditor
-        .create(document.querySelector('.ckeditor'), {
-            language: 'ja'
-        })
-        .catch(error => console.error(error));
+    // CKEditor 4 の初期化
+    CKEDITOR.replace('description', {
+        language: 'ja',
+        allowedContent: true, // すべてのタグ・属性・スタイルを許可
+    });
 </script>
 @endsection

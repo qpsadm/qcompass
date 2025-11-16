@@ -39,6 +39,7 @@
             <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
                 <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li>
                 <li><a href="{{ route('admin.levels.index') }}">講座種類一覧</a></li>
+                <li><a href="{{ route('admin.levels.index') }}">質疑応答一覧</a></li>
             </ul>
         </div>
 

@@ -1,0 +1,507 @@
+/*-----------------------------------------------*/
+/* 基本設定                                      */
+/*-----------------------------------------------*/
+body {
+	width				: 100%;
+	font-family			: メイリオ,MS UI Gothic,ＭＳ Ｐゴシック,Osaka;
+	font-size			: 14px;
+}
+/* 基本文字サイズ */
+td {
+	font-size				: 13px;
+/*	line-height				: 150%;	 */
+/*	line-height				: 16px;	*/
+}
+/* 共通のクラス */
+.base {
+	font-size				: 14px;
+	line-height				: 18px;
+}
+/* 米印汎用 */
+.kome {
+	color					: #555555;
+	font-size				: 10px;
+	line-height				: 15px;
+}
+
+
+/* 管理者画面ナビメニュー */
+.TOP_NAVI {
+	background:#0099CC;
+	border:2px solid #FFF;
+	color:#FFF;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	-webkit-box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	-moz-box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	text-shadow:0px 0px 3px rgba(0,0,0,0.5);
+    height					: 22px;
+    padding					: 2px 5px;
+}
+.TOP_NAVI a:link {
+    color					: #FFFFFF;
+    text-decoration: none;
+}
+.TOP_NAVI a:visited {
+    color					: #FFFFFF;
+    text-decoration: none;
+}
+.TOP_NAVI a:hover {
+    color					: #FFFFFF;
+    text-decoration: underline;
+}
+
+/* H1管理者専用タグタイトル用 */
+.ADM_TITLE h1 {
+	background:#0099CC;
+	border:2px solid #FFF;
+	color:#FFF;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	-webkit-box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	-moz-box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	box-shadow:1px 1px 1px rgba(000,000,000,0.3);
+	text-shadow:0px 0px 3px rgba(0,0,0,0.5);
+    font-size					: 16px;
+    font-weight					: 900;
+    margin-left					: 0px;
+    margin-right				: 0px;
+    margin-bottom				: 5px;
+    margin-top					: 5px;
+    padding-left				: 15px;
+    padding-top					: 10px;
+    padding-right				: 10px;
+    padding-bottom				: 10px;
+}
+
+/* H1タグタイトル用 */
+.SUB_TITLE h1 {
+    background-color				: #CCDAF3;
+    color					: #506DC3;
+    font-size					: 16px;
+    font-weight					: 900;
+    margin-left					: 0px;
+    margin-right				: 0px;
+    margin-bottom				: 5px;
+    margin-top					: 5px;
+    padding-left				: 15px;
+    padding-top					: 5px;
+    padding-right				: 5px;
+    padding-bottom				: 5px;
+    border-left					: #506DC3 10px solid;
+}
+
+/* 一覧検索フレーム用 */
+td.FIND_FRAME {
+    background-color		: #E9F0F7;
+    border					: #506DC3 1px solid;
+	padding					: 4px;
+}
+
+/* タブ切り替え用 */
+td.TAB_SELECT {
+    background-color				: #cedff7;
+    border-left					: #3130c6 8px solid;
+    border-right				: #3130c6 1px solid;
+    border-top					: #3130c6 1px solid;
+    border-bottom				: #FFFFFF 1px solid;
+    font-weight					: 900;
+    padding-left				: 15px;
+    padding-right				: 15px;
+    padding-top					: 5px;
+    padding-bottom				: 5px;
+}
+td.TAB_NORMAL {
+    background-color				: #eeeeee;
+    border-left					: #FFFFFF 1px solid;
+    border-right				: #CC0000 1px solid;
+    border-top					: #CC0000 1px solid;
+    border-bottom				: #FFFFFF 1px solid;
+    padding-left				: 15px;
+    padding-right				: 15px;
+    padding-top					: 5px;
+    padding-bottom				: 5px;
+}
+
+/* 大分類強調用 */
+table.A_TABLE  {
+    background-color		: #317df7;
+    padding					: 1px;
+}
+tr.A_TABLE {
+    background-color		: #317df7;
+}
+td.A_TABLE {
+    border-top				: #317df7;
+    border-bottom			: thin;
+    color					: #FFFFFF;
+	padding					: 2px 4px;
+}
+
+/* 中分類汎用 */
+td.B_TABLE {
+    background-color		: #cedff7;
+    border-bottom			: #D3D3D3 1px solid;
+ 	padding					: 1px 4px;
+}
+
+/* 一覧汎用　奇数行 */
+.M1_TABLE {
+    background-color		: #E7E7E7;
+    border-bottom			: #D3D3D3 1px solid;
+    padding					: 2px 2px 2px 3px;
+}
+/* 一覧汎用　偶数行 */
+.M2_TABLE {
+	background-color		: #FFFFFF;
+    border-bottom			: #D3D3D3 1px solid;
+    padding					: 2px 2px 2px 3px;
+}
+
+/* 入力画面項目用 */
+td.ITEM {
+    background-color		: #FFFFFF;
+	padding					: 2px 3px;
+}
+
+td.ITEM_COMMENT {
+/*	line-height				: 18px;*/
+/*	padding					: 5px;*/
+}
+
+td.ITEM_LINE {
+    border-bottom			: #D3D3D3 1px solid;
+	padding					: 2px 3px;
+}
+
+/* 管理者メニュー */
+div.ADM_MENU {
+	padding					: 2px;
+	width					: 200px;
+}
+
+/* 管理者メニューブロック */
+td.ADM_MENU_BLOCK {
+    background-color		: #506DC3;
+	border					: 1px solid #3130c6;
+	color					: #FFFFFF;
+	font-size			: 12px;
+	font-weight				: bold;
+	padding					: 1px 5px;
+	margin-bottom		: 2px;
+}
+
+/* 管理者各メニューアイコン */
+td.ADM_MENU_ICON {
+    background-color		: #F7F7F7;
+    border-bottom			: #808080 1px dotted;
+}
+
+/* 管理者各メニュー */
+td.ADM_MENU {
+    background-color		: #F7F7F7;
+    border-bottom			: #808080 1px dotted;
+    padding-left			: 5px;
+}
+
+/* 管理者各メニュー区切り */
+.MENU_LINE {
+    border-bottom			: #A9A9A9 1px solid;
+    color					: #ff9933;
+    font-family				: arial, 'MS UI Gothic';
+}
+
+/*-----------------------------------------------*/
+/* コントロール設定                              */
+/*-----------------------------------------------*/
+.input {
+	border					: solid 1px #C0C0C0;
+	color					: #000000;
+	font-size				: 12px;
+	ime-mode				: inactive;
+	padding					: 1px;
+}
+.inputImeOn {
+	border					: solid 1px #C0C0C0;
+	color					: #000000;
+	font-size				: 12px;
+	ime-mode				: active;
+	padding					: 1px;
+}
+.inputImeDisable {
+	border					: solid 1px #C0C0C0;
+	color					: #000000;
+	font-size				: 12px;
+	ime-mode				: disabled;
+	padding					: 1px;
+}
+.input_def {
+    	background-color			: #FFFF00;
+	border					: solid 1px #C0C0C0;
+    	color					: #000000;
+    	font-size				: 12px;
+    	font-weight				: bolder;
+	padding					: 1px;
+}
+/*-----------------------------------------------*/
+/* リンク設定                                    */
+/*-----------------------------------------------*/
+a:link		{ color: #0236a4; text-decoration: none; }
+a:visited	{ color: #0236a4; text-decoration: none; }
+a:hover		{ color: #ff0000; text-decoration: underline; }
+
+
+/*-------------------------------------*/
+/* 基本設定                            */
+/*-------------------------------------*/
+body {
+	margin				: 0px;
+	padding				: 0px;
+	width				: 100%;
+	font-family			: メイリオ,MS UI Gothic,ＭＳ Ｐゴシック,Osaka;
+	font-size			: 13px;
+}
+
+/*-------------------------------------*/
+/* 見出し設定　　                      */
+/*-------------------------------------*/
+h1 { margin : 0px; padding : 0px; }
+h2 {
+	margin-top			: 3px;
+	margin-bottom			: 3px;
+	padding-top			: 3px;
+	padding-bottom			: 3px;
+	border-bottom			: #aaaaaa 1px dashed;
+	color				: #506DC3;
+	font-size			: 14px;
+	font-weight			: 900;
+}
+h3 {
+	margin-top			: 3px;
+	margin-bottom			: 3px;
+	padding-top			: 3px;
+	padding-bottom			: 3px;
+	color				: #000000;
+	font-size			: 13px;
+	font-weight			: 900;
+}
+h4 { margin : 0px; padding : 0px; }
+h5 { margin : 0px; padding : 0px; }
+
+h1.hdn { display : none; }
+h2.hdn { display : none; }
+h3.hdn { display : none; }
+h4.hdn { display : none; }
+h5.hdn { display : none; }
+
+h1.IMG { border-bottom : #000000 0px solid ; margin : 0px; padding : 0px; }
+h2.IMG { border-bottom : #000000 0px solid ; margin : 0px; padding : 0px; }
+h3.IMG { border-bottom : #000000 0px solid ; margin : 0px; padding : 0px; }
+h4.IMG { border-bottom : #000000 0px solid ; margin : 0px; padding : 0px; }
+h5.IMG { border-bottom : #000000 0px solid ; margin : 0px; padding : 0px; }
+
+/*-------------------------------------*/
+/* リンク設定　　                      */
+/*-------------------------------------*/
+a:link		{ color: #0236a4; text-decoration: none; }
+a:visited	{ color: #0236a4; text-decoration: none; }
+a:hover		{ color: #FF0000; text-decoration: underline; }
+a:active	{ color: #FF0000; text-decoration: underline; }
+
+a.WHITE:link	{ color: #ffffff; text-decoration: none; }
+a.WHITE:visited	{ color: #ffffff; text-decoration: none; }
+a.WHITE:hover	{ color: #ffffff; text-decoration: underline; }
+a.WHITE:active	{ color: #ffffff; text-decoration: underline; }
+
+/*-------------------------------------*/
+/* 各ページ共通フッター設定　                      */
+/*-------------------------------------*/
+TD.FOOTER {
+	background-color		: #e0e0e0;
+	color				: #9d9d9d;
+	padding				: 6px 6px 6px 6px;
+}
+
+/*-------------------------------------*/
+/* 各ページ共通サイドメニュー設定　                      */
+/*-------------------------------------*/
+TD.SIDE_MENU0 {
+	background-color		: #404040;
+	color				: #ffffff;
+	padding				: 6px 6px 6px 6px;
+}
+TD.SIDE_MENU1 {
+	background-color		: #e0e0e0;
+	color				: #9d9d9d;
+	padding				: 6px 6px 6px 6px;
+	border-top			: solid 1px #ffffff;
+	border-bottom			: solid 1px #999a95;
+	border-right			: solid 1px #999a95;
+}
+TD.SIDE_MENU2 {
+	background-color		: #e0e0e0;
+	color				: #9d9d9d;
+	padding				: 2px 2px 2px 2px;
+	border-bottom			: dotted 1px #C0C0C0;
+}
+TD.SIDE_MENU3 {
+	background-color		: #e0e0e0;
+	color				: #9d9d9d;
+	padding				: 2px 2px 2px 2px;
+	border-bottom			: dotted 1px #C0C0C0;
+}
+TD.SIDE_MENU0_SEL {
+	background-color		: #005B99;
+	background-repeat		: repeat-x
+	color				: #ffffff;
+	padding				: 6px 6px 6px 6px;
+}
+TD.SIDE_MENU1_SEL {
+	background-color		: #ecc8c8;
+	color				: #9d9d9d;
+	padding				: 6px 6px 6px 6px;
+	border-top			: solid 1px #ffffff;
+	border-bottom			: solid 1px #999a95;
+	border-right			: solid 1px #999a95;
+}
+TD.SIDE_MENU2_SEL {
+	background-color		: #f1e5e5;
+	color				: #9d9d9d;
+	padding				: 2px 2px 2px 2px;
+	border-bottom			: dotted 1px #C0C0C0;
+}
+TD.SIDE_MENU3_SEL {
+	background-color		: #f1e5e5;
+	color				: #9d9d9d;
+	padding				: 2px 2px 2px 2px;
+	border-bottom			: dotted 1px #C0C0C0;
+}
+/*-------------------------------------*/
+/* パン屑リスト設定　                      */
+/*-------------------------------------*/
+DIV.PANKUZU_LIST{
+	padding-top			: 3px;
+	padding-bottom			: 3px;
+}
+/*-------------------------------------*/
+/* TOPページニュース設定　                      */
+/*-------------------------------------*/
+TD.TOP_NEWS_LIST {
+	border-bottom			: dotted 1px #C0C0C0;
+	padding-top			: 2px;
+	padding-bottom			: 2px;
+}
+
+/*-------------------------------------*/
+/* 外枠影設定　                      */
+/*-------------------------------------*/
+TD.TOP_LEFT_KAGE
+{
+	background-image		: url(../own_images/kage_lc.jpg);
+	background-repeat		: repeat-y
+}
+TD.TOP_BOTTOM_KAGE
+{
+	background-image		: url(../own_images/kage_bc.jpg);
+	background-repeat		: repeat-x
+}
+TD.TOP_RIGHT_KAGE
+{
+	background-image		: url(../own_images/kage_rc.jpg);
+	background-repeat		: repeat-y
+}
+
+/*-------------------------------------*/
+/* ログイン文字影設定                  */
+/*-------------------------------------*/
+TD.LOGIN
+{
+	font-family			: メイリオ,MS UI Gothic,ＭＳ Ｐゴシック,Osaka;
+	color				: #FFFFFF;
+	font-size			: 10px;
+}
+/*-------------------------------------*/
+/* ログイン文字影設定                  */
+/*-------------------------------------*/
+A.LOGIN
+{
+	font-family			: メイリオ,MS UI Gothic,ＭＳ Ｐゴシック,Osaka;
+	color				: #FFFFFF;
+	font-size			: 10px;
+}
+
+/*-------------------------------------*/
+/* ドット区切り線設定                  */
+/*-------------------------------------*/
+HR.DOT
+{
+	border-top			: dotted 1px #C0C0C0;
+	border-bottom			: none;
+	margin				: 0px;
+	padding				: 0px;
+	height				: 1px;
+	line-height			: 1px;
+	size			: 1;
+}
+
+/*-------------------------------------*/
+/* メインフレーム設定                 */
+/*-------------------------------------*/
+TD.YOHAKU_FRMAE
+{
+	border-left			: solid 1px #808080;
+	border-right			: solid 1px #808080;
+	border-bottom			: solid 1px #808080;
+	background-color		: #ffffff;
+	margin				: 0px;
+	padding				: 10px;
+}
+TD.H2_FRMAE_TITLE
+{
+	background-image		: url(../own_images/h2_back.gif);
+	background-repeat		: no-repeat;
+	background-color		: #e7efef;
+	margin				: 0px;
+	padding-left			: 10px;
+	padding-top			: 3px;
+	font-size			: 14px;
+	font-weight			: 900;
+	color				: #506DC3;
+}
+TD.H2_FRMAE_TITLE_NO
+{
+	border-right			: solid 1px #6b61ff;
+	border-top			: solid 1px #6b61ff;
+	background-color		: #E9F0F7;
+}
+TD.H2_FRMAE_CONTENT
+{
+	border-left			: solid 1px #6b61ff;
+	border-right			: solid 1px #6b61ff;
+	border-bottom			: solid 1px #6b61ff;
+	background-color		: #E9F0F7;
+	margin				: 0px;
+	padding				: 10px;
+}
+/*-------------------------------------*/
+/* 文字装飾                            */
+/*-------------------------------------*/
+span.normal {
+	color				: #000000;
+	font-weight			: normal;
+}
+span.coaching {
+	color				: #ff8c00;
+	font-weight			: bold;
+}
+span.warning {
+	color				: #cc0000;
+	font-weight			: bold;
+}
+span.remonstrance {
+	color				: #4b0082;
+	font-weight			: bold;
+}
