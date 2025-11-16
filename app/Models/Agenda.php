@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agenda extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['agenda_name', 'category_id', 'description', 'is_show', 'user_id', 'accept', 'created_user_id', 'updated_user_id', 'deleted_at', 'deleted_user_id'];
 

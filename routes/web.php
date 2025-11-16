@@ -60,6 +60,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     //アジェンダ管理
     Route::resource('agendas', AgendaController::class);
+    // ゴミ箱一覧
+    Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
+    // 復元
+    Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
+    // 完全削除（任意）
+    Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
 });
 
 require __DIR__ . '/auth.php';

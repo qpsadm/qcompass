@@ -34,13 +34,18 @@
         </tbody>
     </table>
 
+    {{-- 非表示のHTML（保存された内容） --}}
     <div id="agenda-description" class="hidden">
-        {!! $Agenda->description !!}
+        {!! $Agenda->description_sanitized !!}
     </div>
 
+
+    {{-- プレビューボタン --}}
     <button type="button" id="preview-button" class="bg-green-600 text-white px-3 py-1 rounded mt-2">
         プレビューを見る
     </button>
+
+
 
 
     <div class="flex gap-2 mt-6">
@@ -54,4 +59,5 @@
         </a>
     </div>
 </div>
+
 @endsection

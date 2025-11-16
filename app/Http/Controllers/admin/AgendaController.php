@@ -10,9 +10,43 @@ use Mews\Purifier\Facades\Purifier;
 
 class AgendaController extends Controller
 {
+    protected $allowedTags = [
+        'p',
+        'br',
+        'b',
+        'i',
+        'strong',
+        'em',
+        'u',
+        'a[href|title|target]',
+        'ul',
+        'ol',
+        'li',
+        'img[src|alt|title|width|height|style]',
+        'figure',
+        'figcaption',
+        'iframe[src|width|height|frameborder|allowfullscreen]',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'blockquote',
+        'table',
+        'thead',
+        'tbody',
+        'tfoot',
+        'tr',
+        'td',
+        'th',
+        'col',
+        'colgroup'
+    ];
+
     public function index()
     {
-        $agendas = Agenda::with('user')->get(); // ← eager load で N+1 問題回避
+        $agendas = Agenda::with('user')->whereNull('deleted_at')->get();
         foreach ($agendas as $agenda) {
             $agenda->description_sanitized = Purifier::clean($agenda->description);
         }
@@ -28,11 +62,68 @@ class AgendaController extends Controller
 
     public function show($id)
     {
-        $agenda = Agenda::with('category')->find($id);
+        $agenda = Agenda::with(['category', 'createdUser', 'updatedUser'])->findOrFail($id);
 
-        if (!$agenda) {
-            abort(404);
-        }
+        $agenda->description_sanitized = Purifier::clean($agenda->description, [
+            'HTML.Allowed' => implode(',', $this->allowedTags),
+            'HTML.SafeIframe' => true,
+            'AutoFormat.AutoParagraph' => false,
+            'AutoFormat.RemoveEmpty' => false,
+            'Attr.EnableID' => true,
+            'HTML.AllowedAttributes' => implode(',', [
+                'style',
+                'dir',
+                'class',
+                'id',
+                'src',
+                'alt',
+                'title',
+                'width',
+                'height',
+                'href',
+                'target',
+                'frameborder',
+                'allowfullscreen',
+                'action',
+                'method',
+                'name',
+                'type',
+                'value',
+                'colspan',
+                'rowspan',
+                'align',
+                'valign',
+                'border',
+                'cellpadding',
+                'cellspacing'
+            ]),
+            'CSS.AllowedProperties' => implode(',', [
+                'color',
+                'background-color',
+                'font-size',
+                'font-weight',
+                'font-style',
+                'text-decoration',
+                'margin',
+                'padding',
+                'border',
+                'border-collapse',
+                'width',
+                'height',
+                'text-align',
+                'vertical-align',
+                'max-width',
+                'display'
+            ]),
+            'CSS.AllowTricky' => true,
+            'HTML.Trusted' => true,
+            'URI.AllowedSchemes' => [
+                'http' => true,
+                'https' => true,
+                'mailto' => true,
+                'data' => true // ← base64画像対応
+            ],
+        ]);
 
         return view('admin.agendas.show', [
             'Agenda' => $agenda,
@@ -48,21 +139,22 @@ class AgendaController extends Controller
             'accept' => 'required|in:yes,no',
         ]);
 
-        // CKEditorのHTMLを安全化
-        if (isset($validated['description'])) {
-            $validated['description'] = Purifier::clean($validated['description']);
+        // CKEditorのHTMLをデコードして保存
+        if (!empty($validated['description'])) {
+            $decoded = htmlspecialchars_decode(html_entity_decode($validated['description'], ENT_QUOTES | ENT_HTML5));
+            $decoded = str_replace('&nbsp;', ' ', $decoded);
+            $validated['description'] = $decoded;
         }
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
-
-        // ログインユーザーのIDを追加
         $validated['user_id'] = auth()->id();
         $validated['created_user_id'] = auth()->id();
 
         Agenda::create($validated);
 
-        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを作成しました。');
+        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを作成しました');
     }
+
     public function edit($id)
     {
         $agenda = Agenda::findOrFail($id);
@@ -80,11 +172,12 @@ class AgendaController extends Controller
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
-            'user_id' => 'nullable|integer',
         ]);
 
-        if (isset($validated['description'])) {
-            $validated['description'] = Purifier::clean($validated['description']);
+        if (!empty($validated['description'])) {
+            $decoded = htmlspecialchars_decode(html_entity_decode($validated['description']), ENT_QUOTES | ENT_HTML5);
+            $decoded = str_replace('&nbsp;', ' ', $decoded);
+            $validated['description'] = $decoded;
         }
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
@@ -92,7 +185,7 @@ class AgendaController extends Controller
 
         $agenda->update($validated);
 
-        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを更新しました。');
+        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを更新しました');
     }
 
     public function destroy($id)
@@ -100,17 +193,6 @@ class AgendaController extends Controller
         $agenda = Agenda::findOrFail($id);
         $agenda->delete();
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました。');
-    }
-
-
-    public function children()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     private function buildCategoryOptions($categories, $prefix = '')
@@ -130,5 +212,17 @@ class AgendaController extends Controller
         }
 
         return $options;
+    }
+    public function trash()
+    {
+        $agendas = Agenda::onlyTrashed()->get();
+        return view('admin.agendas.trash', compact('agendas'));
+    }
+    public function restore($id)
+    {
+        $agenda = Agenda::onlyTrashed()->findOrFail($id);
+        $agenda->restore();
+
+        return redirect()->route('admin.agendas.trash')->with('success', 'アジェンダを復元しました。');
     }
 }

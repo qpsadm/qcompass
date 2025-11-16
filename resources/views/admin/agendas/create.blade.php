@@ -28,13 +28,13 @@
         </div>
 
         {{-- 内容・概要 (CKEditor) --}}
-        <div class="not-prose">
-
-            <div class="mb-4">
-                <label class="block font-medium mb-1">内容・概要</label>
-                <textarea name="description" id="description" class="ckeditor border px-2 py-1 w-full rounded">{{ old('description') }}</textarea>
-            </div>
+        <div class="mb-4">
+            <label for="description" class="block font-medium mb-1">内容・概要</label>
+            <textarea name="description" id="description" class="ckeditor border px-2 py-1 w-full rounded">
+            {{ old('description', $agenda->description ?? '') }}
+            </textarea>
         </div>
+
 
         {{-- 表示フラグ --}}
         <div class="mb-4">
