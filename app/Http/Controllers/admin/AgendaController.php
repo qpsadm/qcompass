@@ -5,36 +5,39 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Agenda;
-use Mews\Purifier\Facades\Purifier; // ← これを追加
+use App\Models\Category;
+use Mews\Purifier\Facades\Purifier;
 
 class AgendaController extends Controller
 {
     public function index()
     {
-        $agendas = Agenda::all();
+        $agendas = Agenda::with('user')->get(); // ← eager load で N+1 問題回避
         foreach ($agendas as $agenda) {
             $agenda->description_sanitized = Purifier::clean($agenda->description);
         }
         return view('admin.agendas.index', compact('agendas'));
     }
-
     public function create()
     {
-        return view('admin.agendas.create');
+        $rootCategories = Category::with('children')->whereNull('parent_id')->get();
+        $categories = $this->buildCategoryOptions($rootCategories);
+
+        return view('admin.agendas.create', compact('categories'));
     }
+
     public function show($id)
     {
-        $agenda = Agenda::find($id);
+        $agenda = Agenda::with('category')->find($id);
 
         if (!$agenda) {
             abort(404);
         }
 
         return view('admin.agendas.show', [
-            'Agenda' => $agenda, // ← ここでビューに渡す変数名を $Agenda にする
+            'Agenda' => $agenda,
         ]);
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -43,7 +46,6 @@ class AgendaController extends Controller
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
-            'user_id' => 'nullable|integer',
         ]);
 
         // CKEditorのHTMLを安全化
@@ -53,16 +55,21 @@ class AgendaController extends Controller
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
 
+        // ログインユーザーのIDを追加
+        $validated['user_id'] = auth()->id();
+        $validated['created_user_id'] = auth()->id();
+
         Agenda::create($validated);
 
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを作成しました。');
     }
-
     public function edit($id)
     {
         $agenda = Agenda::findOrFail($id);
-        return view('admin.agendas.edit', compact('agenda')); // 小文字
+        $categories = Category::all();
+        return view('admin.agendas.edit', compact('agenda', 'categories'));
     }
+
 
     public function update(Request $request, Agenda $agenda)
     {
@@ -80,6 +87,7 @@ class AgendaController extends Controller
         }
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+        $validated['created_user_id'] = auth()->id();
 
         $agenda->update($validated);
 
@@ -91,5 +99,44 @@ class AgendaController extends Controller
         $agenda = Agenda::findOrFail($id);
         $agenda->delete();
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました。');
+    }
+
+    public function createdUser()
+    {
+        return $this->belongsTo(User::class, 'created_user_id');
+    }
+
+    public function updatedUser()
+    {
+        return $this->belongsTo(User::class, 'updated_user_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    private function buildCategoryOptions($categories, $prefix = '')
+    {
+        $options = [];
+
+        foreach ($categories as $category) {
+            $options[] = [
+                'id' => $category->id,
+                'name' => $prefix . $category->name,
+            ];
+
+            if ($category->children->isNotEmpty()) {
+                $childOptions = $this->buildCategoryOptions($category->children, $prefix . '— ');
+                $options = array_merge($options, $childOptions);
+            }
+        }
+
+        return $options;
     }
 }

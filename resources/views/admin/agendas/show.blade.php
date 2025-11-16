@@ -4,22 +4,43 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Agenda詳細</h1>
 
-    <div class="border p-4 rounded mb-4 bg-white shadow">
-        <p><strong>Agenda名:</strong> {{ $Agenda->agenda_name }}</p>
-        <p><strong>カテゴリID:</strong> {{ $Agenda->category_id }}</p>
-        <p><strong>表示フラグ:</strong> {{ $Agenda->is_show ? '表示' : '非表示' }}</p>
-        <p><strong>承認:</strong> {{ $Agenda->accept }}</p>
-        <p><strong>作成者ID:</strong> {{ $Agenda->user_id }}</p>
-        <p><strong>作成者:</strong> {{ $Agenda->created_user_id }}</p>
-        <p><strong>更新者:</strong> {{ $Agenda->updated_user_id }}</p>
-        <p><strong>削除日時:</strong> {{ $Agenda->deleted_at }}</p>
-        <p><strong>削除者:</strong> {{ $Agenda->deleted_user_id }}</p>
+    <table class="table-auto w-full border-collapse">
+        <tbody>
+            <tr>
+                <td class="border px-4 py-2 font-bold">アジェンダ名</td>
+                <td class="border px-4 py-2">{{ $Agenda->agenda_name }}</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2 font-bold">カテゴリ</td>
+                <td class="border px-4 py-2">{{ $Agenda->category?->name ?? '未設定' }}</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2 font-bold">表示フラグ</td>
+                <td class="border px-4 py-2">{{ $Agenda->is_show ? '表示' : '非表示' }}</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2 font-bold">承認</td>
+                <td class="border px-4 py-2">{{ $Agenda->accept === 'yes' ? '承認済み' : '下書き' }}</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2 font-bold">作成者</td>
+                <td class="border px-4 py-2">{{ $Agenda->createdUser?->name ?? '不明' }}</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2 font-bold">更新者</td>
+                <td class="border px-4 py-2">{{ $Agenda->updatedUser?->name ?? '不明' }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div id="agenda-description" class="hidden">
+        {!! $Agenda->description !!}
     </div>
 
-    {{-- CKEditorで作成したHTMLを美しく表示 --}}
-    <div class="prose max-w-none bg-gray-50 p-6 rounded border">
-        {!! html_entity_decode($Agenda->description) !!}
-    </div>
+    <button type="button" id="preview-button" class="bg-green-600 text-white px-3 py-1 rounded mt-2">
+        プレビューを見る
+    </button>
 
 
     <div class="flex gap-2 mt-6">

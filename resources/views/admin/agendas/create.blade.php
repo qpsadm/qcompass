@@ -15,8 +15,16 @@
 
         {{-- カテゴリ --}}
         <div class="mb-4">
-            <label class="block font-medium mb-1">カテゴリID</label>
-            <input type="number" name="category_id" value="{{ old('category_id') }}" class="border px-2 py-1 w-full rounded">
+            <label class="block font-medium mb-1">カテゴリ</label>
+            <select name="category_id" class="border px-2 py-1 w-full rounded">
+                <option value="">選択してください</option>
+                @foreach ($categories as $cat)
+                <option value="{{ $cat['id'] }}"
+                    {{ old('category_id', $agenda->category_id ?? '') == $cat['id'] ? 'selected' : '' }}>
+                    {{ $cat['name'] }}
+                </option>
+                @endforeach
+            </select>
         </div>
 
         {{-- 内容・概要 (CKEditor) --}}
@@ -40,12 +48,23 @@
         <div class="mb-4">
             <label class="block font-medium mb-1">承認状態</label>
             <select name="accept" class="border px-2 py-1 w-full rounded" required>
-                <option value="draft" {{ old('accept') == 'draft' ? 'selected' : '' }}>下書き</option>
-                <option value="承認済み" {{ old('accept') == '承認済み' ? 'selected' : '' }}>承認済み</option>
+                <option value="yes" {{ old('accept') == 'yes' ? 'selected' : '' }}>承認済み</option>
+                <option value="no" {{ old('accept') == 'no' ? 'selected' : '' }}>下書き</option>
+
             </select>
         </div>
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
     </form>
 </div>
+
+<script src="{{ asset('assets/js/ckeditor.js') }}"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('.ckeditor'), {
+            language: 'ja'
+        })
+        .catch(error => console.error(error));
+</script>
 @endsection

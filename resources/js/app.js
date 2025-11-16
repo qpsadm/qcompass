@@ -1,31 +1,14 @@
 import './bootstrap';
-import Alpine from 'alpinejs';
-import { initSidebar } from './sidebar';
-import { initCategoryTree } from './categoryTree';
-import { initDeleteModal } from './deleteModal';
+import './init/alpine';
+import { initUI } from './init/ui';
+import { initCKEditor } from './init/ckeditor';
 
-window.Alpine = Alpine;
-Alpine.start();
+import { initAgendaPreview } from './module/previewWindow';
+import { initSidebar } from './module/sidebar';
 
 document.addEventListener('DOMContentLoaded', () => {
+    initUI();
+    initCKEditor();
+    initAgendaPreview();
     initSidebar();
-    initCategoryTree();
-    initDeleteModal();
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const editors = document.querySelectorAll('.ckeditor');
-    const tokenMeta = document.querySelector('meta[name="csrf-token"]');
-    const csrfToken = tokenMeta ? tokenMeta.getAttribute('content') : '';
-
-    const module = await import('./ckeditor');
-    const ClassicEditor = module.default || module;
-
-    editors.forEach(el => {
-        ClassicEditor.create(el, {
-            ckfinder: {
-                uploadUrl: '/ckeditor/upload?_token=' + csrfToken
-            }
-        }).catch(error => console.error('CKEditor error:', error));
-    });
 });

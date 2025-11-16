@@ -34,29 +34,6 @@
     {{-- フッター --}}
     @include('layouts.b_footer')
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const closeBtn = document.getElementById('sidebar-close');
-            const openBtn = document.getElementById('sidebar-open');
-
-            // サイドバー閉じる
-            closeBtn?.addEventListener('click', () => {
-                sidebar.classList.add('-translate-x-full');
-                mainContent.classList.replace('ml-64', 'ml-0');
-                openBtn.classList.remove('hidden');
-            });
-
-            // サイドバー開く
-            openBtn?.addEventListener('click', () => {
-                sidebar.classList.remove('-translate-x-full');
-                mainContent.classList.replace('ml-0', 'ml-64');
-                openBtn.classList.add('hidden');
-            });
-        });
-    </script>
-
 </body>
 
 </html>

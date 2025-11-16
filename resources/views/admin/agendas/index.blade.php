@@ -16,9 +16,8 @@
             <thead>
                 <tr class="bg-gray-100 text-left text-gray-700">
                     <th class="border-b px-4 py-2">アジェンダ名</th>
-                    <th class="border-b px-4 py-2">カテゴリID</th>
+                    <th class="border-b px-4 py-2">カテゴリ</th>
                     <th class="border-b px-4 py-2">表示フラグ</th>
-                    <th class="border-b px-4 py-2">作成者ID</th>
                     <th class="border-b px-4 py-2">承認</th>
                     <th class="border-b px-4 py-2">作成者名</th>
 
@@ -29,12 +28,10 @@
                 @forelse($agendas as $agenda)
                 <tr class="hover:bg-gray-50">
                     <td class="border-b px-4 py-2">{{ $agenda->agenda_name }}</td>
-                    <td class="border-b px-4 py-2">{{ $agenda->category_id }}</td>
+                    <td class="border-b px-4 py-2">{{ $agenda->category?->name ?? '未設定' }}</td>
                     <td class="border-b px-4 py-2">{{ $agenda->is_show ? '表示' : '非表示' }}</td>
-                    <td class="border-b px-4 py-2">{{ $agenda->user_id }}</td>
-                    <td class="border-b px-4 py-2">{{ $agenda->accept }}</td>
-                    <td class="border-b px-4 py-2">{{ $agenda->created_user_id }}</td>
-
+                    <td class="border-b px-4 py-2">{{ $agenda->accept === 'yes' ? '承認済み' : '下書き' }}</td>
+                    <td>{{ $agenda->user?->name ?? '不明' }}</td> {{-- 作成者名 --}}
                     <td class="border-b px-4 py-2 flex justify-center gap-2">
                         <a href="{{ route('admin.agendas.show', $agenda->id) }}" class="text-green-500 hover:underline">詳細</a>
                         <a href="{{ route('admin.agendas.edit', $agenda->id) }}" class="text-blue-500 hover:underline">編集</a>

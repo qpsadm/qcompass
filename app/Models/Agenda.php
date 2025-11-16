@@ -10,4 +10,13 @@ class Agenda extends Model
     use HasFactory;
 
     protected $fillable = ['agenda_name', 'category_id', 'description', 'is_show', 'user_id', 'accept', 'created_user_id', 'updated_user_id', 'deleted_at', 'deleted_user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
