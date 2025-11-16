@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\DailyQuoteController;
 use App\Http\Controllers\Admin\OrganizerController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\AgendaController;
+use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\QuestionController;
 
 // 公開ページ
 Route::get('/', function () {
@@ -30,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+//ユーザー側画面
 
 // 管理画面
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -66,6 +69,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
     // 完全削除（任意）
     Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
+
+    //クイズ関係
+    Route::resource('quizzes', QuizController::class);
+    Route::resource('questions', QuestionController::class);
+
+    Route::get('quizzes', [QuizController::class, 'listForUser'])
+        ->name('quizzes.index');
+    Route::get('quizzes/{quiz}', [QuizController::class, 'takeQuiz']);
+    Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz']);
 });
 
 require __DIR__ . '/auth.php';

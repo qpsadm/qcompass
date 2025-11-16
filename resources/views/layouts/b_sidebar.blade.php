@@ -87,8 +87,8 @@
                 <span>クイズ管理</span>
             </button>
             <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="#">一覧</a></li>
-                <li><a href="#">新規作成</a></li>
+                <li><a href="{{ route('admin.quizzes.index') }}">一覧</a></li>
+                <li><a href="{{ route('admin.quizzes.create') }}">新規作成</a></li>
             </ul>
         </div>
 
