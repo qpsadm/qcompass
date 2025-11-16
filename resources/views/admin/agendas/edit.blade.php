@@ -51,14 +51,21 @@
         <div class="mb-4">
             <label class="block font-medium mb-1">内容・概要</label>
             <textarea name="description" id="description" class="ckeditor border px-2 py-1 w-full rounded">{{ old('description', $agenda->description) }}</textarea>
-
-            <button type="button" onclick="previewDescription()" class="bg-green-600 text-white px-3 py-1 rounded mt-2">
-                プレビューを見る
-            </button>
         </div>
 
 
 
     </form>
 </div>
+
+
+<script src="{{ asset('assets/js/ckeditor.js') }}"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('.ckeditor'), {
+            language: 'ja'
+        })
+        .catch(error => console.error(error));
+</script>
 @endsection

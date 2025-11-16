@@ -66,7 +66,8 @@ class AgendaController extends Controller
     public function edit($id)
     {
         $agenda = Agenda::findOrFail($id);
-        $categories = Category::all();
+        $rootCategories = Category::with('children')->whereNull('parent_id')->get();
+        $categories = $this->buildCategoryOptions($rootCategories);
         return view('admin.agendas.edit', compact('agenda', 'categories'));
     }
 
@@ -87,7 +88,7 @@ class AgendaController extends Controller
         }
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
-        $validated['created_user_id'] = auth()->id();
+        $validated['updated_user_id'] = auth()->id();
 
         $agenda->update($validated);
 
@@ -101,15 +102,6 @@ class AgendaController extends Controller
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました。');
     }
 
-    public function createdUser()
-    {
-        return $this->belongsTo(User::class, 'created_user_id');
-    }
-
-    public function updatedUser()
-    {
-        return $this->belongsTo(User::class, 'updated_user_id');
-    }
 
     public function children()
     {

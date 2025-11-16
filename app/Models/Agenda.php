@@ -19,4 +19,14 @@ class Agenda extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function createdUser()
+    {
+        return $this->belongsTo(User::class, 'created_user_id');
+    }
+
+    public function updatedUser()
+    {
+        return $this->belongsTo(User::class, 'updated_user_id');
+    }
 }
