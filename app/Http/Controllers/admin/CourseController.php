@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
-use Illuminate\Support\Facades\Auth; // 追加
+use App\Models\Organizer; // 追加
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -24,7 +25,8 @@ class CourseController extends Controller
 
     public function create()
     {
-        return view('admin.courses.create');
+        $organizers = Organizer::all(); // 追加: 主催者一覧
+        return view('admin.courses.create', compact('organizers'));
     }
 
     public function store(Request $request)
@@ -33,7 +35,7 @@ class CourseController extends Controller
             'course_code' => 'nullable',
             'course_type_ID' => 'nullable',
             'Level_id' => 'nullable',
-            'organizer_id' => 'nullable',
+            'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'nullable',
             'venue' => 'nullable',
             'application_date' => 'nullable',
@@ -61,10 +63,14 @@ class CourseController extends Controller
         // 作成者IDを追加
         $validated['created_user_id'] = Auth::id();
 
+        // status が空ならデフォルト値
+        $validated['status'] = $validated['status'] ?? 'draft';
+
         Course::create($validated);
 
         return redirect()->route('admin.courses.index')->with('success', 'Course作成完了');
     }
+
 
     public function show($id)
     {
@@ -75,7 +81,8 @@ class CourseController extends Controller
     public function edit($id)
     {
         $Course = Course::findOrFail($id);
-        return view('admin.courses.edit', compact('Course'));
+        $organizers = Organizer::all(); // 追加: 主催者一覧
+        return view('admin.courses.edit', compact('Course', 'organizers'));
     }
 
     public function update(Request $request, $id)
@@ -86,7 +93,7 @@ class CourseController extends Controller
             'course_code' => 'nullable',
             'course_type_ID' => 'nullable',
             'Level_id' => 'nullable',
-            'organizer_id' => 'nullable',
+            'organizer_id' => 'nullable|exists:organizers,id', // 修正
             'course_name' => 'nullable',
             'venue' => 'nullable',
             'application_date' => 'nullable',
@@ -111,7 +118,6 @@ class CourseController extends Controller
             'deleted_user_id' => 'nullable',
         ]);
 
-        // 更新者IDを追加
         $validated['updated_user_id'] = Auth::id();
 
         $Course->update($validated);
@@ -123,11 +129,10 @@ class CourseController extends Controller
     {
         $Course = Course::findOrFail($id);
 
-        // 削除者IDをセットしてソフトデリート
         $Course->deleted_user_id = Auth::id();
         $Course->save();
 
-        $Course->delete(); // SoftDeletes が有効なら deleted_at がセットされる
+        $Course->delete();
 
         return redirect()->route('admin.courses.index')->with('success', 'Course削除完了');
     }
