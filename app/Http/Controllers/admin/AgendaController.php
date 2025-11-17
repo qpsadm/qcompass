@@ -67,11 +67,13 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $agendas = Agenda::with('user')->whereNull('deleted_at')->get();
+        // お知らせカテゴリのIDを取得
+        $noticeCategoryId = Category::where('code', 'notice')->value('id');
 
-        foreach ($agendas as $agenda) {
-            $agenda->description_sanitized = Purifier::clean($agenda->description);
-        }
+        $agendas = Agenda::with('category', 'createdUser')
+            ->whereNull('deleted_at')
+            ->where('category_id', '!=', $noticeCategoryId) // ← お知らせを除外
+            ->get();
 
         return view('admin.agendas.index', compact('agendas'));
     }
@@ -81,12 +83,18 @@ class AgendaController extends Controller
      */
     public function create()
     {
-        $rootCategories = Category::with('children')->whereNull('parent_id')->get();
-        $courses = Course::where('is_show', 1)->get(); // 表示フラグが立っている講座のみ
+        $rootCategories = Category::with('children')
+            ->whereNull('parent_id')
+            ->where('code', '!=', 'notice')
+            ->get();
+
         $categories = $this->buildCategoryOptions($rootCategories);
+
+        $courses = Course::where('is_show', 1)->get(); // 表示フラグが立っている講座のみ
 
         return view('admin.agendas.create', compact('categories', 'courses'));
     }
+
     /**
      * アジェンダ詳細
      */
@@ -140,11 +148,15 @@ class AgendaController extends Controller
     /**
      * 編集画面
      */
-    public function edit($id)
+    public function edit(Agenda $agenda)
     {
-        $agenda = Agenda::findOrFail($id);
-        $rootCategories = Category::with('children')->whereNull('parent_id')->get();
+        $rootCategories = Category::with('children')
+            ->whereNull('parent_id')
+            ->where('code', '!=', 'notice')
+            ->get();
+
         $categories = $this->buildCategoryOptions($rootCategories);
+
         $courses = Course::where('is_show', 1)->get();
 
         return view('admin.agendas.edit', compact('agenda', 'categories', 'courses'));
