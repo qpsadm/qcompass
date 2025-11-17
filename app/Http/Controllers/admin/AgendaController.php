@@ -90,7 +90,7 @@ class AgendaController extends Controller
 
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        $courses = Course::where('is_show', 1)->get(); // 表示フラグが立っている講座のみ
+        $courses = Course::where('status', '1')->get(); // 表示フラグが立っている講座のみ
 
         return view('admin.agendas.create', compact('categories', 'courses'));
     }

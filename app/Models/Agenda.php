@@ -22,6 +22,7 @@ class Agenda extends Model
         'created_user_id',
         'updated_user_id',
     ];
+
     protected $casts = [
         'is_show' => 'boolean',
     ];
@@ -30,6 +31,7 @@ class Agenda extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -45,26 +47,16 @@ class Agenda extends Model
         return $this->belongsTo(User::class, 'updated_user_id');
     }
 
-    //お知らせの取得
-    public function scopeNotice($query)
+    // 講座との多対多
+    public function courses()
     {
-        return $query->where('name', 'お知らせ');
-    }
-
-    public function courseCategory()
-    {
-        return $this->belongsTo(CourseCategorys::class, 'category_id', 'category_id');
-    }
-
-    public function course()
-    {
-        return $this->hasOneThrough(
-            Course::class,
-            CourseCategorys::class,
-            'category_id', // 中間テーブルの外部キー
-            'id',          // Course の主キー
-            'category_id', // Agenda の category_id
-            'course_id'    // CourseCategory の course_id
+        return $this->belongsToMany(
+            Course::class,         // 関連テーブル
+            'course_categorys',    // 中間テーブル
+            'category_id',         // 中間テーブルの自分側キー（Agenda → Category）
+            'course_id',           // 中間テーブルの相手側キー（Course）
+            'category_id',         // Agendaのローカルキー
+            'id'                   // Courseのローカルキー
         );
     }
 }
