@@ -1,7 +1,9 @@
 @charset "UTF-8";
 
 html {
+    color: var(--text-color-2);
     font-family: var(--font-family);
+    font-weight: 500;
 }
 
 
@@ -45,7 +47,6 @@ header {
 
 .gnav li {
     position: relative;
-    font-size: 20px;
 }
 
 .gnav li a {
@@ -54,6 +55,8 @@ header {
     margin-left: 20px;
     padding: 15px 30px 15px;
     color: var(--text-color-1);
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .gnav li a::before {
@@ -172,7 +175,7 @@ header {
     z-index: 999;
     width: 300px;
     height: 100vh;
-    padding: 25px 15px;
+    padding: 25px 15px 40px;
 }
 
 .side-menu .site-logo {
@@ -193,8 +196,13 @@ header {
 
 .side-menu-list li {
     position: relative;
-    font-size: 20px;
     text-align: center;
+}
+
+.side-menu-list li a {
+    color: var(--text-color-1);
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .logout-btn {
@@ -281,4 +289,89 @@ footer {
     margin: 0 300px 15px 15px;
     padding: 50px;
     background-color: var(--footer-color);
+}
+
+
+
+/* =========================================
+    parts
+========================================= */
+
+/* page-title
+------------------------------------- */
+
+.page-title {
+    position: relative;
+    margin-bottom: 50px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--main-color);
+}
+
+.page-title h2 {
+    position: relative;
+    padding-left: 33px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.page-title h2::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    background-color: #74A0FF;
+}
+
+.page-title h2::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 13px;
+    width: 10px;
+    height: 10px;
+    background-color: #3AB5DE;
+}
+
+
+/* search
+------------------------------------- */
+
+.search {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search .search-text {
+    width: 300px;
+    padding: 12px 60px 12px 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+input::placeholder {
+    color: var(--placeholder-color);
+}
+
+.search .submit {
+    position: absolute;
+    top: 50%;
+    right: 3px;
+    transform: translateY(-50%);
+    width: 50px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    background-image: url(../images/f_icon_search_test.svg);
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: 50%;
+    color: var(--text-color-3);
 }
