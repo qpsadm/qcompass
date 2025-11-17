@@ -150,6 +150,16 @@ class AgendaController extends Controller
      */
     public function edit(Agenda $agenda)
     {
+        $courses = Course::where('status', '1')->get();
+
+        $selectedCourses = $agenda->courses->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'course_name' => $course->course_name,
+            ];
+        })->toArray();
+
+        // カテゴリを取得（お知らせ以外）
         $rootCategories = Category::with('children')
             ->whereNull('parent_id')
             ->where('code', '!=', 'notice')
@@ -157,10 +167,10 @@ class AgendaController extends Controller
 
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        $courses = Course::where('is_show', 1)->get();
-
-        return view('admin.agendas.edit', compact('agenda', 'categories', 'courses'));
+        return view('admin.agendas.edit', compact('agenda', 'courses', 'selectedCourses', 'categories'));
     }
+
+
 
     /**
      * 更新処理

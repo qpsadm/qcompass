@@ -35,6 +35,7 @@ class NoticeController extends Controller
         );
 
         $courses = Course::where('status', '1')->get();
+
         return view('admin.notices.create', compact('category', 'courses'));
     }
 
@@ -46,8 +47,7 @@ class NoticeController extends Controller
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
-            'course_id' => 'required|array', // 複数選択
-            'course_id.*' => 'exists:courses,id',
+            'course_id' => 'required|exists:courses,id', // 単数選択
         ]);
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
@@ -57,21 +57,37 @@ class NoticeController extends Controller
 
         $agenda = Agenda::create($validated);
 
-        // 講座の紐付け
-        $agenda->courses()->sync($request->course_id);
+        // 中間テーブルに保存
+        $syncData = [
+            $request->course_id => [
+                'order_no' => 1, // 単数なので1
+                'note' => null,
+            ]
+        ];
+        $agenda->courses()->sync($syncData);
 
-        return redirect()->route('admin.notices.index')->with('success', 'お知らせを作成しました');
+        return redirect()->route('admin.notices.index')
+            ->with('success', 'お知らせを作成しました');
     }
+
 
     // 編集フォーム
     public function edit(Agenda $notice)
     {
-        $courses = Course::where('is_show', 1)->get();
-        return view('admin.notices.edit', [
-            'agenda' => $notice,
-            'courses' => $courses,
-        ]);
+        $courses = Course::where('status', '1')->get();
+
+        // 既存講座
+        $selectedCourses = $notice->courses->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'course_name' => $course->course_name,
+            ];
+        })->toArray();
+
+        return view('admin.notices.edit', compact('notice', 'courses', 'selectedCourses'));
     }
+
+
 
     // 更新
     public function update(Request $request, Agenda $notice)
@@ -90,7 +106,16 @@ class NoticeController extends Controller
 
         $notice->update($validated);
 
-        $notice->courses()->sync($request->course_id);
+        // 講座紐付け（order_no自動割り当て）
+        $courseIds = is_array($request->course_id) ? $request->course_id : [$request->course_id];
+        $syncData = [];
+        foreach ($courseIds as $index => $courseId) {
+            $syncData[$courseId] = [
+                'order_no' => $index + 1,
+                'note' => null
+            ];
+        }
+        $notice->courses()->sync($syncData);
 
         return redirect()->route('admin.notices.index')->with('success', 'お知らせを更新しました');
     }
@@ -100,7 +125,6 @@ class NoticeController extends Controller
     {
         $notice->delete();
 
-        return redirect()->route('admin.notices.index')
-            ->with('success', 'お知らせを削除しました');
+        return redirect()->route('admin.notices.index')->with('success', 'お知らせを削除しました');
     }
 }

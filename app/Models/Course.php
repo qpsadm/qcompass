@@ -27,4 +27,15 @@ class Course extends Model
         self::STATUS_PUBLISHED => 'published',
         self::STATUS_ARCHIVED => 'archived',
     ];
+
+    public function agendas()
+    {
+        return $this->belongsToMany(
+            Agenda::class,
+            'course_agendas',
+            'course_id',
+            'agenda_id'
+        )->withPivot('order_no', 'note')
+            ->withTimestamps();
+    }
 }

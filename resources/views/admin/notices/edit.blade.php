@@ -15,20 +15,30 @@
     </div>
     @endif
 
-    <form action="{{ route('admin.notices.update', ['notice' => $agenda->id]) }}" method="POST">
+    <form action="{{ route('admin.notices.update', ['notice' => $notice->id]) }}" method="POST" x-data="agendaCourses()">
         @csrf
         @method('PUT')
 
-        {{-- 講座 --}}
+        {{-- 講座タグ --}}
         <div class="mb-4">
             <label class="block font-medium mb-1">講座</label>
-            <select name="course_id" class="border px-2 py-1 w-full rounded" required>
+
+            {{-- 選択済みタグ --}}
+            <div class="flex flex-wrap gap-2 mb-2">
+                <template x-for="course in selected" :key="course.id">
+                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded flex items-center">
+                        <span x-text="course.course_name"></span>
+                        <button type="button" class="ml-1 text-red-500" @click="removeCourse(course.id)">×</button>
+                        <input type="hidden" :name="'course_id[]'" :value="course.id">
+                    </span>
+                </template>
+            </div>
+
+            {{-- 選択用セレクト --}}
+            <select @change="addCourse($event)" class="border px-2 py-1 w-full rounded">
                 <option value="">選択してください</option>
                 @foreach ($courses as $course)
-                <option value="{{ $course->id }}"
-                    {{ isset($agenda) && $agenda->course_id == $course->id ? 'selected' : '' }}>
-                    {{ $course->course_name }}
-                </option>
+                <option value="{{ $course->id }}">{{ $course->course_name }}</option>
                 @endforeach
             </select>
         </div>
@@ -36,19 +46,19 @@
         {{-- お知らせ名 --}}
         <div class="mb-4">
             <label class="block font-medium mb-1">お知らせ名</label>
-            <input type="text" name="agenda_name" value="{{ old('agenda_name', $agenda->agenda_name) }}" class="border px-2 py-1 w-full rounded" required>
+            <input type="text" name="agenda_name" value="{{ old('agenda_name', $notice->agenda_name) }}" class="border px-2 py-1 w-full rounded" required>
         </div>
 
         {{-- 説明 --}}
         <div class="mb-4">
             <label class="block font-medium mb-1">説明</label>
-            <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">{{ old('description', $agenda->description) }}</textarea>
+            <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">{{ old('description', $notice->description) }}</textarea>
         </div>
 
         {{-- 表示 --}}
         <div class="mb-4">
             <label class="inline-flex items-center">
-                <input type="checkbox" name="is_show" value="1" {{ old('is_show', $agenda->is_show) ? 'checked' : '' }} class="mr-2">
+                <input type="checkbox" name="is_show" value="1" {{ old('is_show', $notice->is_show) ? 'checked' : '' }} class="mr-2">
                 表示する
             </label>
         </div>
@@ -57,8 +67,8 @@
         <div class="mb-4">
             <label class="block font-medium mb-1">承認状態</label>
             <select name="accept" class="border px-2 py-1 w-full rounded" required>
-                <option value="yes" {{ old('accept', $agenda->accept) == 'yes' ? 'selected' : '' }}>承認済み</option>
-                <option value="no" {{ old('accept', $agenda->accept) == 'no' ? 'selected' : '' }}>下書き</option>
+                <option value="yes" {{ old('accept', $notice->accept) == 'yes' ? 'selected' : '' }}>承認済み</option>
+                <option value="no" {{ old('accept', $notice->accept) == 'no' ? 'selected' : '' }}>下書き</option>
             </select>
         </div>
 
@@ -73,5 +83,27 @@
         language: 'ja',
         allowedContent: true
     });
+</script>
+
+{{-- Alpine.js 講座タグ管理 --}}
+<script>
+    function agendaCourses() {
+        return {
+            courses: @json($courses),
+            selected: @json($selectedCourses ?? []),
+            addCourse(event) {
+                const id = parseInt(event.target.value);
+                if (!id) return;
+                const course = this.courses.find(c => c.id === id);
+                if (course && !this.selected.some(c => c.id === id)) {
+                    this.selected.push(course);
+                }
+                event.target.value = '';
+            },
+            removeCourse(id) {
+                this.selected = this.selected.filter(c => c.id !== id);
+            }
+        }
+    }
 </script>
 @endsection

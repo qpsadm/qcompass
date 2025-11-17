@@ -51,12 +51,11 @@ class Agenda extends Model
     public function courses()
     {
         return $this->belongsToMany(
-            Course::class,         // 関連テーブル
-            'course_categorys',    // 中間テーブル
-            'category_id',         // 中間テーブルの自分側キー（Agenda → Category）
-            'course_id',           // 中間テーブルの相手側キー（Course）
-            'category_id',         // Agendaのローカルキー
-            'id'                   // Courseのローカルキー
-        );
+            Course::class,       // 関連モデル
+            'course_agendas',    // 中間テーブル名
+            'agenda_id',         // 中間テーブルの自分側キー（Agenda → course_agendas）
+            'course_id'          // 中間テーブルの相手側キー（Course）
+        )->withPivot('order_no', 'note')
+            ->withTimestamps();
     }
 }

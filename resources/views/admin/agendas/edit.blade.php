@@ -4,22 +4,45 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">アジェンダ編集</h1>
 
-    <form action="{{ route('admin.agendas.update', $agenda->id) }}" method="POST">
+    {{-- バリデーションエラー --}}
+    @if ($errors->any())
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <form action="{{ route('admin.agendas.update', $agenda->id) }}" method="POST" x-data="agendaCourses()">
         @csrf
         @method('PUT')
 
+        {{-- 講座タグ --}}
         <div class="mb-4">
             <label class="block font-medium mb-1">講座</label>
-            <select name="course_id" class="border px-2 py-1 w-full rounded" required>
+
+            {{-- 選択済みタグ --}}
+            <div class="flex flex-wrap gap-2 mb-2">
+                <template x-for="course in selected" :key="course.id">
+                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded flex items-center">
+                        <span x-text="course.course_name"></span>
+                        <button type="button" class="ml-1 text-red-500" @click="removeCourse(course.id)">×</button>
+                        <input type="hidden" :name="'course_id[]'" :value="course.id">
+                    </span>
+                </template>
+            </div>
+
+            {{-- 選択用セレクト --}}
+            <select @change="addCourse($event)" class="border px-2 py-1 w-full rounded">
                 <option value="">選択してください</option>
                 @foreach ($courses as $course)
-                <option value="{{ $course->id }}"
-                    {{ isset($agenda) && $agenda->course_id == $course->id ? 'selected' : '' }}>
-                    {{ $course->course_name }}
-                </option>
+                <option value="{{ $course->id }}">{{ $course->course_name }}</option>
                 @endforeach
             </select>
         </div>
+
         {{-- アジェンダ名 --}}
         <div class="mb-4">
             <label class="block font-medium mb-1">アジェンダ名</label>
@@ -62,24 +85,41 @@
         {{-- 内容・概要 (CKEditor) --}}
         <div class="mb-4">
             <label for="description" class="block font-medium mb-1">内容・概要</label>
-            <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">
-            {{ old('description', $agenda->description ?? '') }}
-            </textarea>
+            <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">{{ old('description', $agenda->description ?? '') }}</textarea>
         </div>
-
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">更新</button>
     </form>
 </div>
 
-{{-- CKEditor 4 CDN を読み込む --}}
+{{-- CKEditor 4 CDN --}}
 <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-
 <script>
-    // CKEditor 4 の初期化
     CKEDITOR.replace('description', {
         language: 'ja',
-        allowedContent: true, // すべてのタグ・属性・スタイルを許可
+        allowedContent: true,
     });
+</script>
+
+{{-- Alpine.js 講座タグ用 --}}
+<script>
+    function agendaCourses() {
+        return {
+            courses: @json($courses),
+            selected: @json($selectedCourses ?? []),
+            addCourse(event) {
+                const id = parseInt(event.target.value);
+                if (!id) return;
+                const course = this.courses.find(c => c.id === id);
+                if (course && !this.selected.some(c => c.id === id)) {
+                    this.selected.push(course);
+                }
+                event.target.value = '';
+            },
+            removeCourse(id) {
+                this.selected = this.selected.filter(c => c.id !== id);
+            }
+        }
+    }
 </script>
 @endsection
