@@ -34,7 +34,7 @@
                         <td class="border px-4 py-2">{{ $Course->course_code }}</td>
                         <td class="border px-4 py-2">{{ $Course->course_type_ID }}</td>
                         <td class="border px-4 py-2">{{ $Course->Level_id }}</td>
-                        <td class="border px-4 py-2">{{ $Course->organizer_id }}</td>
+                        <td class="border px-4 py-2">{{ $Course->organizer->name ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $Course->course_name }}</td>
                         <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
                         <td class="border px-4 py-2">{{ $Course->status }}</td>
