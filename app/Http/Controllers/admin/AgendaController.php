@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Agenda;
+use App\Models\Course;
 use App\Models\Category;
 use Mews\Purifier\Facades\Purifier;
 
@@ -81,11 +82,11 @@ class AgendaController extends Controller
     public function create()
     {
         $rootCategories = Category::with('children')->whereNull('parent_id')->get();
+        $courses = Course::where('is_show', 1)->get(); // 表示フラグが立っている講座のみ
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        return view('admin.agendas.create', compact('categories'));
+        return view('admin.agendas.create', compact('categories', 'courses'));
     }
-
     /**
      * アジェンダ詳細
      */
@@ -144,8 +145,9 @@ class AgendaController extends Controller
         $agenda = Agenda::findOrFail($id);
         $rootCategories = Category::with('children')->whereNull('parent_id')->get();
         $categories = $this->buildCategoryOptions($rootCategories);
+        $courses = Course::where('is_show', 1)->get();
 
-        return view('admin.agendas.edit', compact('agenda', 'categories'));
+        return view('admin.agendas.edit', compact('agenda', 'categories', 'courses'));
     }
 
     /**

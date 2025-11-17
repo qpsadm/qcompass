@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuestionController;
 
+use App\Http\Controllers\Admin\NoticeController;
+
 // 公開ページ
 Route::get('/', function () {
     return view('welcome');
@@ -83,6 +85,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         ->name('quizzes.index');
     Route::get('quizzes/{quiz}', [QuizController::class, 'takeQuiz']);
     Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz']);
+
+
+
+    // お知らせアジェンダ管理
+    Route::resource('notice', NoticeController::class);
 });
 
 require __DIR__ . '/auth.php';
