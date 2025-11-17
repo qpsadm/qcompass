@@ -20,7 +20,7 @@ class NoticeController extends Controller
             ->with('createdUser') // 作成者情報
             ->get(); // デフォルトで deleted_at != null のものは除外
 
-        return view('admin.notice.index', compact('category', 'agendas'));
+        return view('admin.notices.index', compact('category', 'agendas'));
     }
 
 
@@ -30,7 +30,7 @@ class NoticeController extends Controller
         $category = Category::where('code', 'notice')->firstOrFail();
         $courses = Course::where('is_show', 1)->get(); // 表示フラグが立っている講座のみ
 
-        return view('admin.notice.create', compact('category', 'courses'));
+        return view('admin.notices.create', compact('category', 'courses'));
     }
 
     // 保存
@@ -56,7 +56,7 @@ class NoticeController extends Controller
 
         Agenda::create($validated);
 
-        return redirect()->route('admin.notice.index')->with('success', 'お知らせを作成しました');
+        return redirect()->route('admin.notices.index')->with('success', 'お知らせを作成しました');
     }
 
     // 編集フォーム
@@ -90,7 +90,7 @@ class NoticeController extends Controller
 
         $notice->update($validated);
 
-        return redirect()->route('admin.notice.index')->with('success', 'お知らせを更新しました');
+        return redirect()->route('admin.notices.index')->with('success', 'お知らせを更新しました');
     }
 
     // 削除
@@ -99,7 +99,7 @@ class NoticeController extends Controller
         // SoftDeletes が入っていれば deleted_at に自動で日時が入る
         $notice->delete();
 
-        return redirect()->route('admin.notice.index')
+        return redirect()->route('admin.notices.index')
             ->with('success', 'お知らせを削除しました');
     }
 
@@ -107,7 +107,7 @@ class NoticeController extends Controller
     public function editCategory()
     {
         $category = Category::where('code', 'notice')->firstOrFail();
-        return view('admin.notice.edit_category', compact('category'));
+        return view('admin.notices.edit', compact('category'));
     }
 
     // カテゴリ更新
@@ -124,6 +124,6 @@ class NoticeController extends Controller
 
         $category->update($validated);
 
-        return redirect()->route('admin.notice.index')->with('success', 'カテゴリ設定を更新しました');
+        return redirect()->route('admin.notices.index')->with('success', 'カテゴリ設定を更新しました');
     }
 }

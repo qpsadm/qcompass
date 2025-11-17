@@ -89,7 +89,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 
     // お知らせアジェンダ管理
-    Route::resource('notice', NoticeController::class);
+    Route::resource('notices', NoticeController::class);
 });
 
 require __DIR__ . '/auth.php';
