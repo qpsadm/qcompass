@@ -1,5 +1,229 @@
 @charset "UTF-8";
 
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
 html {
     font-family: var(--font-family);
+}
+
+/* =========================================
+    frame
+========================================= */
+
+header,
+.side-menu,
+.frame-right,
+.frame-bottom,
+.frame-left {
+    position: fixed;
+    background-color: var(--sub-color-1);
+}
+
+/* header
+------------------------------------- */
+header {
+    top: 0;
+    left: 0;
+    z-index: 998;
+    width: 100vw;
+    height: 75px;
+}
+
+.header-container {
+    display: flex;
+    align-items: flex-end;
+    height: 75px;
+    margin: 0 300px 0 15px;
+}
+
+.gnav {
+    display: flex;
+    justify-content: space-around;
+    width: calc(100vw - 315px);
+}
+
+.gnav li {
+    position: relative;
+    font-size: 20px;
+}
+
+.gnav li a {
+    display: block;
+    position: relative;
+    margin-left: 20px;
+    padding: 15px 30px 15px;
+    color: var(--text-color-1);
+}
+
+.gnav li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: url(../images/f_icon_test.svg) no-repeat;
+    background-size: 100%;
+    filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
+}
+
+.gnav li:hover,
+.gnav li.active {
+    border-radius: 20px 20px 0 0;
+    background-color: var(--accent-color);
+}
+
+.gnav li:hover a,
+.gnav li.active a {
+    color: var(--text-color-3);
+}
+
+.gnav li:hover::after,
+.gnav li.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 998;
+    transform: translate(-50%, 100%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 13px 13px 0 13px;
+    border-color: var(--accent-color) transparent transparent transparent;
+}
+
+.gnav li:hover a::before,
+.gnav li.active a::before {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7486%) hue-rotate(146deg) brightness(101%) contrast(105%);
+}
+
+.site-logo {
+    display: none;
+}
+
+@media screen and (max-width: 1324px) {
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 15px;
+    }
+
+    .gnav {
+        display: none;
+    }
+
+    .site-logo {
+        display: block;
+    }
+
+    .hamburger-btn span,
+    .hamburger-btn span::before,
+    .hamburger-btn span::after {
+        display: block;
+        width: 40px;
+        height: 2px;
+        background-color: var(--main-color);
+        transition: all 0.3s ease;
+    }
+
+    .hamburger-btn span {
+        position: relative;
+    }
+
+    .hamburger-btn span::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+    }
+
+    .hamburger-btn span::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+    }
+}
+
+/* side-menu
+------------------------------------- */
+.side-menu {
+    top: 0;
+    right: 0;
+    z-index: 999;
+    width: 300px;
+    height: 100vh;
+}
+
+@media screen and (max-width: 1324px) {
+    .side-menu {
+        display: none;
+    }
+}
+
+/* frame-right
+------------------------------------- */
+.frame-right {
+    display: none;
+    top: 0;
+    right: 0;
+    z-index: 997;
+    width: 15px;
+    height: 100vh;
+}
+
+@media screen and (max-width: 1324px) {
+    .frame-right {
+        display: block;
+    }
+}
+
+/* frame-bottom
+------------------------------------- */
+.frame-bottom {
+    bottom: 0;
+    left: 0;
+    z-index: 997;
+    width: 100vw;
+    height: 15px;
+}
+
+/* frame-left
+------------------------------------- */
+.frame-left {
+    top: 0;
+    left: 0;
+    z-index: 997;
+    width: 15px;
+    height: 100vh;
+}
+
+/* =========================================
+    main
+========================================= */
+
+main {
+    padding: 75px 300px 0 15px;
+}
+
+.container {
+    padding: 75px 65px;
+}
+
+
+/* =========================================
+    footer
+========================================= */
+
+footer {
+    height: 100px;
+    margin: 0 300px 15px 15px;
+    padding: 50px;
+    background-color: var(--footer-color);
 }

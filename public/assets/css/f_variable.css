@@ -39,8 +39,9 @@
     --font-family: "Zen Maru Gothic", sans-serif;
 
     /* text-color */
-    --text-color-1: #5E5E5E;
-    --text-color-2: #FFF;
+    --text-color-1: #000;
+    --text-color-2: #5E5E5E;
+    --text-color-3: #FFF;
 
     /* main-color */
     --main-color: #005A87;
