@@ -4,10 +4,10 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">今日の一言詳細</h1>
     <div class="border p-4 rounded mb-4">
-        <p><strong>quote:</strong> {{ $DailyQuote->quote }}</p>
-        <p><strong>author:</strong> {{ $DailyQuote->author }}</p>
-        <p><strong>display_date:</strong> {{ $DailyQuote->display_date }}</p>
-        <p><strong>is_show:</strong> {{ $DailyQuote->is_show }}</p>
+        <p><strong>ひとこと:</strong> {{ $DailyQuote->quote }}</p>
+        <p><strong>発言者:</strong> {{ $DailyQuote->author }}</p>
+        <p><strong>表示日※特定の日に表示したい場合※:</strong> {{ $DailyQuote->display_date }}</p>
+        <p><strong>表示/非表示:</strong> {{ $DailyQuote->is_show }}</p>
         <p><strong>deleted_at:</strong> {{ $DailyQuote->deleted_at }}</p>
 
     </div>

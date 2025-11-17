@@ -33,7 +33,10 @@ return new class extends Migration
             $table->integer('entering')->nullable();
             $table->integer('completed')->nullable();
             $table->text('description')->nullable();
-            $table->enum('status', ['draft', 'published', 'archived']);
+            $table->tinyInteger('status')
+                ->default(0)
+                ->comment('0: draft, 1: published, 2: archived');
+
 
             // 作成・更新・削除日時
             $table->timestamps();       // created_at, updated_at

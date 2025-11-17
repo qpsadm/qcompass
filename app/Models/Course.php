@@ -17,4 +17,14 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
+
+    const STATUS_DRAFT = 0;
+    const STATUS_PUBLISHED = 1;
+    const STATUS_ARCHIVED = 2;
+
+    public static $STATUS_LABELS = [
+        self::STATUS_DRAFT => 'draft',
+        self::STATUS_PUBLISHED => 'published',
+        self::STATUS_ARCHIVED => 'archived',
+    ];
 }

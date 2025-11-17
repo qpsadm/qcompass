@@ -9,5 +9,18 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name', 'tag_type', 'theme_color', 'description', 'deleted_at'];
+    protected $fillable = [
+        'code',
+        'name',
+        'tag_type',      // INT 型
+        'theme_color',   // INT 型
+        'description',
+        'deleted_at'
+    ];
+
+    protected $casts = [
+        'tag_type' => 'integer',
+        'theme_color' => 'integer',
+        'deleted_at' => 'datetime',
+    ];
 }

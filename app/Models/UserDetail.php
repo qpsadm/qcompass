@@ -4,12 +4,48 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserDetail extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'birthday', 'gender', 'phone1', 'phone2', 'postal_code', 'address1', 'address2', 'emergency_contact', 'avatar_path', 'theme_color', 'status', 'is_show', 'divisions_id', 'bio', 'memo1', 'memo2', 'joining_date', 'leaving_date', 'leaving_reason', 'created_user_id', 'updated_user_id', 'deleted_at', 'deleted_user_id'];
+    protected $fillable = [
+        'user_id',
+        'birthday',
+        'gender',       // INT型
+        'phone1',
+        'phone2',
+        'postal_code',
+        'address1',
+        'address2',
+        'emergency_contact',
+        'avatar_path',
+        'theme_color',  // INT型
+        'status',       // INT型
+        'is_show',
+        'divisions_id',
+        'bio',
+        'memo1',
+        'memo2',
+        'joining_date',
+        'leaving_date',
+        'leaving_reason',
+        'created_user_id',
+        'updated_user_id',
+        'deleted_user_id',
+    ];
+
+    protected $casts = [
+        'gender' => 'integer',
+        'status' => 'integer',
+        'theme_color' => 'integer',
+        'is_show' => 'boolean',
+        'joining_date' => 'date',
+        'leaving_date' => 'date',
+        'deleted_at' => 'datetime',
+        'birthday' => 'date',
+    ];
 
     public function user()
     {

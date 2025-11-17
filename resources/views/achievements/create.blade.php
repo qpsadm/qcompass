@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Achievement作成</h1>
+    <h1 class="text-2xl font-bold mb-4">実績作成</h1>
     <form action="{{ route('achievements.store') }}" method="POST">
         @csrf
         <div class="mb-4">

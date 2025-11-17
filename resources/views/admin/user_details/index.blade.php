@@ -2,37 +2,38 @@
 
 @section('content')
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">UserDetail一覧</h1>
+        <h1 class="text-2xl font-bold mb-4">ユーザー詳細一覧</h1>
         <a href="{{ route('admin.user_details.create') }}"
             class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
 
         <table class="table-auto border-collapse border w-full">
             <thead>
                 <tr>
-                    <th class='border px-4 py-2'>user_id</th>
-                    <th class='border px-4 py-2'>birthday</th>
-                    <th class='border px-4 py-2'>gender</th>
-                    <th class='border px-4 py-2'>phone1</th>
-                    <th class='border px-4 py-2'>phone2</th>
-                    <th class='border px-4 py-2'>postal_code</th>
-                    <th class='border px-4 py-2'>address1</th>
-                    <th class='border px-4 py-2'>address2</th>
-                    <th class='border px-4 py-2'>emergency_contact</th>
-                    <th class='border px-4 py-2'>avatar_path</th>
-                    <th class='border px-4 py-2'>theme_color</th>
-                    <th class='border px-4 py-2'>status</th>
-                    <th class='border px-4 py-2'>is_show</th>
-                    <th class='border px-4 py-2'>divisions_id</th>
-                    <th class='border px-4 py-2'>bio</th>
-                    <th class='border px-4 py-2'>memo1</th>
-                    <th class='border px-4 py-2'>memo2</th>
-                    <th class='border px-4 py-2'>joining_date</th>
-                    <th class='border px-4 py-2'>leaving_date</th>
-                    <th class='border px-4 py-2'>leaving_reason</th>
-                    <th class='border px-4 py-2'>created_user_id</th>
-                    <th class='border px-4 py-2'>updated_user_id</th>
-                    <th class='border px-4 py-2'>deleted_at</th>
-                    <th class='border px-4 py-2'>deleted_user_id</th>
+                    <th class='border px-4 py-2'>ユーザーID</th>
+                    <th class='border px-4 py-2'>生年月日</th>
+                    <th class='border px-4 py-2'>性別</th>
+                    <th class='border px-4 py-2'>電話番号1</th>
+                    <th class='border px-4 py-2'>電話番号2</th>
+                    <th class='border px-4 py-2'>郵便番号</th>
+                    <th class='border px-4 py-2'>住所1</th>
+                    <th class='border px-4 py-2'>住所2</th>
+                    <th class='border px-4
+                    py-2'>緊急連絡先</th>
+                    <th class='border px-4 py-2'>写真パス</th>
+                    <th class='border px-4 py-2'>テーマカラー</th>
+                    <th class='border px-4 py-2'>ステータス</th>
+                    <th class='border px-4 py-2'>表示/非表示</th>
+                    <th class='border px-4 py-2'>所属部署</th>
+                    <th class='border px-4 py-2'>自己紹介</th>
+                    <th class='border px-4 py-2'>メモ</th>
+                    <th class='border px-4 py-2'>備考</th>
+                    <th class='border px-4 py-2'>入校日/入社日</th>
+                    <th class='border px-4 py-2'>退校日/退職日</th>
+                    <th class='border px-4 py-2'>退校/退職理由</th>
+                    <th class='border px-4 py-2'>作成者</th>
+                    <th class='border px-4 py-2'>更新者</th>
+                    <th class='border px-4 py-2'>削除日</th>
+                    <th class='border px-4 py-2'>削除者</th>
 
                     <th class='border px-4 py-2'>操作</th>
                 </tr>

@@ -23,23 +23,23 @@
                 @csrf
                 @method('PUT')
 
-                <label>Code</label>
+                <label>ユーザーコード</label>
                 <input type="text" name="code" value="{{ $user->code }}"
                     class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>Name</label>
+                <label>氏名</label>
                 <input type="text" name="name" value="{{ $user->name }}"
                     class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>Email</label>
+                <label>Eメール</label>
                 <input type="email" name="email" value="{{ $user->email }}"
                     class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>Role ID</label>
+                <label>権限 ID</label>
                 <input type="number" name="role_id" value="{{ $user->role_id }}"
                     class="border px-2 py-1 rounded w-full mb-2">
 
-                <label>Courses ID</label>
+                <label>講座 ID</label>
                 <input type="number" name="courses_id" value="{{ $user->courses_id }}"
                     class="border px-2 py-1 rounded w-full mb-2">
 

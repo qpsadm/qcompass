@@ -6,7 +6,15 @@
         <div class="border p-4 rounded mb-4">
             <p><strong>user_id:</strong> {{ $UserDetail->user_id }}</p>
             <p><strong>birthday:</strong> {{ $UserDetail->birthday }}</p>
-            <p><strong>gender:</strong> {{ $UserDetail->gender }}</p>
+            <p><strong>gender:</strong>
+                @if ($UserDetail->gender == 0)
+                    男性
+                @elseif($UserDetail->gender == 1)
+                    女性
+                @else
+                    その他
+                @endif
+            </p>
             <p><strong>phone1:</strong> {{ $UserDetail->phone1 }}</p>
             <p><strong>phone2:</strong> {{ $UserDetail->phone2 }}</p>
             <p><strong>postal_code:</strong> {{ $UserDetail->postal_code }}</p>
@@ -15,7 +23,15 @@
             <p><strong>emergency_contact:</strong> {{ $UserDetail->emergency_contact }}</p>
             <p><strong>avatar_path:</strong> {{ $UserDetail->avatar_path }}</p>
             <p><strong>theme_color:</strong> {{ $UserDetail->theme_color }}</p>
-            <p><strong>status:</strong> {{ $UserDetail->status }}</p>
+            <p><strong>status:</strong>
+                @if ($UserDetail->status == 0)
+                    非アクティブ
+                @elseif($UserDetail->status == 1)
+                    アクティブ
+                @else
+                    停止
+                @endif
+            </p>
             <p><strong>is_show:</strong> {{ $UserDetail->is_show }}</p>
             <p><strong>divisions_id:</strong> {{ $UserDetail->divisions_id }}</p>
             <p><strong>bio:</strong> {{ $UserDetail->bio }}</p>

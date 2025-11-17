@@ -14,7 +14,7 @@
         <table class="min-w-full border border-gray-200">
             <thead>
                 <tr class="bg-gray-100 text-left text-gray-700">
-                    <th class="border-b px-4 py-2">一言</th>
+                    <th class="border-b px-4 py-2">ひとこと</th>
                     <th class="border-b px-4 py-2">出典</th>
                     <th class="border-b px-4 py-2">特定日用</th>
                     <th class="border-b px-4 py-2">表示フラグ</th>

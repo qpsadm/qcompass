@@ -13,7 +13,8 @@ return new class extends Migration
             $table->foreignId('agenda_id')->default(0);
             $table->string('file_path', 255);
             $table->string('file_name', 255);
-            $table->enum('file_type', ['pdf', 'docx', 'xlsx', 'jpg', 'png', 'pptx', 'zip', 'other']);
+            $table->tinyInteger('file_type'); // 0: pdf, 1: docx, 2: xlsx, 3: jpg, 4: png, 5: pptx, 6: zip, 7: other
+
             $table->string('description', 255);
             $table->integer('file_size')->nullable();
             $table->foreignId('user_id')->nullable();

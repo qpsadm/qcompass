@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('level')->default(1);
             $table->integer('child_count')->default(0);
             $table->boolean('is_show')->default(true);
-            $table->enum('theme_color', ['red', 'blue', 'green']);
+            $table->tinyInteger('theme_color')->default(1); // 1:red, 2:blue, 3:green
+
             $table->softDeletes(); // deleted_at
             $table->timestamps();  // created_at, updated_at
         });

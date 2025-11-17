@@ -12,7 +12,8 @@ return new class extends Migration
             $table->id(); // 主キー
             $table->string('title', 255);
             $table->text('description')->nullable();
-            $table->enum('condition_type', ['attendance', 'score', 'report', 'custom']);
+            $table->tinyInteger('condition_type'); // 0: attendance, 1: score, 2: report, 3: custom
+
             $table->string('condition_value', 255)->nullable();
             $table->softDeletes(); // deleted_at
             $table->timestamps(); // created_at, updated_at

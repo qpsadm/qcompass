@@ -2,21 +2,21 @@
 
 @section('content')
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">AgendaFile一覧</h1>
+        <h1 class="text-2xl font-bold mb-4">アジェンダファイル一覧</h1>
         <a href="{{ route('agenda_files.create') }}"
             class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
 
         <table class="table-auto border-collapse border w-full">
             <thead>
                 <tr>
-                    <th class='border px-4 py-2'>agenda_id</th>
-                    <th class='border px-4 py-2'>file_path</th>
-                    <th class='border px-4 py-2'>file_name</th>
-                    <th class='border px-4 py-2'>file_type</th>
+                    <th class='border px-4 py-2'>アジェンダID</th>
+                    <th class='border px-4 py-2'>ファイルパス</th>
+                    <th class='border px-4 py-2'>ファイル名</th>
+                    <th class='border px-4 py-2'>ファイルタイプ</th>
                     <th class='border px-4 py-2'>description</th>
-                    <th class='border px-4 py-2'>file_size</th>
-                    <th class='border px-4 py-2'>user_id</th>
-                    <th class='border px-4 py-2'>deleted_at</th>
+                    <th class='border px-4 py-2'>ファイルサイズ</th>
+                    <th class='border px-4 py-2'>ユーザーID</th>
+                    <th class='border px-4 py-2'>削除日</th>
 
                     <th class='border px-4 py-2'>操作</th>
                 </tr>

@@ -14,7 +14,7 @@
         <table class="min-w-full border border-gray-200">
             <thead>
                 <tr class="bg-gray-100 text-left text-gray-700">
-                    <th class="border-b px-4 py-2 text-center w-1/6">code</th>
+                    <th class="border-b px-4 py-2 text-center w-1/6">レベルコード</th>
                     <th class="border-b px-4 py-2">name</th>
                     <th class="border-b px-4 py-2 text-center w-1/4">操作</th>
                 </tr>

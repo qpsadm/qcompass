@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6 max-w-7xl bg-white rounded-lg shadow-md" x-data="{ open: false, deleteName: '', deleteUrl: '' }">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Quiz一覧</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">クイズ一覧</h1>
 
     <div class="mb-6">
         <a href="{{ route('admin.quizzes.create') }}"
@@ -15,9 +15,9 @@
         <table class="table-auto w-full border-collapse border border-gray-200">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class='border px-4 py-2 text-left'>コード</th>
-                    <th class='border px-4 py-2 text-left'>タイトル</th>
-                    <th class='border px-4 py-2 text-left'>タイプ</th>
+                    <th class='border px-4 py-2 text-left'>クイズコード</th>
+                    <th class='border px-4 py-2 text-left'>クイズ名</th>
+                    <th class='border px-4 py-2 text-left'>問題タイプ</th>
                     <th class='border px-4 py-2 text-left'>制限時間</th>
                     <th class='border px-4 py-2 text-left'>合計点</th>
                     <th class='border px-4 py-2 text-left'>操作</th>

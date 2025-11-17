@@ -15,7 +15,8 @@ return new class extends Migration
             $table->timestamp('started_at');
             $table->timestamp('completed_at')->nullable();
             $table->integer('score')->nullable();
-            $table->enum('status', ['in_progress', 'completed', 'graded']);
+            $table->tinyInteger('status')->comment('1=in_progress, 2=completed, 3=graded');
+
             $table->integer('attempt_no');
             $table->string('ip_address', 100)->nullable();
 

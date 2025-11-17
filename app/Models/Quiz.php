@@ -11,6 +11,12 @@ class Quiz extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['code', 'title', 'description', 'course_id', 'agenda_id', 'type', 'time_limit', 'total_score', 'passing_score', 'random_order', 'active_from', 'active_to', 'created_by', 'deleted_at'];
+    protected $casts = [
+        'type' => 'integer',         // INT型に対応
+        'random_order' => 'boolean',
+        'active_from' => 'datetime',
+        'active_to' => 'datetime',
+    ];
 
     public function questions()
     {

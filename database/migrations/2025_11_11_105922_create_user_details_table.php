@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->date('birthday')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->tinyInteger('gender')->nullable(); // 0: male, 1: female, 2: other
             $table->string('phone1', 50)->nullable();
             $table->string('phone2', 50)->nullable();
             $table->string('postal_code', 10)->nullable();
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('address2', 255)->nullable();
             $table->string('emergency_contact', 50)->nullable();
             $table->string('avatar_path', 255)->nullable();
-            $table->enum('theme_color', ['red', 'blue', 'green', 'yellow'])->nullable();
-            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->tinyInteger('theme_color')->nullable(); // 0: red, 1: blue, 2: green, 3: yellow
+            $table->tinyInteger('status')->default(0); // 0: active, 1: inactive, 2: suspended
             $table->boolean('is_show')->default(true);
             $table->bigInteger('divisions_id')->nullable();
             $table->text('bio')->nullable();

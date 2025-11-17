@@ -40,13 +40,13 @@
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">申請日</label>
-                <input type="text" name="application_date"
+                <input type="date" name="application_date"
                     value="{{ old('application_date', $Course->application_date ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">認定日</label>
-                <input type="text" name="certification_date"
+                <input type="date" name="certification_date"
                     value="{{ old('certification_date', $Course->certification_date ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
@@ -58,12 +58,12 @@
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">開始日</label>
-                <input type="text" name="start_date" value="{{ old('start_date', $Course->start_date ?? '') }}"
+                <input type="date" name="start_date" value="{{ old('start_date', $Course->start_date ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">終了日</label>
-                <input type="text" name="end_date" value="{{ old('end_date', $Course->end_date ?? '') }}"
+                <input type="date" name="end_date" value="{{ old('end_date', $Course->end_date ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
@@ -78,22 +78,22 @@
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">開始時間</label>
-                <input type="text" name="start_time" value="{{ old('start_time', $Course->start_time ?? '') }}"
+                <input type="time" name="start_time" value="{{ old('start_time', $Course->start_time ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">終了時間</label>
-                <input type="text" name="finish_time" value="{{ old('finish_time', $Course->finish_time ?? '') }}"
+                <input type="time" name="finish_time" value="{{ old('finish_time', $Course->finish_time ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">閲覧開始</label>
-                <input type="text" name="start_viewing" value="{{ old('start_viewing', $Course->start_viewing ?? '') }}"
+                <input type="date" name="start_viewing" value="{{ old('start_viewing', $Course->start_viewing ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
             <div class="mb-4">
                 <label class="block font-medium mb-1">閲覧終了</label>
-                <input type="text" name="finish_viewing"
+                <input type="date" name="finish_viewing"
                     value="{{ old('finish_viewing', $Course->finish_viewing ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>

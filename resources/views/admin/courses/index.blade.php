@@ -17,7 +17,7 @@
         <table class="table-auto border-collapse border w-full">
             <thead>
                 <tr>
-                    <th class="border px-4 py-2">コード</th>
+                    <th class="border px-4 py-2">講座コード</th>
                     <th class="border px-4 py-2">分野</th>
                     <th class="border px-4 py-2">種類</th>
                     <th class="border px-4 py-2">主催者名</th>

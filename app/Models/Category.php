@@ -35,4 +35,14 @@ class Category extends Model
     {
         return $this->childrenRecursive()->count();
     }
+    
+    public function getThemeColorNameAttribute()
+    {
+        return match ($this->theme_color) {
+            1 => 'red',
+            2 => 'blue',
+            3 => 'green',
+            default => 'unknown',
+        };
+    }
 }

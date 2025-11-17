@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6 max-w-xl bg-white rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Role編集</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">権限編集</h1>
 
     <form action="{{ route('admin.roles.update', $Role->id) }}" method="POST" class="space-y-4">
         @csrf

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6 max-w-xl bg-white rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Quiz編集</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">クイズ編集</h1>
 
     <form action="{{ route('admin.quizzes.update', $Quiz->id) }}" method="POST" class="space-y-4">
         @csrf
@@ -10,7 +10,7 @@
 
         {{-- code --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">コード</label>
+            <label class="block text-gray-700 font-semibold mb-2">クイズコード</label>
             <input
                 type="text"
                 name="code"
@@ -20,7 +20,7 @@
 
         {{-- title --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">タイトル</label>
+            <label class="block text-gray-700 font-semibold mb-2">クイズ名</label>
             <input
                 type="text"
                 name="title"
@@ -30,7 +30,7 @@
 
         {{-- description --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">説明</label>
+            <label class="block text-gray-700 font-semibold mb-2">概要説明</label>
             <input
                 type="text"
                 name="description"
@@ -40,7 +40,7 @@
 
         {{-- course_id --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">コースID</label>
+            <label class="block text-gray-700 font-semibold mb-2">関連講座ID</label>
             <input
                 type="text"
                 name="course_id"
@@ -50,7 +50,7 @@
 
         {{-- agenda_id --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">アジェンダID</label>
+            <label class="block text-gray-700 font-semibold mb-2">関連アジェンダID</label>
             <input
                 type="text"
                 name="agenda_id"
@@ -60,7 +60,7 @@
 
         {{-- type --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">タイプ</label>
+            <label class="block text-gray-700 font-semibold mb-2">問題タイプ</label>
             <input
                 type="text"
                 name="type"
@@ -80,7 +80,7 @@
 
         {{-- total_score --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">総合点</label>
+            <label class="block text-gray-700 font-semibold mb-2">満点</label>
             <input
                 type="text"
                 name="total_score"
@@ -90,7 +90,7 @@
 
         {{-- passing_score --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">合格ライン</label>
+            <label class="block text-gray-700 font-semibold mb-2">合格点</label>
             <input
                 type="text"
                 name="passing_score"
@@ -110,7 +110,7 @@
 
         {{-- active_from --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">公開開始</label>
+            <label class="block text-gray-700 font-semibold mb-2">公開開始日</label>
             <input
                 type="text"
                 name="active_from"
@@ -120,7 +120,7 @@
 
         {{-- active_to --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">公開終了</label>
+            <label class="block text-gray-700 font-semibold mb-2">公開終了日</label>
             <input
                 type="text"
                 name="active_to"

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->bigInteger('course_id')->nullable();
             $table->bigInteger('agenda_id')->nullable();
-            $table->enum('type', ['exam', 'survey', 'practice'])->default('exam');
+            $table->tinyInteger('type')->default(1)->comment('1=exam, 2=survey, 3=practice');
+
             $table->integer('time_limit')->nullable();
             $table->integer('total_score')->nullable();
             $table->integer('passing_score')->nullable();

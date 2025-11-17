@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('learnings', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['book', 'site', 'test']);
+            $table->tinyInteger('type')->comment('1=book, 2=site, 3=test');
+
             $table->string('name', 255);
             $table->string('author', 255)->nullable();
             $table->string('publisher', 255)->nullable();
@@ -18,7 +19,8 @@ return new class extends Migration
             $table->string('isbn', 20)->nullable();
             $table->string('url', 255)->nullable();
             $table->string('image', 255)->nullable();
-            $table->enum('level', ['beginner', 'intermediate', 'advanced'])->nullable();
+            $table->tinyInteger('level')->nullable()->comment('1=beginner, 2=intermediate, 3=advanced');
+
             $table->text('description')->nullable();
 
             $table->timestamps(); // created_at / updated_at 自動追加
