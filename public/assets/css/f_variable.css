@@ -43,6 +43,9 @@
     --text-color-2: #5E5E5E;
     --text-color-3: #FFF;
 
+    /* placeholder-color */
+    --placeholder-color: #bababa;
+
     /* main-color */
     --main-color: #005A87;
 
