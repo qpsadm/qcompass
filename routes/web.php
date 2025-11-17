@@ -55,6 +55,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // カテゴリ管理
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');
+    Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+    // 完全削除
+    Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])
+        ->name('categories.forceDelete');
 
     //タグ管理
     Route::resource('tags', App\Http\Controllers\Admin\TagController::class);

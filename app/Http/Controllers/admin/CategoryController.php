@@ -8,20 +8,17 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    // 一覧表示
+    // 通常一覧
     public function index()
     {
-        // 親カテゴリのみ取得＋子を再帰取得
         $categories = Category::whereNull('parent_id')->with('childrenRecursive')->get();
         return view('admin.categories.index', compact('categories'));
     }
+
     // 作成フォーム
     public function create()
     {
-        $categories = Category::whereNull('parent_id')
-            ->with('childrenRecursive')
-            ->get();
-
+        $categories = Category::whereNull('parent_id')->with('childrenRecursive')->get();
         return view('admin.categories.create', compact('categories'));
     }
 
@@ -29,7 +26,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'code' => 'required|string|max:255|unique:categories,code',
+            'code' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (\App\Models\Category::withTrashed()->where('code', $value)->exists()) {
+                        $fail('同じコードのカテゴリーが既に存在します（ゴミ箱含む）');
+                    }
+                },
+            ],
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'is_show' => 'sometimes|boolean',
@@ -49,15 +55,13 @@ class CategoryController extends Controller
         }
 
         Category::create($data);
-
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'カテゴリーを作成しました');
+        return redirect()->route('admin.categories.index')->with('success', 'カテゴリーを作成しました');
     }
 
     // 編集フォーム
     public function edit(Category $category)
     {
-        $categories = Category::whereNull('parent_id')->get();
+        $categories = Category::whereNull('parent_id')->with('childrenRecursive')->get();
         return view('admin.categories.edit', compact('category', 'categories'));
     }
 
@@ -65,7 +69,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $data = $request->validate([
-            'code' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:categories,code,' . $category->id,
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'is_show' => 'nullable|boolean',
@@ -85,15 +89,14 @@ class CategoryController extends Controller
         }
 
         $category->update($data);
-
         return redirect()->route('admin.categories.index')->with('success', 'カテゴリーを更新しました');
     }
 
+    // 削除（SoftDelete）
     public function destroy(Category $category)
     {
         $this->deleteCategoryRecursively($category);
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'カテゴリーとその子カテゴリを削除しました');
+        return redirect()->route('admin.categories.index')->with('success', 'カテゴリーと子カテゴリを削除しました');
     }
 
     protected function deleteCategoryRecursively(Category $category)
@@ -101,14 +104,20 @@ class CategoryController extends Controller
         foreach ($category->childrenRecursive as $child) {
             $this->deleteCategoryRecursively($child);
         }
-        $category->delete(); // SoftDelete
+        $category->delete();
     }
 
-
-    // 動的に子の数を取得
-    public function getChildCountAttribute()
+    // ゴミ箱
+    public function trash()
     {
-        return $this->children()->count();
+        $categories = Category::onlyTrashed()
+            ->whereNull('parent_id')
+            ->with(['childrenRecursive' => function ($q) {
+                $q->withTrashed();
+            }])
+            ->get();
+
+        return view('admin.categories.trash', compact('categories'));
     }
 
     // 復元
@@ -116,6 +125,22 @@ class CategoryController extends Controller
     {
         $category = Category::withTrashed()->findOrFail($id);
         $category->restore();
-        return redirect()->route('admin.categories.index')->with('success', 'カテゴリーを復元しました');
+        return redirect()->route('admin.categories.trash')->with('success', 'カテゴリーを復元しました');
+    }
+
+    // 完全削除
+    public function forceDelete($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+        $this->forceDeleteCategoryRecursively($category);
+        return redirect()->route('admin.categories.trash')->with('success', 'カテゴリーを完全削除しました');
+    }
+
+    protected function forceDeleteCategoryRecursively(Category $category)
+    {
+        foreach ($category->childrenRecursive()->withTrashed()->get() as $child) {
+            $this->forceDeleteCategoryRecursively($child);
+        }
+        $category->forceDelete();
     }
 }
