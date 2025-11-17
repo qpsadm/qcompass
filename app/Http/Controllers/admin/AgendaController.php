@@ -70,9 +70,9 @@ class AgendaController extends Controller
         // お知らせカテゴリのIDを取得
         $noticeCategoryId = Category::where('code', 'notice')->value('id');
 
-        $agendas = Agenda::with('category', 'createdUser')
+        $agendas = Agenda::with(['category', 'createdUser', 'courses']) // ← courses を追加
             ->whereNull('deleted_at')
-            ->where('category_id', '!=', $noticeCategoryId) // ← お知らせを除外
+            ->where('category_id', '!=', $noticeCategoryId)
             ->get();
 
         return view('admin.agendas.index', compact('agendas'));
@@ -127,9 +127,10 @@ class AgendaController extends Controller
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
+            'course_id' => 'nullable|array', // ← 複数講座対応
+            'course_id.*' => 'integer|exists:courses,id',
         ]);
 
-        // CKEditorのHTMLデコード
         if (!empty($validated['description'])) {
             $decoded = htmlspecialchars_decode(html_entity_decode($validated['description'], ENT_QUOTES | ENT_HTML5));
             $decoded = str_replace('&nbsp;', ' ', $decoded);
@@ -140,10 +141,20 @@ class AgendaController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['created_user_id'] = auth()->id();
 
-        Agenda::create($validated);
+        $agenda = Agenda::create($validated);
+
+        // 講座の紐付け
+        if (!empty($validated['course_id'])) {
+            $syncData = [];
+            foreach ($validated['course_id'] as $index => $courseId) {
+                $syncData[$courseId] = ['order_no' => $index + 1, 'note' => null];
+            }
+            $agenda->courses()->sync($syncData);
+        }
 
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを作成しました');
     }
+
 
     /**
      * 編集画面
@@ -183,6 +194,8 @@ class AgendaController extends Controller
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
+            'course_id' => 'nullable|array',
+            'course_id.*' => 'integer|exists:courses,id',
         ]);
 
         if (!empty($validated['description'])) {
@@ -196,8 +209,20 @@ class AgendaController extends Controller
 
         $agenda->update($validated);
 
+        // 講座の紐付け
+        if (!empty($validated['course_id'])) {
+            $syncData = [];
+            foreach ($validated['course_id'] as $index => $courseId) {
+                $syncData[$courseId] = ['order_no' => $index + 1, 'note' => null];
+            }
+            $agenda->courses()->sync($syncData);
+        } else {
+            $agenda->courses()->detach(); // 選択なしならすべて外す
+        }
+
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを更新しました');
     }
+
 
     /**
      * 削除
