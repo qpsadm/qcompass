@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+/* font-loading
+------------------------------------- */
+/* Regular */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Regular.ttf') format('truetype');
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 500;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Medium.ttf') format('truetype');
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Bold.ttf') format('truetype');
+}
+
+/* Black */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 900;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Black.ttf') format('truetype');
+}
+
+:root {
+    /* font */
+    --font-family: "Zen Maru Gothic", sans-serif;
+
+    /* text-color */
+    --text-color-1: #5E5E5E;
+    --text-color-2: #FFF;
+
+    /* main-color */
+    --main-color: #005A87;
+
+    /* sub-color */
+    --sub-color-1: #B1DAF9;
+    --sub-color-2: #E9EEFF;
+
+    /* accent-color */
+    --accent-color: #FFB71D;
+
+    /* category-color */
+    --category-news-color: ;
+    --category-agenda-color: ;
+
+    /* footer-color */
+    --footer-color: #414141;
+}
