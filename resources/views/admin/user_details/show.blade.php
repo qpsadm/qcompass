@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">UserDetail詳細</h1>
+        <h1 class="text-2xl font-bold mb-4">ユーザー詳細</h1>
         <div class="border p-4 rounded mb-4">
-            <p><strong>user_id:</strong> {{ $UserDetail->user_id }}</p>
-            <p><strong>birthday:</strong> {{ $UserDetail->birthday }}</p>
-            <p><strong>gender:</strong>
+            <p><strong>ユーザーID:</strong> {{ $UserDetail->user_id }}</p>
+            <p><strong>生年月日:</strong> {{ $UserDetail->birthday }}</p>
+            <p><strong>性別:</strong>
                 @if ($UserDetail->gender == 0)
                     男性
                 @elseif($UserDetail->gender == 1)
@@ -32,18 +32,18 @@
                     停止
                 @endif
             </p>
-            <p><strong>is_show:</strong> {{ $UserDetail->is_show }}</p>
-            <p><strong>divisions_id:</strong> {{ $UserDetail->divisions_id }}</p>
-            <p><strong>bio:</strong> {{ $UserDetail->bio }}</p>
-            <p><strong>memo1:</strong> {{ $UserDetail->memo1 }}</p>
-            <p><strong>memo2:</strong> {{ $UserDetail->memo2 }}</p>
-            <p><strong>joining_date:</strong> {{ $UserDetail->joining_date }}</p>
-            <p><strong>leaving_date:</strong> {{ $UserDetail->leaving_date }}</p>
-            <p><strong>leaving_reason:</strong> {{ $UserDetail->leaving_reason }}</p>
-            <p><strong>created_user_id:</strong> {{ $UserDetail->created_user_id }}</p>
-            <p><strong>updated_user_id:</strong> {{ $UserDetail->updated_user_id }}</p>
-            <p><strong>deleted_at:</strong> {{ $UserDetail->deleted_at }}</p>
-            <p><strong>deleted_user_id:</strong> {{ $UserDetail->deleted_user_id }}</p>
+            <p><strong>表示/非表示:</strong> {{ $UserDetail->is_show }}</p>
+            <p><strong>所属部署:</strong> {{ $UserDetail->divisions_id }}</p>
+            <p><strong>自己紹介:</strong> {{ $UserDetail->bio }}</p>
+            <p><strong>メモ:</strong> {{ $UserDetail->memo1 }}</p>
+            <p><strong>備考:</strong> {{ $UserDetail->memo2 }}</p>
+            <p><strong>入校日/入社日:</strong> {{ $UserDetail->joining_date }}</p>
+            <p><strong>退校日/退社日:</strong> {{ $UserDetail->leaving_date }}</p>
+            <p><strong>退校/退社理由:</strong> {{ $UserDetail->leaving_reason }}</p>
+            <p><strong>作成者:</strong> {{ $UserDetail->created_user_id }}</p>
+            <p><strong>更新者s:</strong> {{ $UserDetail->updated_user_id }}</p>
+            <p><strong>削除日:</strong> {{ $UserDetail->deleted_at }}</p>
+            <p><strong>削除者:</strong> {{ $UserDetail->deleted_user_id }}</p>
 
         </div>
         <a href="{{ route('admin.user_details.edit', $UserDetail->id) }}"
