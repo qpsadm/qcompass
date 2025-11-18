@@ -119,41 +119,55 @@ class AgendaController extends Controller
     /**
      * アジェンダ保存
      */
+    /**
+     * アジェンダ保存（単数 select 完全対応）
+     */
     public function store(Request $request)
     {
+        // バリデーション
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'nullable|integer',
             'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
             'accept' => 'required|in:yes,no',
-            'course_id' => 'nullable|array', // ← 複数講座対応
-            'course_id.*' => 'integer|exists:courses,id',
+            'course_id' => 'nullable|exists:courses,id', // 単数 select 用
         ]);
 
+        // description をデコードして空白調整
         if (!empty($validated['description'])) {
             $decoded = htmlspecialchars_decode(html_entity_decode($validated['description'], ENT_QUOTES | ENT_HTML5));
             $decoded = str_replace('&nbsp;', ' ', $decoded);
             $validated['description'] = $decoded;
         }
 
+        // 表示フラグと作成ユーザー情報
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
         $validated['user_id'] = auth()->id();
         $validated['created_user_id'] = auth()->id();
 
+        // アジェンダ作成
         $agenda = Agenda::create($validated);
 
-        // 講座の紐付け
+        // 講座紐付け（単数 select 対応）
         if (!empty($validated['course_id'])) {
+            $courseIds = $validated['course_id'];
+            if (!is_array($courseIds)) {
+                $courseIds = [$courseIds]; // 単数を配列に変換
+            }
+
             $syncData = [];
-            foreach ($validated['course_id'] as $index => $courseId) {
+            foreach ($courseIds as $index => $courseId) {
                 $syncData[$courseId] = ['order_no' => $index + 1, 'note' => null];
             }
+
             $agenda->courses()->sync($syncData);
         }
 
-        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを作成しました');
+        return redirect()->route('admin.agendas.index')
+            ->with('success', 'アジェンダを作成しました');
     }
+
 
 
     /**
