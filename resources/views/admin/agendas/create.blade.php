@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
-    <div class="container mx-auto p-6 flex justify-center">
+    <<<<<<< HEAD <div class="container mx-auto p-6 flex justify-center">
         <!-- カード型 -->
         <div class="bg-white rounded-lg shadow-md w-full max-w-2xl p-6">
             <h1 class="text-2xl font-bold mb-4">アジェンダ作成</h1>
@@ -83,7 +82,7 @@
             });
         </script>
     @endsection
-=======
+    =======
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">アジェンダ作成</h1>
 
