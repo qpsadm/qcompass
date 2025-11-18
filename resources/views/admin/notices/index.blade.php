@@ -47,6 +47,10 @@
 
                         {{-- 操作 --}}
                         <td class="border px-4 py-2 text-center">
+                            <a href="{{ route('admin.notices.show', $agenda->id) }}"
+                                class="text-blue-500 hover:underline mr-2">
+                                詳細
+                            </a>
                             <a href="{{ route('admin.notices.edit', $agenda->id) }}"
                                 class="text-blue-500 hover:underline mr-2">
                                 編集

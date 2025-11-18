@@ -1,7 +1,7 @@
 @auth
     @if (auth()->user()->role_id === 1)
         <aside id="sidebar"
-            class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-blue-300 text-white p-6 flex flex-col z-40 overflow-y-auto hide-scrollbar transition-transform duration-300">
+            class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-blue-300 p-6 flex flex-col z-40 overflow-y-auto hide-scrollbar transition-transform duration-300">
 
             <!-- サイドバー閉じるボタン -->
             <button id="sidebar-close"
