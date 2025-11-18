@@ -1,178 +1,179 @@
 @auth
-@if (auth()->user()->role_id === 1)
-<aside id="sidebar"
-    class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-blue-300 text-white p-6 flex flex-col z-40 overflow-y-auto hide-scrollbar transition-transform duration-300">
+    @if (auth()->user()->role_id === 1)
+        <aside id="sidebar"
+            class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-blue-300 text-white p-6 flex flex-col z-40 overflow-y-auto hide-scrollbar transition-transform duration-300">
 
-    <!-- サイドバー閉じるボタン -->
-    <button id="sidebar-close"
-        class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-gray-600 z-50">
-        &laquo;
-    </button>
-
-    <!-- タイトル -->
-    <h2 class="text-2xl font-bold mb-6 flex-shrink-0">管理者メニュー</h2>
-
-    <!-- メニュー -->
-    <nav class="flex flex-col gap-2">
-
-        {{-- ダッシュボード --}}
-        <x-nav-link route="admin.dashboard" label="ダッシュボード" />
-
-        {{-- ユーザー管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_user.svg') }}" class="w-4 h-4 mr-2">
-                <span>ユーザー管理</span>
+            <!-- サイドバー閉じるボタン -->
+            <button id="sidebar-close"
+                class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-gray-600 z-50">
+                &laquo;
             </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.users.index') }}">ユーザー一覧</a></li>
-                <li><a href="{{ route('admin.roles.index') }}">権限一覧</a></li>
-            </ul>
-        </div>
 
-        {{-- 講座管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>講座管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">講座種類一覧</a></li>
-                <li><a href="{{ route('admin.courses.index') }}">講座一覧</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">質疑応答一覧</a></li>
-            </ul>
-        </div>
+            <!-- タイトル -->
+            <h2 class="text-2xl font-bold mb-6 flex-shrink-0">管理者メニュー</h2>
 
-        {{-- アジェンダ管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>アジェンダ管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.agendas.index') }}">アジェンダ一覧</a></li>
-                <li><a href="{{ route('admin.agendas.create') }}">新規作成</a></li>
-            </ul>
-        </div>
+            <!-- メニュー -->
+            <nav class="flex flex-col gap-2">
 
-        {{-- お知らせ管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>お知らせ管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.notices.index') }}">一覧</a></li>
-                <li><a href="{{ route('admin.notices.create') }}">新規作成</a></li>
-            </ul>
-        </div>
+                {{-- ダッシュボード --}}
+                <x-nav-link route="admin.dashboard" label="ダッシュボード" />
 
-        {{-- 事務管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>事務管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.levels.index') }}">求人票管理</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">資格管理</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">学習サイト管理</a></li>
-            </ul>
-        </div>
+                {{-- ユーザー管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_user.svg') }}" class="w-4 h-4 mr-2">
+                        <span>ユーザー管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.users.index') }}">ユーザー一覧</a></li>
+                        <li><a href="{{ route('admin.roles.index') }}">権限一覧</a></li>
+                    </ul>
+                </div>
 
-        {{-- クイズ管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>クイズ管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.quizzes.index') }}">一覧</a></li>
-                <li><a href="{{ route('admin.quizzes.create') }}">新規作成</a></li>
-            </ul>
-        </div>
+                {{-- 講座管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>講座管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}">講座種類一覧</a></li>
+                        <li><a href="{{ route('admin.courses.index') }}">講座一覧</a></li>
+                        <li><a href="{{ route('admin.course_type.index') }}">講座種類一覧</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}">質疑応答一覧</a></li>
+                    </ul>
+                </div>
 
-        {{-- 日報管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>日報管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="#">一覧</a></li>
-                <li><a href="#">新規作成</a></li>
-            </ul>
-        </div>
+                {{-- アジェンダ管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>アジェンダ管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.agendas.index') }}">アジェンダ一覧</a></li>
+                        <li><a href="{{ route('admin.agendas.create') }}">新規作成</a></li>
+                    </ul>
+                </div>
 
-        {{-- システム管理 --}}
-        <div class="accordion">
-            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
-                <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
-                <span>システム管理</span>
-            </button>
-            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                <li><a href="{{ route('admin.categories.index') }}">カテゴリー管理</a></li>
-                <li><a href="{{ route('admin.tags.index') }}">タグ管理</a></li>
-                <li><a href="{{ route('admin.levels.index') }}">実績管理</a></li>
-                <li><a href="{{ route('admin.daily_quotes.index') }}">今日の一言管理</a></li>
-            </ul>
-        </div>
+                {{-- お知らせ管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>お知らせ管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.notices.index') }}">一覧</a></li>
+                        <li><a href="{{ route('admin.notices.create') }}">新規作成</a></li>
+                    </ul>
+                </div>
 
-    </nav>
+                {{-- 事務管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>事務管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.levels.index') }}">求人票管理</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}">資格管理</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}">学習サイト管理</a></li>
+                    </ul>
+                </div>
 
-    <!-- 空白 -->
-    <div class="flex-shrink-0 h-24"></div>
+                {{-- クイズ管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>クイズ管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.quizzes.index') }}">一覧</a></li>
+                        <li><a href="{{ route('admin.quizzes.create') }}">新規作成</a></li>
+                    </ul>
+                </div>
 
-    <!-- ログアウト -->
-    <div class="mt-auto">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-center">
-                ログアウト
-            </button>
-        </form>
-    </div>
-</aside>
+                {{-- 日報管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>日報管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="#">一覧</a></li>
+                        <li><a href="#">新規作成</a></li>
+                    </ul>
+                </div>
 
-<!-- サイドバー開くボタン -->
-<button id="sidebar-open" class="fixed top-20 left-0 bg-gray-800 text-white p-2 rounded-r-md z-50 hidden">
-    &raquo;
-</button>
+                {{-- システム管理 --}}
+                <div class="accordion">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                        <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
+                        <span>システム管理</span>
+                    </button>
+                    <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                        <li><a href="{{ route('admin.categories.index') }}">カテゴリー管理</a></li>
+                        <li><a href="{{ route('admin.tags.index') }}">タグ管理</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}">実績管理</a></li>
+                        <li><a href="{{ route('admin.daily_quotes.index') }}">今日の一言管理</a></li>
+                    </ul>
+                </div>
 
-<script>
-    const sidebar = document.getElementById('sidebar');
-    const openBtn = document.getElementById('sidebar-open');
-    const closeBtn = document.getElementById('sidebar-close');
+            </nav>
 
-    closeBtn.addEventListener('click', () => {
-        sidebar.classList.add('-translate-x-full');
-        openBtn.classList.remove('hidden');
-    });
+            <!-- 空白 -->
+            <div class="flex-shrink-0 h-24"></div>
 
-    openBtn.addEventListener('click', () => {
-        sidebar.classList.remove('-translate-x-full');
-        openBtn.classList.add('hidden');
-    });
+            <!-- ログアウト -->
+            <div class="mt-auto">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-center">
+                        ログアウト
+                    </button>
+                </form>
+            </div>
+        </aside>
 
-    // アコーディオン
-    document.querySelectorAll('.accordion-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const content = btn.nextElementSibling;
-            if (content) content.classList.toggle('hidden');
-        });
-    });
-</script>
+        <!-- サイドバー開くボタン -->
+        <button id="sidebar-open" class="fixed top-20 left-0 bg-gray-800 text-white p-2 rounded-r-md z-50 hidden">
+            &raquo;
+        </button>
 
-<style>
-    .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('sidebar-open');
+            const closeBtn = document.getElementById('sidebar-close');
 
-    .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-</style>
-@endif
+            closeBtn.addEventListener('click', () => {
+                sidebar.classList.add('-translate-x-full');
+                openBtn.classList.remove('hidden');
+            });
+
+            openBtn.addEventListener('click', () => {
+                sidebar.classList.remove('-translate-x-full');
+                openBtn.classList.add('hidden');
+            });
+
+            // アコーディオン
+            document.querySelectorAll('.accordion-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    if (content) content.classList.toggle('hidden');
+                });
+            });
+        </script>
+
+        <style>
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    @endif
 @endauth
