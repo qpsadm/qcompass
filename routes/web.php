@@ -38,6 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 //ユーザー側画面
+Route::middleware('auth')->group(function () {
+    Route::get('quizzes/{quiz}', [App\Http\Controllers\User\QuizController::class, 'show'])
+        ->name('user.quizzes.show');
+    Route::post('quizzes/{quiz}/submit', [App\Http\Controllers\User\QuizController::class, 'submit'])
+        ->name('user.quizzes.submit');
+});
 
 // 管理画面
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -99,6 +105,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::prefix('quizzes/{quiz}')->name('quizzes.')->group(function () {
         Route::resource('quiz_questions', QuizQuestionController::class);
     });
+
 
     //悪魔合体
     Route::resource('quotes', QuoteController::class);

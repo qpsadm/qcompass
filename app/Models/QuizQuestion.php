@@ -25,7 +25,6 @@ class QuizQuestion extends Model
 
     public function choices()
     {
-        // 旧: return $this->hasMany(QuizQuestionChoice::class, 'quiz_question_id', 'id');
         return $this->hasMany(QuizQuestionChoice::class, 'quiz_question_id', 'id');
     }
 }
