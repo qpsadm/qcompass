@@ -156,14 +156,50 @@
                 openBtn.classList.add('hidden');
             });
 
-            // アコーディオン
-            document.querySelectorAll('.accordion-btn').forEach(btn => {
+            // ===== アコーディオン（保存 & 復元） =====
+            const accordions = document.querySelectorAll('.accordion');
+            const STORAGE_KEY = "sidebar_open_index";
+
+            // ⭐ ページ読み込み時に前回開いたアコーディオンを復元
+            const savedIndex = localStorage.getItem(STORAGE_KEY);
+            if (savedIndex !== null) {
+                accordions.forEach((acc, index) => {
+                    const content = acc.querySelector('.accordion-content');
+                    if (index == savedIndex) {
+                        content.classList.remove('hidden'); // 前回開いていたものを開く
+                    } else {
+                        content.classList.add('hidden'); // 他は閉じる
+                    }
+                });
+            }
+
+            // ⭐ アコーディオンをクリックしたとき
+            accordions.forEach((acc, index) => {
+                const btn = acc.querySelector('.accordion-btn');
+                const content = acc.querySelector('.accordion-content');
+
                 btn.addEventListener('click', () => {
-                    const content = btn.nextElementSibling;
-                    if (content) content.classList.toggle('hidden');
+
+                    // 他のアコーディオンを閉じる
+                    accordions.forEach((otherAcc, otherIndex) => {
+                        const otherContent = otherAcc.querySelector('.accordion-content');
+                        if (otherIndex !== index) otherContent.classList.add('hidden');
+                    });
+
+                    // このアコーディオンをトグル
+                    content.classList.toggle('hidden');
+
+                    // 開いたなら保存 / 閉じたなら削除
+                    if (!content.classList.contains('hidden')) {
+                        localStorage.setItem(STORAGE_KEY, index);
+                    } else {
+                        localStorage.removeItem(STORAGE_KEY);
+                    }
                 });
             });
         </script>
+
+
 
         <style>
             .hide-scrollbar::-webkit-scrollbar {
