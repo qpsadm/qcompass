@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
+
     public function index(Request $request)
     {
         $query = $request->input('search');

@@ -18,8 +18,8 @@ use App\Http\Controllers\Admin\QuestionController;
 
 use App\Http\Controllers\Admin\CourseTypeController;
 
-
 use App\Http\Controllers\Admin\NoticeController;
+use App\Http\Controllers\Admin\QuoteController;
 
 // 公開ページ
 Route::get('/', function () {
@@ -99,6 +99,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         ->name('quizzes.index');
     Route::get('quizzes/{quiz}', [QuizController::class, 'takeQuiz']);
     Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz']);
+
+
+
+    Route::resource('quotes', QuoteController::class);
 });
 
 require __DIR__ . '/auth.php';

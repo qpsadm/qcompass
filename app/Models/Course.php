@@ -18,6 +18,11 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
 
+    // 状態の定数定義
+    const STATUS_DRAFT = 0;
+    const STATUS_PUBLISHED = 1;
+    const STATUS_ARCHIVED = 2;
+
     // ステータス定義
     const STATUS = [
         0 => '下書き',      // Draft
