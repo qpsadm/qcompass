@@ -7,7 +7,7 @@
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label class="block font-medium mb-1">紐づくせつもんID</label>
+                <label class="block font-medium mb-1">紐づく設問ID</label>
                 <input type="text" name="question_id" value="{{ old('question_id', $QuestionChoice->question_id ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>
