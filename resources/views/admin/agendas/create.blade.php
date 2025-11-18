@@ -73,32 +73,15 @@
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
     <script>
-        // CKEditor 4 の初期化
-        CKEDITOR.replace('description', {
+        CKEDITOR.replace('agenda-description', {
             filebrowserUploadUrl: "{{ route('admin.agendas.upload') }}",
-            filebrowserUploadMethod: 'form', // これでPOST送信
+            filebrowserUploadMethod: 'form',
             language: 'ja',
-            allowedContent: true, // すべてのタグ・属性・スタイルを許可
+            allowedContent: true,
+            extraPlugins: 'uploadimage',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
         });
-    </script>
-    <script>
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-        ClassicEditor
-            .create(document.querySelector('#agenda-description'), {
-                ckfinder: {
-                    uploadUrl: '{{ route('admin.agendas.upload') }}',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                },
-                toolbar: [
-                    'heading', '|',
-                    'bold', 'italic', 'link', '|',
-                    'bulletedList', 'numberedList', '|',
-                    'imageUpload', 'blockQuote', 'undo', 'redo'
-                ]
-            })
-            .catch(error => console.error(error));
     </script>
 @endsection

@@ -294,15 +294,13 @@ class AgendaController extends Controller
 
 
     //ファイル関連
-    // CKEditor用画像アップロード
-    public function uploadImage(Request $request)
+    public function upload(Request $request)
     {
         if ($request->hasFile('upload')) {
             $file = $request->file('upload');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('public/agenda_images', $filename);
-
-            $url = asset("storage/agenda_images/$filename");
+            $path = $file->storeAs('public/uploads', $filename);
+            $url = Storage::url($path);
 
             return response()->json([
                 'uploaded' => 1,
@@ -311,6 +309,6 @@ class AgendaController extends Controller
             ]);
         }
 
-        return response()->json(['uploaded' => 0, 'error' => ['message' => 'Upload failed']]);
+        return response()->json(['uploaded' => 0, 'error' => ['message' => 'ファイルが見つかりません。']]);
     }
 }
