@@ -1,71 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-    <<<<<<< Updated upstream <div class="container mx-auto p-6 pb-24">
+    <div class="container mx-auto p-6 pb-24">
         <h1 class="text-2xl font-bold mb-6">カテゴリー一覧</h1>
 
-        <a href="{{ route('admin.categories.create') }}"
-            class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block hover:bg-blue-600 transition">
-            ＋ 新規登録
-        </a>
-        <a href="{{ route('admin.categories.trash') }}" class="ml-4 text-red-500 underline">ゴミ箱</a>
+        <div class="mb-4">
+            <a href="{{ route('admin.categories.create') }}"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                ＋ 新規登録
+            </a>
+            <a href="{{ route('admin.categories.trash') }}" class="ml-4 text-red-500 underline">ゴミ箱</a>
+        </div>
 
         <div class="bg-white shadow-md rounded-lg p-4">
             @include('admin.categories.partials.category-tree', ['categories' => $categories])
         </div>
-        </div>
+    </div>
 
-        {{-- 削除モーダル --}}
-        <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-            <div class="bg-white rounded-lg p-6 w-full max-w-md">
-                <h2 class="text-lg font-semibold mb-4">削除の確認</h2>
-                <p class="mb-6" id="deleteMessage">本当に削除しますか？</p>
-                <div class="flex justify-end gap-4">
-                    <button id="cancelDelete" onclick="closeDeleteModal()"
-                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">キャンセル</button>
-                    <form id="deleteForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button>
-                    </form>
-                </div>
+    {{-- 削除モーダル --}}
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 class="text-lg font-semibold mb-4">削除の確認</h2>
+            <p class="mb-6" id="deleteMessage">本当に削除しますか？</p>
+            <div class="flex justify-end gap-4">
+                <button id="cancelDelete" onclick="closeDeleteModal()"
+                    class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">キャンセル</button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除</button>
+                </form>
             </div>
         </div>
+    </div>
+@endsection
 
-        <script>
-            function openDeleteModal(id, name) {
-                const modal = document.getElementById('deleteModal');
-                const form = document.getElementById('deleteForm');
-                const message = document.getElementById('deleteMessage');
+@push('scripts')
+    <script>
+        // 削除モーダル
+        function openDeleteModal(id, name) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('deleteForm');
+            const message = document.getElementById('deleteMessage');
 
-                form.action = "{{ url('admin/categories') }}/" + id;
-                message.textContent = `「${name}」を本当に削除しますか？`;
-                modal.classList.remove('hidden');
-            }
+            form.action = "{{ url('admin/categories') }}/" + id;
+            message.textContent = `「${name}」を本当に削除しますか？`;
+            modal.classList.remove('hidden');
+        }
 
-            function closeDeleteModal() {
-                document.getElementById('deleteModal').classList.add('hidden');
-            }
-        </script>
-    @endsection
-    =======
-    <div class="container mx-auto p-4 min-h-screen">
-        <div class="bg-white rounded-lg shadow-md p-6" x-data="{ tab: 'basic' }">
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
 
-            <h1 class="text-2xl font-bold mb-4">カテゴリー一覧</h1>
-            <a href="{{ route('admin.categories.create') }}"
-                class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
-
-            @include('admin.categories.partials.category-tree', ['categories' => $categories])
-        </div>
-    @endsection
-    document.querySelectorAll('.toggle-children').forEach(btn => {
-    btn.addEventListener('click', function() {
-    const container = btn.closest('li').querySelector('.children-container');
-    if (container) {
-    container.classList.toggle('hidden');
-    btn.classList.toggle('rotate-90'); // 矢印回転
-    }
-    });
-    });
-    >>>>>>> Stashed changes
+        // アコーディオン
+        document.querySelectorAll('.toggle-children').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const container = btn.closest('li').querySelector('.children-container');
+                if (container) container.classList.toggle('hidden');
+                btn.classList.toggle('rotate-90'); // 矢印回転
+            });
+        });
+    </script>
+@endpush
