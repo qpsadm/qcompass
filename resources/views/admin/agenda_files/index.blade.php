@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">アジェンダファイル一覧</h1>
-        <a href="{{ route('agenda_files.create') }}"
+        <a href="{{ route('admin.agenda_files.create') }}"
             class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
 
         <table class="table-auto border-collapse border w-full">
@@ -17,7 +17,6 @@
                     <th class='border px-4 py-2'>ファイルサイズ</th>
                     <th class='border px-4 py-2'>ユーザーID</th>
                     <th class='border px-4 py-2'>削除日</th>
-
                     <th class='border px-4 py-2'>操作</th>
                 </tr>
             </thead>
@@ -32,11 +31,11 @@
                         <td class='border px-4 py-2'>{{ $AgendaFile->file_size }}</td>
                         <td class='border px-4 py-2'>{{ $AgendaFile->user_id }}</td>
                         <td class='border px-4 py-2'>{{ $AgendaFile->deleted_at }}</td>
-
                         <td class='border px-4 py-2'>
-                            <a href="{{ route('agenda_files.show', $AgendaFile->id) }}" class="text-green-600">詳細</a>
-                            <a href="{{ route('agenda_files.edit', $AgendaFile->id) }}" class="text-blue-600 ml-2">編集</a>
-                            <form action="{{ route('agenda_files.destroy', $AgendaFile->id) }}" method="POST"
+                            <a href="{{ route('admin.agenda_files.show', $AgendaFile->id) }}" class="text-green-600">詳細</a>
+                            <a href="{{ route('admin.agenda_files.edit', $AgendaFile->id) }}"
+                                class="text-blue-600 ml-2">編集</a>
+                            <form action="{{ route('admin.agenda_files.destroy', $AgendaFile->id) }}" method="POST"
                                 class="inline-block ml-2">
                                 @csrf
                                 @method('DELETE')

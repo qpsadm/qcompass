@@ -69,6 +69,9 @@
                         <li><a href="{{ route('admin.agendas.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ一覧</a>
                         </li>
+                        <li><a href="{{ route('admin.agenda_files.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダファイル一覧</a>
+                        </li>
                         <li><a href="{{ route('admin.agendas.create') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
                         </li>

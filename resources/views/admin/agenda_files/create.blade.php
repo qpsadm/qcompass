@@ -4,7 +4,7 @@
 <div class="container mx-auto p-4 max-w-lg">
     <h1 class="text-2xl font-bold mb-6">アジェンダファイル作成</h1>
 
-    <form action="{{ route('agenda_files.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.agenda_files.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         {{-- アジェンダ選択 --}}

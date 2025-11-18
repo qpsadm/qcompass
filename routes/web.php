@@ -76,6 +76,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     //アジェンダ管理
     Route::resource('agendas', AgendaController::class);
+    Route::post('agendas/upload-image', [AgendaController::class, 'uploadImage'])->name('agendas.uploadImage');
+
+    //アジェンダ添付ファイル管理
+    Route::resource('agenda_files', App\Http\Controllers\Admin\AgendaFileController::class);
+
+
     // ゴミ箱一覧
     Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
     // 復元
