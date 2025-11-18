@@ -42,11 +42,10 @@
             {{-- 内容・概要 (CKEditor) --}}
             <div class="mb-4">
                 <label for="description" class="block font-medium mb-1">内容・概要</label>
-                <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">
+                <textarea name="description" id="agenda-description" class="border px-2 py-1 w-full rounded">
             {{ old('description', $agenda->description ?? '') }}
             </textarea>
             </div>
-            <textarea name="description" id="agenda-description"></textarea>
 
             {{-- 表示フラグ --}}
             <div class="mb-4">
@@ -76,22 +75,21 @@
     <script>
         // CKEditor 4 の初期化
         CKEDITOR.replace('description', {
-            filebrowserUploadUrl: "{{ route('agendas.uploadImage') }}",
-            filebrowserUploadMethod: 'form',
+            filebrowserUploadUrl: "{{ route('admin.agendas.upload') }}",
+            filebrowserUploadMethod: 'form', // これでPOST送信
             language: 'ja',
             allowedContent: true, // すべてのタグ・属性・スタイルを許可
         });
     </script>
     <script>
-        // CSRFトークンを取得
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         ClassicEditor
             .create(document.querySelector('#agenda-description'), {
                 ckfinder: {
-                    uploadUrl: '{{ route('admin.agendas.upload') }}', // Laravelのアップロードルート
+                    uploadUrl: '{{ route('admin.agendas.upload') }}',
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken // Laravelにトークンを送る
+                        'X-CSRF-TOKEN': csrfToken
                     }
                 },
                 toolbar: [
@@ -101,8 +99,6 @@
                     'imageUpload', 'blockQuote', 'undo', 'redo'
                 ]
             })
-            .catch(error => {
-                console.error(error);
-            });
+            .catch(error => console.error(error));
     </script>
 @endsection
