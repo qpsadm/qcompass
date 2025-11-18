@@ -8,14 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('question_choices', function (Blueprint $table) {
+        Schema::create('quiz_question_choices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('question_id');
-            $table->text('choice_text');
-            $table->boolean('is_correct');
-            $table->integer('order')->nullable();
+            $table->foreignId('quiz_question_id')
+                ->constrained('quiz_questions')
+                ->onDelete('cascade');
 
-            $table->timestamps();   // created_at / updated_at 自動追加
+            $table->text('choice_text');
+            $table->boolean('is_correct')->default(false);
+
+            $table->timestamps();
         });
     }
 

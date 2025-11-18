@@ -22,10 +22,24 @@ class Quiz extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsToMany(Question::class, 'quiz_questions')
+            ->withPivot('question_order')
+            ->withTimestamps();
     }
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+    public function quizQuestions()
+    {
+        return $this->hasMany(QuizQuestion::class, 'quiz_id', 'id');
+    }
+    protected static function booted()
+    {
+        static::creating(function ($quiz) {
+            if (empty($quiz->code)) {
+                $quiz->code = 'Q-' . strtoupper(bin2hex(random_bytes(3)));
+            }
+        });
     }
 }

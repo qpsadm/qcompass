@@ -165,7 +165,7 @@
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言管理</a>
                 </li>
                 <li><a href="{{ route('admin.quotes.index') }}"
-                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言管理</a>
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言(悪魔合体)管理</a>
                 </li>
             </ul>
         </div>

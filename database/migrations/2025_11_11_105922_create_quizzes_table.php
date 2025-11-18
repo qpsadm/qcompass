@@ -29,10 +29,25 @@ return new class extends Migration
             // ここで自動的に created_at と updated_at が作られる
             $table->timestamps();
         });
+
+        Schema::create('quiz_questions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('quiz_id')
+                ->constrained('quizzes')
+                ->onDelete('cascade');
+
+            $table->text('question_text'); // 問題文
+            $table->integer('score')->default(0); // 点数
+            $table->boolean('is_show')->default(true); // 公開するか
+
+            $table->integer('order')->default(0); // 並び順
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('quiz_questions');
     }
 };

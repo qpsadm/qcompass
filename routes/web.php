@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\OrganizerController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\QuizController;
-use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuizQuestionController;
 
 use App\Http\Controllers\Admin\CourseTypeController;
 
@@ -93,9 +93,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     //クイズ関係
     Route::resource('quizzes', QuizController::class);
-    Route::get('quizzes/{quiz}/take', [QuizController::class, 'takeQuiz'])->name('quizzes.take');
-    Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz'])->name('quizzes.submit');
-
+    // クイズの問題管理を quizzes にネスト
+    Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
 
 
     //悪魔合体
