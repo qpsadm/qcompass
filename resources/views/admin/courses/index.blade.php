@@ -9,7 +9,7 @@
         </a>
 
         <form method="GET" action="{{ route('admin.courses.index') }}" class="mb-4">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="講座コード・講座名で検索"
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="講座コード・講座名・主催者で検索"
                 class="border px-2 py-1 rounded">
             <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">検索</button>
         </form>
@@ -32,8 +32,8 @@
                 @foreach ($courses as $Course)
                     <tr>
                         <td class="border px-4 py-2">{{ $Course->course_code }}</td>
-                        <td class="border px-4 py-2">{{ $Course->course_type_ID }}</td>
-                        <td class="border px-4 py-2">{{ $Course->Level_id }}</td>
+                        <td class="border px-4 py-2">{{ $Course->courseType->name ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $Course->level->name ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $Course->organizer->name ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $Course->course_name }}</td>
                         <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
