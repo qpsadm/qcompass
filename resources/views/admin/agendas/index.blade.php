@@ -94,21 +94,22 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            function openDeleteModal(id, name) {
-                const modal = document.getElementById('deleteModal');
-                const form = document.getElementById('deleteForm');
-                const message = document.getElementById('deleteMessage');
+    <script>
+        function openDeleteModal(id, name) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('deleteForm');
+            const message = document.getElementById('deleteMessage');
 
-                form.action = "{{ url('admin/agendas') }}/" + id;
-                message.textContent = `「${name}」を本当に削除しますか？この操作は取り消せません。`;
-                modal.classList.remove('hidden');
-            }
+            form.action = "{{ url('admin/agendas') }}/" + id;
+            message.textContent = `「${name}」を本当に削除しますか？この操作は取り消せません。`;
+            modal.classList.remove('hidden');
+        }
 
-            function closeDeleteModal() {
-                const modal = document.getElementById('deleteModal');
-                modal.classList.add('hidden');
-            }
-        </script>
-    @endsection
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+        }
+    </script>
+@endsection
