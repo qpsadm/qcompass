@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">CourseType編集</h1>
+        <h1 class="text-2xl font-bold mb-4">講座分野編集</h1>
         <form action="{{ route('admin.course_type.update', $CourseType->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-4">
-                <label class="block font-medium mb-1">name</label>
+                <label class="block font-medium mb-1">名前</label>
                 <input type="text" name="name" value="{{ old('name', $CourseType->name ?? '') }}"
                     class="border px-2 py-1 w-full rounded">
             </div>

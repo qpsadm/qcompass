@@ -51,8 +51,8 @@
                 <div>
                     <label class="block mb-1 font-semibold">テーマカラー</label>
                     <select name="theme_color" class="w-full border rounded px-3 py-2">
-                        <option value="blue" {{ old('theme_color') == 'blue' ? 'selected' : '' }}>Blue</option>
-                        <option value="red" {{ old('theme_color') == 'red' ? 'selected' : '' }}>Red</option>
+                        <option value="blue" {{ old('theme_color') == 'blue' ? 'selected' : '' }}>青</option>
+                        <option value="red" {{ old('theme_color') == 'red' ? 'selected' : '' }}>赤</option>
                     </select>
                 </div>
 
