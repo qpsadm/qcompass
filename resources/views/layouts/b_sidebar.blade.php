@@ -25,8 +25,12 @@
                         <span>ユーザー管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.users.index') }}">ユーザー一覧</a></li>
-                        <li><a href="{{ route('admin.roles.index') }}">権限一覧</a></li>
+                        <li><a href="{{ route('admin.users.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">ユーザー一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.roles.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">権限一覧</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -37,11 +41,21 @@
                         <span>講座管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.organizers.index') }}">開催者一覧</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">講座種類一覧</a></li>
-                        <li><a href="{{ route('admin.courses.index') }}">講座一覧</a></li>
-                        <li><a href="{{ route('admin.course_type.index') }}">講座種類一覧</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">質疑応答一覧</a></li>
+                        <li><a href="{{ route('admin.organizers.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">開催者一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座種類一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.courses.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.course_type.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座種類一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">質疑応答一覧</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -52,8 +66,12 @@
                         <span>アジェンダ管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.agendas.index') }}">アジェンダ一覧</a></li>
-                        <li><a href="{{ route('admin.agendas.create') }}">新規作成</a></li>
+                        <li><a href="{{ route('admin.agendas.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.agendas.create') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -64,8 +82,12 @@
                         <span>お知らせ管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.notices.index') }}">一覧</a></li>
-                        <li><a href="{{ route('admin.notices.create') }}">新規作成</a></li>
+                        <li><a href="{{ route('admin.notices.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.notices.create') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -76,9 +98,15 @@
                         <span>事務管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.levels.index') }}">求人票管理</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">資格管理</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">学習サイト管理</a></li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">求人票管理</a>
+                        </li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">資格管理</a>
+                        </li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">学習サイト管理</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -89,8 +117,12 @@
                         <span>クイズ管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.quizzes.index') }}">一覧</a></li>
-                        <li><a href="{{ route('admin.quizzes.create') }}">新規作成</a></li>
+                        <li><a href="{{ route('admin.quizzes.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">一覧</a>
+                        </li>
+                        <li><a href="{{ route('admin.quizzes.create') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -101,8 +133,12 @@
                         <span>日報管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="#">一覧</a></li>
-                        <li><a href="#">新規作成</a></li>
+                        <li><a href="#"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">一覧</a>
+                        </li>
+                        <li><a href="#"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -113,10 +149,18 @@
                         <span>システム管理</span>
                     </button>
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
-                        <li><a href="{{ route('admin.categories.index') }}">カテゴリー管理</a></li>
-                        <li><a href="{{ route('admin.tags.index') }}">タグ管理</a></li>
-                        <li><a href="{{ route('admin.levels.index') }}">実績管理</a></li>
-                        <li><a href="{{ route('admin.daily_quotes.index') }}">今日の一言管理</a></li>
+                        <li><a href="{{ route('admin.categories.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">カテゴリー管理</a>
+                        </li>
+                        <li><a href="{{ route('admin.tags.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">タグ管理</a>
+                        </li>
+                        <li><a href="{{ route('admin.levels.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">実績管理</a>
+                        </li>
+                        <li><a href="{{ route('admin.daily_quotes.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言管理</a>
+                        </li>
                     </ul>
                 </div>
 
