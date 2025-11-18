@@ -16,14 +16,30 @@ class CourseController extends Controller
     {
         $query = $request->input('search');
 
+        $courses = Course::query();
+
         if ($query) {
-            $courses = Course::search($query)->paginate(10);
-        } else {
-            $courses = Course::paginate(10);
+            $courses = $courses->where(function ($q) use ($query) {
+                $q->where('course_code', 'like', "%{$query}%")       // 講座コード
+                    ->orWhere('course_name', 'like', "%{$query}%")    // 講座名
+                    ->orWhereHas('organizer', function ($q2) use ($query) { // 主催者名
+                        $q2->where('name', 'like', "%{$query}%");
+                    })
+                    ->orWhereHas('courseType', function ($q3) use ($query) { // 分野名
+                        $q3->where('name', 'like', "%{$query}%");
+                    })
+                    ->orWhereHas('level', function ($q4) use ($query) { // 種類名
+                        $q4->where('name', 'like', "%{$query}%");
+                    });
+            });
         }
+
+        $courses = $courses->paginate(10);
 
         return view('admin.courses.index', compact('courses'));
     }
+
+
 
     public function create()
     {
