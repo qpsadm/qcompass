@@ -9,7 +9,7 @@
 
             <!-- quote -->
             <div>
-                <label class="block text-gray-700 font-semibold mb-2">ひとこと</label>
+                <label class="block text-gray-700 font-semibold mb-2">ひとこと本文</label>
                 <input type="text" name="quote" value="{{ old('quote', $DailyQuote->quote ?? '') }}" required
                     class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
 
@@ -20,7 +20,7 @@
 
             <!-- author -->
             <div>
-                <label class="block text-gray-700 font-semibold mb-2">発言者</label>
+                <label class="block text-gray-700 font-semibold mb-2">発言者・出典</label>
                 <input type="text" name="author" value="{{ old('author', $DailyQuote->author ?? '') }}" required
                     class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
 

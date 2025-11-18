@@ -11,14 +11,14 @@
 
             <!-- quote -->
             <div>
-                <label for="quote" class="block text-gray-700 font-semibold mb-2">ひとこと</label>
+                <label for="quote" class="block text-gray-700 font-semibold mb-2">ひとこと本文</label>
                 <input type="text" name="quote" id="quote" value="{{ old('quote', $DailyQuote->quote) }}"
                     class="w-full border-gray-300 rounded-md px-3 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <!-- author -->
             <div>
-                <label for="author" class="block text-gray-700 font-semibold mb-2">発言者</label>
+                <label for="author" class="block text-gray-700 font-semibold mb-2">発言者・出典</label>
                 <input type="text" name="author" id="author" value="{{ old('author', $DailyQuote->author) }}"
                     class="w-full border-gray-300 rounded-md px-3 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
             </div>
