@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
-use App\Models\Organizer; // 追加
+use App\Models\Organizer; //開催者
+use App\Models\Level; // Levels テーブルのモデル
+use App\Models\CourseType;
 use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
@@ -25,8 +27,10 @@ class CourseController extends Controller
 
     public function create()
     {
-        $organizers = Organizer::all(); // 追加: 主催者一覧
-        return view('admin.courses.create', compact('organizers'));
+        $organizers = Organizer::all(); // 主催者取得
+        $levels = Level::all(); // 講座種類（難易度）
+        $courseTypes = CourseType::all();
+        return view('admin.courses.create', compact('organizers', 'levels', 'courseTypes'));
     }
 
     public function store(Request $request)
@@ -81,10 +85,14 @@ class CourseController extends Controller
     public function edit($id)
     {
         $Course = Course::findOrFail($id);
-        $organizers = Organizer::all(); // 追加: 主催者一覧
-        return view('admin.courses.edit', compact('Course', 'organizers'));
-    }
 
+        // セレクト用データ取得
+        $courseTypes = \App\Models\CourseType::all();
+        $levels = \App\Models\Level::all();
+        $organizers = \App\Models\Organizer::all();
+
+        return view('admin.courses.edit', compact('Course', 'courseTypes', 'levels', 'organizers'));
+    }
     public function update(Request $request, $id)
     {
         $Course = Course::findOrFail($id);
