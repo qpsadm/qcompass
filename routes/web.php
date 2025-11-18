@@ -95,7 +95,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('quizzes', QuizController::class);
     // クイズの問題管理を quizzes にネスト
     Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
-
+    // クイズに紐づく問題（ネスト）
+    Route::prefix('quizzes/{quiz}')->name('quizzes.')->group(function () {
+        Route::resource('quiz_questions', QuizQuestionController::class);
+    });
 
     //悪魔合体
     Route::resource('quotes', QuoteController::class);

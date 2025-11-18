@@ -6,11 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizQuestionChoice extends Model
 {
-    protected $fillable = [
-        'quiz_question_id',
-        'choice_text',
-        'is_correct'
-    ];
+    protected $fillable = ['quiz_question_id', 'choice_text', 'is_correct', 'order'];
 
     public function quizQuestion()
     {

@@ -16,6 +16,7 @@ class QuizQuestion extends Model
         'score',
         'order',
         'is_show',
+        'type',
     ];
     public function quiz()
     {

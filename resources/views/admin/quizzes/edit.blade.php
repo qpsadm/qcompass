@@ -12,7 +12,7 @@
     <select name="course_id">
         <option value="">コース選択</option>
         @foreach($courses as $course)
-        <option value="{{ $course->id }}" @selected($quiz->course_id==$course->id)>{{ $course->name }}</option>
+        <option value="{{ $course->id }}" @selected($quiz->course_id==$course->id)>{{ $course->course_name }}</option>
         @endforeach
     </select>
     <select name="type" required>

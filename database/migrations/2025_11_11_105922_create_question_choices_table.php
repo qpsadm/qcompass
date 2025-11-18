@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->text('choice_text');
             $table->boolean('is_correct')->default(false);
-
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

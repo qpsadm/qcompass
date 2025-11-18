@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('question_text'); // 問題文
             $table->integer('score')->default(0); // 点数
             $table->boolean('is_show')->default(true); // 公開するか
+            $table->string('type')->default('single'); // single / multi / text / single_2 / single_4 等
 
             $table->integer('order')->default(0); // 並び順
             $table->timestamps();
