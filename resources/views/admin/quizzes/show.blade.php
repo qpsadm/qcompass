@@ -8,8 +8,8 @@
         <p><strong>クイズコード:</strong> {{ $Quiz->code }}</p>
         <p><strong>クイズ名:</strong> {{ $Quiz->title }}</p>
         <p><strong>概要説明:</strong> {{ $Quiz->description }}</p>
-        <p><strong>関連講座ID:</strong> {{ $Quiz->course_id }}</p>
-        <p><strong>関連アジェンダID:</strong> {{ $Quiz->agenda_id }}</p>
+        <p><strong>関連講座ID※任意※:</strong> {{ $Quiz->course_id }}</p>
+        <p><strong>関連アジェンダID※任意※:</strong> {{ $Quiz->agenda_id }}</p>
         <p><strong>問題タイプ:</strong> {{ $Quiz->type }}</p>
         <p><strong>制限時間:</strong> {{ $Quiz->time_limit }}</p>
         <p><strong>満点:</strong> {{ $Quiz->total_score }}</p>
@@ -17,7 +17,7 @@
         <p><strong>ランダム順:</strong> {{ $Quiz->random_order }}</p>
         <p><strong>公開開始日:</strong> {{ $Quiz->active_from }}</p>
         <p><strong>公開終了日@auth
-            
+
         @endauth</strong> {{ $Quiz->active_to }}</p>
         <p><strong>作成者:</strong> {{ $Quiz->created_by }}</p>
         <p><strong>削除日時:</strong> {{ $Quiz->deleted_at }}</p>

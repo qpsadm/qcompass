@@ -63,23 +63,23 @@
                 <table class="min-w-full bg-white border border-gray-200 rounded">
                     <tbody>
                         <tr class="border-b">
-                            <th class="text-left px-4 py-2 bg-gray-100">Department</th>
+                            <th class="text-left px-4 py-2 bg-gray-100">部署</th>
                             <td class="px-4 py-2">{{ $user->detail->department ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
-                            <th class="text-left px-4 py-2 bg-gray-100">Phone1</th>
+                            <th class="text-left px-4 py-2 bg-gray-100">電話番号1</th>
                             <td class="px-4 py-2">{{ $user->detail->phone1 ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
-                            <th class="text-left px-4 py-2 bg-gray-100">Phone2</th>
+                            <th class="text-left px-4 py-2 bg-gray-100">電話番号2</th>
                             <td class="px-4 py-2">{{ $user->detail->phone2 ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
-                            <th class="text-left px-4 py-2 bg-gray-100">Address1</th>
+                            <th class="text-left px-4 py-2 bg-gray-100">住所1</th>
                             <td class="px-4 py-2">{{ $user->detail->address1 ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-left px-4 py-2 bg-gray-100">Address2</th>
+                            <th class="text-left px-4 py-2 bg-gray-100">住所2</th>
                             <td class="px-4 py-2">{{ $user->detail->address2 ?? '-' }}</td>
                         </tr>
                     </tbody>

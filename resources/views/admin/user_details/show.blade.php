@@ -15,15 +15,15 @@
                     その他
                 @endif
             </p>
-            <p><strong>phone1:</strong> {{ $UserDetail->phone1 }}</p>
-            <p><strong>phone2:</strong> {{ $UserDetail->phone2 }}</p>
-            <p><strong>postal_code:</strong> {{ $UserDetail->postal_code }}</p>
-            <p><strong>address1:</strong> {{ $UserDetail->address1 }}</p>
-            <p><strong>address2:</strong> {{ $UserDetail->address2 }}</p>
-            <p><strong>emergency_contact:</strong> {{ $UserDetail->emergency_contact }}</p>
-            <p><strong>avatar_path:</strong> {{ $UserDetail->avatar_path }}</p>
-            <p><strong>theme_color:</strong> {{ $UserDetail->theme_color }}</p>
-            <p><strong>status:</strong>
+            <p><strong>電話番号1:</strong> {{ $UserDetail->phone1 }}</p>
+            <p><strong>電話番号2:</strong> {{ $UserDetail->phone2 }}</p>
+            <p><strong>郵便番号:</strong> {{ $UserDetail->postal_code }}</p>
+            <p><strong>住所1:</strong> {{ $UserDetail->address1 }}</p>
+            <p><strong>住所2:</strong> {{ $UserDetail->address2 }}</p>
+            <p><strong>緊急連絡先:</strong> {{ $UserDetail->emergency_contact }}</p>
+            <p><strong>写真パス:</strong> {{ $UserDetail->avatar_path }}</p>
+            <p><strong>テーマカラー:</strong> {{ $UserDetail->theme_color }}</p>
+            <p><strong>ステータス:</strong>
                 @if ($UserDetail->status == 0)
                     非アクティブ
                 @elseif($UserDetail->status == 1)

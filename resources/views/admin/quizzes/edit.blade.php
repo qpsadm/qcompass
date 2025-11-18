@@ -40,7 +40,7 @@
 
         {{-- course_id --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">関連講座ID</label>
+            <label class="block text-gray-700 font-semibold mb-2">関連講座ID※任意※</label>
             <input
                 type="text"
                 name="course_id"
@@ -50,7 +50,7 @@
 
         {{-- agenda_id --}}
         <div>
-            <label class="block text-gray-700 font-semibold mb-2">関連アジェンダID</label>
+            <label class="block text-gray-700 font-semibold mb-2">関連アジェンダID※任意※</label>
             <input
                 type="text"
                 name="agenda_id"
