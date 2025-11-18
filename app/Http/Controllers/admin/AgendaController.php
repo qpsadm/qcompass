@@ -293,22 +293,20 @@ class AgendaController extends Controller
     }
 
 
-    //ファイル関連
+    // Controller
     public function upload(Request $request)
     {
-        if ($request->hasFile('upload')) {
-            $file = $request->file('upload');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('public/uploads', $filename);
-            $url = Storage::url($path);
-
-            return response()->json([
-                'uploaded' => 1,
-                'fileName' => $filename,
-                'url' => $url
-            ]);
+        if (!$request->hasFile('file')) {
+            return response()->json(['uploaded' => 0, 'error' => ['message' => 'ファイルが見つかりません']]);
         }
 
-        return response()->json(['uploaded' => 0, 'error' => ['message' => 'ファイルが見つかりません。']]);
+        $file = $request->file('file');
+        $path = $file->store('uploads', 'public');
+
+        return response()->json([
+            'uploaded' => 1,
+            'fileName' => $file->getClientOriginalName(),
+            'url' => asset("storage/$path")
+        ]);
     }
 }
