@@ -8,9 +8,59 @@ use App\Models\Category;
 use App\Models\Agenda;
 use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 
 class NoticeController extends Controller
 {
+    /**
+     * CKEditorで許可するHTMLタグ
+     */
+    protected $allowedTags = [
+        'p',
+        'br',
+        'b',
+        'i',
+        'strong',
+        'em',
+        'u',
+        'a[href|title|target|rel|name]',
+        'span[style|class|id|title|dir]',
+        'div[style|class|id|title|dir]',
+        'ul',
+        'ol',
+        'li',
+        'img[src|alt|title|width|height|style|class|id]',
+        'figure[style|class|id]',
+        'figcaption[style|class|id]',
+        'iframe[src|width|height|frameborder|allowfullscreen|style|class|id|title]',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'blockquote[cite|style|class|id]',
+        'table[style|class|id|border|cellspacing|cellpadding]',
+        'thead[style|class|id]',
+        'tbody[style|class|id]',
+        'tfoot[style|class|id]',
+        'tr[style|class|id]',
+        'td[style|class|id|colspan|rowspan|align|valign]',
+        'th[style|class|id|colspan|rowspan|align|valign]',
+        'col[style|class|id|span]',
+        'colgroup[style|class|id|span]',
+        'pre',
+        'code',
+        'hr',
+        'small',
+        'sub',
+        'sup',
+        'mark',
+        'abbr[title|style|class|id]',
+        'address'
+    ];
+
+
     // お知らせ一覧
     public function index()
     {
@@ -38,7 +88,25 @@ class NoticeController extends Controller
 
         return view('admin.notices.create', compact('category', 'courses'));
     }
+    /**
+     * 詳細
+     */
+    public function show($id)
+    {
+        $agenda = Agenda::with(['category', 'createdUser', 'updatedUser'])->findOrFail($id);
 
+        // ← ここで Purifier を使って description をサニタイズ
+        $agenda->description_sanitized = Purifier::clean($agenda->description, [
+            'HTML.Allowed' => implode(',', $this->allowedTags),
+            'HTML.SafeIframe' => true,
+            'CSS.AllowTricky' => true,
+            'HTML.Trusted' => true,
+        ]);
+
+        return view('admin.notices.show', [
+            'Agenda' => $agenda,
+        ]);
+    }
     // 保存
     public function store(Request $request)
     {
