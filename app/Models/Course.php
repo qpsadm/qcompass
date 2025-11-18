@@ -38,4 +38,9 @@ class Course extends Model
         )->withPivot('order_no', 'note')
             ->withTimestamps();
     }
+
+    public function organizer()
+    {
+        return $this->belongsTo(Organizer::class);
+    }
 }
