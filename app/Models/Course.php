@@ -18,16 +18,13 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
 
-    const STATUS_DRAFT = 0;
-    const STATUS_PUBLISHED = 1;
-    const STATUS_ARCHIVED = 2;
-
-    public static $STATUS_LABELS = [
-        self::STATUS_DRAFT => 'draft',
-        self::STATUS_PUBLISHED => 'published',
-        self::STATUS_ARCHIVED => 'archived',
+    // ステータス定義
+    const STATUS = [
+        0 => '下書き',      // Draft
+        1 => '準備中',      // Preparing
+        2 => '公開',        // Published
+        3 => '終了',        // Archived
     ];
-
     public function agendas()
     {
         return $this->belongsToMany(

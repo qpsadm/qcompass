@@ -37,7 +37,7 @@
                         <td class="border px-4 py-2">{{ $Course->organizer->name ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $Course->course_name }}</td>
                         <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
-                        <td class="border px-4 py-2">{{ $Course->status }}</td>
+                        <td class="border px-4 py-2">{{ \App\Models\Course::STATUS[$Course->status] ?? '不明' }}</td>
                         <td class="border px-4 py-2">{{ $Course->created_at->format('Y-m-d') }}</td>
                         <td class="border px-4 py-2">
                             <a href="{{ route('admin.courses.show', $Course->id) }}" class="text-green-600">詳細</a>
