@@ -5,7 +5,7 @@
 
             <!-- サイドバー閉じるボタン -->
             <button id="sidebar-close"
-                class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-gray-600 z-50">
+                class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-bleu-600 z-50">
                 &laquo;
             </button>
 

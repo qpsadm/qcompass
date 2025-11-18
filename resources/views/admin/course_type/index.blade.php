@@ -9,7 +9,7 @@
         <table class="table-auto border-collapse border w-full">
             <thead>
                 <tr>
-                    <th class='border px-4 py-2'>name</th>
+                    <th class='border px-4 py-2'>名前</th>
 
                     <th class='border px-4 py-2'>操作</th>
                 </tr>

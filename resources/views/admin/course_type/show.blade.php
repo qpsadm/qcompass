@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">CourseType詳細</h1>
+        <h1 class="text-2xl font-bold mb-4">講座分野詳細</h1>
         <div class="border p-4 rounded mb-4">
-            <p><strong>name:</strong> {{ $CourseType->name }}</p>
+            <p><strong>名前:</strong> {{ $CourseType->name }}</p>
 
         </div>
         <a href="{{ route('admin.course_type.edit', $CourseType->id) }}"
