@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">FilesCount編集</h1>
+    <h1 class="text-2xl font-bold mb-4">添付ファイルカウント編集</h1>
     <form action="{{ route('files_count.update', $FilesCount->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-4">
-    <label class="block font-medium mb-1">count</label>
+    <label class="block font-medium mb-1">カウント</label>
     <input type="text" name="count" value="{{ old('count', $FilesCount->count ?? '') }}" class="border px-2 py-1 w-full rounded">
 </div>
 
