@@ -5,7 +5,7 @@
 
             <!-- サイドバー閉じるボタン -->
             <button id="sidebar-close"
-                class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-bleu-600 z-50">
+                class="absolute top-4 right-4 w-8 h-8 bg-gray-700 text-white flex items-center justify-center rounded-full hover:bg-gray-600 z-50">
                 &laquo;
             </button>
 
@@ -20,7 +20,7 @@
 
                 {{-- ユーザー管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_user.svg') }}" class="w-4 h-4 mr-2">
                         <span>ユーザー管理</span>
                     </button>
@@ -32,7 +32,7 @@
 
                 {{-- 講座管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>講座管理</span>
                     </button>
@@ -47,7 +47,7 @@
 
                 {{-- アジェンダ管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>アジェンダ管理</span>
                     </button>
@@ -59,7 +59,7 @@
 
                 {{-- お知らせ管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>お知らせ管理</span>
                     </button>
@@ -71,7 +71,7 @@
 
                 {{-- 事務管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>事務管理</span>
                     </button>
@@ -84,7 +84,7 @@
 
                 {{-- クイズ管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>クイズ管理</span>
                     </button>
@@ -96,7 +96,7 @@
 
                 {{-- 日報管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>日報管理</span>
                     </button>
@@ -108,7 +108,7 @@
 
                 {{-- システム管理 --}}
                 <div class="accordion">
-                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-gray-700">
+                    <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700">
                         <img src="{{ asset('assets/images/b_course.svg') }}" class="w-4 h-4 mr-2">
                         <span>システム管理</span>
                     </button>
