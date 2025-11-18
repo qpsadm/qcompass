@@ -16,6 +16,9 @@ use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuestionController;
 
+use App\Http\Controllers\Admin\CourseTypeController;
+
+
 use App\Http\Controllers\Admin\NoticeController;
 
 // 公開ページ
@@ -46,6 +49,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('levels', LevelController::class);
     Route::resource('daily_quotes', DailyQuoteController::class);
     Route::resource('organizers', OrganizerController::class);
+    Route::resource('notices', NoticeController::class); // お知らせアジェンダ管理
+
+    Route::resource('course_type', CourseTypeController::class);
 
     // UserDetail（詳細情報）関連ルート
     Route::prefix('users/{user}')->name('user_details.')->group(function () {
@@ -85,11 +91,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         ->name('quizzes.index');
     Route::get('quizzes/{quiz}', [QuizController::class, 'takeQuiz']);
     Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz']);
-
-
-
-    // お知らせアジェンダ管理
-    Route::resource('notices', NoticeController::class);
 });
 
 require __DIR__ . '/auth.php';
