@@ -51,9 +51,9 @@
 
         <div class="side-menu-bottom">
             <ul class="side-menu-list">
-                <li><a href="">日別計画表</a></li>
-                <li><a href="">質疑応答</a></li>
-                <li><a href="">日報作成</a></li>
+                <li><a class="calendar-list" href="">日別計画表</a></li>
+                <li><a class="question" href="">質疑応答</a></li>
+                <li><a class="report" href="">日報作成</a></li>
             </ul>
 
             <div class="logout-btn">
@@ -76,8 +76,8 @@
 
                 <div class="search">
                     <div class="search-container">
-                    <input class="search-text" type="text" placeholder="キーワード検索">
-                    <input class="submit" type="submit" value="">
+                        <input class="search-text" type="text" placeholder="キーワード検索">
+                        <input class="submit" type="submit" value="">
                     </div>
                 </div>
             </div>
@@ -137,7 +137,36 @@
 
     <!-- include(f_footer.blade.php) -->
     <footer>
-
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                </div>
+                <div class="footer-company-info">
+                    <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
+                    <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
+                    <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
+                </div>
+                <div class="footer-icons">
+                    <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
+                    <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                </div>
+            </div>
+            <div>
+                <ul class="footer-company-view">
+                    <li><a href="">講座情報</a></li>
+                    <li><a href="">講師紹介</a></li>
+                    <li><a href="">ダウンロード</a></li>
+                    <li><a href="">お問い合わせ</a></li>
+                    <li><a href="">本サイトについて</a></li>
+                    <li><a href="">受講規則</a></li>
+                    <li><a href="">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 qlip-compass. All rights reserved.</p>
+        </div>
     </footer>
     <!-- /include(f_footer.blade.php) -->
 

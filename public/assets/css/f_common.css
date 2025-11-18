@@ -83,11 +83,11 @@ header {
 }
 
 .gnav li a.study::before {
-    background: url(../images/icon/f_icon_search.svg) no-repeat;
+    background: url(../images/icon/f_icon_textbook3.svg) no-repeat;
 }
 
 .gnav li a.work::before {
-    background: url(../images/icon/f_icon_job2.svg) no-repeat;
+    background: url(../images/icon/f_icon_job1.svg) no-repeat;
 }
 
 .gnav li a.mypage::before {
@@ -351,7 +351,7 @@ header {
 }
 
 .side-menu-list li a.report::before {
-    background: url(../images/icon/f_icon_report.svg) no-repeat;
+    background: url(../images/icon/f_icon_report5.svg) no-repeat;
 }
 
 .logout-btn {
