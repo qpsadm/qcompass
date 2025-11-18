@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
+<div class="container mx-auto p-6 flex justify-center">
+    <!-- カード型 -->
+    <div class="bg-white rounded-lg shadow-md w-full max-w-md p-6">
     <h1 class="text-2xl font-bold mb-4">お知らせ作成</h1>
 
     @if ($errors->any())

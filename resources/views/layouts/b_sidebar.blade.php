@@ -51,7 +51,7 @@
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座一覧</a>
                         </li>
                         <li><a href="{{ route('admin.course_type.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座種類一覧</a>
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座分野一覧</a>
                         </li>
                         <li><a href="{{ route('admin.levels.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">質疑応答一覧</a>
