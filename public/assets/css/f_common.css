@@ -187,6 +187,106 @@ header {
     width: 100%;
 }
 
+.side-menu .contents-box {
+    padding: 15px;
+    background-color: var(--main-color);
+    border-radius: 15px;
+}
+
+.side-menu .calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    border-radius: 15px 15px 5px 5px;
+    background-color: var(--text-color-3);
+}
+
+.side-menu .calendar-data {
+    position: relative;
+    width: 190px;
+    height: 95px;
+}
+
+.side-menu .calendar-data .month,
+.side-menu .calendar-data .day,
+.side-menu .calendar-data .border,
+.side-menu .calendar-data .week {
+    position: absolute;
+}
+
+.side-menu .calendar-data .month {
+    top: 5px;
+    left: 0;
+    font-size: 45px;
+}
+
+.side-menu .calendar-data .day {
+    top: -22px;
+    right: 0;
+    font-size: 110px;
+}
+
+.side-menu .calendar-data .week {
+    bottom: 0;
+    left: 0;
+    color: var(--sub-color-3);
+    font-size: 40px;
+}
+
+.side-menu .calendar-data .border {
+    top: 14px;
+    left: 60px;
+    transform: rotate(30deg);
+    width: 3px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: var(--text-color-2);
+}
+
+.side-menu .countdown,
+.side-menu .today-short {
+    color: var(--text-color-3);
+    text-align: center;
+}
+
+.countdown-title,
+.today-short .short-title {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.countdown {
+    padding: 30px 0 20px;
+    border-bottom: 1px dashed var(--text-color-3);
+}
+
+.countdown-data {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.data-number {
+    font-size: 40px;
+}
+
+.data-sub-title {
+    font-size: 23px;
+}
+
+.today-short {
+    padding: 20px 0;
+}
+
+.today-short .short-text {
+    font-size: 23px;
+}
+
+
+
+
 .side-menu-list {
     display: flex;
     flex-direction: column;
@@ -196,13 +296,30 @@ header {
 
 .side-menu-list li {
     position: relative;
-    text-align: center;
+    width: 180px;
+    margin: 0 auto;
 }
 
 .side-menu-list li a {
+    position: relative;
+    margin-left: 20px;
+    padding: 15px 30px 15px;
     color: var(--text-color-1);
     font-size: 20px;
     font-weight: bold;
+}
+
+.side-menu-list li a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: url(../images/f_icon_test.svg) no-repeat;
+    background-size: 100%;
+    filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
 }
 
 .logout-btn {
@@ -278,6 +395,12 @@ main {
     padding: 75px 65px;
 }
 
+@media screen and (max-width: 1324px) {
+    main {
+        padding: 75px 15px 0;
+    }
+}
+
 
 
 /* =========================================
@@ -285,10 +408,102 @@ main {
 ========================================= */
 
 footer {
-    height: 100px;
     margin: 0 300px 15px 15px;
-    padding: 50px;
+    padding: 50px 65px;
     background-color: var(--footer-color);
+    color: var(--text-color-3);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--text-color-3);
+}
+
+.footer-logo {
+    margin-bottom: 40px;
+}
+
+.footer-company-info {
+    margin-bottom: 20px;
+}
+
+.footer-company-info p {
+    line-height: 23px;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-company-view {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 20px 50px;
+    position: relative;
+    margin-right: 80px;
+    padding-bottom: 30px;
+}
+
+.footer-company-view li:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.footer-company-view li:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.footer-company-view li:nth-child(3) {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.footer-company-view li:nth-child(4) {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.footer-company-view li:nth-child(5) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.footer-company-view li:nth-child(6) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.footer-company-view li:nth-child(7) {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.footer-container::after {
+    content: "";
+    background: url('../images/f_q_egg.png') no-repeat;
+    background-size: 100%;
+    width: 70px;
+    height: 90px;
+    bottom: 0px;
+    right: 20px;
+    position: absolute;
+}
+
+.copyright {
+    padding-top: 20px;
+    text-align: center;
+}
+
+@media screen and (max-width: 1324px) {
+    footer {
+        margin: 0 15px;
+    }
 }
 
 
@@ -374,4 +589,38 @@ input::placeholder {
     background-size: 35px;
     background-position: 50%;
     color: var(--text-color-3);
+}
+
+
+/* bread-crumbs
+------------------------------------- */
+
+.bread-crumbs {
+    margin: 0 300px 0 15px;
+    padding: 15px 65px;
+    background-color: var(--main-color);
+    color: var(--text-color-3);
+}
+
+.bread-crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.bread-crumbs li {
+    display: flex;
+    column-gap: 1px;
+    justify-content: center;
+    align-items: center;
+}
+
+.bread-crumbs li:not(:last-of-type)::after {
+    content: ">";
+    margin: 0 20px;
+}
+
+@media screen and (max-width: 1324px) {
+    .bread-crumbs {
+        margin: 0 15px;
+    }
 }
