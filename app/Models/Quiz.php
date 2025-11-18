@@ -12,8 +12,10 @@ class Quiz extends Model
 
     protected $fillable = ['code', 'title', 'description', 'course_id', 'agenda_id', 'type', 'time_limit', 'total_score', 'passing_score', 'random_order', 'active_from', 'active_to', 'created_by', 'deleted_at'];
     protected $casts = [
-        'type' => 'integer',         // INT型に対応
-        'random_order' => 'boolean',
+        'type' => 'integer',
+        'time_limit' => 'integer',
+        'total_score' => 'integer',
+        'passing_score' => 'integer',
         'active_from' => 'datetime',
         'active_to' => 'datetime',
     ];

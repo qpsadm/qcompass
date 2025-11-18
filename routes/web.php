@@ -93,15 +93,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     //クイズ関係
     Route::resource('quizzes', QuizController::class);
-    Route::resource('questions', QuestionController::class);
-
-    Route::get('quizzes', [QuizController::class, 'listForUser'])
-        ->name('quizzes.index');
-    Route::get('quizzes/{quiz}', [QuizController::class, 'takeQuiz']);
-    Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz']);
+    Route::get('quizzes/{quiz}/take', [QuizController::class, 'takeQuiz'])->name('quizzes.take');
+    Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz'])->name('quizzes.submit');
 
 
 
+    //悪魔合体
     Route::resource('quotes', QuoteController::class);
 });
 
