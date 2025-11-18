@@ -20,6 +20,7 @@
                 </form>
             </div>
 
+<<<<<<< HEAD
             {{-- カード風テーブル --}}
             <div class="bg-white shadow-md rounded-lg overflow-x-auto">
                 <table class="w-full table-auto border border-gray-200">
@@ -52,6 +53,36 @@
                                         class="text-green-600 hover:text-green-400">詳細</a>
                                     <a href="{{ route('admin.courses.edit', $Course->id) }}"
                                         class="text-blue-600 hover:text-blue-400">編集</a>
+=======
+        <table class="table-auto border-collapse border w-full">
+            <thead>
+                <tr>
+                    <th class="border px-4 py-2">講座コード</th>
+                    <th class="border px-4 py-2">分野</th>
+                    <th class="border px-4 py-2">種類</th>
+                    <th class="border px-4 py-2">主催者名</th>
+                    <th class="border px-4 py-2">講座名</th>
+                    <th class="border px-4 py-2">認定番号</th>
+                    <th class="border px-4 py-2">状態</th>
+                    <th class="border px-4 py-2">作成日</th>
+                    <th class="border px-4 py-2">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($courses as $Course)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $Course->course_code }}</td>
+                        <td class="border px-4 py-2">{{ $Course->courseType->name ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $Course->level->name ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $Course->organizer->name ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $Course->course_name }}</td>
+                        <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
+                        <td class="border px-4 py-2">{{ \App\Models\Course::STATUS[$Course->status] ?? '不明' }}</td>
+                        <td class="border px-4 py-2">{{ $Course->created_at->format('Y-m-d') }}</td>
+                        <td class="border px-4 py-2">
+                            <a href="{{ route('admin.courses.show', $Course->id) }}" class="text-green-600">詳細</a>
+                            <a href="{{ route('admin.courses.edit', $Course->id) }}" class="text-blue-600 ml-2">編集</a>
+>>>>>>> 047295209a8f311d8ebcbed3779e2ddeb40bf00a
 
                                     {{-- 統一削除モーダル --}}
                                     <div x-data="{ open: false }" x-cloak>

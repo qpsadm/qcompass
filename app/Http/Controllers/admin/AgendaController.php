@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
+use App\Models\AgendaFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Agenda;
@@ -59,9 +61,6 @@ class AgendaController extends Controller
         'address'
     ];
 
-
-
-
     /**
      * アジェンダ一覧
      */
@@ -88,11 +87,13 @@ class AgendaController extends Controller
             ->where('code', '!=', 'notice')
             ->get();
 
+        $agenda = new Agenda(); // 空のモデルを作成
+
         $categories = $this->buildCategoryOptions($rootCategories);
 
         $courses = Course::where('status', '1')->get(); // 表示フラグが立っている講座のみ
 
-        return view('admin.agendas.create', compact('categories', 'courses'));
+        return view('admin.agendas.create', compact('categories', 'courses', 'agenda'));
     }
 
     /**
@@ -289,5 +290,27 @@ class AgendaController extends Controller
         }
 
         return $options;
+    }
+
+
+    //ファイル関連
+    // CKEditor用画像アップロード
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('public/agenda_images', $filename);
+
+            $url = asset("storage/agenda_images/$filename");
+
+            return response()->json([
+                'uploaded' => 1,
+                'fileName' => $filename,
+                'url' => $url
+            ]);
+        }
+
+        return response()->json(['uploaded' => 0, 'error' => ['message' => 'Upload failed']]);
     }
 }

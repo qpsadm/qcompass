@@ -6,7 +6,7 @@
 
         <div class="bg-white p-6 rounded-lg shadow-md mb-6">
             <p class="mb-2"><span class="font-semibold">レベルコード:</span> {{ $Level->code }}</p>
-            <p><span class="font-semibold">難易度:</span> {{ $Level->name }}</p>
+            <p><span class="font-semibold">種類:</span> {{ $Level->name }}</p>
         </div>
 
         <div class="flex gap-2">

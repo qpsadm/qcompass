@@ -76,6 +76,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     //アジェンダ管理
     Route::resource('agendas', AgendaController::class);
+    // CKEditor画像アップロード用ルート
+    Route::post('agendas/upload', [AgendaController::class, 'uploadImage'])->name('agendas.upload');
+
+    //アジェンダ添付ファイル管理
+    Route::resource('agenda_files', App\Http\Controllers\Admin\AgendaFileController::class);
+
+
     // ゴミ箱一覧
     Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
     // 復元

@@ -46,7 +46,10 @@ class Agenda extends Model
     {
         return $this->belongsTo(User::class, 'updated_user_id');
     }
-
+    public function files()
+    {
+        return $this->hasMany(AgendaFile::class);
+    }
     // 講座との多対多
     public function courses()
     {
