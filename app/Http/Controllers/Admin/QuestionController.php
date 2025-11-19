@@ -11,12 +11,12 @@ class QuestionController extends Controller
     public function index()
     {
         $questions = Question::all();
-        return view('questions.index', compact('questions'));
+        return view('admin.questions.index', compact('questions'));
     }
 
     public function create()
     {
-        return view('questions.create');
+        return view('admin.questions.create');
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class QuestionController extends Controller
             'deleted_at' => 'nullable',
         ]);
         Question::create($validated);
-        return redirect()->route('questions.index')->with('success', 'Question作成完了');
+        return redirect()->route('admin.questions.index')->with('success', 'Question作成完了');
     }
 
     public function show($id)
@@ -63,12 +63,12 @@ class QuestionController extends Controller
             'deleted_at' => 'nullable',
         ]);
         $Question->update($validated);
-        return redirect()->route('questions.index')->with('success', 'Question更新完了');
+        return redirect()->route('admin.questions.index')->with('success', 'Question更新完了');
     }
 
     public function destroy($id)
     {
         Question::findOrFail($id)->delete();
-        return redirect()->route('questions.index')->with('success', 'Question削除完了');
+        return redirect()->route('admin.questions.index')->with('success', 'Question削除完了');
     }
 }

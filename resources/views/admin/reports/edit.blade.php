@@ -3,9 +3,10 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">日報作成</h1>
-            <form action="{{ route('reports.store') }}" method="POST">
+            <h1 class="text-2xl font-bold mb-4">日報編集</h1>
+            <form action="{{ route('admin.reports.update', $Report->id) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="mb-4">
                     <label class="block font-medium mb-1">提出者ID</label>
                     <input type="text" name="user_id" value="{{ old('user_id', $Report->user_id ?? '') }}"
@@ -65,7 +66,7 @@
                         class="border px-2 py-1 w-full rounded">
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">更新</button>
             </form>
         </div>
     @endsection

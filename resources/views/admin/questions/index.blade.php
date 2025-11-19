@@ -4,7 +4,7 @@
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-4">質問一覧</h1>
-            <a href="{{ route('questions.create') }}"
+            <a href="{{ route('admin.questions.create') }}"
                 class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
 
             <table class="table-auto border-collapse border w-full">
@@ -37,9 +37,10 @@
                             <td class='border px-4 py-2'>{{ $Question->deleted_at }}</td>
 
                             <td class='border px-4 py-2'>
-                                <a href="{{ route('questions.show', $Question->id) }}" class="text-green-600">詳細</a>
-                                <a href="{{ route('questions.edit', $Question->id) }}" class="text-blue-600 ml-2">編集</a>
-                                <form action="{{ route('questions.destroy', $Question->id) }}" method="POST"
+                                <a href="{{ route('admin.questions.show', $Question->id) }}" class="text-green-600">詳細</a>
+                                <a href="{{ route('admin.questions.edit', $Question->id) }}"
+                                    class="text-blue-600 ml-2">編集</a>
+                                <form action="{{ route('admin.questions.destroy', $Question->id) }}" method="POST"
                                     class="inline-block ml-2">
                                     @csrf
                                     @method('DELETE')

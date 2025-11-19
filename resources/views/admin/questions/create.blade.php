@@ -5,7 +5,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
 
             <h1 class="text-2xl font-bold mb-4">質問作成</h1>
-            <form action="{{ route('questions.store') }}" method="POST">
+            <form action="{{ route('admin.questions.store') }}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label class="block font-medium mb-1">質問者ID</label>

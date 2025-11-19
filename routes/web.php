@@ -20,6 +20,9 @@ use App\Http\Controllers\Admin\CourseTypeController;
 
 use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\QuestionController;
+
 
 // 公開ページ
 Route::get('/', function () {
@@ -56,6 +59,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('daily_quotes', DailyQuoteController::class);
     Route::resource('organizers', OrganizerController::class);
     Route::resource('notices', NoticeController::class); // お知らせアジェンダ管理
+    Route::resource('reports', ReportController::class);
+    Route::resource('questions', QuestionController::class);
 
     Route::resource('course_type', CourseTypeController::class);
 

@@ -4,7 +4,7 @@
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-4">質問編集</h1>
-            <form action="{{ route('questions.update', $Question->id) }}" method="POST">
+            <form action="{{ route('admin.questions.update', $Question->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="mb-4">
