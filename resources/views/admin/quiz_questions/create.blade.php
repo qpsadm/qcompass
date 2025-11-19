@@ -13,7 +13,7 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">問題文</label>
                     <input type="text" name="question_text" placeholder="問題文" required
-                        class="border px-3 py-2 w-full rounded">
+                        class="border px-3 py-2 w-1500 rounded">
                 </div>
 
                 {{-- 配点 --}}
@@ -43,7 +43,7 @@
                 </div>
 
                 {{-- 追加ボタン --}}
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded w-full hover:bg-green-600">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded w-80 hover:bg-green-600">
                     追加
                 </button>
             </form>

@@ -19,13 +19,13 @@
 
                 <div class="mb-4">
                     <label class="block font-medium mb-1">タイトル</label>
-                    <input type="text" name="title" value="{{ $quiz->title }}" class="border px-3 py-2 w-full rounded"
+                    <input type="text" name="title" value="{{ $quiz->title }}" class="border px-3 py-2 w-200 rounded"
                         required>
                 </div>
 
                 <div class="mb-4">
                     <label class="block font-medium mb-1">コース選択</label>
-                    <select name="course_id" class="border px-3 py-2 w-80 rounded">
+                    <select name="course_id" class="border px-3 py-2 w-100 rounded">
                         <option value="">コース選択</option>
                         @foreach ($courses as $course)
                             <option value="{{ $course->id }}" @selected($quiz->course_id == $course->id)>
@@ -44,7 +44,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded w-100 hover:bg-blue-600">
                     保存
                 </button>
             </form>
