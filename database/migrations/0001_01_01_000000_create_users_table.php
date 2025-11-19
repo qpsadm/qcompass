@@ -12,25 +12,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('code');
-            $table->string('name');
-            $table->string('furigana')->nullable();
-            $table->string('roman_name')->nullable();
-            $table->string('password');
-            $table->integer('role_id')->default(0);
-            $table->integer('courses_id')->default(0);
-            $table->string('remember_token', 100)->nullable();
-            $table->string('email')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->id()->comment('主キー');
+            $table->string('code', 255)->comment('ユーザーコード');
+            $table->string('name', 255)->comment('ユーザー名');
+            $table->string('furigana', 100)->nullable()->comment('フリガナ');
+            $table->string('roman_name', 255)->nullable()->comment('ローマ字');
+            $table->string('password', 255)->comment('パスワード');
+            $table->integer('role_id')->comment('権限');
+            $table->integer('division_id')->nullable()->comment('所属部署');
+            $table->integer('courses_id')->nullable()->comment('講座ID');
+            $table->string('remember_token', 100)->nullable()->comment('ログイン保持トークン');
+            $table->string('email', 255)->unique()->comment('メールアドレス');
+            $table->timestamp('email_verified_at')->nullable()->comment('メール確認日時');
+            $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
-            $table->integer('created_user_id')->nullable();
-            $table->integer('updated_user_id')->nullable();
-            $table->timestamp('deleted_at')->nullable();
-            $table->integer('deleted_user_id')->nullable();
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
+            $table->softDeletes(); // deleted_at
 
-            // Laravel 標準のタイムスタンプ
-            $table->timestamps();
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            $table->comment('ユーザーマスタ');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

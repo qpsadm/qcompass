@@ -9,18 +9,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('asker_id');
-            $table->bigInteger('agenda_id')->nullable();
-            $table->bigInteger('course_id')->nullable();
-            $table->string('title', 255); // varchar → string
-            $table->bigInteger('responder_id');
-            $table->text('content');
-            $table->text('answer');
-            $table->boolean('is_show')->default(true);
 
-            $table->timestamps();    // created_at, updated_at
-            $table->softDeletes();   // deleted_at
+            $table->id()->comment('主キー');
+            $table->unsignedBigInteger('course_id')->comment('講座ID');
+            $table->string('title', 255)->comment('質問タイトル');
+            $table->unsignedBigInteger('responder_id')->nullable()->comment('回答者（講師）ID');
+            $table->string('content', 512)->comment('質問内容');
+            $table->text('answer')->nullable()->comment('回答内容');
+            $table->boolean('is_show')->default(true)->comment('表示フラグ');
+
+            // Laravel 管理
+            $table->timestamps();
+            $table->softDeletes();
+
+            // 作成者・更新者・削除者
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            // 外部キー
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('responder_id')->references('id')->on('users')->onDelete('set null');
+
+            $table->comment('質問マスタ');
         });
     }
 

@@ -8,18 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('levels', function (Blueprint $table) {
+        Schema::create('themes', function (Blueprint $table) {
             $table->id()->comment('主キー');
-            $table->string('code', 50)->unique()->comment('レベルコード');
-            $table->string('name', 255)->comment('名前');
+            $table->string('code', 50)->comment('テーマコード');
+            $table->string('name', 100)->comment('テーマ名');
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
-            $table->comment('講座レベルマスタ');
+            $table->comment('テーママスタ');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists('themes');
     }
 };

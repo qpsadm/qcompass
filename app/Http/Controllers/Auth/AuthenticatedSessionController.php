@@ -47,11 +47,11 @@ class AuthenticatedSessionController extends Controller
         }
 
         // 選択されたコースが所属コースか判定
-        if (!$user->courses->contains('id', $request->course_id)) {
-            return back()->withErrors([
-                'course_id' => 'このユーザーは選択されたコースに所属していません。',
-            ])->onlyInput('course_id');
-        }
+        // if (!$user->courses->contains('id', $request->course_id)) {
+        //     return back()->withErrors([
+        //         'course_id' => 'このユーザーは選択されたコースに所属していません。',
+        //     ])->onlyInput('course_id');
+        // }
 
         // ログイン成功
         Auth::login($user, $request->filled('remember'));

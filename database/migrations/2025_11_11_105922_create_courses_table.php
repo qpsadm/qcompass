@@ -9,43 +9,51 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->id();
-            $table->string('course_code', 50);
-            $table->integer('course_type_ID');
-            $table->integer('Level_id')->nullable();
-            $table->string('organizer_id')->nullable();
-            $table->string('course_name', 255);
-            $table->string('venue', 255)->nullable();
-            $table->date('application_date')->nullable();
-            $table->date('certification_date')->nullable();
-            $table->string('certification_number', 100)->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->integer('total_hours')->nullable();
-            $table->integer('periods')->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('finish_time')->nullable();
-            $table->date('start_viewing')->nullable();
-            $table->date('finish_viewing')->nullable();
-            $table->string('plan_path', 255)->nullable();
-            $table->string('flier_path', 255)->nullable();
-            $table->integer('capacity')->nullable();
-            $table->integer('entering')->nullable();
-            $table->integer('completed')->nullable();
-            $table->text('description')->nullable();
-            $table->tinyInteger('status')
-                ->default(0)
-                ->comment('0: draft, 1: published, 2: archived');
 
+            $table->id()->comment('主キー');
+            $table->string('course_code', 50)->comment('講座コード');
+            $table->unsignedBigInteger('course_type_id')->comment('講座分野');
+            $table->unsignedBigInteger('level_id')->comment('講座種類');
+            $table->unsignedBigInteger('organizer_id')->comment('実施主体ID');
+            $table->string('course_name', 255)->comment('講座名');
+            $table->string('venue', 255)->nullable()->comment('実施会場');
+            $table->date('application_date')->nullable()->comment('申請日');
+            $table->date('certification_date')->nullable()->comment('認定日');
+            $table->string('certification_number', 100)->nullable()->comment('認定番号');
+            $table->date('start_date')->nullable()->comment('開始日');
+            $table->date('end_date')->nullable()->comment('終了日');
+            $table->integer('total_hours')->nullable()->comment('総授業時間');
+            $table->integer('periods')->nullable()->comment('時限数');
+            $table->time('start_time')->nullable()->comment('開始時間');
+            $table->time('finish_time')->nullable()->comment('終了時間');
+            $table->date('start_viewing')->nullable()->comment('閲覧期間開始');
+            $table->date('finish_viewing')->nullable()->comment('閲覧期間終了');
+            $table->string('plan_path', 255)->nullable()->comment('日別計画書のパス');
+            $table->string('flier_path', 255)->nullable()->comment('フライヤーのパス');
+            $table->integer('capacity')->nullable()->comment('定員数');
+            $table->integer('entering')->nullable()->comment('入校数');
+            $table->integer('completed')->nullable()->comment('修了数');
+            $table->text('description')->nullable()->comment('概要・説明');
+            $table->string('mail_address', 255)->nullable()->comment('日報送信宛先');
+            $table->string('cc_address', 255)->nullable()->comment('日報送信CC');
+            $table->enum('status', ['draft', 'open', 'closed'])->default('draft')->comment('状態');
+            $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
-            // 作成・更新・削除日時
-            $table->timestamps();       // created_at, updated_at
-            $table->softDeletes();      // deleted_at
+            // Laravel管理
+            $table->timestamps();
+            $table->softDeletes();
 
             // 作成者・更新者・削除者
-            $table->unsignedBigInteger('created_user_id')->nullable();
-            $table->unsignedBigInteger('updated_user_id')->nullable();
-            $table->unsignedBigInteger('deleted_user_id')->nullable();
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            // 外部キー制約
+            $table->foreign('course_type_id')->references('id')->on('course_types')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
+            $table->foreign('organizer_id')->references('id')->on('organizers')->onDelete('cascade');
+
+            $table->comment('講座マスタ');
         });
     }
 

@@ -9,10 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('course_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 255)->nullable();
+            $table->id()->comment('主キー');
+            $table->integer('organizer_id')->comment('実施主体ID');
+            $table->string('name', 255)->comment('名前');
+            $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
-            $table->timestamps();
+            $table->comment('講座分野マスタ');
         });
     }
 

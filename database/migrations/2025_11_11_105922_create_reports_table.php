@@ -9,21 +9,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
-            $table->integer('course_id')->nullable();
-            $table->date('date');
-            $table->text('title');
-            $table->text('content');
-            $table->text('impression');
-            $table->text('notice')->nullable();
-            $table->integer('created_user_id')->nullable();
-            $table->integer('updated_user_id')->nullable();
-            $table->integer('deleted_user_id')->nullable();
-            $table->timestamp('deleted_at')->nullable();
 
-            // ここで created_at と updated_at が自動作成される
+            $table->id()->comment('主キー');
+            $table->unsignedBigInteger('user_id')->comment('提出者ID');
+            $table->unsignedBigInteger('course_id')->comment('講座ID');
+            $table->date('date')->comment('日報対象日');
+            $table->string('title', 100)->comment('タイトル');
+            $table->text('content')->nullable()->comment('日報');
+            $table->text('impression')->nullable()->comment('感想・気付き・質問');
+            $table->text('notice')->nullable()->comment('連絡事項');
+
+            // Laravel管理
             $table->timestamps();
+            $table->softDeletes();
+
+            // 作成者・更新者・削除者
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            // 外部キー
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
+            $table->comment('日報マスタ');
         });
     }
 

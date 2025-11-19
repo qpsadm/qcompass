@@ -11,8 +11,6 @@ return new class extends Migration
         Schema::create('files_counts', function (Blueprint $table) {
             $table->id();
             $table->integer('count')->default('1000');
-
-            $table->timestamps();
         });
     }
 
