@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 pb-24">
-        <h1 class="text-2xl font-bold mb-6">開催者一覧</h1>
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">        <h1 class="text-2xl font-bold mb-6">開催者一覧</h1>
 
         {{-- 新規作成ボタン --}}
         <a href="{{ route('admin.organizers.create') }}"

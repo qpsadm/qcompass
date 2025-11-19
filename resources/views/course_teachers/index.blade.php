@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold mb-4">講座講師一覧</h1>
         <a href="{{ route('course_teachers.create') }}"
             class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
