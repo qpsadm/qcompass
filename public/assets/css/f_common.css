@@ -419,11 +419,10 @@ header {
     main
 ========================================= */
 
-main {
-    padding: 75px 300px 0 15px;
-}
+main {}
 
 .container {
+    margin: 75px 300px 0 15px;
     padding: 75px 65px;
 }
 
@@ -557,7 +556,7 @@ footer {
     position: relative;
     margin-bottom: 50px;
     padding-bottom: 10px;
-    border-bottom: 1px dashed var(--main-color);
+    border-bottom: 1px solid var(--main-color);
 }
 
 .page-title h2,
@@ -751,4 +750,12 @@ input::placeholder {
     .bread-crumbs {
         margin: 0 15px;
     }
+}
+
+
+
+.page-content a:hover,
+.news-list a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
 }

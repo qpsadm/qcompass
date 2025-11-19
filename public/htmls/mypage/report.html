@@ -12,7 +12,7 @@
 
     <!-- yield(page_css.blade.php) -->
     <link rel="stylesheet" href="../../assets/css/f_page.css">
-    <link rel="stylesheet" href="../../assets/css/f_test.css">
+    <link rel="stylesheet" href="../../assets/css/f_form.css">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
 
             <!-- responsive -->
             <div class="site-logo">
-                <img src="../../assets/images/f_site-logo_test.svg" alt="">
+                <img src="../../assets/images/f_site-logo.svg" alt="">
             </div>
             <div class="hamburger-btn">
                 <span></span>
@@ -41,7 +41,7 @@
     <div class="side-menu">
         <div class="side-menu-top">
             <div class="site-logo">
-                <img src="../../assets/images/f_site-logo_test.svg" alt="">
+                <img src="../../assets/images/f_site-logo.svg" alt="">
             </div>
 
             <div class="contents-box">
@@ -100,20 +100,20 @@
             <!-- /include(f_page_title.blade.php) -->
 
             <div class="page-content">
-                <form class="reportform">
+                <form class="report-form">
                     <div class="form-item">
                         <div class="item-label">
                             <label for="name">氏名</label>
                             <span class="required">必須</span>
                         </div>
-                        <input type="text" id="name" placeholder="クリップ　太郎" required>
+                        <input type="text" id="name" value="クリップ　太郎" required readonly>
                     </div>
                     <div class="form-item">
                         <div class="item-label">
                             <label for="name">メールアドレス</label>
                             <span class="required">必須</span>
                         </div>
-                        <input type="text" id="mail" placeholder="user@domain.com" required>
+                        <input type="text" id="mail" value="user@domain.com" required readonly>
                     </div>
                     <div class="form-item">
                         <div class="item-label">
@@ -127,28 +127,29 @@
                             <label for="name">日報</label>
                             <span class="required">必須</span>
                         </div>
-                        <textarea name="" id="daily-report-input" placeholder="本日の講習で学んだ内容や報告したい内容をご記入ください。" required></textarea>
+                        <textarea name="" id="daily-report-input" rows="6" placeholder="本日の講習で学んだ内容や報告したい内容をご記入ください。" required></textarea>
                     </div>
                     <div class="form-item">
                         <div class="item-label">
                             <label for="name">感想・気づき・質問</label>
                             <span class="required">必須</span>
                         </div>
-                        <textarea name="" id="impression" placeholder="本日の講習で良かったと思ったこと、反省点または気づいたこと等をご記入ください。" required></textarea>
+                        <textarea name="" id="impression" rows="6" placeholder="本日の講習で良かったと思ったこと、反省点または気づいたこと等をご記入ください。" required></textarea>
                     </div>
                     <div class="form-item">
                         <div class="item-label">
                             <label for="name">連絡事項</label>
                         </div>
-                        <textarea name="" id="message" placeholder="個人情報が変更された時に、また前もって分かったお休みなどの連絡事項をご記入ください。"></textarea>
+                        <textarea name="" id="message" rows="6" placeholder="個人情報が変更された時に、また前もって分かったお休みなどの連絡事項をご記入ください。"></textarea>
                     </div>
 
                     <div class="privacy-policy">
                         <p>【個人情報保護方針】</p>
                         <p>下記のリンクから【個人情報保護方針】を確認してください。</p>
-                        <p><a href="">個人情報保護方針を確認する</a></p>
-                        <button type="submit" class="privacy-policy-button"><a href="">個人情報保護方針に同意して送信</a></button>
+                        <p><a href="../privacy.html" target="_blank">個人情報保護方針を確認する</a></p>
                     </div>
+
+                    <button type="submit" class="privacy-policy-button"><a href="">個人情報保護方針に同意して送信</a></button>
                 </form>
             </div>
         </div>
@@ -158,7 +159,7 @@
         <ol>
             <li><a href="">ホーム</a></li>
             <li><a href="">マイページ</a></li>
-            <li><a href="">日報入力ホーム</a></li>
+            <li><a href="">日報入力フォーム</a></li>
         </ol>
     </div>
 
