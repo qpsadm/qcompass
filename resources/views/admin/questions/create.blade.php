@@ -2,52 +2,91 @@
 
 @section('content')
     <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
 
-            <h1 class="text-2xl font-bold mb-4">質問作成</h1>
+            <h1 class="text-2xl font-bold mb-6">質問作成</h1>
+
             <form action="{{ route('admin.questions.store') }}" method="POST">
                 @csrf
-                
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">講座ID</label>
-                    <input type="text" name="course_id" value="{{ old('course_id', $Question->course_id ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">質問タイトル</label>
-                    <input type="text" name="title" value="{{ old('title', $Question->title ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">回答講師ID</label>
-                    <input type="text" name="responder_id"
-                        value="{{ old('responder_id', $Question->responder_id ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">質問内容
 
-                    </label>
-                    <input type="text" name="content" value="{{ old('content', $Question->content ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">回答内容</label>
-                    <input type="text" name="answer" value="{{ old('answer', $Question->answer ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">公開/非公開</label>
-                    <input type="text" name="is_show" value="{{ old('is_show', $Question->is_show ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">削除日</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Question->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
+                {{-- 講座選択 --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">講座</label>
+                    <select name="course_id"
+                        class="w-[400px] border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">
+                        <option value="">選択してください</option>
+                        @foreach ($courses as $course)
+                            <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                {{ $course->course_name }} ({{ $course->course_code }})
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
+                {{-- 質問タイトル --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">質問タイトル</label>
+                    <input type="text" name="title" value="{{ old('title') }}"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">
+                </div>
+
+                {{-- 回答講師ID --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">回答講師ID</label>
+                    <input type="text" name="responder_id" value="{{ old('responder_id') }}"
+                        class="w-[150px] border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">
+                </div>
+
+                {{-- 質問内容 --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">質問内容</label>
+                    <textarea name="content" rows="3"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">{{ old('content') }}</textarea>
+                </div>
+
+                {{-- 回答内容 --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">回答内容</label>
+                    <textarea name="answer" rows="3"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">{{ old('answer') }}</textarea>
+                </div>
+
+                {{-- 公開/非公開 --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">公開 / 非公開</label>
+                    <select name="is_show"
+                        class="w-[200px] border border-gray-300 rounded-md px-3 py-2
+               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+               outline-none focus:outline-none">
+                        <option value="">選択してください</option>
+                        <option value="1" {{ old('is_show') == '1' ? 'selected' : '' }}>公開</option>
+                        <option value="0" {{ old('is_show') == '0' ? 'selected' : '' }}>非公開</option>
+                    </select>
+                </div>
+
+                {{-- 削除日 --}}
+                <div class="mb-5">
+                    <label class="block text-gray-700 font-semibold mb-2">削除日</label>
+                    <input type="date" name="deleted_at" value="{{ old('deleted_at') }}"
+                        class="w-[200px] border border-gray-300 rounded-md px-3 py-2
+                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                           outline-none focus:outline-none">
+                </div>
+
+                <button type="submit" class="bg-blue-500 text-white px-5 py-2 rounded shadow hover:bg-blue-600 transition">
+                    保存
+                </button>
             </form>
         </div>
-    @endsection
+    </div>
+@endsection
