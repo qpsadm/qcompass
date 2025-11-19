@@ -63,11 +63,15 @@
 
                 {{-- 公開/非公開 --}}
                 <div class="mb-5">
-                    <label class="block text-gray-700 font-semibold mb-2">公開/非公開</label>
-                    <input type="text" name="is_show" value="{{ old('is_show') }}"
+                    <label class="block text-gray-700 font-semibold mb-2">公開 / 非公開</label>
+                    <select name="is_show"
                         class="w-[200px] border border-gray-300 rounded-md px-3 py-2
-                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                           outline-none focus:outline-none">
+               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+               outline-none focus:outline-none">
+                        <option value="">選択してください</option>
+                        <option value="1" {{ old('is_show') == '1' ? 'selected' : '' }}>公開</option>
+                        <option value="0" {{ old('is_show') == '0' ? 'selected' : '' }}>非公開</option>
+                    </select>
                 </div>
 
                 {{-- 削除日 --}}
