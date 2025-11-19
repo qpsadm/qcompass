@@ -14,13 +14,13 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">講座コード</label>
                     <input type="text" name="course_code" value="{{ old('course_code', $Course->course_code) }}"
-                        class="border px-2 py-1 w-full rounded">
+                        class="border px-2 py-1 w-300 rounded">
                 </div>
 
                 {{-- 講座分野 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">講座分野</label>
-                    <select name="course_type_ID" class="border px-2 py-1 w-full rounded" required>
+                    <select name="course_type_ID" class="border px-2 py-1 w-100 rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($courseTypes as $type)
                             <option value="{{ $type->id }}"
@@ -34,7 +34,7 @@
                 {{-- 講座種類（難易度） --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">講座種類</label>
-                    <select name="Level_id" class="border px-2 py-1 w-full rounded" required>
+                    <select name="Level_id" class="border px-2 py-1 w-250 rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($levels as $level)
                             <option value="{{ $level->id }}"
@@ -48,7 +48,7 @@
                 {{-- 主催者 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">主催者</label>
-                    <select name="organizer_id" class="border px-2 py-1 w-full rounded" required>
+                    <select name="organizer_id" class="border px-2 py-1 w-500 rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($organizers as $org)
                             <option value="{{ $org->id }}"
@@ -63,14 +63,14 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">講座名</label>
                     <input type="text" name="course_name" value="{{ old('course_name', $Course->course_name) }}"
-                        class="border px-2 py-1 w-full rounded">
+                        class="border px-2 py-1 w-1500 rounded">
                 </div>
 
                 {{-- 開催会場 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">実施会場</label>
                     <input type="text" name="venue" value="{{ old('venue', $Course->venue) }}"
-                        class="border px-2 py-1 w-full rounded">
+                        class="border px-2 py-1 w-500 rounded">
                 </div>
 
                 {{-- 開始日・終了日 --}}
@@ -119,8 +119,8 @@
                 <div class="mb-4 flex gap-4">
                     <div>
                         <label class="block font-medium mb-1">閲覧開始</label>
-                        <input type="date" name="start_viewing" value="{{ old('start_viewing', $Course->start_viewing) }}"
-                            class="border px-2 py-1 rounded">
+                        <input type="date" name="start_viewing"
+                            value="{{ old('start_viewing', $Course->start_viewing) }}" class="border px-2 py-1 rounded">
                     </div>
                     <div>
                         <label class="block font-medium mb-1">閲覧終了</label>
@@ -172,14 +172,16 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">状態</label>
                     <input type="text" name="status" value="{{ old('status', $Course->status) }}"
-                        class="border px-2 py-1 w-full rounded">
+                        class="border px-2 py-1 w-50 rounded">
                 </div>
 
                 <div class="flex gap-2 mb-8">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">更新</button>
-                    <a href="{{ route('admin.courses.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">一覧に戻る</a>
+                    <button type="submit"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">更新</button>
+                    <a href="{{ route('admin.courses.index') }}"
+                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">一覧に戻る</a>
                 </div>
             </form>
         </div>
-        </div>
+    </div>
 @endsection

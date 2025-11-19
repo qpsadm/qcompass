@@ -11,7 +11,7 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">開催者名</label>
                     <input type="text" name="name" value="{{ old('name', $Organizer->name ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
+                        class="border px-2 py-1 w-500 rounded">
                 </div>
 
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
