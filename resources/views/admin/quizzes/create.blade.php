@@ -40,7 +40,7 @@
                 </div>
 
                 {{-- 作成ボタン --}}
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-150">
                     作成
                 </button>
             </form>

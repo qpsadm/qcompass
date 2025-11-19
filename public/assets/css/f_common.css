@@ -560,14 +560,16 @@ footer {
     border-bottom: 1px dashed var(--main-color);
 }
 
-.page-title h2 {
+.page-title h2,
+.contents-box .box-title {
     position: relative;
     padding-left: 33px;
     font-size: 26px;
     font-weight: bold;
 }
 
-.page-title h2::before {
+.page-title h2::before,
+.contents-box .box-title::before {
     content: "";
     position: absolute;
     top: 5px;
@@ -577,7 +579,8 @@ footer {
     background-color: #74A0FF;
 }
 
-.page-title h2::after {
+.page-title h2::after,
+.contents-box .box-title::after {
     content: "";
     position: absolute;
     top: 18px;
@@ -587,6 +590,89 @@ footer {
     background-color: #3AB5DE;
 }
 
+
+/* page-content
+------------------------------------- */
+
+.page-content h3 {
+    position: relative;
+    padding-left: 23px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.page-content h3::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: #74A0FF;
+}
+
+.page-content .file-pdf {
+    border-bottom: 1px dashed var(--main-color);
+}
+
+
+/* kv
+------------------------------------- */
+
+.kv {
+    margin-bottom: 45px;
+    border-radius: 15px;
+}
+
+.kv video {
+    width: 100%;
+}
+
+
+/* contents-box
+------------------------------------- */
+
+.contents-boxs {
+    display: flex;
+    gap: 40px;
+}
+
+.box-child {
+    flex: 1;
+}
+
+.contents-box {
+    margin-bottom: 30px;
+    padding: 35px;
+    background-color: var(--sub-color-2);
+    border-radius: 15px;
+}
+
+.contents-box .box-title {
+    margin-bottom: 40px;
+}
+
+.contents-box .news-list {
+    margin-left: 35px;
+}
+
+.more-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.more-btn a {
+    display: block;
+    width: 100px;
+    padding: 7px 0;
+    border-radius: 10px;
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    font-size: 16px;
+    text-align: center;
+}
 
 /* search
 ------------------------------------- */
@@ -622,9 +708,9 @@ input::placeholder {
     padding: 10px;
     border-radius: 8px;
     background-color: var(--accent-color);
-    background-image: url(../images/icon/f_icon_textbook.svg);
+    background-image: url(../images/icon/f_icon_search.svg);
     background-repeat: no-repeat;
-    background-size: 35px;
+    background-size: 27px;
     background-position: 50%;
     color: var(--text-color-3);
 }
