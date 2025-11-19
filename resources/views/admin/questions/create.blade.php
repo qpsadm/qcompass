@@ -7,16 +7,7 @@
             <h1 class="text-2xl font-bold mb-4">質問作成</h1>
             <form action="{{ route('admin.questions.store') }}" method="POST">
                 @csrf
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">質問者ID</label>
-                    <input type="text" name="asker_id" value="{{ old('asker_id', $Question->asker_id ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">関連アジェンダID</label>
-                    <input type="text" name="agenda_id" value="{{ old('agenda_id', $Question->agenda_id ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
+                
                 <div class="mb-4">
                     <label class="block font-medium mb-1">講座ID</label>
                     <input type="text" name="course_id" value="{{ old('course_id', $Question->course_id ?? '') }}"
