@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイページ | QLIP-Compass</title>
+    <title>新着情報一覧 | QLIP-Compass</title>
 
     <!-- include(f_common_css.blade.php) -->
-    <link rel="stylesheet" href="../assets/css/reset.css">
-    <link rel="stylesheet" href="../assets/css/f_variable.css">
-    <link rel="stylesheet" href="../assets/css/f_common.css">
+    <link rel="stylesheet" href="../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../assets/css/f_variable.css">
+    <link rel="stylesheet" href="../../assets/css/f_common.css">
 
     <!-- yield(page_css.blade.php) -->
-    <link rel="stylesheet" href="../assets/css/f_page.css">
+    <link rel="stylesheet" href="../../assets/css/f_page.css">
 </head>
 <body>
 
@@ -19,17 +19,17 @@
     <header>
         <div class="header-container">
             <ul class="gnav">
-                <li><a class="home" href="top.html">ホーム</a></li>
-                <li><a class="news" href="news_list.html">お知らせ</a></li>
-                <li><a class="agenda" href="agenda_list.html">アジェンダ</a></li>
-                <li><a class="study" href="study_qa_list.html">学習支援</a></li>
-                <li><a class="work" href="support_offer_list.html">就職支援</a></li>
-                <li class="active"><a class="mypage" href="mypage.html">マイページ</a></li>
+                <li><a class="home" href="../top.html">ホーム</a></li>
+                <li class="active"><a class="news" href="news_list_all.html">お知らせ</a></li>
+                <li><a class="agenda" href="../agenda/agenda_list.html">アジェンダ</a></li>
+                <li><a class="study" href="../study/study_qa_list.html">学習支援</a></li>
+                <li><a class="work" href="../support/support_offer_list.html">就職支援</a></li>
+                <li><a class="mypage" href="../mypage/mypage.html">マイページ</a></li>
             </ul>
 
             <!-- responsive -->
             <div class="site-logo">
-                <img src="../assets/images/f_site-logo_test.svg" alt="">
+                <img src="../../assets/images/f_site-logo_test.svg" alt="">
             </div>
             <div class="hamburger-btn">
                 <span></span>
@@ -40,7 +40,7 @@
     <div class="side-menu">
         <div class="side-menu-top">
             <div class="site-logo">
-                <img src="../assets/images/f_site-logo_test.svg" alt="">
+                <img src="../../assets/images/f_site-logo_test.svg" alt="">
             </div>
 
             <div class="contents-box">
@@ -74,8 +74,8 @@
         <div class="side-menu-bottom">
             <ul class="side-menu-list">
                 <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
-                <li><a class="question" href="study_qa_list.html">質疑応答</a></li>
-                <li><a class="report" href="report.html">日報作成</a></li>
+                <li><a class="question" href="../study/study_qa_list.html">質疑応答</a></li>
+                <li><a class="report" href="../mypage/report.html">日報作成</a></li>
             </ul>
 
             <div class="logout-btn">
@@ -94,17 +94,52 @@
 
             <!-- include(f_page_title.blade.php) -->
             <div class="page-title">
-                <h2>マイページ</h2>
+                <h2>新着情報一覧</h2>
+
+                <div class="search">
+                    <div class="search-container">
+                        <input class="search-text" type="text" placeholder="キーワード検索">
+                        <input class="submit" type="submit" value="">
+                    </div>
+                </div>
             </div>
             <!-- /include(f_page_title.blade.php) -->
 
+            <!-- include(f_category_menu.blade.php) -->
+            <div class="category-menu">
+                <ul>
+                    <li class=""><a href="news_list_all.html">ALL</a></li>
+                    <li class=""><a href="news_list_main.html">訓練校に関するお知らせ</a></li>
+                    <li class="active"><a href="news_list_websys.html">本講座に関するお知らせ</a></li>
+                </ul>
+            </div>
+            <!-- /include(f_category_menu.blade.php) -->
+
+            <div class="news-list">
+                <table>
+                    <tr>
+                        <td class="date">2025/10/29</td>
+                        <td>
+                            <p class="category category-news">webシステム</p>
+                        </td>
+                        <td class="title"><a href="">明日（11/20）休講のお知らせ</a></td>
+                    </tr>
+                    <tr>
+                        <td class="date">2025/10/22</td>
+                        <td>
+                            <p class="category category-news">webシステム</p>
+                        </td>
+                        <td class="title"><a href="news_info.html">第2回キャリアコンサルティングについて</a></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </main>
 
     <div class="bread-crumbs">
         <ol>
             <li><a href="">ホーム</a></li>
-            <li><a href="">マイページ</a></li>
+            <li><a href="">お知らせ</a></li>
         </ol>
     </div>
 
@@ -113,7 +148,7 @@
         <div class="footer-container">
             <div class="footer-info">
                 <div class="footer-logo">
-                    <img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                    <img src="../../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
                 </div>
                 <div class="footer-company-info">
                     <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
@@ -121,8 +156,8 @@
                     <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
                 </div>
                 <div class="footer-icons">
-                    <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
-                    <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                    <img src="../../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
+                    <img src="../../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
                 </div>
             </div>
             <div>
@@ -144,8 +179,8 @@
     <!-- /include(f_footer.blade.php) -->
 
     <!-- include(f_common_js.blade.php) -->
-    <script src="../assets/js/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/f_common.js"></script>
+    <script src="../../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../../assets/js/f_common.js"></script>
 
     <!-- yield(page_js.blade.php) -->
 

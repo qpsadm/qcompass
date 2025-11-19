@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日報入力フォーム | QLIP-Compass</title>
+
+    <!-- include(f_common_css.blade.php) -->
+    <link rel="stylesheet" href="../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../assets/css/f_variable.css">
+    <link rel="stylesheet" href="../../assets/css/f_common.css">
+
+    <!-- yield(page_css.blade.php) -->
+    <link rel="stylesheet" href="../../assets/css/f_page.css">
+    <link rel="stylesheet" href="../../assets/css/f_test.css">
+</head>
+<body>
+
+    <!-- include(f_frame.blade.php) -->
+    <header>
+        <div class="header-container">
+            <ul class="gnav">
+                <li><a class="home" href="../top.html">ホーム</a></li>
+                <li><a class="news" href="../news/news_list_all.html">お知らせ</a></li>
+                <li><a class="agenda" href="../agenda/agenda_list.html">アジェンダ</a></li>
+                <li><a class="study" href="../study/study_qa_list.html">学習支援</a></li>
+                <li><a class="work" href="../support/support_offer_list.html">就職支援</a></li>
+                <li class="active"><a class="mypage" href="mypage.html">マイページ</a></li>
+            </ul>
+
+            <!-- responsive -->
+            <div class="site-logo">
+                <img src="../../assets/images/f_site-logo_test.svg" alt="">
+            </div>
+            <div class="hamburger-btn">
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="side-menu">
+        <div class="side-menu-top">
+            <div class="site-logo">
+                <img src="../../assets/images/f_site-logo_test.svg" alt="">
+            </div>
+
+            <div class="contents-box">
+
+                <div class="calendar">
+                    <div class="calendar-data">
+                        <div class="month">12</div>
+                        <div class="day">29</div>
+                        <span class="border"></span>
+                        <div class="week">WED</div>
+                    </div>
+                </div>
+
+                <div class="countdown">
+                    <p class="countdown-title">修了まであと…</p>
+                    <div class="countdown-data">
+                        <span class="data-number">108</span>
+                        <span class="data-sub-title">日</span>
+                    </div>
+                </div>
+
+                <div class="today-short">
+                    <p class="short-title">今日のひとこと</p>
+                    <span class="short-text">"シンプルこそ究極の洗練なり"</span>
+                    <span>ダビンチ</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="side-menu-bottom">
+            <ul class="side-menu-list">
+                <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
+                <li><a class="question" href="../study/study_qa_list.html">質疑応答</a></li>
+                <li><a class="report" href="report.html">日報作成</a></li>
+            </ul>
+
+            <div class="logout-btn">
+                <a href="">ログアウト</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="frame-right"></div>
+    <div class="frame-bottom"></div>
+    <div class="frame-left"></div>
+    <!-- /include(f_frame.blade.php) -->
+
+    <main>
+        <div class="container">
+
+            <!-- include(f_page_title.blade.php) -->
+            <div class="page-title">
+                <h2>日報入力フォーム</h2>
+            </div>
+            <!-- /include(f_page_title.blade.php) -->
+
+            <div class="page-content">
+                <form class="reportform">
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">氏名</label>
+                            <span class="required">必須</span>
+                        </div>
+                        <input type="text" id="name" placeholder="クリップ　太郎" required>
+                    </div>
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">メールアドレス</label>
+                            <span class="required">必須</span>
+                        </div>
+                        <input type="text" id="mail" placeholder="user@domain.com" required>
+                    </div>
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">報告日</label>
+                            <span class="required">必須</span>
+                        </div>
+                        <input type="date" id="date" placeholder="date" required>
+                    </div>
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">日報</label>
+                            <span class="required">必須</span>
+                        </div>
+                        <textarea name="" id="daily-report-input" placeholder="本日の講習で学んだ内容や報告したい内容をご記入ください。" required></textarea>
+                    </div>
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">感想・気づき・質問</label>
+                            <span class="required">必須</span>
+                        </div>
+                        <textarea name="" id="impression" placeholder="本日の講習で良かったと思ったこと、反省点または気づいたこと等をご記入ください。" required></textarea>
+                    </div>
+                    <div class="form-item">
+                        <div class="item-label">
+                            <label for="name">連絡事項</label>
+                        </div>
+                        <textarea name="" id="message" placeholder="個人情報が変更された時に、また前もって分かったお休みなどの連絡事項をご記入ください。"></textarea>
+                    </div>
+
+                    <div class="privacy-policy">
+                        <p>【個人情報保護方針】</p>
+                        <p>下記のリンクから【個人情報保護方針】を確認してください。</p>
+                        <p><a href="">個人情報保護方針を確認する</a></p>
+                        <button type="submit" class="privacy-policy-button"><a href="">個人情報保護方針に同意して送信</a></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div class="bread-crumbs">
+        <ol>
+            <li><a href="">ホーム</a></li>
+            <li><a href="">マイページ</a></li>
+            <li><a href="">日報入力ホーム</a></li>
+        </ol>
+    </div>
+
+    <!-- include(f_footer.blade.php) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="../../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                </div>
+                <div class="footer-company-info">
+                    <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
+                    <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
+                    <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
+                </div>
+                <div class="footer-icons">
+                    <img src="../../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
+                    <img src="../../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                </div>
+            </div>
+            <div>
+                <ul class="footer-company-view">
+                    <li><a href="">講座情報</a></li>
+                    <li><a href="">講師紹介</a></li>
+                    <li><a href="">ダウンロード</a></li>
+                    <li><a href="">お問い合わせ</a></li>
+                    <li><a href="">本サイトについて</a></li>
+                    <li><a href="">受講規則</a></li>
+                    <li><a href="">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 qlip-compass. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- /include(f_footer.blade.php) -->
+
+    <!-- include(f_common_js.blade.php) -->
+    <script src="../../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../../assets/js/f_common.js"></script>
+
+    <!-- yield(page_js.blade.php) -->
+
+</body>
+</html>
