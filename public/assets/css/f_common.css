@@ -616,6 +616,10 @@ footer {
     border-bottom: 1px dashed var(--main-color);
 }
 
+.page-content ol {
+    list-style: decimal;
+}
+
 
 /* kv
 ------------------------------------- */
