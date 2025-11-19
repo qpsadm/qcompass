@@ -41,9 +41,9 @@
                             <td class='border px-4 py-2'>{{ $Report->deleted_user_id }}</td>
 
                             <td class='border px-4 py-2'>
-                                <a href="{{ route('reports.show', $Report->id) }}" class="text-green-600">詳細</a>
-                                <a href="{{ route('reports.edit', $Report->id) }}" class="text-blue-600 ml-2">編集</a>
-                                <form action="{{ route('reports.destroy', $Report->id) }}" method="POST"
+                                <a href="{{ route('admin.reports.show', $Report->id) }}" class="text-green-600">詳細</a>
+                                <a href="{{ route('admin.reports.edit', $Report->id) }}" class="text-blue-600 ml-2">編集</a>
+                                <form action="{{ route('admin.reports.destroy', $Report->id) }}" method="POST"
                                     class="inline-block ml-2">
                                     @csrf
                                     @method('DELETE')
