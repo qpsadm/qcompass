@@ -20,8 +20,8 @@
         <div class="header-container">
             <ul class="gnav">
                 <li><a class="home" href="top.html">ホーム</a></li>
-                <li class="active"><a class="news" href="news_list.html">お知らせ</a></li>
-                <li><a class="agenda" href="agenda_list.html">アジェンダ</a></li>
+                <li><a class="news" href="news_list.html">お知らせ</a></li>
+                <li class="active"><a class="agenda" href="agenda_list.html">アジェンダ</a></li>
                 <li><a class="study" href="study_qa_list.html">学習支援</a></li>
                 <li><a class="work" href="support_offer_list.html">就職支援</a></li>
                 <li><a class="mypage" href="mypage.html">マイページ</a></li>
@@ -98,13 +98,151 @@
             </div>
             <!-- /include(f_page_title.blade.php) -->
 
+            <!-- 余白などの設定をstyleを使ってお試しで記述しています場所はmainタグ終了地点のすぐ下です -->
             <div class="page-content">
-                <h3>サンプル</h3>
+                <!-- セクション間の余白を広く取ったほうが見やすいので余白を設定してほしいです -->
+
+                <section>
+                    <h3>
+                        <a href="">１．Laravelを準備する</a>
+                    </h3>
+                    <!-- タイトルとリストの間にも余白を設定してほしいです -->
+                    <!-- liの数字部分が基準の先頭部分よりも左に埋まってしまっているのでpadding-leftの設定をおねがいします。3emがちょうどよいと思います。-->
+                    <ol>
+                        <li>Laravelを準備する</li>
+                        <li>Laravelのインストール</li>
+                        <li>XAMPPにデプロイする</li>
+                        <li>VSCodeに入れるべき必須の便利プラグイン&初期設定</li>
+                    </ol>
+                </section>
+                <section>
+                    <h3>
+                        <a href="">２．ルートとコントローラー</a>
+                    </h3>
+                    <ol>
+                        <li>ルーティング</li>
+                        <li>コントローラの利用</li>
+                    </ol>
+                </section>
+                <section>
+                    <h3>
+                        <a href="">３．ビューとテンプレート</a>
+                    </h3>
+                    <ol>
+                        <li>PHPテンプレートの利用</li>
+                        <li>Laravelアプリ（BMI評価アプリ）の作成練習</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">４．Bladeの構文</a>
+                    </h3>
+                    <ol>
+                        <li>Bladeテンプレートを使う</li>
+                        <li>Bladeの構文</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">５．レイアウトの作成</a>
+                    </h3>
+                    <ol>
+                        <li>レイアウトの作成</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">６．ミドルウェアとバリテーション</a>
+                    </h3>
+                    <ol>
+                        <li>ミドルウェア</li>
+                        <li>バリテーション</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">７．データベースの利用</a>
+                    </h3>
+                    <ol>
+                        <li>データベースの利用</li>
+                        <li>クエリビルダ</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">８．マイグレーション＆シーディングについて</a>
+                    </h3>
+                    <ol>
+                        <li>マイグレーションとは</li>
+                        <li>シーティングについて</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">９．Eloquent ORMーその１</a>
+                    </h3>
+                    <ol>
+                        <li>Eloquentの基本</li>
+                        <li>検索とスコープ</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">１０．Eloquent ORMーその２</a>
+                    </h3>
+                    <ol>
+                        <li>モデルの保存・更新・削除</li>
+                        <li>モデルのリレーション</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>
+                        <a href="">１１．本格開発のための機能</a>
+                    </h3>
+                    <ol>
+                        <li>セッション</li>
+                        <li>ページネーション</li>
+                        <li>認証</li>
+                    </ol>
+                </section>
+
             </div>
 
+            <div class="btn-list">
+                <ul>
+                    <!-- <li class="back"><a href="">前へ</a></li> -->
+                    <li class="list"><a href="news_list.html">一覧画面へ</a></li>
+                    <!-- <li class="next"><a href="">次へ</a></li> -->
+                </ul>
+            </div>
 
         </div>
     </main>
+
+
+    <!-- 見た目を整えるためのcssテスト -->
+    <style>
+        ol {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-left: 3em;
+        }
+
+        h3 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+
 
     <div class="bread-crumbs">
         <ol>
