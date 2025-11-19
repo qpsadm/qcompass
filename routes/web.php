@@ -59,14 +59,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::resource('course_type', CourseTypeController::class);
 
-    // UserDetail（詳細情報）関連ルート
     Route::prefix('users/{user}')->name('user_details.')->group(function () {
-        Route::get('details/create', [UserDetailController::class, 'create'])->name('create'); // 詳細情報作成画面
-        Route::post('details', [UserDetailController::class, 'store'])->name('store');         // 保存
-        Route::get('details/edit', [UserDetailController::class, 'edit'])->name('edit');       // 編集画面
-        Route::put('details', [UserDetailController::class, 'update']);                         // 更新
+        Route::get('details/create', [UserDetailController::class, 'create'])->name('create');
+        Route::post('details', [UserDetailController::class, 'store'])->name('store');
+        Route::get('details/{detail}/edit', [UserDetailController::class, 'edit'])->name('edit');
+        Route::put('details/{detail}', [UserDetailController::class, 'update'])->name('update');
+        Route::delete('details/{detail}', [UserDetailController::class, 'destroy'])->name('destroy');
     });
-
     // カテゴリ管理
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');

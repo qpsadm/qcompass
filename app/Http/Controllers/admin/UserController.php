@@ -86,15 +86,14 @@ class UserController extends Controller
         $validated = $request->validate([
             'code' => 'required|string|max:10',
             'name' => 'required|string|max:50',
-            'furigana' => 'required|string|max:50',
-            'roman_name' => 'required|string|max:50',
+            'furigana' => 'nullable|string|max:50',
+            'roman_name' => 'nullable|string|max:50',
             'password' => 'nullable|string|min:6',
             'role_id' => 'required|exists:roles,id',
             'courses_id' => 'nullable|exists:courses,id',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        // パスワードが入力されていればハッシュ化
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
@@ -105,8 +104,10 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.users.index')->with('success', 'ユーザー更新完了');
+        return redirect()->route('admin.users.show', $user->id)
+            ->with('success', '基本情報を更新しました。');
     }
+
 
     /**
      * ユーザー削除

@@ -11,7 +11,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $order = $request->get('order', 'desc'); // デフォルトは降順
-        $roles = Role::orderBy('id', $order)->get();
+        $roles = Role::orderBy('role_id', $order)->get();
         return view('admin.roles.index', compact('roles'));
     }
     public function create()
