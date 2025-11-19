@@ -111,6 +111,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     });
 
 
+
+
+    // 固定ルート：プレビュー用
+    Route::get('reports/preview', [ReportController::class, 'previewBlade'])
+        ->name('reports.previewBlade');
+
+    // リソースルート：数字IDだけを {report} にマッチさせる
+    Route::resource('reports', ReportController::class)
+        ->where(['report' => '[0-9]+']); // {report} は数字IDだけ
+
     //悪魔合体
     Route::resource('quotes', QuoteController::class);
 });
