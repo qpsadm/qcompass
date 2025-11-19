@@ -14,16 +14,25 @@ class UserController extends Controller
     /**
      * ユーザー一覧
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $search = $request->input('search');
 
-        if ($user->role_id == 2) { // 担当講師
-            $users = User::with('detail')
-                ->where('courses_id', $user->courses_id)
-                ->get();
+        // 担当講師の場合は担当コースのユーザーだけ対象
+        if ($user->role_id == 2) {
+            $query = User::with('detail')->where('courses_id', $user->courses_id);
         } else {
-            $users = User::with('detail')->get();
+            $query = User::with('detail');
+        }
+
+        if ($search) {
+            // Scout 検索を使いつつ、元の絞り込み条件も適用
+            $users = User::search($search)->query(function ($q) use ($query) {
+                $q->whereIn('id', $query->pluck('id'));
+            })->paginate(15)->withQueryString();
+        } else {
+            $users = $query->paginate(15);
         }
 
         return view('admin.users.index', compact('users'));
@@ -45,6 +54,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // バリデーション
         $validated = $request->validate([
             'code' => 'required|string|max:10',
             'name' => 'required|string|max:50',
@@ -52,20 +62,32 @@ class UserController extends Controller
             'roman_name' => 'required|string|max:50',
             'password' => 'required|string|min:6',
             'role_id' => 'required|exists:roles,id',
-            'courses_id' => 'nullable|exists:courses,id',
+            'division_id' => 'nullable|integer', // 所属部署
+            'courses_id' => 'nullable|exists:courses,id', // 単一コース
             'email' => 'nullable|email|unique:users,email',
         ]);
 
         // パスワードをハッシュ化
         $validated['password'] = Hash::make($validated['password']);
 
-        // 作成者IDを追加
-        $validated['created_user_id'] = auth()->user()->id;
+        // 作成者名をセット
+        $validated['created_user_name'] = auth()->user()->name;
 
-        User::create($validated);
+        // 表示フラグを初期値でセット
+        $validated['is_show'] = true;
 
-        return redirect()->route('admin.users.index')->with('success', 'ユーザー作成完了');
+        // ユーザー作成
+        $user = User::create($validated);
+
+        // 中間テーブルで複数コースも紐づけたい場合
+        if ($request->filled('courses_id')) {
+            $user->courses()->sync([$request->courses_id]);
+        }
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'ユーザー作成完了');
     }
+
 
     /**
      * ユーザー編集画面
