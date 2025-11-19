@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第2回キャリアコンサルティングについて | QLIP-Compass</title>
+    <title>LaravelによるWebアプリ作成①　Laravelを準備する | QLIP-Compass</title>
 
     <!-- include(f_common_css.blade.php) -->
     <link rel="stylesheet" href="../assets/css/reset.css">
@@ -20,8 +20,8 @@
         <div class="header-container">
             <ul class="gnav">
                 <li><a class="home" href="top.html">ホーム</a></li>
-                <li class="active"><a class="news" href="news_list.html">お知らせ</a></li>
-                <li><a class="agenda" href="agenda_list.html">アジェンダ</a></li>
+                <li><a class="news" href="news_list.html">お知らせ</a></li>
+                <li class="active"><a class="agenda" href="agenda_list.html">アジェンダ</a></li>
                 <li><a class="study" href="study_qa_list.html">学習支援</a></li>
                 <li><a class="work" href="support_offer_list.html">就職支援</a></li>
                 <li><a class="mypage" href="mypage.html">マイページ</a></li>
@@ -94,29 +94,252 @@
 
             <!-- include(f_page_title.blade.php) -->
             <div class="page-title">
-                <h2>第2回キャリアコンサルティングについて</h2>
+                <h2>LaravelによるWebアプリ作成①　Laravelを準備する</h2>
             </div>
             <!-- /include(f_page_title.blade.php) -->
 
             <div class="page-content">
-                <p>10月27日（月）、就職支援の一環としてキャリアコンサルティングを行います。<br />
-                以下の「就職支援アンケート」にご協力ください。<br />
-                訓練も最終局面で授業の難易度も最高潮のタイミングではありますが、並行して具体的な目標を定めた方が希望職種へと繋がっています。<br />
-                訓練の本来の目的である就職に向けて、この機会に一度しっかりと整理しておきましょう。</p>
-                <p><a href="http://bzclass.bizan.com/asp/formitem.asp?fm_id=626">第2回就職支援アンケートはこちらより回答ください</a></p>
-                <p>キャリアコンサルティングの時間帯です。<br />
-                一人当たり20分程度を予定しております。<br />
-                なお、キャリアコンサルティングに当たって、準備物は以下の通りです。<br />
-                <b>以下の準備物は必ず忘れないようにしてください。</b></p>
-                <ul>
-                    <li>事前に上記就職支援アンケートにご協力ください</li>
-                    <li>ジョブカード</li>
-                    <li>就職を希望する企業の求人票（1枚以上）:現時点では具体的な就職先が未定の方でもご準備ください。</li>
-                    <li>応募書類（履歴書・職務経歴書）:応募企業が決まっていない方は志望動機などは未記入でも構いません。</li>
-                </ul>
-                <p>以下、順番をご確認ください。</p>
-                <p><img src="http://bzclass.bizan.com/images/news/8008.png" width="20%" /></p>
-                <p>よろしくお願い致します。</p>
+                <!-- それぞれの見出しの下に余白がないので見難い。 -->
+                <!-- 見出しと本文の左端が揃っているため、本文全体は見出しよりも左側に余白を付けた方がいいかと思いました。 -->
+                <h2>1　Laravelを準備する</h2>
+                <blockquote dir="ltr" style="margin-right: 0px">
+                    <h3>1.1　はじめに</h3>
+                    <ol>
+                        <li>
+                            必要な事前知識とスキル：HTML・CSS・JavaScriptによる静的Webページの制作スキル、PHPプログラミングスキル、MariaDBおよびSQLを用いたデータベース操作スキル。</li>
+                        <li>
+                            教科書の動作環境：Laravel 12をベースとし、PHP 8.4に対応。</li>
+                        <li>
+                            サンプルコード・プロジェクトのダウンロード先：<br />
+                            <a href="https://www.shuwasystem.co.jp/support/7980html/7527.html" target="_blank">https://www.shuwasystem.co.jp/support/7980html/7527.html</a>
+                        </li>
+                        <li>
+                            「解凍」について、以下のWebページをご参照ください。<br />
+                            <a href="https://www.shuwasystem.co.jp/support/kaitou.html" target="_blank">https://www.shuwasystem.co.jp/support/kaitou.html</a>
+                        </li>
+                        <li>
+                            サンプルコードの保存場所：<br />
+                            ユーザープロファイル内に「ws_laravel」フォルダを作成し、Laravelの作業フォルダとして使用しましょう。</li>
+                    </ol>
+                    <br />
+                    <h3>1.2　PHP開発の問題点</h3>
+                    <p>
+                        PHPなどのライトウェイトな言語※1には、本格的な言語とは異なる事情があります。それは、ライトウェイトな言語は誰でも手軽に扱えるため、プログラミング経験の浅い人が自己流でコードを書くケースが多いという点です。こうした自己流の開発は、将来的にさまざまな問題を引き起こす可能性があります。代表的な問題として、以下の3点が挙げられます。</p>
+                    <ul>
+                        <li>
+                            セキュリティの問題<br />
+                            データベースなどの情報を元に動的にWebを生成するようなサイトになると、外部からの攻撃への対策を考えなければいけません。セキュリティ対応するには、セキュリティ対策についての知識とプログラミング経験は欠かせません。</li>
+                        <li>
+                            メンテナンスの問題<br />
+                            自己流に書いたプログラムは、コーディングルールやデザインパターンなどあまり考えずに書いている場合が大半です。このようなプログラムは第三者への引継ぎができません。</li>
+                        <li>
+                            拡張性の問題<br />
+                            自分1人で考えて作ったものというのは、最初から拡張性や汎用性などを考えて設計することはあまりありません。より快適に使ってもらえるようにシステムを改良や拡張する必要がでた場合、設計の必要性を感じます。</li>
+                    </ul>
+                    <small>※1　ライトウェイトな言語とは、軽量プログラミング言語（Lightweight Language（略してLL）とも呼ばれます。短い記述で処理を実現でき、手軽に取り扱うことができるプログラミング言語です。 PythonやRubyはLLの代表格です。 LLはCやJavaなどを使うまでもないような、ちょっとした処理を書く際に利用するととても便利です。</small>
+                    <br />
+                    <br />
+                    <h3>1.3　フレームワークの導入</h3>
+                    <p>
+                        上記のような問題の多くは、適切なシステム設計を行うことで回避可能です。 つまり、セキュリティ・メンテナンス性・拡張性などを最初から考慮して設計されたシステムに基づいてプログラムを作成すれば、誰でも堅牢で分かりやすい コードを書くことができます。 このような開発において多用される、さまざまな機能や仕組みを提供するものが「フレームワーク」と呼ばれます。
+                    </p>
+                    <br />
+                    <h3>1.4　フレームワークとライブラリとの違い</h3>
+                    <h3>フレームワークとは</h3>
+                    <p>
+                        フレームワークとは、「枠組み」「骨組み」「構造」といった意味を持つ言葉で、自由度の高いプログラミングの世界に一定のルールや制約を与えてくれるものです。 プログラミングにおいては、特定のオペレーティングシステム向けのアプリケーションにおける標準的な構造を実装するための、クラスやライブラリの集合体を指します。 つまり、汎用的に必要とされる機能をまとめた、開発のための枠組みや骨組みのことです。<br />
+                        フレームワークには、実装負荷の軽減、保守性の向上、セキュリティの確保、規則に則ったコードの記述、そして高い可読性といった特長があります。 ただし、素のPHPと比べると自由度は低く、関数・クラス・メソッドの名称などはフレームワークの規則に従わなければ正しく動作しないというデメリットもあります。
+                    </p>
+                    <h3>ライブラリ</h3>
+                    <p>
+                        ライブラリとは、汎用性の高い複数のプログラムをひとまとめにしたもので、クラスや関数などの部品がまとまって提供されるソースコードの集合体を指します。 システム内の要所要所で活用できる、便利な機能群というニュアンスを持っています。
+                    </p>
+                    <p>
+                        「フレームワークはシステム全体の枠組み」、「ライブラリは特定機能を持つ小さな部品」と覚えておくとよいでしょう。
+                    </p>
+                    <h3>1.5　Webフレームワークの役割</h3>
+                    <p>
+                        Webフレームワークの最も基本的な役割は、HTTP通信の制御です。 HTTPを通じてWebサーバーに必要なデータをリクエストし、そのレスポンスを取得・返却する処理がコアとなっています。 さらに、多くのWebフレームワークは、以下の3つの主要なパーツで構成されています。
+                    </p>
+                    <ul>
+                        <li>
+                            モデル（Model）：データベースとのやり取りを担当する
+                        </li>
+                        <li>
+                            ビュー（View）：Webページを動的に生成し、表示する
+                        </li>
+                        <li>
+                            コントローラー（Controller）：HTTPリクエストを受け取り、モデルやビューに指示を出す
+                        </li>
+                    </ul>
+                    <p>
+                        この3つの要素を持つWebフレームワークは「MVCフレームワーク」と呼ばれます。 つまり、MVCフレームワークでは、プログラムファイルが主に「表示（View）」「データ（Model）」「制御（Controller）」の3つに分けられていると理解してください。
+                    </p>
+                    <h3>1.6 主なPHPのWebフレームワーク</h3>
+                    <p>
+                        PHP開発の際によく使用されるPHPフレームワークは複数あります。主な人気度が高いPHPのWebフレームワークには、以下のようなものがあります。
+                    </p>
+                    <ul>
+                        <li>
+                            CakePHP：<br />
+                            2005年に登場しオープンソースで開発されたPHPフレームワークです。Ruby on Railsの影響を強く受けており，Webアプリケーションを高速に開発出来ます。現在でもフリーランス求人・案件数が一番多く、人気のPHPフレームワークです。
+                        </li>
+                        <li>
+                            Symfony：<br />
+                            2005年に登場したMITライセンスに基づくオープンソースのPHP5用フレームワークです。保守性と安定性を重視した構造になっており、CakePHPと同様Ruby on Railsの影響を受けています。2021年現在、LaravelやCakePHPと比較すると、開発エンジニア人口が少ないです。
+                        </li>
+                        <li>
+                            Laravel：<br />
+                            Laravelは、2012年に登場したMVCフレームワークで、近年PHPエンジニアの間で急速に人気を高めています。
+                        </li>
+                    </ul>
+                    <p>
+                        現在、PHPフレームワークの中で最も注目されているのがLaravelです。 その背景には、コードの記述が非常にしやすいこと、日本語のドキュメントが豊富であること、ヘルパー関数をはじめとするライブラリが充実していることなどが挙げられます。 中でも、学習コストの低さはLaravelの大きな特徴のひとつです。
+                    </p>
+                    <p>
+                        <a href="https://freelance-start.com/articles/70#title1" target="_blank">参考サイト：PHPフレームワークのまとめ【2022年版】</a><br />
+                        https://freelance-start.com/articles/70#title1
+                    </p>
+                    <h3>1.7 LaravelとPHPバージョンについて</h3>
+                    <p>
+                        Laravelは、2025年2月にver. 12がリリースされました。Laravel 12は、PHPのver.　8.2から8.4で動作するように作られています。
+                    </p>
+                </blockquote>
+                <h2>2　Laravelのインストール</h2>
+                <blockquote dir="ltr" style="margin-right: 0px">
+                    <p>
+                        Laravelフレームワークを使用する場合、Webサーバー、PHP、Composer、データベースの環境を準備する必要があります。初心者にとっては、XAMPPを使って簡単にLaravelの開発環境を構築することができます。Macパソコンの場合は、MAMPをお勧めします。Laravelの開発環境を構築する手順は、教科書P6～P13までご参照ください。
+                    </p>
+                    <h3>2.1　Composerについて</h3>
+                    <p>
+                        Composerとは、PHPのパッケージ依存管理ツールで、PHPの開発で使用するライブラリ（パッケージ）をまとめて管理してくれます。Composerは、ライブラリ間の依存関係を解決してくれるため、開発者の負担を大きく軽減してくれます。Composerが対応しているPHPのバージョンは「PHP 5.3.2」以上です。Composerのインストール手順については、教科書P7～P9をご参照ください。
+                    </p>
+                    <h3>2.4　Laravelをインストールする</h3>
+                    <p>
+                        Composerが準備できたら、次のコマンドを使ってLaravelをインストールできます。
+                    </p>
+                    <h4>コマンド：composer global require Laravel/installer</h4>
+                    <p>
+                        ※　上記の命令では、Laravelの本体をインストールするのではなく、Laravelのインストーラをインストールしたことです。
+                    </p>
+                    <p>
+                        「Laravelを利用する」とは、単にLaravelをインストールして使うことではなく、専用のLaravelインストーラを使って、必要に応じてLaravelプロジェクトを新規作成することを指します。
+                    </p>
+                    <h3>2.5　Laravel開発の手順</h3>
+                    <p>
+                        Laravelの開発手順は、基本的にコマンドラインから実行して行います。開発の流れは、教科書のP9～P10をご参照ください。
+                    </p>
+                    <h3>2.6　Laravelプロジェクトの作成</h3>
+                    <p>
+                        Laravelのプロジェクト作成手順については、教科書のP10～P13をご参照ください。
+                    </p>
+                    <h3>2.7　Herdを活用する</h3>
+                    <p>
+                        コマンドを使ってLaravelプロジェクトを作成できますが、コマンド操作が苦手な方にとってはハードルが高く感じられるかもしれません。 現在のLaravelでは、開発専用の支援ツール「Herd」を導入することで、PHP、開発用サーバー（nginx）、サーバーサイド開発に必要なNode.jsなどを一式まとめて簡単に準備できます。 Herdを使えば、Laravelのインストールやプロジェクトの作成・管理をGUIベースで行うことが可能です。「Herd」のインストール方法およびLaravelプロジェクトの作成・管理手順については、教科書のP13～P20をご参照ください。
+                    </p>
+                    <p>
+                        「Herd」は非常に便利なツールですが、高度な機能を利用するにはProバージョンの購入が必要です。 本講座では、無料版（フリーバージョン）を使用して、Laravelの開発環境の構築およびプロジェクト作成の手順を詳しく解説します。詳細的な手順は、P13～P20までご参照ください。
+                    </p>
+                </blockquote>
+                <h2>3　XAMPPにデプロイする</h2>
+                <blockquote dir="ltr" style="margin-right: 0px">
+                    <h3>3.1　作成したプロジェクトをXAMPPに公開</h3>
+                    <p>
+                        Laravelアプリケーションは、XAMPPを使用して公開することも可能です。 その基本的な手順は、以下の通りです。
+                    </p>
+                    <ol class="toc-list open">
+                        <li>
+                            Laravelプロジェクトのフォルダ「laravelapp」をコピーします。
+                        </li>
+                        <li>
+                            コピーしたフォルダを「htdocs」ディレクトリに貼り付けます。
+                        </li>
+                    </ol>
+                    <p>
+                        アプリケーションへのアクセスアドレスは、以下のようになります。
+                    </p>
+                    <h4>「http://localhost/laravelapp/public」</h4>
+                    <p>※URLを短くする方法もありますが、ここでは割愛します。</p>
+                </blockquote>
+                <h2>4　VSCodeに入れるべき必須の便利プラグイン&amp;初期設定</h2>
+                <blockquote dir="ltr" style="margin-right: 0px">
+                    <h3>4.1　便利なプラグイン</h3>
+                    <ol class="toc-list open">
+                        <li>
+                            Bracket Pair Colorizer2
+                        </li>
+                        <li>
+                            DotENV</li>
+                        <li>
+                            PHP Extension Pack
+                            <ol>
+                                <li>
+                                    PHP Intellipense</li>
+                                <li>
+                                    PHP DocBlocker</li>
+                                <li>
+                                    Format HTML in PHP</li>
+                                <li>
+                                    PHP formatter</li>
+                            </ol>
+                        </li>
+                        <li>
+                            Laravel Extension Pack
+                            <ol>
+                                <li>
+                                    Laravel Snippets</li>
+                                <li>
+                                    Laravel Blade Snippets</li>
+                                <li>
+                                    Laravel Blade formatter</li>
+                                <li>
+                                    Laravel Blade Spacer</li>
+                                <li>
+                                    Laravel Artisan</li>
+                                <li>
+                                    Laravel Extra Intellisense</li>
+                                <li>
+                                    Laravel goto Controller</li>
+                                <li>
+                                    Laravel goto View</li>
+                            </ol>
+                        </li>
+                    </ol>
+                    <br />
+                    <h3>4.2　LaravelアプリのプロジェクトをVSCodeに追加</h3>
+                    <p>
+                        開発中のプロジェクトのフォルダをVSCodeのワークスペースに追加してプログラム を作成するようにしてください。「helloLaravel」をVSCodeのワークスペースに 追加してみてください。
+                    </p>
+                    <h3>4.3　Laravelの命名規則について</h3>
+                    <p>
+                        スムーズに開発を進めるためにも命名規則に沿って名前をつけることは大事です。Laravelをはじめて学習する方は最初に命名規則を抑えておくと、プロジェクト全体に統一感が出ていいと思います。
+                    </p>
+                    <p>
+                        プログラミングにおいて複数キーワードの名前の付け方としてアッパーキャメル記法、ローワーキャメル記法とスネーク記法という記述方法があります。</p>
+                    <h4>１　アッパーキャメル記法</h4>
+                    <p>
+                        先頭を大文字で書き始め、複合語のスペースをなくし要素の先頭を大文字にします。
+                    </p>
+                    <h4>[例] user + parameter &rArr; UserParameter</h4>
+                    <p>
+                        Laravelでの使用例：<br />
+                        UserMsg.php（モデル）、UserMsgController.php（コントローラ）
+                    </p>
+                    <h4>２　ローワーキャメル記法</h4>
+                    <p>
+                        先頭を小文字で書き始め、複合語のスペースをなくし要素の先頭は大文字にします。
+                    </p>
+                    <h4>[例] user + parameter &rArr; userParameter</h4>
+                    <p>Laravelでの使用例：userProfile()（メソッド）</p>
+                    <h4>３　スネーク記法</h4>
+                    <p>単語と単語の区切りにアンダースコアを使う記述方法をスネーク記法と呼びます。</p>
+                    <h4>[例] user + parameter &rArr; user_parameter</h4>
+                    <p>
+                        Laravelでの使用例：access_rankings（テーブル名）、$user_name（変数名）、user_admin.blade.php（Bladeのファイル名）、access_rankings（テーブル名）
+                    </p>
+                    <h3>4.4　参考サイト</h3>
+                    <a href="https://laraweb.net/">Laravel学習帳 - はじめてのLaravel入門サイト -</a>
+                </blockquote>
             </div>
 
             <div class="btn-list">
