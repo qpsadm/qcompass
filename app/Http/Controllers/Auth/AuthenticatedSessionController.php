@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             'course_id' => 'required|integer',
         ]);
 
-        // ユーザーを名前で検索
+        // 名前でユーザー検索
         $user = User::where('name', $request->login_name)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -53,10 +53,19 @@ class AuthenticatedSessionController extends Controller
         //     ])->onlyInput('course_id');
         // }
 
+        // 🔥 ログイン不可(role_id=1) をここで弾く（最重要）
+        if ($user->role_id == 1) {
+            return back()->withErrors([
+                'login_name' => 'このユーザーはログインできません。',
+            ]);
+        }
+
         // ログイン成功
         Auth::login($user, $request->filled('remember'));
+
         return redirect()->intended('dashboard');
     }
+
 
     /**
      * Destroy an authenticated session.

@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
                 'furigana' => 'ヤマダ タロウ',
                 'roman_name' => 'Yamada Taro',
                 'password' => bcrypt('password123'),
-                'role_id' => 1,          // 管理者
+                'role_id' => 8,          // 管理者
                 'division_id' => 1,      // 所属部署ID
                 'courses_id' => 1,       // 存在する course の ID
                 'remember_token' => Str::random(10),
@@ -33,6 +33,5 @@ class UsersTableSeeder extends Seeder
                 'updated_user_name' => 'system',
             ],
         ]);
-        
     }
 }

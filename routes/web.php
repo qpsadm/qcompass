@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+// コントローラー読み込み
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CKEditorController;
+
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
@@ -15,32 +18,38 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
-
 use App\Http\Controllers\Admin\CourseTypeController;
-
 use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\QuestionController;
 
-
+// =============================
 // 公開ページ
+// =============================
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ダッシュボード
+// =============================
+// ダッシュボード（ログイン必須）
+// =============================
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// =============================
 // プロフィール管理
+// =============================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-//ユーザー側画面
+
+// =============================
+// ユーザー用クイズ画面（一般ユーザー）
+// =============================
 Route::middleware('auth')->group(function () {
     Route::get('quizzes/{quiz}', [App\Http\Controllers\User\QuizController::class, 'show'])
         ->name('user.quizzes.show');
@@ -48,81 +57,77 @@ Route::middleware('auth')->group(function () {
         ->name('user.quizzes.submit');
 });
 
-// 管理画面
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+// =============================
+// 管理画面（role:8 のみアクセス）
+// =============================
+Route::middleware(['auth', 'role:8'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    // 各種リソース
-    Route::resource('courses', CourseController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('levels', LevelController::class);
-    Route::resource('daily_quotes', DailyQuoteController::class);
-    Route::resource('organizers', OrganizerController::class);
-    Route::resource('notices', NoticeController::class); // お知らせアジェンダ管理
-    Route::resource('reports', ReportController::class);
-    Route::resource('questions', QuestionController::class);
+        // ---------- リソース系 ----------
+        Route::resource('courses', CourseController::class);
+        Route::resource('users', UserController::class);
+        Route::resource('roles', RoleController::class);
+        Route::resource('levels', LevelController::class);
+        Route::resource('daily_quotes', DailyQuoteController::class);
+        Route::resource('organizers', OrganizerController::class);
+        Route::resource('notices', NoticeController::class);
+        Route::resource('questions', QuestionController::class);
+        Route::resource('course_type', CourseTypeController::class);
+        Route::resource('quotes', QuoteController::class);
 
-    Route::resource('course_type', CourseTypeController::class);
+        // ---------- ユーザー詳細 ----------
+        Route::prefix('users/{user}')
+            ->name('user_details.')
+            ->group(function () {
+                Route::get('details/create', [UserDetailController::class, 'create'])->name('create');
+                Route::post('details', [UserDetailController::class, 'store'])->name('store');
+                Route::get('details/{detail}/edit', [UserDetailController::class, 'edit'])->name('edit');
+                Route::put('details/{detail}', [UserDetailController::class, 'update'])->name('update');
+                Route::delete('details/{detail}', [UserDetailController::class, 'destroy'])->name('destroy');
+            });
 
-    Route::prefix('users/{user}')->name('user_details.')->group(function () {
-        Route::get('details/create', [UserDetailController::class, 'create'])->name('create');
-        Route::post('details', [UserDetailController::class, 'store'])->name('store');
-        Route::get('details/{detail}/edit', [UserDetailController::class, 'edit'])->name('edit');
-        Route::put('details/{detail}', [UserDetailController::class, 'update'])->name('update');
-        Route::delete('details/{detail}', [UserDetailController::class, 'destroy'])->name('destroy');
+        // ---------- カテゴリ ----------
+        Route::resource('categories', CategoryController::class);
+        Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');
+        Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+        Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])
+            ->name('categories.forceDelete');
+
+        // ---------- タグ ----------
+        Route::resource('tags', TagController::class);
+
+        // ---------- CKEditor ----------
+        Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
+
+        // ---------- アジェンダ ----------
+        Route::resource('agendas', AgendaController::class);
+        Route::post('agendas/upload', [AgendaController::class, 'upload'])->name('agendas.upload');
+        Route::resource('agenda_files', App\Http\Controllers\Admin\AgendaFileController::class);
+        Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
+        Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
+        Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])
+            ->name('agendas.forceDelete');
+
+        // ---------- クイズ ----------
+        Route::resource('quizzes', QuizController::class);
+
+        // ★重複削除済み：ここだけでOK
+        Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
+
+        // ---------- レポート ----------
+        // プレビュー（固定）
+        Route::get('reports/preview', [ReportController::class, 'previewBlade'])
+            ->name('reports.previewBlade');
+
+        // 重複を完全削除し、これだけ残す
+        Route::resource('reports', ReportController::class)
+            ->where(['report' => '[0-9]+']);
     });
-    // カテゴリ管理
-    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
-    Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');
-    Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
-    // 完全削除
-    Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])
-        ->name('categories.forceDelete');
-
-    //タグ管理
-    Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
-
-    Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
-
-    //アジェンダ管理
-    Route::resource('agendas', AgendaController::class);
-    // CKEditor画像アップロード用ルート
-    Route::post('agendas/upload', [AgendaController::class, 'upload'])->name('agendas.upload');
 
 
-    //アジェンダ添付ファイル管理
-    Route::resource('agenda_files', App\Http\Controllers\Admin\AgendaFileController::class);
-
-
-    // ゴミ箱一覧
-    Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
-    // 復元
-    Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
-    // 完全削除（任意）
-    Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
-
-    //クイズ関係
-    Route::resource('quizzes', QuizController::class);
-    // クイズの問題管理を quizzes にネスト
-    Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
-    // クイズに紐づく問題（ネスト）
-    Route::prefix('quizzes/{quiz}')->name('quizzes.')->group(function () {
-        Route::resource('quiz_questions', QuizQuestionController::class);
-    });
-
-
-
-
-    // 固定ルート：プレビュー用
-    Route::get('reports/preview', [ReportController::class, 'previewBlade'])
-        ->name('reports.previewBlade');
-
-    // リソースルート：数字IDだけを {report} にマッチさせる
-    Route::resource('reports', ReportController::class)
-        ->where(['report' => '[0-9]+']); // {report} は数字IDだけ
-
-    //悪魔合体
-    Route::resource('quotes', QuoteController::class);
-});
-
+// =============================
+// Breeze/Fortify 認証ルート
+// =============================
 require __DIR__ . '/auth.php';
