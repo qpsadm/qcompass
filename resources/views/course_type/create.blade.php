@@ -14,8 +14,9 @@
                         class="border px-2 py-1 w-full rounded">
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">保存</button>
+                <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">保存</button>
             </form>
         </div>
-        </div>
+    </div>
 @endsection

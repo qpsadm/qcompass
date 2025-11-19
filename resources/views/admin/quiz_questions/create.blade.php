@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class=" flex  justify-center bg-gray-100 pt-5">
-
-        <div class="bg-white shadow-lg rounded-xl p-6 border -200 w-full max-w-xl">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
 
             <h1 class="text-2xl font-bold mb-6 text-gray-800">問題追加: {{ $quiz->title }}</h1>
 

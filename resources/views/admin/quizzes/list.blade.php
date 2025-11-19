@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-2xl">
-
-        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-6">{{ $question->id ? '問題編集' : '問題作成' }}</h1>
 
             <form

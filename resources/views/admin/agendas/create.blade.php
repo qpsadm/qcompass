@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
-        <div class="bg-white shadow-md rounded-xl p-6">
+   <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+
             <h1 class="text-2xl font-bold mb-4">アジェンダ作成</h1>
 
             <form action="{{ route('admin.agendas.store') }}" method="POST">

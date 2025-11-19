@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-2xl">
-        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-3xl font-bold mb-6 text-gray-800">クイズ詳細</h1>
 
             <div class="border p-6 rounded-lg space-y-3 bg-gray-50">
