@@ -20,13 +20,13 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">配点</label>
                     <input type="number" name="score" placeholder="0" value="0"
-                        class="border px-3 py-2 w-full rounded">
+                        class="border px-3 py-2 w-30 rounded">
                 </div>
 
                 {{-- 問題タイプ --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">問題タイプ</label>
-                    <select name="type" id="questionType" class="border px-3 py-2 w-full rounded">
+                    <select name="type" id="questionType" class="border px-3 py-2 w-40 rounded">
                         <option value="single_2">2択</option>
                         <option value="single_4">4択</option>
                         <option value="multi">複数選択</option>

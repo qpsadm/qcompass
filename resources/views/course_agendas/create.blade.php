@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">講座アジェンダ作成</h1>
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">        <h1 class="text-2xl font-bold mb-4">講座アジェンダ作成</h1>
         <form action="{{ route('course_agendas.store') }}" method="POST">
             @csrf
             <div class="mb-4">

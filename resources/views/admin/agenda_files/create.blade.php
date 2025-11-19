@@ -44,7 +44,7 @@
 
                 {{-- 説明 --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">説明</label>
+                    <label class="block font-medium mb-1">用途・備考</label>
                     <input type="text" name="description" value="{{ old('description') }}"
                         class="border px-2 py-1 w-full rounded">
                 </div>

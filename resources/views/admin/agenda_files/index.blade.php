@@ -15,7 +15,7 @@
                         <th class='border px-4 py-2'>ファイルパス</th>
                         <th class='border px-4 py-2'>ファイル名</th>
                         <th class='border px-4 py-2'>ファイルタイプ</th>
-                        <th class='border px-4 py-2'>description</th>
+                        <th class='border px-4 py-2'>用途・備考</th>
                         <th class='border px-4 py-2'>ファイルサイズ</th>
                         <th class='border px-4 py-2'>ユーザーID</th>
                         <th class='border px-4 py-2'>削除日</th>

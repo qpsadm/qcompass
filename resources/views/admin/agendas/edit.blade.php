@@ -37,7 +37,7 @@
                     </div>
 
                     {{-- 選択用セレクト --}}
-                    <select @change="addCourse($event)" class="border px-2 py-1 w-full rounded">
+                    <select @change="addCourse($event)" class="border px-2 py-1 w-100 rounded">
                         <option value="">選択してください</option>
                         @foreach ($courses as $course)
                             <option value="{{ $course->id }}">{{ $course->course_name }}</option>
@@ -55,7 +55,7 @@
                 {{-- カテゴリ --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">カテゴリ</label>
-                    <select name="category_id" class="border px-2 py-1 w-full rounded">
+                    <select name="category_id" class="border px-2 py-1 w-100 rounded">
                         <option value="">選択してください</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat['id'] }}"
@@ -78,7 +78,7 @@
                 {{-- 承認 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">承認状態</label>
-                    <select name="accept" class="border px-2 py-1 w-full rounded" required>
+                    <select name="accept" class="border px-2 py-1 w-100 rounded" required>
                         <option value="yes" {{ old('accept', $agenda->accept) == 'yes' ? 'selected' : '' }}>承認済み</option>
                         <option value="no" {{ old('accept', $agenda->accept) == 'no' ? 'selected' : '' }}>下書き</option>
                     </select>

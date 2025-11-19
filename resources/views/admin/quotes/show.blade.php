@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">名言詳細</h1>
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">    <h1 class="text-3xl font-bold mb-6 text-gray-800">名言詳細</h1>
 
     <div class="bg-white shadow-md rounded-lg p-6 mb-6">
         <p class="text-xl mb-4">“{{ $quote_text }}”</p>

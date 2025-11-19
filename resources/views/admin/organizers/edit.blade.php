@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-xl">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">開催者編集</h1>
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">        <h1 class="text-3xl font-bold mb-6 text-gray-800">開催者編集</h1>
 
         <form action="{{ route('admin.organizers.update', $Organizer->id) }}" method="POST"
             class="bg-white p-6 rounded-lg shadow-md space-y-4">

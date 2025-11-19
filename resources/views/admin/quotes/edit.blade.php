@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">{{ isset($quote) ? '編集' : '新規登録' }}</h1>
+        <div class="bg-white rounded-lg shadow-md p-6">        <h1 class="text-2xl font-bold mb-4">{{ isset($quote) ? '編集' : '新規登録' }}</h1>
 
         <form action="{{ isset($quote) ? route('admin.quotes.update', $quote->id) : route('admin.quotes.store') }}"
             method="POST">
