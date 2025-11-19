@@ -26,13 +26,14 @@ class UserController extends Controller
             $query = User::with('detail');
         }
 
+
+        // Scout 検索
         if ($search) {
-            // Scout 検索を使いつつ、元の絞り込み条件も適用
-            $users = User::search($search)->query(function ($q) use ($query) {
-                $q->whereIn('id', $query->pluck('id'));
-            })->paginate(15)->withQueryString();
+            $users = User::search($search)
+                ->paginate(15)
+                ->withQueryString();
         } else {
-            $users = $query->paginate(15);
+            $users = User::with('role', 'courses')->paginate(15);
         }
 
         return view('admin.users.index', compact('users'));
@@ -94,8 +95,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        $courses = Course::all();
+        $roles = Role::all();      // これがないと空になります
+        $courses = Course::all();  // 講座も同様
 
         return view('admin.users.edit', compact('user', 'roles', 'courses'));
     }

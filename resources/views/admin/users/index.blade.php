@@ -23,7 +23,8 @@
                 <tr>
                     <th class="border px-4 py-2 w-32">ユーザーコード</th>
                     <th class="border px-4 py-2">氏名</th>
-                    <th class="border px-4 py-2">講座ID</th>
+                    <th class="border px-4 py-2">所属講座</th>
+                    <th class="border px-4 py-2">権限</th>
                     <th class="border px-4 py-2 w-40 text-center">操作</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                     <td class="border px-4 py-2">{{ $User->code }}</td>
                     <td class="border px-4 py-2">{{ $User->name }}</td>
                     <td class="border px-4 py-2">{{ $User->course->course_name ?? '未所属' }}</td>
+                    <td class="border px-4 py-2">{{ $User->role->role_name ?? 'なし'}}</td>
                     <td class="border px-4 py-2 text-center">
                         <a href="{{ route('admin.users.show', $User->id) }}" class="text-green-600 hover:underline">
                             詳細

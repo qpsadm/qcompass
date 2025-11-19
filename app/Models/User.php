@@ -6,10 +6,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, Searchable;
 
     protected $fillable = [
         'code',
@@ -53,7 +54,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(Role::class, 'role_id'); // 外部キーは users.role_id
     }
 
     public function detail()
@@ -61,13 +62,16 @@ class User extends Authenticatable
         return $this->hasOne(UserDetail::class);
     }
 
-    public function toSearchableArray()
+    /**
+     * Scout 用に検索対象を定義
+     */
+    public function toSearchableArray(): array
     {
         return [
-            'id' => $this->id,
-            'code' => $this->code,
             'name' => $this->name,
-            'furigana' => $this->furigana,
+            'code' => $this->code,
+            'role_name' => $this->role?->role_name,
+            'courses' => $this->courses->pluck('course_name')->implode(' '),
         ];
     }
 }

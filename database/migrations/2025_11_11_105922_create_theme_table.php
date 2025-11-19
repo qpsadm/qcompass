@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->comment('テーママスタ');
         });
+
     }
 
     public function down(): void

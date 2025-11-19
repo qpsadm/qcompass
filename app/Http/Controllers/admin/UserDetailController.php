@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\Role;
+use App\Models\Theme;
+use App\Models\Course;
 
 class UserDetailController extends Controller
 {
@@ -26,13 +29,11 @@ class UserDetailController extends Controller
             'address2' => 'nullable|string|max:255',
             'emergency_contact' => 'nullable|string|max:50',
             'avatar_path' => 'nullable|image|max:2048',
-            'theme_color' => 'nullable|string|max:20',
+            'theme_id' => 'nullable|string|max:20',
             'status' => 'nullable|integer',
-            'is_show' => 'nullable|boolean',
-            'divisions_id' => 'nullable|integer',
             'bio' => 'nullable|string',
-            'memo1' => 'nullable|string',
-            'memo2' => 'nullable|string',
+            'note' => 'nullable|string',
+            'memo' => 'nullable|string',
             'joining_date' => 'nullable|date',
             'leaving_date' => 'nullable|date',
             'leaving_reason' => 'nullable|string',
@@ -45,7 +46,6 @@ class UserDetailController extends Controller
         // 必須値のデフォルト設定
         $data['user_id'] = $user->id;
         $data['status'] = $data['status'] ?? 1;
-        $data['is_show'] = $data['is_show'] ?? true;
 
         UserDetail::create($data);
 
@@ -53,10 +53,13 @@ class UserDetailController extends Controller
             ->with('success', '詳細情報を作成しました。');
     }
 
-    public function edit(User $user)
+    public function edit(User $user, UserDetail $detail)
     {
-        $detail = $user->detail;
-        return view('admin.user_details.edit', compact('user', 'detail'));
+        $roles = Role::all();      // 権限用
+        $courses = Course::all();  // 講座用
+        $themes = Theme::all();    // テーマカラー用
+
+        return view('admin.user_details.edit', compact('user', 'detail', 'roles', 'courses', 'themes'));
     }
 
     public function update(Request $request, User $user, UserDetail $detail)
@@ -71,13 +74,11 @@ class UserDetailController extends Controller
             'address2' => 'nullable|string|max:255',
             'emergency_contact' => 'nullable|string|max:50',
             'avatar_path' => 'nullable|image|max:2048',
-            'theme_color' => 'nullable|string|max:20',
+            'theme_id' => 'nullable|string|max:20',
             'status' => 'nullable|integer',
-            'is_show' => 'nullable|boolean',
-            'divisions_id' => 'nullable|integer',
             'bio' => 'nullable|string',
-            'memo1' => 'nullable|string',
-            'memo2' => 'nullable|string',
+            'note' => 'nullable|string',
+            'memo' => 'nullable|string',
             'joining_date' => 'nullable|date',
             'leaving_date' => 'nullable|date',
             'leaving_reason' => 'nullable|string',
@@ -89,7 +90,6 @@ class UserDetailController extends Controller
 
         // 必須値の補完
         $data['status'] = $data['status'] ?? $detail->status ?? 1;
-        $data['is_show'] = $data['is_show'] ?? $detail->is_show ?? true;
 
         $detail->update($data);
 

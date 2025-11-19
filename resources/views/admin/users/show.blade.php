@@ -1,60 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
+<div class="container mx-auto p-4 max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
 
-        <h1 class="text-2xl font-bold mb-4">ユーザー詳細</h1>
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー詳細</h1>
 
-        <!-- タブボタン -->
-        <div class="flex border-b mb-4">
-            <button class="px-4 py-2 font-semibold"
-                :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'basic' }"
-                @click="tab = 'basic'">基本情報</button>
+    <!-- タブボタン -->
+    <div class="flex border-b mb-6">
+        <button class="px-6 py-2 font-semibold focus:outline-none"
+            :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'basic' }"
+            @click="tab = 'basic'">
+            基本情報
+        </button>
+        <button class="px-6 py-2 font-semibold focus:outline-none"
+            :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'detail' }"
+            @click="tab = 'detail'">
+            詳細情報
+        </button>
+    </div>
 
-            <button class="px-4 py-2 font-semibold"
-                :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'detail' }"
-                @click="tab = 'detail'">詳細情報</button>
-        </div>
+    <!-- メッセージ -->
+    @if (session('success'))
+    <div class="bg-green-100 text-green-800 p-3 rounded mb-6">
+        {{ session('success') }}
+    </div>
+    @endif
 
-        <!-- メッセージ -->
-        @if (session('success'))
-            <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <div class="overflow-x-auto">
-            <!-- 基本情報タブ -->
-            <table x-show="tab === 'basic'" class="table-auto w-full bg-white border border-gray-200 rounded mb-4" x-cloak>
+    <div class="space-y-6">
+        <!-- 基本情報タブ -->
+        <div x-show="tab === 'basic'" x-cloak class="bg-white shadow rounded-lg p-6">
+            <table class="w-full table-auto">
                 <tbody>
                     @foreach ([
-            'ユーザーID' => $user->id,
-            'ユーザーコード' => $user->code,
-            '名前' => $user->name,
-            'フリガナ' => $user->furigana,
-            'ローマ字' => $user->roman_name,
-            'メール' => $user->email,
-            '権限' => $user->role->name ?? '-',
-            '講座' => $user->courses->pluck('name')->join(', ') ?: '-',
-            '作成者' => $user->created_user_id,
-            '更新者' => $user->updated_user_id,
-            '削除者' => $user->deleted_user_id,
-            '削除日' => $user->deleted_at,
-            '作成日' => $user->created_at,
-            '更新日' => $user->updated_at,
-        ] as $label => $value)
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 w-1/4 text-left">{{ $label }}</th>
-                            <td class="px-4 py-2 break-words text-left">{{ $value ?? '-' }}</td>
-                        </tr>
+                    'ユーザーID' => $user->id,
+                    'ユーザーコード' => $user->code,
+                    '名前' => $user->name,
+                    'フリガナ' => $user->furigana,
+                    'ローマ字' => $user->roman_name,
+                    'メール' => $user->email,
+                    '権限' => $user->role->role_name ?? '-',
+                    '講座' => $user->course->course_name ?? '未所属',
+                    '作成者' => $user->created_user_name,
+                    '更新者' => $user->updated_user_name,
+                    '削除者' => $user->deleted_user_name,
+                    '削除日' => $user->deleted_at,
+                    '作成日' => $user->created_at,
+                    '更新日' => $user->updated_at,
+                    ] as $label => $value)
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 w-1/4 text-right font-medium">{{ $label }}</th>
+                        <td class="px-4 py-2 break-words">{{ $value ?? '-' }}</td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
 
-            <!-- 詳細情報タブ -->
-            <table x-show="tab === 'detail'" class="table-auto w-full bg-white border border-gray-200 rounded" x-cloak>
-                <tbody>
-                    @foreach ([
+        <!-- 詳細情報タブ -->
+        <div x-show="tab === 'detail'" x-cloak class="bg-white shadow rounded-lg p-6">
+            @if ($user->detail)
+            @php
+            $details = [
             '部署' => $user->detail->department ?? '-',
             '電話番号1' => $user->detail->phone1 ?? '-',
             '電話番号2' => $user->detail->phone2 ?? '-',
@@ -63,17 +69,13 @@
             '住所2' => $user->detail->address2 ?? '-',
             '緊急連絡先' => $user->detail->emergency_contact ?? '-',
             '写真パス' => $user->detail->avatar_path ?? '-',
-            'テーマカラー' => $user->detail->theme_color ?? '-',
-            'ステータス' => match ($user->detail->status ?? null) {
-                0 => '非アクティブ',
-                1 => 'アクティブ',
-                default => '停止',
-            },
-            '表示/非表示' => $user->detail->is_show ?? '-',
-            '所属部署ID' => $user->detail->divisions_id ?? '-',
+            'テーマカラー' => $user->detail->theme_id ?? '-',
+            'ステータス' => isset($user->detail->status)
+            ? ($user->detail->status == 1 ? 'アクティブ' : ($user->detail->status == 0 ? '非アクティブ' : '停止'))
+            : '-',
             '自己紹介' => $user->detail->bio ?? '-',
-            'メモ1' => $user->detail->memo1 ?? '-',
-            'メモ2' => $user->detail->memo2 ?? '-',
+            'メモ' => $user->detail->note ?? '-',
+            '備考' => $user->detail->memo ?? '-',
             '入校日/入社日' => $user->detail->joining_date ?? '-',
             '退校日/退社日' => $user->detail->leaving_date ?? '-',
             '退校/退社理由' => $user->detail->leaving_reason ?? '-',
@@ -83,23 +85,48 @@
             '削除日' => $user->detail->deleted_at ?? '-',
             '作成日' => $user->detail->created_at ?? '-',
             '更新日' => $user->detail->updated_at ?? '-',
-        ] as $label => $value)
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 w-1/4 text-left">{{ $label }}</th>
-                            <td class="px-4 py-2 break-words text-left">{{ $value }}</td>
-                        </tr>
+            ];
+            @endphp
+
+            <table class="w-full table-auto">
+                <tbody>
+                    @foreach ($details as $label => $value)
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 w-1/4 text-right font-medium">{{ $label }}</th>
+                        <td class="px-4 py-2 break-words">{{ $value }}</td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
+            @else
+            <div class="text-gray-500 italic">詳細情報は未登録です。</div>
+            @endif
         </div>
 
-        <!-- 編集ボタン -->
-        <div class="flex gap-2 mt-4">
-            <a :href="'{{ route('admin.users.edit', $user->id) }}?tab=basic'"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">基本情報編集</a>
-            <a :href="'{{ route('admin.users.edit', $user->id) }}?tab=detail'"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">詳細情報編集</a>
-        </div>
 
     </div>
+
+    <!-- 編集ボタン -->
+    <div class="flex gap-3 mt-6">
+        <!-- 基本情報編集 -->
+        <a href="{{ route('admin.users.edit', ['user' => $user->id, 'tab' => 'basic']) }}"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
+            基本情報編集
+        </a>
+
+        <!-- 詳細情報編集 / 作成 -->
+        @if ($user->detail)
+        <a href="{{ route('admin.user_details.edit', ['user' => $user->id, 'detail' => $user->detail->id]) }}"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
+            詳細情報編集
+        </a>
+        @else
+        <a href="{{ route('admin.user_details.create', $user->id) }}"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
+            詳細情報作成
+        </a>
+        @endif
+    </div>
+
+</div>
 @endsection
