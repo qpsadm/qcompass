@@ -108,19 +108,15 @@
 
         </div>
 
-     <!-- 編集ボタン -->
-<div class="flex gap-3 mt-6">
-    <!-- 基本情報編集 -->
-    <a href="{{ route('admin.users.edit', ['user' => $user->id, 'tab' => 'basic']) }}"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
-        基本情報編集
-    </a>
+        <!-- 編集ボタン -->
+        <div class="flex gap-3 mt-6">
+            <!-- 基本情報編集 -->
+            <a href="{{ route('admin.users.edit', ['user' => $user->id, 'tab' => 'basic']) }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
+                基本情報編集
+            </a>
 
-    <!-- ユーザー一覧に戻る -->
-    <a href="{{ route('admin.users.index') }}"
-        class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded shadow transition">
-        ← ユーザー一覧に戻る
-    </a>
+
 
             <!-- 詳細情報編集 / 作成 -->
             @if ($user->detail)
@@ -128,12 +124,18 @@
                     class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
                     詳細情報編集
                 </a>
+
+
+                <!-- ユーザー一覧に戻る -->
+                <a href="{{ route('admin.users.index') }}"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded shadow transition">
+                    ← ユーザー一覧に戻る
+                </a>
             @else
                 <a href="{{ route('admin.user_details.create', $user->id) }}"
                     class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
                     詳細情報作成
                 </a>
-
             @endif
         </div>
 
