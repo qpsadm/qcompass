@@ -28,9 +28,9 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'is_show' => true,
                 'created_at' => now(),
-                'created_user_name' => 'system',
+                'created_user_name' => '山田 太郎',
                 'updated_at' => now(),
-                'updated_user_name' => 'system',
+                'updated_user_name' => '山田 太郎',
             ],
         ]);
     }

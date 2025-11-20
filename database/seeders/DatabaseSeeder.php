@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             ThemesTableSeeder::class,
             CoursesTableSeeder::class,
             LevelsTableSeeder::class,
+            AnnouncementTypeTableSeeder::class,
         ]);
     }
 }

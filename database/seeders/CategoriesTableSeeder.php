@@ -18,7 +18,7 @@ class CategoriesTableSeeder extends Seeder
         $categories = [
             // 親カテゴリ（parent_id = 0）
             ['id' => 1, 'code' => 'cm01', 'name' => 'オリエンテーション', 'parent_id' => NULL, 'top_id' => 1, 'level' => 1, 'child_count' => 0, 'is_show' => true],
-            ['id' => 2, 'code' => 'cm02', 'name' => 'お知らせ', 'parent_id' => NULL, 'top_id' => 2, 'level' => 1, 'child_count' => 0, 'is_show' => true],
+            ['id' => 2, 'code' => 'cm02', 'name' => '各種手引き', 'parent_id' => NULL, 'top_id' => 2, 'level' => 1, 'child_count' => 0, 'is_show' => true],
             ['id' => 3, 'code' => 'cm03', 'name' => '就職支援', 'parent_id' => NULL, 'top_id' => 3, 'level' => 1, 'child_count' => 0, 'is_show' => true],
             ['id' => 4, 'code' => 'cm04', 'name' => 'ビジネスマナー', 'parent_id' => NULL, 'top_id' => 4, 'level' => 1, 'child_count' => 2, 'is_show' => true],
             ['id' => 7, 'code' => 'cm05', 'name' => 'IT基礎', 'parent_id' => NULL, 'top_id' => 7, 'level' => 1, 'child_count' => 5, 'is_show' => true],
