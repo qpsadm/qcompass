@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseCategoryController extends Controller
 {
+
     public function index()
     {
         $courses = \App\Models\Course::with('categories')->get();

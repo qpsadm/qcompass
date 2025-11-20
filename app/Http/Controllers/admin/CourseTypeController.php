@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CourseType;
+use App\Models\Organizer;
 
 class CourseTypeController extends Controller
 {
@@ -16,16 +17,21 @@ class CourseTypeController extends Controller
 
     public function create()
     {
-        $courseTypes = CourseType::all();
-        return view('admin.course_type.create', compact('courseTypes'));
+        $organizers = Organizer::all();
+        return view('admin.course_type.create', compact('organizers'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'nullable',
+            'organizer_id' => 'required|exists:organizers,id',
+            'is_show' => 'nullable|in:0,1',
         ]);
+
+        $validated['is_show'] = $request->has('is_show');
         CourseType::create($validated);
+
         return redirect()->route('admin.course_type.index')->with('success', 'CourseType作成完了');
     }
 

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('course_types', function (Blueprint $table) {
             $table->id()->comment('主キー');
-            $table->integer('organizer_id')->comment('実施主体ID');
+            $table->foreignId('organizer_id')->constrained('organizers')->comment('実施主体ID');
             $table->string('name', 255)->comment('名前');
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
 

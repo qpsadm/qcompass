@@ -17,4 +17,25 @@ class CourseTeacher extends Model
         'updated_user_name',
         'deleted_user_name',
     ];
+    // 講座
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    // 講師ユーザー
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    // 担当区分を文字列で出したい場合
+    public function getRoleNameAttribute()
+    {
+        return match ($this->role_in_course) {
+            1 => 'メイン講師',
+            2 => 'サブ講師',
+            3 => 'アシスタント',
+            default => '未設定',
+        };
+    }
 }
