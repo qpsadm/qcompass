@@ -2,74 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Storage;
-use App\Models\AgendaFile;
+use App\Models\Agenda;
+
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Agenda;
-use App\Models\Course;
-use App\Models\Category;
-use Mews\Purifier\Facades\Purifier;
 
 class AgendaController extends Controller
 {
-    /**
-     * CKEditorで許可するHTMLタグ
-     */
-    protected $allowedTags = [
-        'p',
-        'br',
-        'b',
-        'i',
-        'strong',
-        'em',
-        'u',
-        'a[href|title|target|rel|name]',
-        'span[style|class|id|title|dir]',
-        'div[style|class|id|title|dir]',
-        'ul',
-        'ol',
-        'li',
-        'img[src|alt|title|width|height|style|class|id]',
-        'figure[style|class|id]',
-        'figcaption[style|class|id]',
-        'iframe[src|width|height|frameborder|allowfullscreen|style|class|id|title]',
-        'h1',
-        'h2',
-        'h3',
-        'h4',
-        'h5',
-        'h6',
-        'blockquote[cite|style|class|id]',
-        'table[style|class|id|border|cellspacing|cellpadding]',
-        'thead[style|class|id]',
-        'tbody[style|class|id]',
-        'tfoot[style|class|id]',
-        'tr[style|class|id]',
-        'td[style|class|id|colspan|rowspan|align|valign]',
-        'th[style|class|id|colspan|rowspan|align|valign]',
-        'col[style|class|id|span]',
-        'colgroup[style|class|id|span]',
-        'pre',
-        'code',
-        'hr',
-        'small',
-        'sub',
-        'sup',
-        'mark',
-        'abbr[title|style|class|id]',
-        'address'
-    ];
-
     /**
      * アジェンダ一覧
      */
     public function index()
     {
-        // お知らせカテゴリのIDを取得
         $noticeCategoryId = Category::where('code', 'notice')->value('id');
 
-        $agendas = Agenda::with(['category', 'createdUser', 'courses']) // ← courses を追加
+        $agendas = Agenda::with(['category', 'createdUser', 'courses'])
             ->whereNull('deleted_at')
             ->where('category_id', '!=', $noticeCategoryId)
             ->get();
@@ -78,7 +26,7 @@ class AgendaController extends Controller
     }
 
     /**
-     * アジェンダ作成画面
+     * 作成画面
      */
     public function create()
     {
@@ -87,105 +35,43 @@ class AgendaController extends Controller
             ->where('code', '!=', 'notice')
             ->get();
 
-        $agenda = new Agenda(); // 空のモデルを作成
-
+        $agenda = new Agenda();
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        $courses = Course::where('status', '1')->get(); // 表示フラグが立っている講座のみ
-
-        return view('admin.agendas.create', compact('categories', 'courses', 'agenda'));
+        return view('admin.agendas.create', compact('categories', 'agenda'));
     }
 
     /**
-     * アジェンダ詳細
-     */
-    public function show($id)
-    {
-        $agenda = Agenda::with(['category', 'createdUser', 'updatedUser'])->findOrFail($id);
-
-        // ← ここで Purifier を使って description をサニタイズ
-        $agenda->description_sanitized = Purifier::clean($agenda->description, [
-            'HTML.Allowed' => implode(',', $this->allowedTags),
-            'HTML.SafeIframe' => true,
-            'CSS.AllowTricky' => true,
-            'HTML.Trusted' => true,
-        ]);
-
-        return view('admin.agendas.show', [
-            'Agenda' => $agenda,
-        ]);
-    }
-
-
-    /**
-     * アジェンダ保存
-     */
-    /**
-     * アジェンダ保存（単数 select 完全対応）
+     * 保存
      */
     public function store(Request $request)
     {
-        // バリデーション
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'nullable|integer',
-            'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
-            'accept' => 'required|in:yes,no',
-            'course_id' => 'nullable|exists:courses,id', // 単数 select 用
+            'status' => 'required|in:yes,no',
+            'content' => 'nullable|string',
         ]);
 
-        // description をデコードして空白調整
-        if (!empty($validated['description'])) {
-            $decoded = htmlspecialchars_decode(html_entity_decode($validated['description'], ENT_QUOTES | ENT_HTML5));
-            $decoded = str_replace('&nbsp;', ' ', $decoded);
-            $validated['description'] = $decoded;
-        }
-
-        // 表示フラグと作成ユーザー情報
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
         $validated['user_id'] = auth()->id();
-        $validated['created_user_id'] = auth()->id();
+        $validated['created_user_name'] = auth()->user()->name;
 
-        // アジェンダ作成
-        $agenda = Agenda::create($validated);
-
-        // 講座紐付け（単数 select 対応）
-        if (!empty($validated['course_id'])) {
-            $courseIds = $validated['course_id'];
-            if (!is_array($courseIds)) {
-                $courseIds = [$courseIds]; // 単数を配列に変換
-            }
-
-            $syncData = [];
-            foreach ($courseIds as $index => $courseId) {
-                $syncData[$courseId] = ['order_no' => $index + 1, 'note' => null];
-            }
-
-            $agenda->courses()->sync($syncData);
-        }
+        Agenda::create($validated);
 
         return redirect()->route('admin.agendas.index')
             ->with('success', 'アジェンダを作成しました');
     }
-
-
 
     /**
      * 編集画面
      */
     public function edit(Agenda $agenda)
     {
-        $courses = Course::where('status', '1')->get();
 
-        $selectedCourses = $agenda->courses->map(function ($course) {
-            return [
-                'id' => $course->id,
-                'course_name' => $course->course_name,
-            ];
-        })->toArray();
+        $selectedCourses = $agenda->courses->pluck('id')->toArray();
 
-        // カテゴリを取得（お知らせ以外）
         $rootCategories = Category::with('children')
             ->whereNull('parent_id')
             ->where('code', '!=', 'notice')
@@ -193,47 +79,27 @@ class AgendaController extends Controller
 
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        return view('admin.agendas.edit', compact('agenda', 'courses', 'selectedCourses', 'categories'));
+        return view('admin.agendas.edit', compact('agenda', 'selectedCourses', 'categories'));
     }
 
-
-
     /**
-     * 更新処理
+     * 更新
      */
     public function update(Request $request, Agenda $agenda)
     {
+        // バリデーションに description を追加
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'nullable|integer',
-            'description' => 'nullable|string',
             'is_show' => 'nullable|boolean',
-            'accept' => 'required|in:yes,no',
-            'course_id' => 'nullable|array',
-            'course_id.*' => 'integer|exists:courses,id',
+            'status' => 'required|in:yes,no',
+            'content' => 'nullable|string',
         ]);
 
-        if (!empty($validated['description'])) {
-            $decoded = htmlspecialchars_decode(html_entity_decode($validated['description']), ENT_QUOTES | ENT_HTML5);
-            $decoded = str_replace('&nbsp;', ' ', $decoded);
-            $validated['description'] = $decoded;
-        }
-
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
-        $validated['updated_user_id'] = auth()->id();
+        $validated['updated_user_name'] = auth()->user()->name;
 
         $agenda->update($validated);
-
-        // 講座の紐付け
-        if (!empty($validated['course_id'])) {
-            $syncData = [];
-            foreach ($validated['course_id'] as $index => $courseId) {
-                $syncData[$courseId] = ['order_no' => $index + 1, 'note' => null];
-            }
-            $agenda->courses()->sync($syncData);
-        } else {
-            $agenda->courses()->detach(); // 選択なしならすべて外す
-        }
 
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを更新しました');
     }
@@ -249,9 +115,15 @@ class AgendaController extends Controller
 
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました。');
     }
-
     /**
-     * 論理削除済みの一覧
+     * アジェンダ詳細
+     */
+    public function show(Agenda $agenda)
+    {
+        return view('admin.agendas.show', compact('agenda'));
+    }
+    /**
+     * 論理削除済み一覧
      */
     public function trash()
     {
@@ -271,12 +143,11 @@ class AgendaController extends Controller
     }
 
     /**
-     * カテゴリをツリー形式でオプション配列に変換
+     * カテゴリツリーを配列に変換
      */
     private function buildCategoryOptions($categories, $prefix = '')
     {
         $options = [];
-
         foreach ($categories as $category) {
             $options[] = [
                 'id' => $category->id,
@@ -284,29 +155,9 @@ class AgendaController extends Controller
             ];
 
             if ($category->children->isNotEmpty()) {
-                $childOptions = $this->buildCategoryOptions($category->children, $prefix . '— ');
-                $options = array_merge($options, $childOptions);
+                $options = array_merge($options, $this->buildCategoryOptions($category->children, $prefix . '— '));
             }
         }
-
         return $options;
-    }
-
-
-    // Controller
-    public function upload(Request $request)
-    {
-        if (!$request->hasFile('file')) {
-            return response()->json(['uploaded' => 0, 'error' => ['message' => 'ファイルが見つかりません']]);
-        }
-
-        $file = $request->file('file');
-        $path = $file->store('uploads', 'public');
-
-        return response()->json([
-            'uploaded' => 1,
-            'fileName' => $file->getClientOriginalName(),
-            'url' => asset("storage/$path")
-        ]);
     }
 }

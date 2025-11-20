@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            
+
             <h1 class="text-2xl font-bold mb-4">アジェンダ一覧</h1>
 
             @if (session('success'))
@@ -21,7 +21,6 @@
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-100">
-                        <th class="border-b px-4 py-2">講座名</th>
                         <th class="border px-4 py-2">アジェンダ名</th>
                         <th class="border px-4 py-2">表示</th>
                         <th class="border px-4 py-2">承認</th>
@@ -32,16 +31,6 @@
                 <tbody>
                     @forelse($agendas as $agenda)
                         <tr class="hover:bg-gray-50">
-                            {{-- 講座名 --}}
-                            <td class="border px-4 py-2">
-                                @forelse($agenda->courses as $course)
-                                    <span class="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded mr-1">
-                                        {{ $course->course_name }}
-                                    </span>
-                                @empty
-                                    不明な講座
-                                @endforelse
-                            </td>
 
                             <td class="border px-4 py-2">{{ $agenda->agenda_name }}</td>
                             <td class="border px-4 py-2">{{ $agenda->is_show ? '表示' : '非表示' }}</td>

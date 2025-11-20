@@ -15,10 +15,10 @@ class Agenda extends Model
     protected $fillable = [
         'agenda_name',
         'category_id',
-        'description',
+        'content',
         'is_show',
         'user_id',
-        'accept',
+        'status',
         'created_user_id',
         'updated_user_id',
     ];
@@ -39,12 +39,12 @@ class Agenda extends Model
 
     public function createdUser()
     {
-        return $this->belongsTo(User::class, 'created_user_id');
+        return $this->belongsTo(User::class, 'created_user_name');
     }
 
     public function updatedUser()
     {
-        return $this->belongsTo(User::class, 'updated_user_id');
+        return $this->belongsTo(User::class, 'updated_user_name');
     }
     public function files()
     {
