@@ -116,10 +116,16 @@
 
         <!-- ボタン -->
         <div class="flex gap-2 mb-8">
+            <!-- 編集ボタン -->
             <a href="{{ route('admin.users.edit', $user->id) }}"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">編集</a>
-            <a href="{{ route('admin.users.index') }}"
-                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">ユーザー一覧に戻る</a>
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                編集
+            </a>
+
+            <!-- 一覧に戻るボタン -->
+            <a href="{{ route('admin.users.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                一覧に戻る
+            </a>
         </div>
     </div>
 @endsection

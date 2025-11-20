@@ -78,22 +78,23 @@
                     {{ isset($agenda->id) ? '更新' : '保存' }}
                 </button>
             </form>
+
         </div>
 
-        {{-- CKEditor 4 --}}
-        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-        <script>
-            var editor = CKEDITOR.replace('agenda-content', {
-                language: 'ja',
-                allowedContent: true,
-            });
+        <<<<<<< HEAD {{-- CKEditor 4 --}}=======>>>>>>> 16f200b0a48dd5838dfe60b72b4f27183c852e6e
+            <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+            <script>
+                var editor = CKEDITOR.replace('agenda-content', {
+                    language: 'ja',
+                    allowedContent: true,
+                });
 
-            // フォーム送信前に CKEditor の内容を textarea に反映
-            document.getElementById('agenda-form').addEventListener('submit', function(e) {
-                for (var instance in CKEDITOR.instances) {
-                    CKEDITOR.instances[instance].updateElement();
-                }
-            });
-        </script>
+                // フォーム送信前に CKEditor の内容を textarea に反映
+                document.getElementById('agenda-form').addEventListener('submit', function(e) {
+                    for (var instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                });
+            </script>
     </div>
 @endsection

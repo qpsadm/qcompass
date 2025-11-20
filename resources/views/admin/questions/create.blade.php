@@ -83,9 +83,18 @@
                            outline-none focus:outline-none">
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-5 py-2 rounded shadow hover:bg-blue-600 transition">
-                    保存
-                </button>
+                <div class="flex gap-2 mt-2">
+                    <!-- 保存ボタン -->
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+                        保存
+                    </button>
+
+                    <!-- 一覧に戻るボタン -->
+                    <a href="{{ route('admin.course_type.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
+                        一覧に戻る
+                    </a>
+                </div>
             </form>
         </div>
     </div>

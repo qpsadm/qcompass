@@ -47,7 +47,16 @@
                 <input type="file" name="avatar_path" class="border px-3 py-2 rounded w-full">
             </div>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">作成</button>
+            <div class="flex space-x-2 mt-4">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    作成
+                </button>
+
+                <a href="{{ route('admin.users.index') }}"
+                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    ユーザー一覧に戻る
+                </a>
+            </div>
         </form>
     </div>
 @endsection
