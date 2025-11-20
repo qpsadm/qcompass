@@ -1,94 +1,106 @@
 @charset "UTF-8";
 
-
-/* 日報フォーム */
-
-.required {
-    padding: 0.2em 0.8em;
-    color: #fff;
-    background-color: #ff0000;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
-    font-size: 13px;
+.accordion-menu {
+    margin-bottom: 50px;
+    /* padding: 20px 15px; */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    background-color: var(--sub-color-2);
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.form-item {
+.accordion-menu.active {
+    padding: 0 0 15px;
+}
+
+.click-area {
     display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
 }
 
-.item-label {
+.accordion-btn span,
+.accordion-btn span::before {
+    display: block;
+    width: 15px;
+    height: 2px;
+    background-color: var(--text-color-2);
+}
+
+.accordion-btn span {
+    position: relative;
+}
+
+.accordion-btn span::before {
+    content: "";
+    position: absolute;
+    transform: rotate(90deg);
+    transition: 0.5s;
+}
+
+.accordion-menu.active .accordion-btn span::before {
+    transform: rotate(0deg);
+}
+
+.accordion-contents {
+    /* margin-top: 15px; */
+    margin: 0 15px;
+    background-color: var(--text-color-3);
+    display: none;
+    /* transition: all 0.8s; */
+    border-radius: 10px;
+    width: calc(100% - 30px);
+}
+
+.accordion-menu.active .accordion-contents {
+    display: block;
+}
+
+.accordion-contents ul {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    width: 215px;
-    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    padding: 10px;
 }
 
-input[id="name"],
-input[id="mail"] {
-    width: 300px;
-    height: 30px;
-    padding: 10px 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s, box-shadow 0.3s;
+.accordion-contents li a {
+    display: block;
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-input[id="date"] {
-    width: 150px;
-    height: 30px;
-    padding: 10px 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s, box-shadow 0.3s;
+.accordion-contents li a:hover,
+.accordion-contents li.active a {
+    border-radius: 11px;
+    background-color: var(--sub-color-1);
+}
+
+
+
+/* mypage */
+
+.box-container {
+    display: flex;
+    gap: 30px;
+}
+
+.contents-box.profile {
+    width: 380px;
+}
+
+.contents-box.calendar {
+    flex: 1;
 }
 
 textarea {
-    width: 840px;
-    height: 150px;
-    padding: 10px 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 1px solid var(--text-color-2);
     border-radius: 6px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.privacy-policy {
-    margin-top: 50px;
-}
-
-.privacy-policy p {
-    margin-bottom: 20px;
-}
-
-.privacy-policy-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 306px;
-    margin: 15px auto;
-    padding: 0.6em 1.2em;
-    border-radius: 25px;
-    background-color: #FFB71D;
-    color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-    font-size: 1em;
-}
-
-.privacy-policy-button {
-    margin-top: 50px;
-}
-
-.privacy-policy-button:hover {
-    box-shadow: 0 7px 30px -5px rgb(0, 0, 0, 0.3);
+    background-color: var(--text-color-3);
+    font-weight: 500;
+    width: 100%;
 }
