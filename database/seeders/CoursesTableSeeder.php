@@ -46,6 +46,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => now(),
                 'updated_user_name' => 'admin',
             ],
+
             // 他の講座も同様に追加
         ]);
 
