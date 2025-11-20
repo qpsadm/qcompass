@@ -16,7 +16,6 @@ class Category extends Model
         'level',
         'top_id',
         'is_show',
-        'theme_color'
     ];
 
     // 子カテゴリ
@@ -36,20 +35,16 @@ class Category extends Model
         return $this->childrenRecursive()->count();
     }
 
-    public function getThemeColorNameAttribute()
-    {
-        return match ($this->theme_color) {
-            1 => 'red',
-            2 => 'blue',
-            3 => 'green',
-            default => 'unknown',
-        };
-    }
 
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_categorys', 'category_id', 'course_id')
             ->withPivot(['note', 'is_show'])
             ->withTimestamps();
+    }
+
+    public function theme()
+    {
+        return $this->belongsTo(Theme::class, 'theme_id'); // categoriesテーブルに theme_id がある場合
     }
 }

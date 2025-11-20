@@ -39,7 +39,6 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'is_show' => 'sometimes|boolean',
-            'theme_color' => 'nullable|string|max:50',
         ]);
 
         $data['is_show'] = $request->boolean('is_show');
@@ -73,7 +72,6 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'is_show' => 'nullable|boolean',
-            'theme_color' => 'nullable|string|max:50',
         ]);
 
         $data['is_show'] = $request->boolean('is_show');

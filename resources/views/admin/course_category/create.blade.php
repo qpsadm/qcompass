@@ -8,12 +8,14 @@
             <form action="{{ route('admin.course_category.store') }}" method="POST">
                 @csrf
 
-                {{-- 講座ID --}}
+                {{-- 講座名（表示用） --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">講座ID</label>
-                    <input type="text" name="course_id" value="{{ old('course_id', $course->id) }}"
-                        class="border px-2 py-1 w-full rounded" readonly>
+                    <label class="block font-medium mb-1">講座</label>
+                    <input type="text" value="{{ $course->course_name }}" class="border px-2 py-1 w-full rounded" readonly>
                 </div>
+
+                {{-- 講座ID（送信用、隠しフィールド） --}}
+                <input type="hidden" name="course_id" value="{{ $course->id }}">
 
                 {{-- カテゴリチェックボックス --}}
                 <div class="mb-4">
