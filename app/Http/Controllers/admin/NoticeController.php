@@ -64,11 +64,6 @@ class NoticeController extends Controller
     // お知らせ一覧
     public function index()
     {
-        $category = Category::firstOrCreate(
-            ['code' => 'notice'],
-            ['name' => 'お知らせ', 'is_show' => 1]
-        );
-
         $agendas = Agenda::where('category_id', $category->id)
             ->with(['createdUser', 'courses'])
             ->get();
@@ -79,10 +74,6 @@ class NoticeController extends Controller
     // 作成フォーム
     public function create()
     {
-        $category = Category::firstOrCreate(
-            ['code' => 'notice'],
-            ['name' => 'お知らせ', 'is_show' => 1]
-        );
 
         $courses = Course::where('status', '1')->get();
 
