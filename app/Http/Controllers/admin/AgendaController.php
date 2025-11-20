@@ -56,7 +56,7 @@ class AgendaController extends Controller
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
         $validated['user_id'] = auth()->id();
-        $validated['created_user_name'] = auth()->user()->name;
+        $validated['created_user_name'] = auth()->user()->name ?? 'system';
 
         Agenda::create($validated);
 

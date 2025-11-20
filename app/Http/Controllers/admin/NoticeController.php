@@ -112,7 +112,7 @@ class NoticeController extends Controller
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
         $validated['category_id'] = Category::where('code', 'notice')->value('id');
         $validated['user_id'] = Auth::id();
-        $validated['created_user_id'] = Auth::id();
+        $validated['created_user_name'] = auth()->user()->name ?? 'system';
 
         $agenda = Agenda::create($validated);
 
@@ -161,7 +161,7 @@ class NoticeController extends Controller
         ]);
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
-        $validated['updated_user_id'] = Auth::id();
+        $validated['updated_user_name'] = Auth::id();
 
         $notice->update($validated);
 

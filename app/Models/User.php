@@ -49,7 +49,9 @@ class User extends Authenticatable
     // 複数コース用（中間テーブル）
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_users', 'user_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'course_users', 'user_id', 'course_id')
+            ->withTimestamps()
+            ->withPivot('created_user_name', 'updated_user_name', 'deleted_user_name');
     }
 
     public function role()

@@ -15,7 +15,9 @@ class Course extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
+        return $this->belongsToMany(User::class, 'course_users', 'course_id', 'user_id')
+            ->withTimestamps()
+            ->withPivot('created_user_name', 'updated_user_name', 'deleted_user_name');
     }
 
     // 状態の定数定義

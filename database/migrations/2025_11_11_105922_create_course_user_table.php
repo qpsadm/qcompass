@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('course_id')->references('id')->on('courses');
         });
     }
 

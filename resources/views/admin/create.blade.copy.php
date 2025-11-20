@@ -60,7 +60,7 @@
         </div>
         <div class="mb-4">
             <label class="block font-medium mb-1">作成者ID</label>
-            <input type="hidden" name="created_user_id" value="{{ auth()->user()->id }}">
+            <input type="hidden" name="created_user_name" value="{{ auth()->user()->id }}">
         </div>
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 mb-8 rounded">保存</button>

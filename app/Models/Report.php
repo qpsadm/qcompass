@@ -14,8 +14,8 @@ class Report extends Model
         'impression',
         'notice',
         'user_id',
-        'created_user_id',
-        'updated_user_id',
+        'created_user_name',
+        'updated_user_name',
     ];
 
     // 提出者（user_id）
@@ -24,16 +24,16 @@ class Report extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // 作成者（created_user_id）
+    // 作成者（created_user_name）
     public function creator()
     {
-        return $this->belongsTo(User::class, 'created_user_id');
+        return $this->belongsTo(User::class, 'created_user_name');
     }
 
-    // 更新者（updated_user_id）
+    // 更新者（updated_user_name）
     public function updater()
     {
-        return $this->belongsTo(User::class, 'updated_user_id');
+        return $this->belongsTo(User::class, 'updated_user_name');
     }
 
     // 講座

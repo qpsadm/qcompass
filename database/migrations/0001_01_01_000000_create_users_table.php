@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('password', 255)->comment('パスワード');
             $table->integer('role_id')->comment('権限');
             $table->integer('division_id')->nullable()->comment('所属部署');
-            $table->integer('courses_id')->nullable()->comment('講座ID');
             $table->string('remember_token', 100)->nullable()->comment('ログイン保持トークン');
             $table->string('email', 255)->nullable()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable()->comment('メール確認日時');

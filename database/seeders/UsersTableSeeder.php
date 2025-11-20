@@ -22,7 +22,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('Qlip123!'),
                 'role_id' => 8,          // 管理者
                 'division_id' => 1,      // 所属部署ID
-                'courses_id' => 1,       // 存在する course の ID
                 'remember_token' => Str::random(10),
                 'email' => 'webmaster@qlipinternational.co.jp',
                 'email_verified_at' => now(),
@@ -40,7 +39,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('Qlip123!'),
                 'role_id' => 7,          // 管理者
                 'division_id' => 1,      // 所属部署ID
-                'courses_id' => 1,       // 存在する course の ID
                 'remember_token' => Str::random(10),
                 'email' => 'taro@example.com',
                 'email_verified_at' => now(),
