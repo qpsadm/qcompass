@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6">講座講師作成</h1>
+            <h1 class="text-2xl font-bold mb-6">社員作成</h1>
 
             <form action="{{ route('admin.course_teachers.store') }}" method="POST" class="space-y-4">
                 @csrf
@@ -38,10 +38,19 @@
                 <div>
                     <label class="block font-medium mb-1">担当区分 <span class="text-red-500">*</span></label>
                     <select name="role_in_course" class="border px-3 py-2 w-full rounded" required>
-                        <option value="">選択してください</option>
-                        <option value="1" {{ old('role_in_course') == 1 ? 'selected' : '' }}>メイン講師</option>
-                        <option value="2" {{ old('role_in_course') == 2 ? 'selected' : '' }}>サブ講師</option>
-                        <!-- 必要に応じて追加 -->
+                        <option value="1"
+                            {{ is_array(old('role_in_course')) && in_array(1, old('role_in_course')) ? 'selected' : '' }}>
+                            責任者</option>
+                        <option value="2"
+                            {{ is_array(old('role_in_course')) && in_array(2, old('role_in_course')) ? 'selected' : '' }}>
+                            講師</option>
+                        <option value="3"
+                            {{ is_array(old('role_in_course')) && in_array(2, old('role_in_course')) ? 'selected' : '' }}>
+                            キャリコン</option>
+                        <option value="4"
+                            {{ is_array(old('role_in_course')) && in_array(2, old('role_in_course')) ? 'selected' : '' }}>
+                            補助</option>
+
                     </select>
                 </div>
 
