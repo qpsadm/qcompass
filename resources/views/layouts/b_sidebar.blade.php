@@ -50,6 +50,10 @@
                         <li><a href="{{ route('admin.course_type.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座分野一覧</a>
                         </li>
+                        <li><a href="{{ route('admin.course_category.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座カテゴリー</a>
+                        </li>
+
                         <li><a href="{{ route('admin.questions.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">質疑応答一覧</a>
                         </li>

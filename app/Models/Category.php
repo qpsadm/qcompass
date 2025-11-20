@@ -35,7 +35,7 @@ class Category extends Model
     {
         return $this->childrenRecursive()->count();
     }
-    
+
     public function getThemeColorNameAttribute()
     {
         return match ($this->theme_color) {
@@ -44,5 +44,12 @@ class Category extends Model
             3 => 'green',
             default => 'unknown',
         };
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_categorys', 'category_id', 'course_id')
+            ->withPivot(['note', 'is_show'])
+            ->withTimestamps();
     }
 }

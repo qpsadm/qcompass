@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\CourseCategoryController;
 
 // =============================
 // 公開ページ
@@ -76,6 +77,18 @@ Route::middleware(['auth', 'role:8'])
         Route::resource('questions', QuestionController::class);
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('quotes', QuoteController::class);
+
+
+
+        // 講座ID付き create を定義（resource より前）
+        Route::get(
+            'course_category/create/{courseId}',
+            [CourseCategoryController::class, 'create']
+        )
+            ->name('course_category.create');
+
+        // 既存の resource
+        Route::resource('course_category', CourseCategoryController::class);
 
         // ---------- ユーザー詳細 ----------
         Route::prefix('users/{user}')

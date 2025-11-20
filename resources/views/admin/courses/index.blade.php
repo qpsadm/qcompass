@@ -77,12 +77,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- /削除モーダル --}}
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <!-- ページネーション -->
+            <div class="mt-4">
+                {{ $courses->appends(request()->query())->links() }}
+            </div>
         </div>
     </div>
 
