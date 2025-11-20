@@ -19,8 +19,8 @@ class Agenda extends Model
         'is_show',
         'user_id',
         'status',
-        'created_user_id',
-        'updated_user_id',
+        'created_user_name',
+        'updated_user_name',
     ];
 
     protected $casts = [
