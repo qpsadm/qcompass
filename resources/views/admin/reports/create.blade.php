@@ -25,7 +25,7 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">日付</label>
                     <input type="date" name="date"
-                        class="border border-gray-300 rounded px-3 py-2 w-full focus:ring focus:ring-blue-200">
+                        class="border border-gray-300 rounded px-3 py-2 w-[200] focus:ring focus:ring-blue-200">
                 </div>
 
                 {{-- タイトル --}}
