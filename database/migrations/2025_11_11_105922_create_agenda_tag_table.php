@@ -12,8 +12,14 @@ return new class extends Migration
             $table->id(); // 主キー
             $table->foreignId('agenda_id');
             $table->foreignId('tag_id');
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
-            $table->timestamps();  // created_at, updated_at
+
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
         });
     }
 

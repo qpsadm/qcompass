@@ -13,8 +13,14 @@ return new class extends Migration
             $table->unsignedBigInteger('learning_id');
             $table->unsignedBigInteger('tag_id');
 
-            $table->timestamps(); // created_at / updated_at 自動追加
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
+
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
         });
     }
 

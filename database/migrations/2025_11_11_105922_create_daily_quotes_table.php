@@ -15,8 +15,14 @@ return new class extends Migration
             $table->date('display_date')->nullable();
             $table->boolean('is_show')->default(true);
 
-            $table->timestamps();  // created_at, updated_at
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
+
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
         });
     }
 

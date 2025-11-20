@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー
-            $table->foreign('type_id')->references('id')->on('announcement_types')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('announcement_types');
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses');
 
             $table->comment('お知らせ');
         });

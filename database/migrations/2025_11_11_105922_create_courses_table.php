@@ -49,9 +49,9 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー制約
-            $table->foreign('course_type_id')->references('id')->on('course_types')->onDelete('cascade');
-            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
-            $table->foreign('organizer_id')->references('id')->on('organizers')->onDelete('cascade');
+            $table->foreign('course_type_id')->references('id')->on('course_types');
+            $table->foreign('level_id')->references('id')->on('levels');
+            $table->foreign('organizer_id')->references('id')->on('organizers');
 
             $table->comment('講座マスタ');
         });
