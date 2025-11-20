@@ -20,13 +20,6 @@ return new class extends Migration
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
         });
-        // 初期データ挿入
-        DB::table('organizers')->insert([
-            ['id' => 4, 'name' => 'その他',],
-            ['id' => 3, 'name' => 'QLIPプログラミングスクール',],
-            ['id' => 2, 'name' => '徳島県立テクノスクール',],
-            ['id' => 1, 'name' => 'ポリテクセンター徳島',],
-        ]);
     }
 
     public function down(): void

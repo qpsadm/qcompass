@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             UsersTableSeeder::class,
+            OrganizersTableSeeder::class,
             CourseTypeSeeder::class,
             CategoriesTableSeeder::class,
             TagsTableSeeder::class,
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             CoursesTableSeeder::class,
             LevelsTableSeeder::class,
             AnnouncementTypesTableSeeder::class,
+
         ]);
     }
 }
