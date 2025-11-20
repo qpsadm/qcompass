@@ -37,7 +37,7 @@
                 {{-- カテゴリ --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">カテゴリ</label>
-                    <select name="category_id" class="border px-2 py-1 w-full rounded">
+                    <select name="category_id" class="border px-2 py-1 w-[250] rounded">
                         <option value="">選択してください</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat['id'] }}"
@@ -66,7 +66,7 @@
                 {{-- 承認状態 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">承認状態</label>
-                    <select name="status" class="border px-2 py-1 w-full rounded" required>
+                    <select name="status" class="border px-2 py-1 w-[200] rounded" required>
                         <option value="yes" {{ old('status', $agenda->status ?? '') == 'yes' ? 'selected' : '' }}>承認済み
                         </option>
                         <option value="no" {{ old('status', $agenda->status ?? '') == 'no' ? 'selected' : '' }}>下書き
