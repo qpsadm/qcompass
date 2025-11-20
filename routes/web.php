@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\CourseCategoryController;
+use App\Http\Controllers\Admin\CourseTeacherController;
 
 // =============================
 // 公開ページ
@@ -78,6 +79,7 @@ Route::middleware(['auth', 'role:8'])
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('quotes', QuoteController::class);
 
+        Route::resource('course_teachers', CourseTeacherController::class);
 
 
         // 講座ID付き create を定義（resource より前）
