@@ -19,13 +19,13 @@ use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
 use App\Http\Controllers\Admin\CourseTypeController;
-use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseTeacherController;
-
+use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\AnnouncementTypeController;
 // =============================
 // 公開ページ
 // =============================
@@ -74,14 +74,13 @@ Route::middleware(['auth', 'role:8'])
         Route::resource('levels', LevelController::class);
         Route::resource('daily_quotes', DailyQuoteController::class);
         Route::resource('organizers', OrganizerController::class);
-        Route::resource('notices', NoticeController::class);
         Route::resource('questions', QuestionController::class);
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('quotes', QuoteController::class);
 
         Route::resource('course_teachers', CourseTeacherController::class);
-
-
+        Route::resource('announcements', AnnouncementController::class);
+        Route::resource('announcement_types', AnnouncementTypeController::class);
         // 講座ID付き create を定義（resource より前）
         Route::get(
             'course_category/create/{courseId}',
