@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日報入力フォーム | QLIP-Compass</title>
+    <title>お問い合わせフォーム | QLIP-Compass</title>
 
     <!-- include(f_common_css.blade.php) -->
     <link rel="stylesheet" href="../assets/css/reset.css">
@@ -25,7 +25,7 @@
                 <li><a class="agenda" href="agenda/agenda_list.html">アジェンダ</a></li>
                 <li><a class="study" href="study/study_qa_list.html">学習支援</a></li>
                 <li><a class="work" href="support/support_offer_list.html">就職支援</a></li>
-                <li class="active"><a class="mypage" href="mypage/mypage.html">マイページ</a></li>
+                <li><a class="mypage" href="mypage/mypage.html">マイページ</a></li>
             </ul>
 
             <!-- responsive -->
@@ -95,11 +95,14 @@
 
             <!-- include(f_page_title.blade.php) -->
             <div class="page-title">
-                <h2>日報入力フォーム</h2>
+                <h2>お問い合わせフォーム</h2>
             </div>
             <!-- /include(f_page_title.blade.php) -->
 
             <div class="page-content">
+                <p>
+                    本講座はシステムエンジニア、Javaプログラマー、Webクリエーターなどに就職することを目標とし、今後さまざまな企業で要求される基礎的なIT技術は勿論のこと、Javaプログラミング、Webサイトの制作などのより高度な技能を実践的なカリキュラムを通して習得できます。
+                </p>
                 <form class="report-form">
                     <div class="form-item">
                         <div class="item-label">
@@ -115,33 +118,15 @@
                         </div>
                         <input type="text" id="mail" value="user@domain.com" required readonly>
                     </div>
+
                     <div class="form-item">
                         <div class="item-label">
-                            <label for="name">報告日</label>
+                            <label for="name">お問い合わせ内容</label>
                             <span class="required">必須</span>
                         </div>
-                        <input type="date" id="date" placeholder="date" required>
+                        <textarea name="" id="daily-report-input" rows="6" placeholder="お問い合わせ内容をご記入ください。" required></textarea>
                     </div>
-                    <div class="form-item">
-                        <div class="item-label">
-                            <label for="name">日報</label>
-                            <span class="required">必須</span>
-                        </div>
-                        <textarea name="" id="daily-report-input" rows="6" placeholder="本日の講習で学んだ内容や報告したい内容をご記入ください。" required></textarea>
-                    </div>
-                    <div class="form-item">
-                        <div class="item-label">
-                            <label for="name">感想・気づき・質問</label>
-                            <span class="required">必須</span>
-                        </div>
-                        <textarea name="" id="impression" rows="6" placeholder="本日の講習で良かったと思ったこと、反省点または気づいたこと等をご記入ください。" required></textarea>
-                    </div>
-                    <div class="form-item">
-                        <div class="item-label">
-                            <label for="name">連絡事項</label>
-                        </div>
-                        <textarea name="" id="message" rows="6" placeholder="個人情報が変更された時に、また前もって分かったお休みなどの連絡事項をご記入ください。"></textarea>
-                    </div>
+
 
                     <div class="privacy-policy">
                         <p>【個人情報保護方針】</p>
@@ -149,7 +134,7 @@
                         <p><a href="../privacy.html" target="_blank">個人情報保護方針を確認する</a></p>
                     </div>
 
-                    <button type="submit" class="privacy-policy-button"><a href="">個人情報保護方針に同意して送信</a></button>
+                    <button type="submit" class="privacy-policy-button"><a href="">確認画面へ</a></button>
                 </form>
             </div>
         </div>
@@ -158,8 +143,7 @@
     <div class="bread-crumbs">
         <ol>
             <li><a href="">ホーム</a></li>
-            <li><a href="">マイページ</a></li>
-            <li><a href="">日報入力フォーム</a></li>
+            <li><a href="">問い合わせフォーム</a></li>
         </ol>
     </div>
 
