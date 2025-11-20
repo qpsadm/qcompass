@@ -11,7 +11,6 @@
             <p><strong>階層:</strong> {{ $Category->level }}</p>
             <p><strong>子数:</strong> {{ $Category->child_count }}</p>
             <p><strong>表示/非表示:</strong> {{ $Category->is_show }}</p>
-            <p><strong>削除日:</strong> {{ $Category->deleted_at }}</p>
 
         </div>
         <a href="{{ route('admin.categories.edit', $Category->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded">編集</a>

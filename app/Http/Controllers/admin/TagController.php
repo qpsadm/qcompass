@@ -24,10 +24,6 @@ class TagController extends Controller
         $validated = $request->validate([
             'code' => 'nullable',
             'name' => 'nullable',
-            'tag_type' => 'nullable',
-            'theme_color' => 'nullable',
-            'description' => 'nullable',
-            'deleted_at' => 'nullable',
         ]);
         Tag::create($validated);
         return redirect()->route('admin.tags.index')->with('success', 'Tag作成完了');
@@ -51,10 +47,6 @@ class TagController extends Controller
         $validated = $request->validate([
             'code' => 'nullable',
             'name' => 'nullable',
-            'tag_type' => 'nullable',
-            'theme_color' => 'nullable',
-            'description' => 'nullable',
-            'deleted_at' => 'nullable',
         ]);
         $Tag->update($validated);
         return redirect()->route('admin.tags.index')->with('success', 'Tag更新完了');
