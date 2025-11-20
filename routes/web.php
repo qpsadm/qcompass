@@ -26,6 +26,10 @@ use App\Http\Controllers\Admin\CourseCategoryController;
 use App\Http\Controllers\Admin\CourseTeacherController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AnnouncementTypeController;
+use App\Http\Controllers\Admin\CourseUserController;
+
+
+
 // =============================
 // 公開ページ
 // =============================
@@ -81,6 +85,7 @@ Route::middleware(['auth', 'role:8'])
         Route::resource('course_teachers', CourseTeacherController::class);
         Route::resource('announcements', AnnouncementController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
+
         // 講座ID付き create を定義（resource より前）
         Route::get(
             'course_category/create/{courseId}',
@@ -90,6 +95,7 @@ Route::middleware(['auth', 'role:8'])
 
         // 既存の resource
         Route::resource('course_category', CourseCategoryController::class);
+        Route::resource('course_users', CourseUserController::class);
 
         // ---------- ユーザー詳細 ----------
         Route::prefix('users/{user}')
