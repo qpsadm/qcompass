@@ -50,7 +50,7 @@ class LevelController extends Controller
             'code' => 'nullable',
             'name' => 'nullable',
         ]);
-        $Level->update($validated);
+
         return redirect()->route('admin.levels.index')->with('success', 'Level更新完了');
     }
 

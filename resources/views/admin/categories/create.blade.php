@@ -48,14 +48,6 @@
                     <input type="checkbox" name="is_show" value="1" {{ old('is_show') ? 'checked' : '' }}>
                 </div>
 
-                <div>
-                    <label class="block mb-1 font-semibold">テーマカラー</label>
-                    <select name="theme_color" class="w-full border rounded px-3 py-2">
-                        <option value="blue" {{ old('theme_color') == 'blue' ? 'selected' : '' }}>青</option>
-                        <option value="red" {{ old('theme_color') == 'red' ? 'selected' : '' }}>赤</option>
-                    </select>
-                </div>
-
                 <div class="flex gap-2 mt-4">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                         作成

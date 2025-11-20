@@ -11,7 +11,6 @@
             <p><strong>階層:</strong> {{ $Category->level }}</p>
             <p><strong>子数:</strong> {{ $Category->child_count }}</p>
             <p><strong>表示/非表示:</strong> {{ $Category->is_show }}</p>
-            <p><strong>テーマカラー:</strong> {{ $Category->theme_color }}</p>
             <p><strong>削除日:</strong> {{ $Category->deleted_at }}</p>
 
         </div>
