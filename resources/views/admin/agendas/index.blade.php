@@ -35,7 +35,7 @@
                             <td class="border px-4 py-2">{{ $agenda->agenda_name }}</td>
                             <td class="border px-4 py-2">{{ $agenda->is_show ? '表示' : '非表示' }}</td>
                             <td class="border px-4 py-2">{{ $agenda->status === 'yes' ? '承認済み' : '下書き' }}</td>
-                            <td class="border px-4 py-2">{{ optional($agenda->createdUser)->name ?? '不明' }}</td>
+                            <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '不明' }}</td>
 
                             {{-- 操作 --}}
                             <td class="border px-4 py-2 text-center">
