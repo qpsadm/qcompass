@@ -98,6 +98,10 @@ td {
     margin-bottom: 25px;
 }
 
+.page-content img {
+    width: 100%;
+}
+
 
 /* btn-list
 ------------------------------------- */
