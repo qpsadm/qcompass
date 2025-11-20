@@ -12,15 +12,7 @@ class Tag extends Model
     protected $fillable = [
         'code',
         'name',
-        'tag_type',      // INT 型
-        'theme_color',   // INT 型
-        'description',
-        'deleted_at'
     ];
-
-    protected $casts = [
-        'tag_type' => 'integer',
-        'theme_color' => 'integer',
-        'deleted_at' => 'datetime',
-    ];
+    // タイムスタンプ無効化
+    public $timestamps = false;
 }

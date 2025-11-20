@@ -20,42 +20,20 @@
                 <div>
                     <label class="block font-medium mb-1">タグ名 <span class="text-red-500">*</span></label>
                     <input type="text" name="name" value="{{ old('name', $Tag->name ?? '') }}"
-                        class="border px-3 py-2 w-full rounded" placeholder="必須">
+                        class="border px-3 py-2 w-full rounded" placeholder="必須" required>
                 </div>
 
-                {{-- タグ用途分類 --}}
+                {{-- 表示フラグ --}}
                 <div>
-                    <label class="block font-medium mb-1">タグの用途分類</label>
-                    <select name="tag_type" class="border px-3 py-2 w-full rounded">
-                        <option value="">選択してください</option>
-                        @foreach (['agenda', 'course', 'book', 'resume', 'job', 'qualification', 'learning_site', 'custom'] as $type)
-                            <option value="{{ $type }}"
-                                {{ old('tag_type', $Tag->tag_type ?? '') === $type ? 'selected' : '' }}>
-                                {{ $type }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                {{-- テーマカラー --}}
-                <div>
-                    <label class="block font-medium mb-1">テーマカラー</label>
-                    <select name="theme_color" class="border px-3 py-2 w-full rounded">
-                        <option value="">選択してください</option>
-                        <option value="blue"
-                            {{ old('theme_color', $Tag->theme_color ?? '') === 'blue' ? 'selected' : '' }}>青</option>
-                    </select>
-                </div>
-
-                {{-- 説明 --}}
-                <div>
-                    <label class="block font-medium mb-1">説明</label>
-                    <textarea name="description" class="border px-3 py-2 w-full rounded" placeholder="タグの説明">{{ old('description', $Tag->description ?? '') }}</textarea>
+                    <label class="inline-flex items-center gap-2">
+                        <input type="checkbox" name="is_show" value="1"
+                            {{ old('is_show', $Tag->is_show ?? true) ? 'checked' : '' }} class="form-checkbox">
+                        表示する
+                    </label>
                 </div>
 
                 {{-- 保存ボタン --}}
                 <div class="flex gap-2">
-
                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
                         更新
                     </button>
@@ -67,4 +45,5 @@
                 </div>
             </form>
         </div>
-    @endsection
+    </div>
+@endsection
