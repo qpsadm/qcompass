@@ -81,7 +81,7 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
-        $validated['created_user_id'] = Auth::id();
+        $validated['created_user_name'] = Auth::id();
         $validated['status'] = $validated['status'] ?? 'draft';
 
         // 講座作成
@@ -181,7 +181,7 @@ class CourseController extends Controller
     {
         $Course = Course::findOrFail($id);
 
-        $Course->deleted_user_id = Auth::id();
+        $Course->deleted_user_name = Auth::id();
         $Course->save();
 
         $Course->delete();
