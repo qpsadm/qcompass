@@ -7,6 +7,15 @@ hamburgerBtn.click(function () {
     $(this).toggleClass("active");
 });
 
+// accordion-menu open/close
+const accordionMenu = $(".accordion-menu");
+const clickArea = $(".click-area");
+
+clickArea.click(function () {
+    $(this).next().slideToggle(300);
+    accordionMenu.toggleClass("active");
+});
+
 // calendar
 window.onload = function () {
     var today = new Date();
@@ -30,6 +39,7 @@ window.onload = function () {
     week = getWeekDay(dt);
     weekText.text(week);
 
+    // 日報入力の報告日をデフォルト入力する
     const yyyy = today.getFullYear();
     const mm = ('0' + (today.getMonth() + 1)).slice(-2);
     const dd = ('0' + today.getDate()).slice(-2);
