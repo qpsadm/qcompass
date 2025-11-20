@@ -28,6 +28,9 @@
                         <li><a href="{{ route('admin.users.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">ユーザー一覧</a>
                         </li>
+                        <li><a href="{{ route('admin.course_teachers.index') }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">社員一覧</a>
+                        </li>
                     </ul>
                 </div>
 
