@@ -40,12 +40,22 @@
                                 <a href="{{ route('admin.questions.show', $Question->id) }}" class="text-green-600">詳細</a>
                                 <a href="{{ route('admin.questions.edit', $Question->id) }}"
                                     class="text-blue-600 ml-2">編集</a>
-                                <form action="{{ route('admin.questions.destroy', $Question->id) }}" method="POST"
-                                    class="inline-block ml-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600">削除</button>
-                                </form>
+
+
+                                <div x-show="openModal === {{ $Question->id }}"
+                                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" x-cloak>
+                                    <div class="bg-white rounded-lg p-6 w-96">
+                                        <h2 class="text-lg font-bold mb-4">確認</h2>
+                                        <p class="mb-6">本当に削除しますか？</p>
+                                        <div class="flex justify-end gap-2">
+                                            <button @click="openModal = null"
+                                                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">キャンセル</button>
+                                            <form action="{{ route('admin.questions.destroy', $Question->id) }}"
+                                                method="POST" class="inline-block ml-2">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600">削除</button>
+                                            </form>
                             </td>
                         </tr>
                     @endforeach

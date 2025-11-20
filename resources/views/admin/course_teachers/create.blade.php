@@ -10,7 +10,7 @@
 
                 {{-- 講座選択 --}}
                 <div>
-                    <label class="block font-medium mb-1">講座 <span class="text-red-500">*</span></label>
+                    <label class="block font-medium mb-1">講座ID <span class="text-red-500">*</span></label>
                     <select name="course_id" class="border px-3 py-2 w-full rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($courses as $course)
