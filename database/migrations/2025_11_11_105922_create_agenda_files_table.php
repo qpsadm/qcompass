@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー
-            $table->foreign('agenda_id')->references('id')->on('agendas')->onDelete('cascade');
+            $table->foreign('agenda_id')->references('id')->on('agendas');
 
             $table->comment('アジェンダ添付ファイルマスタ');
         });

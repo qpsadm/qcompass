@@ -36,7 +36,8 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('概要・説明');
             $table->string('mail_address', 255)->nullable()->comment('日報送信宛先');
             $table->string('cc_address', 255)->nullable()->comment('日報送信CC');
-            $table->enum('status', ['draft', 'open', 'closed'])->default('draft')->comment('状態');
+
+            $table->integer('status')->default(0);
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
             // Laravel管理
@@ -49,9 +50,9 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー制約
-            $table->foreign('course_type_id')->references('id')->on('course_types')->onDelete('cascade');
-            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
-            $table->foreign('organizer_id')->references('id')->on('organizers')->onDelete('cascade');
+            $table->foreign('course_type_id')->references('id')->on('course_types');
+            $table->foreign('level_id')->references('id')->on('levels');
+            $table->foreign('organizer_id')->references('id')->on('organizers');
 
             $table->comment('講座マスタ');
         });

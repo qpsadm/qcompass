@@ -14,15 +14,15 @@
                 </tr>
                 <tr>
                     <td class="border px-4 py-3 font-medium">講座分野</td>
-                    <td class="border px-4 py-3">{{ $Course->course_type_ID }}</td>
+                    <td class="border px-4 py-3">{{ $Course->courseType->name }}</td>
                 </tr>
                 <tr>
                     <td class="border px-4 py-3 font-medium">講座種類</td>
-                    <td class="border px-4 py-3">{{ $Course->Level_id }}</td>
+                    <td class="border px-4 py-3">{{ $Course->level->name }}</td>
                 </tr>
                 <tr>
                     <td class="border px-4 py-3 font-medium">主催者</td>
-                    <td class="border px-4 py-3">{{ $Course->organizer_id }}</td>
+                    <td class="border px-4 py-3">{{ $Course->organizer->name }}</td>
                 </tr>
                 <tr>
                     <td class="border px-4 py-3 font-medium">講座名</td>
@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <td class="border px-4 py-3 font-medium">状態</td>
-                    <td class="border px-4 py-3">{{ $Course->status }}</td>
+                    <td class="border px-4 py-3">{{ \App\Models\Course::STATUS[(int) $Course->status] ?? '不明' }}</td>
                 </tr>
             </tbody>
         </table>
@@ -123,12 +123,12 @@
     <!-- ボタン -->
     <div class="flex gap-2 mb-8">
         <a href="{{ route('admin.courses.edit', $Course->id) }}"
-           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-           編集
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            編集
         </a>
         <a href="{{ route('admin.courses.index') }}"
-           class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
-           一覧に戻る
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            一覧に戻る
         </a>
     </div>
 </div>

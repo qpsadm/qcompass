@@ -64,7 +64,6 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'role_id' => 'required|exists:roles,id',
             'division_id' => 'nullable|integer', // 所属部署
-            'courses_id' => 'nullable|exists:courses,id', // 単一コース
             'email' => 'nullable|email|unique:users,email',
         ]);
 
@@ -72,7 +71,7 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         // 作成者名をセット
-        $validated['created_user_name'] = auth()->user()->name;
+        $validated['created_user_name'] = auth()->user()->name ?? 'system';
 
         // 表示フラグを初期値でセット
         $validated['is_show'] = true;
@@ -80,9 +79,11 @@ class UserController extends Controller
         // ユーザー作成
         $user = User::create($validated);
 
-        // 中間テーブルで複数コースも紐づけたい場合
-        if ($request->filled('courses_id')) {
-            $user->courses()->sync([$request->courses_id]);
+        // 中間テーブルに登録
+        if (!empty($request->courses_id)) {
+            $user->courses()->sync(
+                collect($request->courses_id)->mapWithKeys(fn($id) => [$id => ['created_user_name' => auth()->user()->name]])->toArray()
+            );
         }
 
         return redirect()->route('admin.users.index')
@@ -113,7 +114,6 @@ class UserController extends Controller
             'roman_name' => 'nullable|string|max:50',
             'password' => 'nullable|string|min:6',
             'role_id' => 'required|exists:roles,id',
-            'courses_id' => 'nullable|exists:courses,id',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
@@ -123,7 +123,7 @@ class UserController extends Controller
             unset($validated['password']);
         }
 
-        $validated['updated_user_id'] = auth()->user()->id;
+        $validated['updated_user_name'] = auth()->user()->id;
 
         $user->update($validated);
 
@@ -137,7 +137,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->deleted_user_id = auth()->user()->id;
+        $user->deleted_user_name = auth()->user()->name;
         $user->save();
         $user->delete();
 

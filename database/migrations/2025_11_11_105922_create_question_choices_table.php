@@ -12,12 +12,19 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_question_id')
                 ->constrained('quiz_questions')
-                ->onDelete('cascade');
+            ;
 
             $table->text('choice_text');
             $table->boolean('is_correct')->default(false);
             $table->integer('order')->default(0);
-            $table->timestamps();
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
+            $table->softDeletes(); // deleted_at
+
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
         });
     }
 

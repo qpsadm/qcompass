@@ -81,8 +81,8 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
-        $validated['created_user_name'] = Auth::id();
-        $validated['status'] = $validated['status'] ?? 'draft';
+        $validated['created_user_name'] = auth()->user()->name ?? 'system';
+        $validated['status'] = isset($validated['status']) ? (int)$validated['status'] : 0;
 
         // 講座作成
         $course = Course::create($validated);
@@ -156,7 +156,7 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
-        $validated['updated_user_id'] = Auth::id();
+        $validated['updated_user_name'] = Auth::id();
 
         $Course->update($validated);
 

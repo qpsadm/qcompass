@@ -9,5 +9,5 @@ class Division extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name', 'parent_id', 'hierarchy_level', 'child_count', 'is_show', 'created_user_id', 'updated_user_id', 'deleted_at', 'deleted_user_id'];
+    protected $fillable = ['code', 'name', 'parent_id', 'hierarchy_level', 'child_count', 'is_show', 'created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name'];
 }

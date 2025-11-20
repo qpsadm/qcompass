@@ -42,8 +42,8 @@ class ReportController extends Controller
         // DB保存
         $report = Report::create(array_merge($validated, [
             'user_id'         => Auth::id(),
-            'created_user_id' => Auth::id(),
-            'updated_user_id' => Auth::id(),
+            'created_user_name' => auth()->user()->name ?? 'system',
+            'updated_user_name' => auth()->user()->name ?? 'system',
         ]));
 
         // 送信先（提出者＋上司）
