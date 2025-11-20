@@ -14,14 +14,19 @@ class CourseTeacherController extends Controller
     public function index()
     {
         $course_teachers = CourseTeacher::all();
+
         return view('admin.course_teachers.index', compact('course_teachers'));
     }
 
     public function create()
     {
-        $courses = Course::all(); // すべての講座を取得
-        $users = User::all();     // すべてのユーザーを取得
-        return view('admin.course_teachers.create', compact('courses', 'users'));
+        // role_id 4以上のユーザーだけ取得
+        $users = User::where('role_id', '>=', 4)->get();
+
+        // 講座一覧を取得
+        $courses = Course::all();
+
+        return view('admin.course_teachers.create', compact('users', 'courses'));
     }
 
     public function store(Request $request)
