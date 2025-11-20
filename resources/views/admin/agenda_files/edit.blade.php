@@ -56,7 +56,15 @@
                         class="border px-2 py-1 w-full rounded">
                 </div>
 
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">更新</button>
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        保存
+                    </button>
+                    <a href="{{ route('admin.agenda_files.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                        一覧に戻る
+                    </a>
+                </div>
             </form>
         </div>
     @endsection
