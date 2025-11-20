@@ -16,7 +16,8 @@ class CourseTypeController extends Controller
 
     public function create()
     {
-        return view('admin.course_type.create');
+        $courseTypes = CourseType::all();
+        return view('admin.course_type.create', compact('courseTypes'));
     }
 
     public function store(Request $request)
