@@ -56,7 +56,15 @@
                     </select>
                 </div>
 
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">作成</button>
+                <div class="flex gap-2 mt-4">
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        作成
+                    </button>
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        一覧に戻る
+                    </a>
+                </div>
             </form>
         </div>
     </div>

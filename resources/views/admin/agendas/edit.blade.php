@@ -90,7 +90,18 @@
                     <textarea name="description" id="description" class="border px-2 py-1 w-full rounded">{{ old('description', $agenda->description ?? '') }}</textarea>
                 </div>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">更新</button>
+                <div class="flex gap-2 mt-4">
+                    <!-- 更新ボタン -->
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        更新
+                    </button>
+
+                    <!-- 一覧に戻るボタン -->
+                    <a href="{{ route('admin.agendas.index') }}"
+                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                        一覧に戻る
+                    </a>
+                </div>
             </form>
         </div>
 
