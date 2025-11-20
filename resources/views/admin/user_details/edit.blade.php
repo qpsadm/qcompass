@@ -205,7 +205,7 @@
                 </button>
                 <button>
                     <a href="{{ route('admin.users.index') }}"
-                        class="inline-block bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">
+                        class="inline-block bg-gray-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">
 
                         ユーザー一覧に戻る
                     </a> </button>

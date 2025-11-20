@@ -10,12 +10,12 @@
 
             <div>
                 <label class="block font-semibold mb-1">生年月日</label>
-                <input type="date" name="birthday" class="border px-3 py-2 rounded w-full">
+                <input type="date" name="birthday" class="border px-3 py-2 rounded w-[250]">
             </div>
 
             <div>
                 <label class="block font-semibold mb-1">性別</label>
-                <select name="gender" class="border px-3 py-2 rounded w-full">
+                <select name="gender" class="border px-3 py-2 rounded w-[150]">
                     <option value="">選択</option>
                     <option value="1">男性</option>
                     <option value="2">女性</option>
@@ -24,12 +24,12 @@
 
             <div>
                 <label class="block font-semibold mb-1">電話番号1</label>
-                <input type="text" name="phone1" class="border px-3 py-2 rounded w-full">
+                <input type="text" name="phone1" class="border px-3 py-2 rounded w-[250]">
             </div>
 
             <div>
                 <label class="block font-semibold mb-1">電話番号2</label>
-                <input type="text" name="phone2" class="border px-3 py-2 rounded w-full">
+                <input type="text" name="phone2" class="border px-3 py-2 rounded w-[250]">
             </div>
 
             <div>
