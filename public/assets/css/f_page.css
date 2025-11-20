@@ -36,11 +36,11 @@
     margin-bottom: 50px;
 }
 
-table {
+.news-list table {
     width: 100%;
 }
 
-tr {
+.news-list tr {
     display: flex;
     gap: 20px;
     align-items: center;
@@ -48,21 +48,21 @@ tr {
     border-bottom: dashed 1px #5f5f5f;
 }
 
-tr+tr {
+.news-list tr+tr {
     padding-top: 20px;
 }
 
-td {
+.news-list td {
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.date {
+.news-list .date {
     width: 90px;
     font-size: 18px;
 }
 
-.category {
+.news-list .category {
     width: 120px;
     padding: 7px 0;
     border-radius: 10px;
@@ -71,15 +71,15 @@ td {
     text-align: center;
 }
 
-.category-news {
+.news-list .category-news {
     background-color: #c59cff;
 }
 
-.category-agenda {
+.news-list .category-agenda {
     background-color: #83BE85;
 }
 
-.title {
+.news-list .title {
     flex: 1;
     font-size: 18px;
 }

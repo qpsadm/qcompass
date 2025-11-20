@@ -12,6 +12,7 @@
 
     <!-- yield(page_css.blade.php) -->
     <link rel="stylesheet" href="../../assets/css/f_page.css">
+    <link rel="stylesheet" href="../../assets/css/f_test.css">
 </head>
 <body>
 
@@ -98,6 +99,44 @@
             </div>
             <!-- /include(f_page_title.blade.php) -->
 
+            <div class="box-container">
+                <div class="contents-box profile">
+                    <div class="box-title">
+                        <h3>プロフィール</h3>
+                    </div>
+                    <div class="box-contents">
+                    </div>
+                </div>
+
+                <div class="contents-box calendar">
+                    <div class="box-title">
+                        <h3>日報カレンダー</h3>
+                    </div>
+                    <div class="box-contents">
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contents-box">
+                <div class="box-title">
+                    <h3>各種スケジュール</h3>
+                </div>
+                <div class="box-contents">
+                </div>
+            </div>
+
+            <div class="contents-box">
+                <div class="box-title">
+                    <h3>メモ</h3>
+                </div>
+                <div class="box-contents">
+                    <form action="">
+                        <textarea name="" id="" rows="6"></textarea>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -148,6 +187,17 @@
     <script src="../../assets/js/f_common.js"></script>
 
     <!-- yield(page_js.blade.php) -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
+        });
+
+    </script>
 </body>
 </html>
