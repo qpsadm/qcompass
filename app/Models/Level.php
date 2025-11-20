@@ -9,5 +9,14 @@ class Level extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name'];
+    // タイムスタンプ無効化
+    public $timestamps = false;
+
+    // 保存可能なカラム
+    protected $fillable = ['code', 'name', 'is_show'];
+
+    // キャストを指定してbooleanとして扱う
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }

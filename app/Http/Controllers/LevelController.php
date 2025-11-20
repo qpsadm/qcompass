@@ -7,53 +7,72 @@ use App\Models\Level;
 
 class LevelController extends Controller
 {
+    // 一覧表示
     public function index()
     {
-        $Level = Level::all();
-        return view('Level.index', compact('Level'));
+        $levels = Level::all();
+        return view('level.index', compact('levels'));
     }
 
+    // 作成フォーム
     public function create()
     {
-        return view('Level.create');
+        return view('level.create');
     }
 
+    // 新規作成
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
+            'code' => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'is_show' => 'required|in:0,1',
         ]);
+
+        $validated['is_show'] = (bool) $validated['is_show'];
+
         Level::create($validated);
-        return redirect()->route('Level.index')->with('success', 'Level作成完了');
+
+        return redirect()->route('level.index')->with('success', 'Level作成完了');
     }
 
+    // 詳細表示
     public function show($id)
     {
-        $Level = Level::findOrFail($id);
-        return view('Level.show', compact('Level'));
+        $level = Level::findOrFail($id);
+        return view('level.show', compact('level'));
     }
 
+    // 編集フォーム
     public function edit($id)
     {
-        $Level = Level::findOrFail($id);
-        return view('Level.edit', compact('Level'));
+        $level = Level::findOrFail($id);
+        return view('level.edit', compact('level'));
     }
 
+    // 更新
     public function update(Request $request, $id)
     {
-        $Level = Level::findOrFail($id);
+        $level = Level::findOrFail($id);
+
         $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
+            'code' => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'is_show' => 'required|in:0,1',
         ]);
-        $Level->update($validated);
-        return redirect()->route('Level.index')->with('success', 'Level更新完了');
+
+
+        $validated['is_show'] = (bool) $validated['is_show'];
+
+        $level->update($validated);
+
+        return redirect()->route('level.index')->with('success', 'Level更新完了');
     }
 
+    // 削除
     public function destroy($id)
     {
         Level::findOrFail($id)->delete();
-        return redirect()->route('Level.index')->with('success', 'Level削除完了');
+        return redirect()->route('level.index')->with('success', 'Level削除完了');
     }
 }
