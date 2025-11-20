@@ -108,20 +108,71 @@
 
             <div class="accordion-menu">
                 <div class="click-area">
-                    <div class="menu-title">カテゴリ</div>
+                    <div class="menu-title">Q1.　JavaScriptのdocumentに関する質問です。HTML、CSSのコマンドや要素はdocumentのオブジェクトの中に設定されていると思ってよいですか？</div>
                     <div class="accordion-btn">
                         <span></span>
                     </div>
                 </div>
                 <div class="accordion-contents">
                     <ul>
-                        <li><a href="">HTML/CSS</a></li>
-                        <li><a href="">Javascript</a></li>
-                        <li><a href="">Laravel</a></li>
+                        <li>A.　HTMLやCSSの要素は、DOM (Document Object Model) の一部としてdocumentのオブジェクト内に配置されています。HTMLの構造(例：タグ) は DOM ツリーのノード、CSSといったスタイルも DOM の一部として操作可能です。</li>
                     </ul>
                 </div>
             </div>
-
+            <div class="accordion-menu">
+                <div class="click-area">
+                    <div class="menu-title">Q2.　Googleフォントに関する質問です。
+                        Google Fontsのフォント適用の際[https://fonts.googleapis.com]に事前に接続するメリットがわかりません。
+                        Google Fontsのフォントを適用する際、HTMLファイルのheadにコピペする3行のコードがあったと思います。
+                        3行目はフォントの呼び出しで、これ単体でもフォントが適用されていることが確認できたので、少なくとも1,2行目はなくても問題はないと思いました。
+                        2行目で[https://fonts.gstatic.com]に事前に接続しているのはおそらくそのURLにフォントの本体が格納されていると思っているので、このURLに事前に接続しているのも納得はできます。
+                        本題のように[https://fonts.googleapis.com]に事前に接続するメリットがあるなら知りたいです。</div>
+                    <div class="accordion-btn">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="accordion-contents">
+                    <ul>
+                        <li>A.　1行目と3行目の「https://fonts.googleapis.com」はフォントを適用するための CSSファイル（フォントのURLやスタイルの情報）が置かれています。
+                            2行目の「https://fonts.gstatic.com」は実際の フォントファイル（woff2などの形式）が置かれています。
+                            通常、ブラウザは 「フォントのCSSを取得 → その後フォントファイルを取得」 という順序で処理します。しかし、1行目のpreconnectを指定すると、フォントのCSSを取得する前に、先にサーバーとの接続を確立しておく ことができます。
+                            preconnect を使わなくてもフォントは正しく適用されますが、ページの表示速度を向上させるための最適化手法なので、できるだけ使ったほうが良いと思います。特にWebフォントはパフォーマンスに影響を与えるので、preconnect を入れることで、よりスムーズなページ表示が可能になるというのが理由です。</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-menu">
+                <div class="click-area">
+                    <div class="menu-title">Q3.　HTMLを使用してコンピューターに意味を伝えるのはなぜですか？
+                        Webページを見るのは人なのだから、CSSで見ためを変えれば、わざわざタグを増やさなくてもいいのではと思いました。
+                        また、Googleとかの評価がそちらのほうがよくて閲覧されやすくなるのですか？</div>
+                    <div class="accordion-btn">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="accordion-contents">
+                    <ul>
+                        <li>A.　制作者は「人」と「コンピューター」の両方を意識する必要があります。
+                            Webページは「人」だけでなく「検索エンジン」や「スクリーンリーダー」などのシステムも読み取るものなので、適切なHTMLタグを使うことが重要です。
+                            またGoogleの評価が良くなる というメリットもありますが、もっと大切なのは、「意味を正しく伝える」ことでより多くの人に情報を届けやすくすること です。
+                            CSSだけで見た目を変えればいい、という考えも間違いではありませんが、HTMLのタグは単なる見た目以上の役割を持っている、というのがポイントです。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="accordion-menu">
+                <div class="click-area">
+                    <div class="menu-title">Q4.　必要な写真サイズが縦横50pxの場合、用意するのは縦横100pxでよいですか？
+                        また、写真素材が大きすぎる場合はどういった方法で設定するのが無難でしょうか？</div>
+                    <div class="accordion-btn">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="accordion-contents">
+                    <ul>
+                        <li>A.　レティーナディスプレイ対策として、縦横50pxとすると、用意する写真は縦横100pxでいいと思います。
+                            写真が大きすぎる場合は手間はかかりますが自分でトリミングするか、ＣＳＳでサイズを指定すると良いかと思います。</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </main>
 
