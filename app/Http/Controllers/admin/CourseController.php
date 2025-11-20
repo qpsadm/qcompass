@@ -77,20 +77,33 @@ class CourseController extends Controller
             'completed' => 'nullable',
             'description' => 'nullable',
             'status' => 'nullable',
-            'deleted_at' => 'nullable',
-            'deleted_user_id' => 'nullable',
+            'category_ids' => 'array',
+            'category_ids.*' => 'integer',
         ]);
 
-        // 作成者IDを追加
         $validated['created_user_id'] = Auth::id();
-
-        // status が空ならデフォルト値
         $validated['status'] = $validated['status'] ?? 'draft';
 
-        Course::create($validated);
+        // 講座作成
+        $course = Course::create($validated);
+
+        // 🔥 中間テーブルへ登録
+        if ($request->has('category_ids')) {
+            $syncData = [];
+
+            foreach ($request->category_ids as $catId) {
+                $syncData[$catId] = [
+                    'is_show' => 1,
+                    'created_user_name' => Auth::user()->name,
+                ];
+            }
+
+            $course->categories()->sync($syncData);
+        }
 
         return redirect()->route('admin.courses.index')->with('success', 'Course作成完了');
     }
+
 
 
     public function show($id)
@@ -118,7 +131,7 @@ class CourseController extends Controller
             'course_code' => 'nullable',
             'course_type_ID' => 'nullable',
             'Level_id' => 'nullable',
-            'organizer_id' => 'nullable|exists:organizers,id', // 修正
+            'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'nullable',
             'venue' => 'nullable',
             'application_date' => 'nullable',
@@ -139,16 +152,30 @@ class CourseController extends Controller
             'completed' => 'nullable',
             'description' => 'nullable',
             'status' => 'nullable',
-            'deleted_at' => 'nullable',
-            'deleted_user_id' => 'nullable',
+            'category_ids' => 'array',
+            'category_ids.*' => 'integer',
         ]);
 
         $validated['updated_user_id'] = Auth::id();
 
         $Course->update($validated);
 
+        // 🔥 中間テーブルを更新（sync）
+        $syncData = [];
+        if ($request->has('category_ids')) {
+            foreach ($request->category_ids as $catId) {
+                $syncData[$catId] = [
+                    'is_show' => 1,
+                    'updated_user_name' => Auth::user()->name,
+                ];
+            }
+        }
+
+        $Course->categories()->sync($syncData);
+
         return redirect()->route('admin.courses.index')->with('success', 'Course更新完了');
     }
+
 
     public function destroy($id)
     {
