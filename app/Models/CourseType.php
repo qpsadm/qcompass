@@ -10,5 +10,12 @@ class CourseType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'organizer_id', 'is_show'];
+
+    public function organizer()
+    {
+        return $this->belongsTo(Organizer::class);
+    }
+
+    public $timestamps = false;
 }
