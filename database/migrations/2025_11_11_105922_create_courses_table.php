@@ -36,7 +36,8 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('概要・説明');
             $table->string('mail_address', 255)->nullable()->comment('日報送信宛先');
             $table->string('cc_address', 255)->nullable()->comment('日報送信CC');
-            $table->enum('status', ['draft', 'open', 'closed'])->default('draft')->comment('状態');
+
+            $table->integer('status')->default(0);
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
 
             // Laravel管理

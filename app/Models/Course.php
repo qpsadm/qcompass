@@ -27,10 +27,9 @@ class Course extends Model
 
     // ステータス定義
     const STATUS = [
-        0 => '下書き',      // Draft
-        1 => '準備中',      // Preparing
-        2 => '公開',        // Published
-        3 => '終了',        // Archived
+        0 => '開校準備',
+        1 => '終了',
+        2 => '実地中',
     ];
     public function agendas()
     {
@@ -50,13 +49,14 @@ class Course extends Model
 
     public function level()
     {
-        return $this->belongsTo(Level::class, 'Level_id');
+        return $this->belongsTo(Level::class, 'level_id');
     }
 
     public function courseType()
     {
-        return $this->belongsTo(CourseType::class, 'course_type_ID');
+        return $this->belongsTo(CourseType::class, 'course_type_id');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'course_categorys', 'course_id', 'category_id')

@@ -82,7 +82,7 @@ class CourseController extends Controller
         ]);
 
         $validated['created_user_name'] = auth()->user()->name ?? 'system';
-        $validated['status'] = $validated['status'] ?? 'draft';
+        $validated['status'] = isset($validated['status']) ? (int)$validated['status'] : 0;
 
         // 講座作成
         $course = Course::create($validated);
