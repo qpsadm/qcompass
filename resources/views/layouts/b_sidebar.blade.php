@@ -35,6 +35,9 @@
                 <li><a href="{{ route('admin.course_users.index') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座ユーザ一覧</a>
                 </li>
+                <li><a href="{{ route('admin.divisions.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">部署一覧</a>
+                </li>
             </ul>
         </div>
 

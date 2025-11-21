@@ -2,12 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Division extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = ['code', 'name', 'parent_id', 'hierarchy_level', 'child_count', 'is_show', 'created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name'];
+    protected $fillable = [
+        'code',
+        'name',
+        'tel',
+        'post_code',
+        'address',
+        'is_show',
+        'memo',
+        'created_user_name',
+        'updated_user_name',
+        'deleted_user_name',
+    ];
 }

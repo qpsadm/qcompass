@@ -30,8 +30,8 @@ use App\Http\Controllers\Admin\CourseUserController;
 use App\Http\Controllers\LearningController;
 use App\Http\Controllers\CertificationsController;
 use App\Http\Controllers\JobOfferController;
-
-
+use App\Http\Controllers\Admin\DivisionController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 
 // =============================
@@ -74,7 +74,7 @@ Route::middleware(['auth', 'role:8'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
         // ---------- リソース系 ----------
@@ -91,7 +91,7 @@ Route::middleware(['auth', 'role:8'])
         Route::resource('course_teachers', CourseTeacherController::class);
         Route::resource('announcements', AnnouncementController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
-
+        Route::resource('divisions', DivisionController::class);
         // 講座ID付き create を定義（resource より前）
         Route::get(
             'course_category/create/{courseId}',
