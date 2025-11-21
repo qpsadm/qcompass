@@ -1,36 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">{{ $attempt->quiz->title }} - 結果</h1>
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">クイズ結果</h1>
 
-    <p>正解数: {{ $totalCorrect }} / {{ $totalQuestions }}</p>
-
-    <hr class="my-4">
-
-    @foreach($questions as $question)
-    <div class="mb-4 p-4 border rounded">
-        <p class="font-semibold">{{ $loop->iteration }}. {{ $question->text }}</p>
-
-        <ul class="ml-4">
-            @foreach($question->choices as $choice)
-            @php
-            $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
-            $isCorrectChoice = $choice->is_correct;
-            $isUserChoice = $userAnswer && $userAnswer->choice_id == $choice->id;
-            @endphp
-
-            <li class="
-                        @if($isCorrectChoice) text-green-600 font-bold @endif
-                        @if($isUserChoice && !$isCorrectChoice) text-red-600 @endif
-                    ">
-                {{ $choice->text }}
-                @if($isUserChoice) (あなたの回答) @endif
-                @if($isCorrectChoice) (正解) @endif
-            </li>
-            @endforeach
-        </ul>
+    <div class="mb-4">
+        <p>クイズタイトル: <strong>{{ $attempt->quiz->title }}</strong></p>
+        <p>合計問題数: <strong>{{ $totalQuestions }}</strong></p>
+        <p>正解数: <strong>{{ $totalCorrect }}</strong></p>
     </div>
-    @endforeach
+
+    <div class="space-y-6">
+        @foreach($questions as $index => $question)
+        <div class="p-4 border rounded shadow">
+            <p class="font-semibold">{{ $index + 1 }}. {{ $question->question_text }}</p>
+
+            <ul class="mt-2 space-y-1">
+                @foreach($question->choices as $choice)
+                @php
+                // ユーザーが選んだ選択肢
+                $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
+                $isUserChoice = $userAnswer && $userAnswer->choice_id == $choice->id;
+
+                // 正解かどうか
+                $isCorrect = $choice->is_correct;
+                @endphp
+
+                <li class="
+                            p-2 rounded
+                            @if($isUserChoice && $isCorrect) bg-green-200 @endif
+                            @if($isUserChoice && !$isCorrect) bg-red-200 @endif
+                            @if(!$isUserChoice && $isCorrect) bg-green-100 @endif
+                        ">
+                    {{ $choice->choice_text }}
+                    @if($isUserChoice)
+                    <span class="font-bold ml-2">(あなたの回答)</span>
+                    @endif
+                    @if($isCorrect)
+                    <span class="text-green-600 font-bold ml-2">正解</span>
+                    @endif
+                </li>
+                @endforeach
+            </ul>
+        </div>
+        @endforeach
+    </div>
 </div>
 @endsection

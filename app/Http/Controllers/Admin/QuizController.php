@@ -140,15 +140,13 @@ class QuizController extends Controller
 
     public function result($attemptId)
     {
-        // Attempt を取得（Quiz と QuizQuestions, Choices, ユーザー回答も一緒にロード）
-        $attempt = QuizAttempt::with([
-            'quiz.quizQuestions.choices',
-            'answers'
-        ])->findOrFail($attemptId);
+        // QuizAttemptを取得（QuizとAnswersも一緒にロード）
+        $attempt = QuizAttempt::with(['quiz.quizQuestions.choices', 'answers'])->findOrFail($attemptId);
 
-        $quiz = $attempt->quiz;
-        $questions = $quiz->quizQuestions;
+        // QuizQuestions を取得
+        $questions = $attempt->quiz->quizQuestions;
 
+        // 正解数・不正解数
         $totalQuestions = $questions->count();
         $totalCorrect = $attempt->total_correct ?? 0;
 
