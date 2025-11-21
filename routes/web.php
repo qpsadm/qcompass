@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\CourseTeacherController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AnnouncementTypeController;
 use App\Http\Controllers\Admin\CourseUserController;
+use App\Http\Controllers\LearningController;
 
 
 
@@ -148,7 +149,7 @@ Route::middleware(['auth', 'role:8'])
         // ---------- 学習コンテンツの部分 ----------
 
         Route::middleware(['auth'])->group(function () {
-            Route::resource('learnings', App\Http\Controllers\LearningController::class);
+            Route::resource('learnings', LearningController::class);
         });
     });
 

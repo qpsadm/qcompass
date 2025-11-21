@@ -1,93 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">学習コンテンツ作成</h1>
-            <form action="{{ route('learning.store') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">種別</label>
-                    <input type="text" name="type" value="{{ old('type', $Learning->type ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">タイトル</label>
-                    <input type="text" name="name" value="{{ old('name', $Learning->name ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">説明・備考</label>
-                    <input type="text" name="description" value="{{ old('description', $Learning->description ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">学習コンテンツ編集</h1>
 
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">画像</label>
-                    <input type="text" name="image" value="{{ old('image', $Learning->image ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">画像</label>
-                    <input type="text" name="publisher" value="{{ old('publisher', $Learning->publisher ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
+    <form action="{{ route('admin.learnings.update', $learning->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">URL</label>
-                    <input type="text" name="url" value="{{ old('url', $Learning->url ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">難易度</label>
-                    <input type="text" name="level" value="{{ old('level', $Learning->level ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">タグID</label>
-                    <input type="text" name="author" value="{{ old('author', $Learning->author ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">表示フラグ</label>
-                    <input type="text" name="author" value="{{ old('author', $Learning->author ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">作成日時</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">作成者名</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">更新日時</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">更新者名</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">削除日時</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">削除者名</label>
-                    <input type="text" name="deleted_at" value="{{ old('deleted_at', $Learning->deleted_at ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
-            </form>
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">種類</label>
+            <select name="type" class="border px-2 py-1 w-full">
+                <option value="book" {{ $learning->type === 'book' ? 'selected' : '' }}>本</option>
+                <option value="site" {{ $learning->type === 'site' ? 'selected' : '' }}>サイト</option>
+                <option value="video" {{ $learning->type === 'video' ? 'selected' : '' }}>動画</option>
+                <option value="article" {{ $learning->type === 'article' ? 'selected' : '' }}>記事</option>
+            </select>
+            @error('type')<span class="text-red-500">{{ $message }}</span>@enderror
         </div>
-    @endsection
+
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">タイトル</label>
+            <input type="text" name="title" class="border px-2 py-1 w-full" value="{{ old('title', $learning->title) }}">
+            @error('title')<span class="text-red-500">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">説明</label>
+            <textarea name="description" class="border px-2 py-1 w-full">{{ old('description', $learning->description) }}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">画像URL</label>
+            <input type="text" name="image" class="border px-2 py-1 w-full" value="{{ old('image', $learning->image) }}">
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">リンクURL</label>
+            <input type="text" name="url" class="border px-2 py-1 w-full" value="{{ old('url', $learning->url) }}">
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">レベル</label>
+            <select name="level" class="border px-2 py-1 w-full">
+                <option value="1" {{ $learning->level == 1 ? 'selected' : '' }}>初級</option>
+                <option value="2" {{ $learning->level == 2 ? 'selected' : '' }}>中級</option>
+                <option value="3" {{ $learning->level == 3 ? 'selected' : '' }}>上級</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="display_flag" class="mr-2" value="1" {{ $learning->display_flag ? 'checked' : '' }}>
+                公開する
+            </label>
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">更新</button>
+        <a href="{{ route('admin.learnings.index') }}" class="ml-2 text-gray-600">キャンセル</a>
+    </form>
+</div>
+@endsection

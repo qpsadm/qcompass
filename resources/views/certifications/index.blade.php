@@ -2,20 +2,12 @@
 
 @section('content')
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">学習コンテンツ一覧</h1>
+        <h1 class="text-2xl font-bold mb-4">資格一覧</h1>
 
         @php
-            $typeLabels = [
-                'book' => '1. 本',
-                'site' => '2. サイト',
-                'video' => '3. 動画',
-                'article' => '4. 記事',
-            ];
-
             $levelLabels = [
                 1 => '初級',
-                2 => '中級',
-                3 => '上級',
+                2 => '上級',
             ];
         @endphp
 
@@ -26,14 +18,11 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border px-2 py-1">ID</th>
-                    <th class="border px-2 py-1">種類</th>
-                    <th class="border px-2 py-1">タイトル</th>
-                    <th class="border px-2 py-1">説明</th>
-                    <th class="border px-2 py-1">画像</th>
-                    <th class="border px-2 py-1">URL</th>
-                    <th class="border px-2 py-1">レベル</th>
-                    <th class="border px-2 py-1">表示フラグ</th>
-                    <th class="border px-2 py-1">操作</th>
+                    <th class="border px-2 py-1">資格名</th>
+                    <th class="border px-2 py-1">資格レベル</th>
+                    <th class="border px-2 py-1">説明・備考</th>
+                    <th class="border px-2 py-1">参照URL</th>
+
                 </tr>
             </thead>
             <tbody>

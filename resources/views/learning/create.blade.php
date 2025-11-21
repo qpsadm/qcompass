@@ -73,17 +73,14 @@
                 {{-- 難易度 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">レベル</label>
-                    @php
-                        $levels = [
-                            'beginner' => '初級',
-                            'intermediate' => '中級',
-                            'advanced' => '上級',
-                        ];
-                    @endphp
                     <select name="level" class="border px-2 py-1 w-full rounded">
+                        @php
+                            $levels = ['beginner' => '初級', 'intermediate' => '中級', 'advanced' => '上級'];
+                        @endphp
                         <option value="">選択してください</option>
-                        @foreach ($levels as $value => $label)
-                            <option value="{{ $value }}" {{ old('level') == $value ? 'selected' : '' }}>
+                        @foreach ($levels as $key => $label)
+                            <option value="{{ $key }}"
+                                {{ old('level', $learning->level ?? '') == $key ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
