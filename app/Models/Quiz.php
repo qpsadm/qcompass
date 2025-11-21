@@ -22,9 +22,7 @@ class Quiz extends Model
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'quiz_questions')
-            ->withPivot('question_order')
-            ->withTimestamps();
+        return $this->hasMany(QuizQuestion::class);
     }
     public function creator()
     {

@@ -131,11 +131,20 @@ Route::middleware(['auth', 'role:8'])
             ->name('agendas.forceDelete');
 
         // ---------- クイズ ----------
+        // クイズ CRUD
         Route::resource('quizzes', QuizController::class);
 
-        // ★重複削除済み：ここだけでOK
-        Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
+        // クイズ受験（GET:表示、POST:回答送信）
+        Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
+        Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
 
+
+        // クイズに紐づく問題（ネストリソース）
+        Route::prefix('quizzes/{quiz}')
+            ->name('quizzes.')
+            ->group(function () {
+                Route::resource('quiz_questions', QuizQuestionController::class);
+            });
         // ---------- レポート ----------
         // プレビュー（固定）
         Route::get('reports/preview', [ReportController::class, 'previewBlade'])
