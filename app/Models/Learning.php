@@ -4,10 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Learning extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['type', 'name', 'author', 'publisher', 'publication_date', 'isbn', 'url', 'image', 'level', 'description', 'deleted_at'];
+    protected $fillable = [
+        'type',
+        'name',
+        'author',
+        'publisher',
+        'publication_date',
+        'isbn',
+        'url',
+        'image',
+        'level',
+        'description',
+        'display_flag'
+    ];
 }

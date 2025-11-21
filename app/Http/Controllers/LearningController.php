@@ -9,8 +9,8 @@ class LearningController extends Controller
 {
     public function index()
     {
-        $learning = Learning::all();
-        return view('learning.index', compact('learning'));
+        $learnings = Learning::all();
+        return view('learning.index', compact('learnings'));
     }
 
     public function create()
@@ -21,51 +21,54 @@ class LearningController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'nullable',
-            'name' => 'nullable',
-            'author' => 'nullable',
-            'publisher' => 'nullable',
-            'publication_date' => 'nullable',
-            'isbn' => 'nullable',
-            'url' => 'nullable',
-            'image' => 'nullable',
-            'level' => 'nullable',
-            'description' => 'nullable',
-            'deleted_at' => 'nullable',
+            'type' => 'required|in:book,site,video,article',
+            'name' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'publisher' => 'nullable|string|max:255',
+            'publication_date' => 'nullable|date',
+            'isbn' => 'nullable|string|max:50',
+            'url' => 'nullable|url|max:255',
+            'image' => 'nullable|string|max:255',
+            'level' => 'nullable|integer|min:1|max:5',
+            'description' => 'nullable|string',
+            'display_flag' => 'nullable|boolean',
         ]);
+
         Learning::create($validated);
+
         return redirect()->route('learning.index')->with('success', 'Learning作成完了');
     }
 
     public function show($id)
     {
-        $Learning = Learning::findOrFail($id);
-        return view('learning.show', compact('Learning'));
+        $learning = Learning::findOrFail($id);
+        return view('learning.show', compact('learning'));
     }
 
     public function edit($id)
     {
-        $Learning = Learning::findOrFail($id);
-        return view('learning.edit', compact('Learning'));
+        $learning = Learning::findOrFail($id);
+        return view('learning.edit', compact('learning'));
     }
 
     public function update(Request $request, $id)
     {
-        $Learning = Learning::findOrFail($id);
+        $learning = Learning::findOrFail($id);
         $validated = $request->validate([
-            'type' => 'nullable',
-            'name' => 'nullable',
-            'author' => 'nullable',
-            'publisher' => 'nullable',
-            'publication_date' => 'nullable',
-            'isbn' => 'nullable',
-            'url' => 'nullable',
-            'image' => 'nullable',
-            'level' => 'nullable',
-            'description' => 'nullable',
-            'deleted_at' => 'nullable',
+            'type' => 'required|in:book,site,video,article',
+            'name' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'publisher' => 'nullable|string|max:255',
+            'publication_date' => 'nullable|date',
+            'isbn' => 'nullable|string|max:50',
+            'url' => 'nullable|url|max:255',
+            'image' => 'nullable|string|max:255',
+            'level' => 'nullable|integer|min:1|max:5',
+            'description' => 'nullable|string',
+            'display_flag' => 'nullable|boolean',
         ]);
-        $Learning->update($validated);
+        $learning->update($validated);
+
         return redirect()->route('learning.index')->with('success', 'Learning更新完了');
     }
 

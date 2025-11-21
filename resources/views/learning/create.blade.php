@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">学習コンテンツ作成</h1>
+            <h1 class="text-2xl font-bold mb-4">学習コンテンツ作成（管理画面）</h1>
 
             {{-- エラー表示 --}}
             @if ($errors->any())
@@ -16,10 +16,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('learning.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.learnings.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                {{-- 種別 --}}
                 @php
                     $types = [
                         'book' => '1. 本',
@@ -28,13 +27,16 @@
                         'article' => '4. 記事',
                     ];
                 @endphp
+
+                {{-- 種別 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">種類<span class="text-red-500">*</span></label>
                     <select name="type" class="border px-2 py-1 w-full rounded">
                         <option value="">選択してください</option>
                         @foreach ($types as $value => $label)
                             <option value="{{ $value }}" {{ old('type') == $value ? 'selected' : '' }}>
-                                {{ $label }}</option>
+                                {{ $label }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -42,7 +44,7 @@
                 {{-- タイトル --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">タイトル<span class="text-red-500">*</span></label>
-                    <input type="text" name="name" class="border px-2 py-1 w-full rounded"
+                    <input type="text" name="title" class="border px-2 py-1 w-full rounded"
                         value="{{ old('name') }}">
                 </div>
 
@@ -68,42 +70,31 @@
                         value="{{ old('url') }}">
                 </div>
 
-                {{-- 出版社 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">出版社</label>
-                    <input type="text" name="publisher" class="border px-2 py-1 w-full rounded"
-                        value="{{ old('publisher') }}">
-                </div>
-
                 {{-- 難易度 --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">難易度</label>
+                    <label class="block font-medium mb-1">レベル</label>
+                    @php
+                        $levels = [
+                            'beginner' => '初級',
+                            'intermediate' => '中級',
+                            'advanced' => '上級',
+                        ];
+                    @endphp
                     <select name="level" class="border px-2 py-1 w-full rounded">
                         <option value="">選択してください</option>
-                        @for ($i = 1; $i <= 5; $i++)
-                            <option value="{{ $i }}" {{ old('level') == $i ? 'selected' : '' }}>
-                                {{ $i }}</option>
-                        @endfor
-                    </select>
-                </div>
-
-                {{-- タグ --}}
-                <div class="mb-6">
-                    <label class="block font-medium mb-1">タグ</label>
-                    <select name="tags[]" multiple class="border px-2 py-1 w-full rounded h-32">
-                        @foreach ($tags as $tag)
-                            <option value="{{ $tag->id }}" @if (collect(old('tags'))->contains($tag->id)) selected @endif>
-                                {{ $tag->name }}
+                        @foreach ($levels as $value => $label)
+                            <option value="{{ $value }}" {{ old('level') == $value ? 'selected' : '' }}>
+                                {{ $label }}
                             </option>
                         @endforeach
                     </select>
-                    <p class="text-gray-500 text-sm mt-1">※ Ctrl（Command）で複数選択</p>
                 </div>
+
 
                 {{-- 表示フラグ --}}
                 <div class="mb-6">
                     <label class="block font-medium mb-1">表示設定</label>
-                    <input type="checkbox" name="display_flag" value="1" {{ old('display_flag') ? 'checked' : '' }}>
+                    <input type="checkbox" name="is_show" value="1" {{ old('is_show') ? 'checked' : '' }}>
                     <span>公開する</span>
                 </div>
 
@@ -113,7 +104,6 @@
                         登録する
                     </button>
                 </div>
-
             </form>
         </div>
     </div>

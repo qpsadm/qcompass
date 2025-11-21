@@ -144,6 +144,12 @@ Route::middleware(['auth', 'role:8'])
         // 重複を完全削除し、これだけ残す
         Route::resource('reports', ReportController::class)
             ->where(['report' => '[0-9]+']);
+
+        // ---------- 学習コンテンツの部分 ----------
+
+        Route::middleware(['auth'])->group(function () {
+            Route::resource('learnings', App\Http\Controllers\LearningController::class);
+        });
     });
 
 
