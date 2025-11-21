@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('attempt_no');
             $table->string('ip_address', 100)->nullable();
 
+            // **追加：正解数を保存**
+            $table->integer('total_correct')->default(0)->comment('正解数');
+
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
