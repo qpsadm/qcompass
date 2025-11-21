@@ -7,20 +7,39 @@
             <form action="{{ route('job_offers.store') }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">求人タイトル</label>
+                    <label class="block font-medium mb-1">求人票のタイトル</label>
                     <input type="text" name="title" value="{{ old('title', $JobOffer->title ?? '') }}"
                         class="border px-2 py-1 w-full rounded">
                 </div>
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">会社名</label>
-                    <input type="text" name="company" value="{{ old('company', $JobOffer->company ?? '') }}"
+                    <label class="block font-medium mb-1">説明文</label>
+                    <input type="text" name="description" value="{{ old('company', $JobOffer->company ?? '') }}"
                         class="border px-2 py-1 w-full rounded">
                 </div>
+
+                
                 <div class="mb-4">
                     <label class="block font-medium mb-1">PDFファイル保存パス</label>
                     <input type="text" name="file_path" value="{{ old('file_path', $JobOffer->file_path ?? '') }}"
                         class="border px-2 py-1 w-full rounded">
                 </div>
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">表示開始日時</label>
+                    <input type="date" name="start_datetime" value="{{ old('user_id', $JobOffer->user_id ?? '') }}"
+                        class="border px-2 py-1 w-full rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">表示修了日時</label>
+                    <input type="date" name="end_datetime" value="{{ old('user_id', $JobOffer->user_id ?? '') }}"
+                        class="border px-2 py-1 w-full rounded">
+                </div>
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">表示フラグ</label>
+                    <input type="text" name="user_id" value="{{ old('user_id', $JobOffer->user_id ?? '') }}"
+                        class="border px-2 py-1 w-full rounded">
+                </div>
+
                 <div class="mb-4">
                     <label class="block font-medium mb-1">更新者ID</label>
                     <input type="text" name="user_id" value="{{ old('user_id', $JobOffer->user_id ?? '') }}"

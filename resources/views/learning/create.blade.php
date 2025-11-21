@@ -26,12 +26,16 @@
                         'video' => '3. 動画',
                         'article' => '4. 記事',
                     ];
+                    $levels = [
+                        1 => '初級',
+                        2 => '上級',
+                    ];
                 @endphp
 
                 {{-- 種別 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">種類<span class="text-red-500">*</span></label>
-                    <select name="type" class="border px-2 py-1 w-full rounded">
+                    <select name="type" class="border px-2 py-1 w-full rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($types as $value => $label)
                             <option value="{{ $value }}" {{ old('type') == $value ? 'selected' : '' }}>
@@ -44,8 +48,8 @@
                 {{-- タイトル --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">タイトル<span class="text-red-500">*</span></label>
-                    <input type="text" name="title" class="border px-2 py-1 w-full rounded"
-                        value="{{ old('name') }}">
+                    <input type="text" name="name" class="border px-2 py-1 w-full rounded" value="{{ old('name') }}"
+                        required>
                 </div>
 
                 {{-- 説明 --}}
@@ -65,7 +69,7 @@
 
                 {{-- URL --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">URL</label>
+                    <label class="block font-medium mb-1">参照URL</label>
                     <input type="text" name="url" class="border px-2 py-1 w-full rounded"
                         value="{{ old('url') }}">
                 </div>
@@ -74,24 +78,20 @@
                 <div class="mb-4">
                     <label class="block font-medium mb-1">レベル</label>
                     <select name="level" class="border px-2 py-1 w-full rounded">
-                        @php
-                            $levels = ['beginner' => '初級', 'intermediate' => '中級', 'advanced' => '上級'];
-                        @endphp
                         <option value="">選択してください</option>
                         @foreach ($levels as $key => $label)
-                            <option value="{{ $key }}"
-                                {{ old('level', $learning->level ?? '') == $key ? 'selected' : '' }}>
+                            <option value="{{ $key }}" {{ old('level') == $key ? 'selected' : '' }}>
                                 {{ $label }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-
                 {{-- 表示フラグ --}}
                 <div class="mb-6">
                     <label class="block font-medium mb-1">表示設定</label>
-                    <input type="checkbox" name="is_show" value="1" {{ old('is_show') ? 'checked' : '' }}>
+                    <input type="checkbox" name="display_flag" value="1"
+                        {{ old('display_flag', 1) ? 'checked' : '' }}>
                     <span>公開する</span>
                 </div>
 

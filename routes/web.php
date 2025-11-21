@@ -28,6 +28,9 @@ use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AnnouncementTypeController;
 use App\Http\Controllers\Admin\CourseUserController;
 use App\Http\Controllers\LearningController;
+use App\Http\Controllers\CertificationsController;
+use App\Http\Controllers\JobOfferController;
+
 
 
 
@@ -157,9 +160,23 @@ Route::middleware(['auth', 'role:8'])
 
         // ---------- 学習コンテンツの部分 ----------
 
-        Route::middleware(['auth'])->group(function () {
+        Route::middleware(['auth', 'role:8'])->group(function () {
             Route::resource('learnings', LearningController::class);
         });
+
+        // ---------- 資格の部分 ----------
+
+        Route::middleware(['auth', 'role:8'])->group(function () {
+            Route::resource('certifications', CertificationsController::class);
+        });
+    });
+
+// ---------- 求人票の部分 ----------
+
+Route::middleware(['auth', 'role:8'])->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('job_offers', JobOfferController::class);
     });
 
 

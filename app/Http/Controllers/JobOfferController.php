@@ -21,11 +21,11 @@ class JobOfferController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'nullable',
-            'company' => 'nullable',
-            'file_path' => 'nullable',
-            'user_id' => 'nullable',
-            'deleted_at' => 'nullable',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:512',
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
+            'is_show' => 'required|boolean',
         ]);
         JobOffer::create($validated);
         return redirect()->route('job_offers.index')->with('success', 'JobOffer作成完了');
@@ -47,11 +47,11 @@ class JobOfferController extends Controller
     {
         $JobOffer = JobOffer::findOrFail($id);
         $validated = $request->validate([
-            'title' => 'nullable',
-            'company' => 'nullable',
-            'file_path' => 'nullable',
-            'user_id' => 'nullable',
-            'deleted_at' => 'nullable',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:512',
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
+            'is_show' => 'required|boolean',
         ]);
         $JobOffer->update($validated);
         return redirect()->route('job_offers.index')->with('success', 'JobOffer更新完了');
