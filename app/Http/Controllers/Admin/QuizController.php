@@ -77,4 +77,19 @@ class QuizController extends Controller
         $quiz->delete();
         return redirect()->route('admin.quizzes.index')->with('success', '削除完了');
     }
+    // GET: クイズプレイ画面
+    public function play(Quiz $quiz)
+    {
+        $questions = $quiz->questions()->with('choices')->get();
+        return view('admin.quizzes.play', compact('quiz', 'questions'));
+    }
+
+    // POST: クイズ回答送信
+    public function submitPlay(Request $request, Quiz $quiz)
+    {
+        $answers = $request->input('answers', []);
+        // ここで回答集計や正誤判定を行う
+        return redirect()->route('admin.quizzes.play', $quiz->id)
+            ->with('success', '回答を送信しました');
+    }
 }
