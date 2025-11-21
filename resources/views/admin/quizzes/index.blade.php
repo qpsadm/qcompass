@@ -39,6 +39,15 @@
                         <!-- 受験 / プレイ -->
                         <a href="{{ route('admin.quizzes.play', $quiz->id) }}" class="text-purple-600">受験</a>
 
+                        <!-- 回答結果を見る -->
+                        @if ($quiz->course_id)
+                        <a href="{{ route('admin.courses.results', $quiz->course_id) }}"
+                            class="text-blue-600 underline">
+                            回答結果を見る
+                        </a>
+                        @else
+                        <span class="text-gray-500">コース未設定</span>
+                        @endif
                         <!-- 削除ボタン -->
                         <button type="button" onclick="openModal({{ $quiz->id }})" class="text-red-600 ml-2">
                             削除

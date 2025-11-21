@@ -107,6 +107,7 @@ class QuizController extends Controller
                 'attempt_id' => $attempt->id,
                 'question_id' => $questionId,
                 'choice_id' => $choiceId,
+                'user_id' => $user->id,
             ]);
         }
 

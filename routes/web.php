@@ -155,6 +155,10 @@ Route::middleware(['auth', 'role:8'])
             ->group(function () {
                 Route::resource('quiz_questions', QuizQuestionController::class);
             });
+        Route::get(
+            '/courses/{course}/results',
+            [App\Http\Controllers\Admin\QuizResultController::class, 'courseResults']
+        )->name('courses.results');
         // ---------- レポート ----------
         // プレビュー（固定）
         Route::get('reports/preview', [ReportController::class, 'previewBlade'])

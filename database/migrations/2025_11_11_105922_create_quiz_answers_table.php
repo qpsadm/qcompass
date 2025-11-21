@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('answer_text')->nullable();
             $table->boolean('is_correct')->nullable();
             $table->integer('score')->nullable();
-
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at

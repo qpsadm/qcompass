@@ -27,6 +27,8 @@ class QuizAnswerController extends Controller
             'answer_text' => 'nullable',
             'is_correct' => 'nullable',
             'score' => 'nullable',
+            'user_id' => $user->id, //
+
         ]);
         QuizAnswer::create($validated);
         return redirect()->route('quiz_answers.index')->with('success', 'QuizAnswer作成完了');
@@ -54,6 +56,7 @@ class QuizAnswerController extends Controller
             'answer_text' => 'nullable',
             'is_correct' => 'nullable',
             'score' => 'nullable',
+            'user_id' => $user->id, //
         ]);
         $QuizAnswer->update($validated);
         return redirect()->route('quiz_answers.index')->with('success', 'QuizAnswer更新完了');
