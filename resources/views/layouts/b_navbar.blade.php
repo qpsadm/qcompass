@@ -13,7 +13,7 @@
                 </button>
 
                 <!-- アプリロゴ（画像） -->
-                <a href="{{ route('dashboard') }}" class="self-center">
+                <a href="{{ route('admin.dashboard') }}" class="self-center">
                     <img src="{{ asset('assets/images/f_site-logo.svg') }}" alt="QLIP COMPASS" class="h-8">
                 </a>
             </div>

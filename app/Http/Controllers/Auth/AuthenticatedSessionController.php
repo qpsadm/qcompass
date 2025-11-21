@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         $request->validate([
             'login_name' => 'required|string',
             'password' => 'required|string',
-            'course_id' => 'required|integer',
+            'course_id'  => 'required|integer',
         ]);
 
         // 名前でユーザー検索
@@ -46,25 +46,33 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('login_name');
         }
 
-        // 選択されたコースが所属コースか判定
-        // if (!$user->courses->contains('id', $request->course_id)) {
-        //     return back()->withErrors([
-        //         'course_id' => 'このユーザーは選択されたコースに所属していません。',
-        //     ])->onlyInput('course_id');
-        // }
-
-        // 🔥 ログイン不可(role_id=1) をここで弾く（最重要）
+        // 🔥 ログイン不可(role_id=1) を弾く
         if ($user->role_id == 1) {
             return back()->withErrors([
                 'login_name' => 'このユーザーはログインできません。',
-            ]);
+            ])->onlyInput('login_name');
+        }
+
+        // 選択されたコースが所属コースか判定（管理者はスキップ）
+        if ($user->role_id != 8 && !$user->courses->contains('id', $request->course_id)) {
+            return back()->withErrors([
+                'course_id' => 'このユーザーは選択されたコースに所属していません。',
+            ])->onlyInput('course_id');
         }
 
         // ログイン成功
         Auth::login($user, $request->filled('remember'));
 
-        return redirect()->intended('dashboard');
+        // ロール別リダイレクト
+        if ($user->role_id == 8) {
+            // 管理者（role:8）なら管理画面トップへ
+            return redirect()->route('admin.dashboard');
+        } else {
+            // 一般ユーザーはダッシュボードへ
+            return redirect()->route('dashboard');
+        }
     }
+
 
 
     /**

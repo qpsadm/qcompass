@@ -87,4 +87,9 @@ class AnnouncementController extends Controller
         return redirect()->route('admin.announcements.index')
             ->with('success', 'お知らせを削除しました。');
     }
+    public function show($id)
+    {
+        $announcement = Announcement::with(['type', 'course'])->findOrFail($id);
+        return view('admin.announcements.show', compact('announcement'));
+    }
 }

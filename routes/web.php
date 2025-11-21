@@ -74,6 +74,8 @@ Route::middleware(['auth', 'role:8'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+        Route::get('dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
         // ---------- リソース系 ----------
         Route::resource('courses', CourseController::class);
