@@ -138,7 +138,11 @@ Route::middleware(['auth', 'role:8'])
         // クイズ受験（GET:表示、POST:回答送信）
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
         Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
-
+        // クイズ結果
+        Route::get(
+            'quizzes/result/{attempt}',
+            [App\Http\Controllers\Admin\QuizController::class, 'result']
+        )->name('quizzes.result');
 
         // クイズに紐づく問題（ネストリソース）
         Route::prefix('quizzes/{quiz}')

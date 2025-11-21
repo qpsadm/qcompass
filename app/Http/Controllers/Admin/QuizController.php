@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\QuizAttempt;
+use App\Models\QuizAnswer;
+use App\Models\QuizQuestionChoice;
 use App\Models\Quiz;
 use App\Models\Course;
-use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -84,12 +86,72 @@ class QuizController extends Controller
         return view('admin.quizzes.play', compact('quiz', 'questions'));
     }
 
-    // POST: クイズ回答送信
     public function submitPlay(Request $request, Quiz $quiz)
     {
-        $answers = $request->input('answers', []);
-        // ここで回答集計や正誤判定を行う
-        return redirect()->route('admin.quizzes.play', $quiz->id)
-            ->with('success', '回答を送信しました');
+        $user = auth()->user();
+
+        // ============================
+        // 1. 回答保存
+        // ============================
+        $attempt = QuizAttempt::create([
+            'quiz_id' => $quiz->id,
+            'user_id' => $user->id,
+            'started_at' => now(),
+            'status' => 1,
+            'attempt_no' => QuizAttempt::where('quiz_id', $quiz->id)->where('user_id', $user->id)->count() + 1,
+            'ip_address' => $request->ip(),
+        ]);
+
+        foreach ($request->answers as $questionId => $choiceId) {
+            QuizAnswer::create([
+                'attempt_id' => $attempt->id,
+                'question_id' => $questionId,
+                'choice_id' => $choiceId,
+            ]);
+        }
+
+        // ============================
+        // 2. 正解判定
+        // ============================
+        $totalCorrect = 0;
+
+        $questions = $quiz->quizQuestions()->with('choices')->get();
+
+        foreach ($questions as $question) {
+            $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
+            $correctChoice = $question->choices->firstWhere('is_correct', 1); // SQLite では 1 が true
+
+            if ($userAnswer && $correctChoice && (int)$userAnswer->choice_id === (int)$correctChoice->id) {
+                $totalCorrect++;
+            }
+        }
+
+        $attempt->total_correct = $totalCorrect;
+        $attempt->status = 2; // 完了
+        $attempt->save();
+
+        // ============================
+        // 3. 結果画面へリダイレクト
+        // ============================
+        return redirect()
+            ->route('admin.quizzes.result', ['attempt' => $attempt->id])
+            ->with('success', '回答を送信しました！');
+    }
+
+    public function result($attemptId)
+    {
+        // Attempt を取得（Quiz と QuizQuestions, Choices, ユーザー回答も一緒にロード）
+        $attempt = QuizAttempt::with([
+            'quiz.quizQuestions.choices',
+            'answers'
+        ])->findOrFail($attemptId);
+
+        $quiz = $attempt->quiz;
+        $questions = $quiz->quizQuestions;
+
+        $totalQuestions = $questions->count();
+        $totalCorrect = $attempt->total_correct ?? 0;
+
+        return view('admin.quizzes.result', compact('attempt', 'questions', 'totalQuestions', 'totalCorrect'));
     }
 }

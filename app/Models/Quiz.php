@@ -30,7 +30,7 @@ class Quiz extends Model
     }
     public function quizQuestions()
     {
-        return $this->hasMany(QuizQuestion::class, 'quiz_id', 'id');
+        return $this->hasMany(QuizQuestion::class);
     }
     protected static function booted()
     {
