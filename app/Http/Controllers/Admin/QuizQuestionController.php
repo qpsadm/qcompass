@@ -15,44 +15,60 @@ class QuizQuestionController extends Controller
         // クイズに紐づく問題を取得（選択肢も一緒に）
         $quizQuestions = $quiz->quizQuestions()->with('choices')->get();
 
-        return view('admin.quiz_questions.index', compact('quiz', 'quizQuestions'));
+        return view('admin.quizzes.quiz_questions.index', compact('quiz', 'quizQuestions'));
     }
 
     public function create(Quiz $quiz)
     {
-        return view('admin.quiz_questions.create', compact('quiz'));
+        return view('admin.quizzes.quiz_questions.create', compact('quiz'));
     }
 
     public function store(Request $request, Quiz $quiz)
     {
-        $validated = $request->validate([
+        // ============================
+        // バリデーション
+        // ============================
+        $request->validate([
             'question_text' => 'required|string',
-            'score' => 'nullable|integer',
-            'type' => 'required|string',
-            'choices' => 'nullable|array',
+            'score' => 'required|integer|min:0',
+            'type' => 'required|in:single_2,single_4,multi,text',
+            'choices' => function ($attr, $value, $fail) use ($request) {
+                $type = $request->type;
+                if (in_array($type, ['single_2', 'single_4'])) {
+                    $expected = $type === 'single_2' ? 2 : 4;
+                    if (count($value) !== $expected) {
+                        $fail("{$type} の場合、選択肢は {$expected} 個でなければなりません。");
+                    }
+                }
+                if ($type === 'multi' && count($value) > 10) {
+                    $fail('複数選択は最大10個までです。');
+                }
+            }
         ]);
 
-        $question = QuizQuestion::create([
-            'quiz_id' => $quiz->id,
-            'question_text' => $validated['question_text'],
-            'question_type' => $validated['type'],
-            'score' => $validated['score'] ?? 0,
+        // ============================
+        // 問題作成
+        // ============================
+        $question = $quiz->quizQuestions()->create([
+            'question_text' => $request->question_text,
+            'score' => $request->score,
+            'type' => $request->type,
         ]);
 
-        if ($validated['type'] !== 'text' && !empty($validated['choices'])) {
-            foreach ($validated['choices'] as $c) {
-                QuizQuestionChoice::create([
-                    'quiz_question_id' => $question->id,
-                    'choice_text' => $c['choice_text'],
-                    'is_correct' => $c['is_correct'] ?? 0,
+        // 選択肢の作成（textタイプは無視）
+        if ($request->type !== 'text' && $request->has('choices')) {
+            foreach ($request->choices as $choiceData) {
+                $question->choices()->create([
+                    'choice_text' => $choiceData['choice_text'],
+                    'is_correct' => !empty($choiceData['is_correct']),
                 ]);
             }
         }
 
-        // ここを変更：一覧ページにリダイレクト
         return redirect()->route('admin.quizzes.quiz_questions.index', $quiz->id)
-            ->with('success', '問題を追加しました');
+            ->with('success', '問題を追加しました。');
     }
+
 
 
 
@@ -62,7 +78,7 @@ class QuizQuestionController extends Controller
         // 選択肢も一緒にロード
         $quiz_question->load('choices');
 
-        return view('admin.quiz_questions.edit', [
+        return view('admin.quizzes.quiz_questions.edit', [
             'quiz' => $quiz,
             'quizQuestion' => $quiz_question
         ]);
