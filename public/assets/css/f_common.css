@@ -427,8 +427,8 @@ main {}
 }
 
 @media screen and (max-width: 1324px) {
-    main {
-        padding: 75px 15px 0;
+    .container {
+        margin: 75px 15px 0;
     }
 }
 

@@ -46,3 +46,21 @@ window.onload = function () {
 
     $("#date").val(`${yyyy}-${mm}-${dd}`);
 }
+
+//ダウンロードファイルアイコンの判定
+$(document).ready(function () {
+    $("#fileInput a").each(function () {
+        var href = $(this).attr("href").toLowerCase();
+
+        // 一旦クラスをクリア（念のため）
+        $(this).removeClass("file-pdf file-excel file-default");
+
+        if (href.endsWith(".pdf")) {
+            $(this).addClass("file-pdf");
+        } else if (href.endsWith(".xlsx") || href.endsWith(".xls")) {
+            $(this).addClass("file-excel");
+        } else {
+            $(this).addClass("file-default");
+        }
+    });
+});
