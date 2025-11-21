@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             AnnouncementTypesTableSeeder::class,
 
             CourseUserSeeder::class,
+            DivisionSeeder::class,
 
         ]);
     }

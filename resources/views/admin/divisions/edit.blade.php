@@ -6,7 +6,7 @@
 
     <form action="{{ route('admin.divisions.update', $division->id) }}" method="POST">
         @method('PUT')
-        @include('admin.divisions._form')
+        @include('admin.divisions.form')
     </form>
 </div>
 @endsection
