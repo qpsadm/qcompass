@@ -19,7 +19,13 @@
             </div>
 
             <div class="flex items-center">
-                <span class="mr-3 text-gray-700">{{ Auth::user()->name ?? 'ゲスト' }}</span>
+                <!-- ユーザー名とロール -->
+                <span class="mr-3 text-gray-700">
+                    {{ Auth::user()->name ?? 'ゲスト' }}
+                    @if(Auth::check() && Auth::user()->role)
+                    ({{ Auth::user()->role->role_name }})
+                    @endif
+                </span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
