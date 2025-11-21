@@ -25,6 +25,11 @@
                     <td class="border px-2 py-1">{{ $quiz->title }}</td>
                     <td class="border px-2 py-1">{{ $types[$quiz->type] ?? '不明' }}</td>
                     <td class="border px-2 py-1 flex flex-wrap gap-2">
+
+                        <!-- 詳細 -->
+                        <a href="{{ route('admin.quizzes.show', $quiz->id) }}">
+                            詳細
+                        </a>
                         <!-- 編集 -->
                         <a href="{{ route('admin.quizzes.edit', $quiz->id) }}" class="text-blue-600">編集</a>
 

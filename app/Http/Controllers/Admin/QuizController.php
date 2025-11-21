@@ -23,8 +23,8 @@ class QuizController extends Controller
 
     public function create()
     {
-        $quiz = new Quiz();
         $courses = Course::all();
+        $quiz = new Quiz();;
         return view('admin.quizzes.create', compact('quiz', 'courses'));
     }
 
@@ -159,5 +159,22 @@ class QuizController extends Controller
             'percentage',
             'passFail'
         ));
+    }
+
+    public function show($id)
+    {
+        $quiz = Quiz::with([
+            'questions.choices'
+        ])->findOrFail($id);
+
+        // total_score を自動計算して更新
+        $autoScore = $quiz->questions->sum('score');
+
+        if ($quiz->total_score !== $autoScore) {
+            $quiz->total_score = $autoScore;
+            $quiz->save();
+        }
+
+        return view('admin.quizzes.show', compact('quiz'));
     }
 }
