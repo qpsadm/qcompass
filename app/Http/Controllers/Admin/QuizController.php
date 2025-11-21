@@ -140,16 +140,24 @@ class QuizController extends Controller
 
     public function result($attemptId)
     {
-        // QuizAttemptを取得（QuizとAnswersも一緒にロード）
-        $attempt = QuizAttempt::with(['quiz.quizQuestions.choices', 'answers'])->findOrFail($attemptId);
+        $attempt = QuizAttempt::with(['quiz.quizQuestions.choices', 'answers', 'user'])->findOrFail($attemptId);
 
-        // QuizQuestions を取得
-        $questions = $attempt->quiz->quizQuestions;
-
-        // 正解数・不正解数
-        $totalQuestions = $questions->count();
+        $totalQuestions = $attempt->quiz->quizQuestions->count();
         $totalCorrect = $attempt->total_correct ?? 0;
 
-        return view('admin.quizzes.result', compact('attempt', 'questions', 'totalQuestions', 'totalCorrect'));
+        // パーセンテージ計算
+        $percentage = $totalQuestions > 0 ? round(($totalCorrect / $totalQuestions) * 100, 1) : 0;
+
+        // 合否判定（クイズに passing_score カラムがある場合）
+        $passingScore = $attempt->quiz->passing_score ?? 70; // デフォルト70点
+        $passFail = $percentage >= $passingScore ? '合格' : '不合格';
+
+        return view('admin.quizzes.result', compact(
+            'attempt',
+            'totalQuestions',
+            'totalCorrect',
+            'percentage',
+            'passFail'
+        ));
     }
 }

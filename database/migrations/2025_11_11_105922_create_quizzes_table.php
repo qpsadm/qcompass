@@ -8,45 +8,48 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // -------------------------
+        // quizzesテーブル作成
+        // -------------------------
         Schema::create('quizzes', function (Blueprint $table) {
-            $table->id();
-            $table->string('code', 50);
-            $table->string('title', 255);
-            $table->text('description')->nullable();
-            $table->bigInteger('course_id')->nullable();
-            $table->bigInteger('agenda_id')->nullable();
-            $table->tinyInteger('type')->default(1)->comment('1=exam, 2=survey, 3=practice');
+            $table->id()->comment('主キーID');
+            $table->string('code', 50)->comment('クイズコード');
+            $table->string('title', 255)->comment('クイズタイトル');
+            $table->text('description')->nullable()->comment('クイズの説明文');
+            $table->bigInteger('course_id')->nullable()->comment('紐づくコースID');
+            $table->bigInteger('agenda_id')->nullable()->comment('紐づくアジェンダID');
+            $table->tinyInteger('type')->default(1)->comment('クイズ種類 1=exam,2=survey,3=practice');
 
-            $table->integer('time_limit')->nullable();
-            $table->integer('total_score')->nullable();
-            $table->integer('passing_score')->nullable();
-            $table->boolean('random_order')->default(false);
-            $table->timestamp('active_from')->nullable();
-            $table->timestamp('active_to')->nullable();
-            $table->integer('created_by');
-            $table->timestamp('deleted_at')->nullable();
+            $table->integer('time_limit')->nullable()->comment('制限時間（分）');
+            $table->integer('total_score')->nullable()->comment('満点');
+            $table->integer('passing_score')->nullable()->comment('合格点');
+            $table->boolean('random_order')->default(false)->comment('問題のランダム出題フラグ');
+            $table->timestamp('active_from')->nullable()->comment('公開開始日時');
+            $table->timestamp('active_to')->nullable()->comment('公開終了日時');
+            $table->integer('created_by')->comment('作成者ユーザーID');
 
-            // ここで自動的に created_at と updated_at が作られる
-            $table->timestamps();
+            // 自動管理
+            $table->timestamps(); // created_at / updated_at
+            $table->softDeletes(); // deleted_at (ソフトデリート対応)
         });
 
+
+        // -------------------------
+        // quiz_questionsテーブル作成
+        // -------------------------
         Schema::create('quiz_questions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('quiz_id')
-                ->constrained('quizzes')
-            ;
+            $table->id()->comment('主キーID');
+            $table->foreignId('quiz_id')->constrained('quizzes')->comment('紐づくクイズID');
 
-            $table->text('question_text'); // 問題文
-            $table->integer('score')->default(0); // 点数
-            $table->boolean('is_show')->default(true); // 公開するか
-            $table->string('type')->default('single'); // single / multi / text / single_2 / single_4 等
+            $table->text('question_text')->comment('問題文');
+            $table->integer('score')->default(0)->comment('問題の配点');
+            $table->boolean('is_show')->default(true)->comment('公開するかどうか');
+            $table->string('type')->default('single')->comment('問題タイプ single/multi/textなど');
+            $table->integer('order')->default(0)->comment('並び順');
 
-            $table->integer('order')->default(0); // 並び順
-            // Laravel自動管理
-            $table->timestamps(); // created_at / updated_at
-            $table->softDeletes(); // deleted_at
+            $table->timestamps();
+            $table->softDeletes();
 
-            // 追加のユーザー情報
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
@@ -55,7 +58,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quizzes');
         Schema::dropIfExists('quiz_questions');
+        Schema::dropIfExists('quizzes');
     }
 };
