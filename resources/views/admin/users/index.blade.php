@@ -4,18 +4,37 @@
 <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
     <h1 class="text-2xl font-bold mb-4">ユーザー一覧</h1>
 
-    <a href="{{ route('admin.users.create') }}"
-        class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block hover:bg-blue-600 transition">
-        ＋ 新規ユーザー登録
-    </a>
+    <div class="flex items-center justify-between mb-4">
+        <!-- 左：新規作成 + ゴミ箱 -->
+        <div class="flex items-center space-x-2">
+            <a href="{{ route('admin.users.create') }}"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition flex items-center space-x-1">
+                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                <span>新規ユーザー登録</span>
+            </a>
 
-    <form method="GET" action="{{ route('admin.users.index') }}" class="mb-4">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="ユーザー名・コードで検索"
-            class="border px-2 py-1 rounded">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition">
-            検索
-        </button>
-    </form>
+            <a href="{{ route('admin.users.trash') }}"
+                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition flex items-center space-x-1">
+                <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
+                <span>ゴミ箱</span>
+            </a>
+        </div>
+
+        <!-- 右：検索フォーム -->
+        <form method="GET" action="{{ route('admin.users.index') }}" class="flex items-center space-x-2">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="ユーザー名・コードで検索"
+                class="border px-2 py-1 rounded">
+
+            <button type="submit" class="bg-blue-500  px-4 py-1 rounded hover:bg-blue-600 transition flex items-center space-x-1">
+                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                <span>検索</span>
+            </button>
+        </form>
+
+    </div>
+
+
+
 
     <div class="overflow-x-auto">
         <table class="table-auto border-collapse border w-full text-sm">
@@ -25,7 +44,7 @@
                     <th class="border px-4 py-2">氏名</th>
                     <th class="border px-4 py-2">所属講座</th>
                     <th class="border px-4 py-2">権限</th>
-                    <th class="border px-4 py-2 w-40 text-center">操作</th>
+                    <th class="border px-4 py-2 w-60 text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,19 +61,34 @@
                     </td>
                     <td class="border px-4 py-2">{{ $User->role->role_name ?? 'なし' }}</td>
                     <td class="border px-4 py-2 text-center">
-                        <a href="{{ route('admin.users.show', $User->id) }}" class="text-green-600 hover:underline">
-                            詳細
-                        </a>
-                        <a href="{{ route('admin.users.edit', $User->id) }}"
-                            class="text-blue-600 ml-2 hover:underline">
-                            編集
-                        </a>
-                        <button
-                            @click="open = true; deleteUrl = '{{ route('admin.users.destroy', $User->id) }}'; deleteName = '{{ $User->name }}';"
-                            class="text-red-600 ml-2 hover:underline">
-                            削除
-                        </button>
+                        <div class="flex items-center justify-center flex-nowrap space-x-2">
+
+                            <!-- 詳細 -->
+                            <a href="{{ route('admin.users.show', $User->id) }}"
+                                class="flex items-center text-green-600 hover:text-green-700">
+                                <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4">
+                                <span class="hidden lg:inline ml-1">詳細</span>
+                            </a>
+
+                            <!-- 編集 -->
+                            <a href="{{ route('admin.users.edit', $User->id) }}"
+                                class="flex items-center text-blue-600 hover:text-blue-700">
+                                <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4">
+                                <span class="hidden lg:inline ml-1">編集</span>
+                            </a>
+
+                            <!-- 削除 -->
+                            <button @click="open = true; deleteUrl='{{ route('admin.users.destroy', $User->id) }}'; deleteName='{{ $User->name }}';"
+                                class="flex items-center text-red-600 hover:text-red-700">
+                                <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4">
+                                <span class="hidden lg:inline ml-1">削除</span>
+                            </button>
+
+                        </div>
                     </td>
+
+
+
                 </tr>
                 @endforeach
             </tbody>

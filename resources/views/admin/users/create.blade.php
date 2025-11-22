@@ -77,7 +77,8 @@
                     class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="">選択してください</option>
                     @foreach ($roles as $role)
-                    <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                    <option value="{{ $role->id }}"
+                        {{ old('role_id', 3) == $role->id ? 'selected' : '' }}>
                         {{ $role->role_name }}
                     </option>
                     @endforeach

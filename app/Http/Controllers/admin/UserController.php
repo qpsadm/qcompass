@@ -149,4 +149,27 @@ class UserController extends Controller
         $user = User::with('detail')->findOrFail($id); // ユーザー詳細も取得
         return view('admin.users.show', compact('user'));
     }
+
+    // ゴミ箱一覧
+    public function trash()
+    {
+        $trashedUsers = User::onlyTrashed()->paginate(10);
+        return view('admin.users.trash', compact('trashedUsers'));
+    }
+
+    // 復元
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+        return redirect()->route('admin.users.trash')->with('success', 'ユーザーを復元しました。');
+    }
+
+    // 完全削除
+    public function forceDelete($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+        return redirect()->route('admin.users.trash')->with('success', 'ユーザーを完全削除しました。');
+    }
 }

@@ -99,6 +99,10 @@ Route::middleware(['auth', 'role:8'])
         )
             ->name('course_category.create');
 
+        Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
+        Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
+
         // 既存の resource
         Route::resource('course_category', CourseCategoryController::class);
         Route::resource('course_users', CourseUserController::class);
