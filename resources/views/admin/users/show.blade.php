@@ -42,8 +42,7 @@
                     : '未所属',
                     '作成者' => $user->created_user_name,
                     '更新者' => $user->updated_user_name,
-                    '削除者' => $user->deleted_user_name,
-                    '削除日' => $user->deleted_at,
+
                     '作成日' => $user->created_at,
                     '更新日' => $user->updated_at,
                     ] as $label => $value)
@@ -85,8 +84,6 @@
             '退校/退社理由' => $user->detail->leaving_reason ?? '-',
             '作成者' => $user->detail->created_user_name ?? '-',
             '更新者' => $user->detail->updated_user_name ?? '-',
-            '削除者' => $user->detail->deleted_user_name ?? '-',
-            '削除日' => $user->detail->deleted_at ?? '-',
             '作成日' => $user->detail->created_at ?? '-',
             '更新日' => $user->detail->updated_at ?? '-',
             ];
@@ -129,12 +126,12 @@
             class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded shadow transition">
             詳細情報作成
         </a>
+        @endif
         <!-- 一覧に戻るボタン -->
         <a href="{{ route('admin.users.index') }}"
             class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded shadow transition">
             一覧に戻る
         </a>
-        @endif
     </div>
 
 </div>

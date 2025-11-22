@@ -10,13 +10,13 @@
             <a href="{{ route('admin.users.create') }}"
                 class="bg-blue-500  px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
-                <span>新規ユーザー登録</span>
+                <span class="hidden lg:inline ml-1">新規ユーザー登録</span>
             </a>
 
             <a href="{{ route('admin.users.trash') }}"
-                class="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600 hover:text-white transition flex items-center space-x-1">
+                class="bg-red-100 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_dustbox.svg') }}" class="w-4 h-4">
-                <span>ゴミ箱</span>
+                <span class="hidden lg:inline ml-1">ゴミ箱</span>
             </a>
         </div>
 
@@ -42,7 +42,7 @@
             <button @click="submit()"
                 class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_dustbox.svg') }}" class="w-4 h-4">
-                <span>検索</span>
+                <span class="hidden lg:inline ml-1">検索</span>
             </button>
         </div>
 
