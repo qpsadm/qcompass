@@ -43,19 +43,10 @@
                             <form action="{{ route('admin.users.restore', $user->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="flex items-center text-green-600 hover:text-green-700">
-                                    <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4">
+                                    <img src="{{ asset('assets/images/icon/b_recyclebox.svg') }}" class="w-4 h-4">
                                     <span class="hidden lg:inline ml-1">復元</span>
                                 </button>
                             </form>
-
-                            <!-- 完全削除 -->
-                            <button
-                                @click="open = true; deleteUrl='{{ route('admin.users.forceDelete', $user->id) }}'; deleteName='{{ $user->name }}';"
-                                class="flex items-center text-red-600 hover:text-red-700">
-                                <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">完全削除</span>
-                            </button>
-
                         </div>
                     </td>
                 </tr>

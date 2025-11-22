@@ -77,6 +77,11 @@ Route::middleware(['auth', 'role:8'])
         Route::get('dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
+
+
+        Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
+        Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
         // ---------- リソース系 ----------
         Route::resource('courses', CourseController::class);
         Route::resource('users', UserController::class);
@@ -99,9 +104,7 @@ Route::middleware(['auth', 'role:8'])
         )
             ->name('course_category.create');
 
-        Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
-        Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-        Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
+
 
         // 既存の resource
         Route::resource('course_category', CourseCategoryController::class);
