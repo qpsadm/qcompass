@@ -3,7 +3,10 @@
 @section('content')
 <div class="container mx-auto p-6 max-w-xl">
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー作成</h1>
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 flex items-center space-x-2">
+            <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-6 h-6">
+            <span>ユーザー作成</span>
+        </h1>
 
         <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
             @csrf
