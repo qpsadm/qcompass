@@ -23,13 +23,17 @@
         </div>
 
         {{-- 表示/非表示 --}}
-        <div>
-            <label for="is_show" class="block text-gray-700 font-semibold mb-2">表示 / 非表示</label>
-            <select name="is_show" id="is_show" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="1" {{ old('is_show', $Level->is_show) == 1 ? 'selected' : '' }}>表示</option>
-                <option value="0" {{ old('is_show', $Level->is_show) == 0 ? 'selected' : '' }}>非表示</option>
-            </select>
+        <div class="flex items-center gap-2 mt-2">
+            <input type="hidden" name="is_show" value="0"> {{-- 未チェック対策 --}}
+            <input type="checkbox" id="is_show" name="is_show" value="1"
+                class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                {{ old('is_show', $Level->is_show) == 1 ? 'checked' : '' }}>
+
+            <label for="is_show" class="text-gray-700 font-semibold">
+                表示する
+            </label>
         </div>
+
 
         {{-- ボタン --}}
         <div class="flex justify-between gap-2 mt-4">

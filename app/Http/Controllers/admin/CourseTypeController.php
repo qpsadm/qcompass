@@ -50,12 +50,20 @@ class CourseTypeController extends Controller
     public function update(Request $request, $id)
     {
         $CourseType = CourseType::findOrFail($id);
+
         $validated = $request->validate([
             'name' => 'nullable',
+            'is_show' => 'nullable|in:0,1',
         ]);
+
+        $validated['is_show'] = $request->boolean('is_show');
+
         $CourseType->update($validated);
+
         return redirect()->route('admin.course_type.index')->with('success', 'CourseType更新完了');
     }
+
+
 
     public function destroy($id)
     {

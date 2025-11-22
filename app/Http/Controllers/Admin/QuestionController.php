@@ -17,9 +17,23 @@ class QuestionController extends Controller
 
     public function create()
     {
-        $courses = Course::all();
-        return view('admin.questions.create', compact('courses'));
+        // 講座一覧（講師もリレーションで取得）
+        $courses = Course::with('teachers')->get();
+
+        // 講座ごとの講師配列を作成
+        $coursesTeachers = [];
+        foreach ($courses as $course) {
+            $coursesTeachers[$course->id] = $course->teachers->map(function ($t) {
+                return [
+                    'id' => $t->id,
+                    'name' => $t->name,
+                ];
+            });
+        }
+
+        return view('admin.questions.create', compact('courses', 'coursesTeachers'));
     }
+
 
     public function store(Request $request)
     {

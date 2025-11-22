@@ -1,55 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">講座カテゴリ作成</h1>
+<div class="container mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">講座カテゴリ作成</h1>
 
-            <form action="{{ route('admin.course_category.store') }}" method="POST">
-                @csrf
+        <form action="{{ route('admin.course_category.store') }}" method="POST">
+            @csrf
 
-                {{-- 講座名（表示用） --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">講座</label>
-                    <input type="text" value="{{ $course->course_name }}" class="border px-2 py-1 w-full rounded" readonly>
+            {{-- 講座名 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-2">講座</label>
+                <input type="text" value="{{ $course->course_name }}"
+                    class="border border-gray-300 px-3 py-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    readonly>
+            </div>
+
+            <input type="hidden" name="course_id" value="{{ $course->id }}">
+
+            {{-- カテゴリ選択 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-2">カテゴリ選択</label>
+                <div class="grid grid-cols-2 gap-2">
+                    @foreach ($categories as $category)
+                    <label class="flex items-center space-x-2 border px-3 py-2 rounded cursor-pointer hover:bg-gray-50">
+                        <input type="checkbox" name="category_ids[]" value="{{ $category->id }}"
+                            @if (in_array($category->id, $selectedCategories)) checked @endif
+                        class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                        <span>{{ $category->name }}</span>
+                    </label>
+                    @endforeach
                 </div>
+            </div>
 
-                {{-- 講座ID（送信用、隠しフィールド） --}}
-                <input type="hidden" name="course_id" value="{{ $course->id }}">
+            {{-- 備考 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-2">備考</label>
+                <input type="text" name="note" value="{{ old('note', '') }}"
+                    class="border border-gray-300 px-3 py-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
 
-                {{-- カテゴリチェックボックス --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">カテゴリ選択</label>
+            {{-- 表示フラグ --}}
+            <div class="mb-6">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="hidden" name="is_show" value="0">
+                    <input type="checkbox" name="is_show" value="1"
+                        @checked(old('is_show', 1))
+                        class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    <span class="text-gray-700 font-medium">表示する</span>
+                </label>
+            </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        @foreach ($categories as $category)
-                            <label class="flex items-center space-x-2 border p-2 rounded">
-                                <input type="checkbox" name="category_ids[]" value="{{ $category->id }}"
-                                    @if (in_array($category->id, $selectedCategories)) checked @endif>
-                                <span>{{ $category->name }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
+            {{-- ボタン群 --}}
+            <div class="flex gap-2">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+                    保存
+                </button>
 
-                {{-- 備考 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">備考</label>
-                    <input type="text" name="note" value="{{ old('note', '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
+                <a href="{{ route('admin.course_category.index') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
+                    一覧に戻る
+                </a>
+            </div>
 
-                {{-- 表示フラグ --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">表示/非表示</label>
-                    <select name="is_show" class="border px-2 py-1 w-full rounded">
-                        <option value="1">表示</option>
-                        <option value="0">非表示</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 @endsection

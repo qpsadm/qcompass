@@ -20,6 +20,7 @@
                 <tr>
                     <th class="border px-4 py-2 text-center w-1/6">レベルコード</th>
                     <th class="border px-4 py-2">種類</th>
+                    <th class="border px-4 py-2 text-center w-1/6">表示</th> {{-- 追加 --}}
                     <th class="border px-4 py-2 w-60 text-center">操作</th>
                 </tr>
             </thead>
@@ -28,6 +29,14 @@
                 <tr class="hover:bg-gray-50">
                     <td class="border px-4 py-2 text-center">{{ $level->code }}</td>
                     <td class="border px-4 py-2">{{ $level->name }}</td>
+                    {{-- 表示/非表示 --}}
+                    <td class="border px-4 py-2 text-center">
+                        @if($level->is_show)
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                        @else
+                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                        @endif
+                    </td>
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center space-x-2">
                             {{-- 編集 --}}
@@ -48,7 +57,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="3" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="4" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
@@ -67,15 +76,13 @@
                 「<span x-text="deleteName"></span>」を削除しますか？
             </p>
             <div class="flex justify-center space-x-4">
-                <button @click="open = false"
-                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     キャンセル
                 </button>
                 <form :action="deleteUrl" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit"
-                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
                         削除する
                     </button>
                 </form>

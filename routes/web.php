@@ -109,7 +109,8 @@ Route::middleware(['auth', 'role:8'])
         // 既存の resource
         Route::resource('course_category', CourseCategoryController::class);
         Route::resource('course_users', CourseUserController::class);
-
+        Route::get('/admin/courses/{course}/teachers', [App\Http\Controllers\Admin\CourseController::class, 'getTeachers'])
+            ->name('admin.courses.teachers');
         // ---------- ユーザー詳細 ----------
         Route::prefix('users/{user}')
             ->name('user_details.')

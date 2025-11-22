@@ -188,4 +188,16 @@ class CourseController extends Controller
 
         return redirect()->route('admin.courses.index')->with('success', 'Course削除完了');
     }
+    public function getTeachers($courseId)
+    {
+        $course = Course::with('teachers')->findOrFail($courseId);
+
+        // JSON形式で返す
+        return response()->json($course->teachers->map(function ($teacher) {
+            return [
+                'id' => $teacher->id,
+                'name' => $teacher->name,
+            ];
+        }));
+    }
 }

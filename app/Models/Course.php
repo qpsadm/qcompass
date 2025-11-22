@@ -67,4 +67,13 @@ class Course extends Model
     {
         return $this->hasMany(\App\Models\Quiz::class, 'course_id');
     }
+    public function teachers()
+    {
+        // 中間テーブル: course_teachers
+        // 外部キー: course_id
+        // 関連キー: user_id
+        return $this->belongsToMany(User::class, 'course_teachers', 'course_id', 'user_id')
+            ->where('role_id', '>=', 4) // 講師の条件
+            ->whereNull('course_teachers.deleted_at'); // 論理削除対応
+    }
 }
