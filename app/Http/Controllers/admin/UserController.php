@@ -172,4 +172,15 @@ class UserController extends Controller
         $user->forceDelete();
         return redirect()->route('admin.users.trash')->with('success', 'ユーザーを完全削除しました。');
     }
+
+    public function showDetail(User $user)
+    {
+        if ($user->detail) {
+            // 詳細がある場合は編集画面にリダイレクト
+            return redirect()->route('admin.users.detail.edit', $user->id);
+        } else {
+            // 詳細がなければ新規作成
+            return redirect()->route('admin.users.detail.create', $user->id);
+        }
+    }
 }

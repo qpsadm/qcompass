@@ -67,17 +67,17 @@
             '住所1' => $user->detail->address1 ?? '-',
             '住所2' => $user->detail->address2 ?? '-',
             '緊急連絡先' => $user->detail->emergency_contact ?? '-',
-            '写真パス' => $user->detail->avatar_path ?? '-',
+            '性別' => isset($user->detail->gender)
+            ? ($user->detail->gender == 1 ? '男性' : ($user->detail->gender == 2 ? '女性' : '不明'))
+            : '-',
+            '写真' => $user->detail->avatar_path
+            ? '<img src="' . asset('storage/' . $user->detail->avatar_path) . '" class="w-24 h-24 object-cover rounded-full">'
+            : '未登録',
             'テーマカラー' => $user->detail->theme_id ?? '-',
             'ステータス' => isset($user->detail->status)
-            ? ($user->detail->status == 1
-            ? 'アクティブ'
-            : ($user->detail->status == 0
-            ? '非アクティブ'
-            : '停止'))
+            ? ($user->detail->status == 1 ? 'アクティブ' : ($user->detail->status == 0 ? '非アクティブ' : '停止'))
             : '-',
             '自己紹介' => $user->detail->bio ?? '-',
-            'メモ' => $user->detail->note ?? '-',
             '備考' => $user->detail->memo ?? '-',
             '入校日/入社日' => $user->detail->joining_date ?? '-',
             '退校日/退社日' => $user->detail->leaving_date ?? '-',
@@ -94,7 +94,7 @@
                     @foreach ($details as $label => $value)
                     <tr class="border-b">
                         <th class="px-4 py-2 bg-gray-100 w-1/4 text-right font-medium">{{ $label }}</th>
-                        <td class="px-4 py-2 break-words">{{ $value }}</td>
+                        <td class="px-4 py-2 break-words">{!! $value !!}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -103,6 +103,7 @@
             <div class="text-gray-500 italic">詳細情報は未登録です。</div>
             @endif
         </div>
+
 
 
     </div>

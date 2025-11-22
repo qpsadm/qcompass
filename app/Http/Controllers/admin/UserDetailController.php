@@ -9,12 +9,24 @@ use App\Models\UserDetail;
 use App\Models\Role;
 use App\Models\Theme;
 use App\Models\Course;
+use App\Models\Division;
 
 class UserDetailController extends Controller
 {
     public function create(User $user)
     {
-        return view('admin.user_details.create', compact('user'));
+        // 既に詳細があれば編集画面にリダイレクト
+        if ($user->detail) {
+            return redirect()->route('admin.user_details.edit', [
+                'user' => $user->id,
+                'detail' => $user->detail->id
+            ]);
+        }
+
+        // 表示可能な部署を取得
+        $divisions = Division::where('is_show', true)->get();
+
+        return view('admin.user_details.create', compact('user', 'divisions'));
     }
 
     public function store(Request $request, User $user)
@@ -43,15 +55,21 @@ class UserDetailController extends Controller
             $data['avatar_path'] = $request->file('avatar_path')->store('avatars', 'public');
         }
 
-        $data['user_id'] = $user->id;
         $data['status'] = $data['status'] ?? 1;
 
-        UserDetail::create($data);
+        // 既存レコードがあれば update、なければ create
+        if ($user->detail) {
+            $user->detail->update($data);
+        } else {
+            $data['user_id'] = $user->id;
+            UserDetail::create($data);
+        }
 
         return redirect()
             ->route('admin.users.show', ['user' => $user->id, 'tab' => 'detail'])
-            ->with('success', '詳細情報を作成しました。');
+            ->with('success', '詳細情報を保存しました。');
     }
+
 
 
     public function edit(User $user, UserDetail $detail)
@@ -59,8 +77,9 @@ class UserDetailController extends Controller
         $roles = Role::all();      // 権限用
         $courses = Course::all();  // 講座用
         $themes = Theme::all();    // テーマカラー用
+        $divisions = Division::where('is_show', true)->get(); // 部署追加
 
-        return view('admin.user_details.edit', compact('user', 'detail', 'roles', 'courses', 'themes'));
+        return view('admin.user_details.edit', compact('user', 'detail', 'roles', 'courses', 'themes', 'divisions'));
     }
 
     public function update(Request $request, User $user, UserDetail $detail)
@@ -98,9 +117,10 @@ class UserDetailController extends Controller
             ->with('success', '詳細情報を更新しました。');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user, UserDetail $detail)
     {
-        $user->detail?->delete();
+        $detail->delete();
+
         return redirect()->route('admin.users.show', ['user' => $user->id])
             ->with('success', '詳細情報を削除しました。');
     }

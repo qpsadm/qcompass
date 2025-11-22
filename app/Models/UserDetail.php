@@ -51,4 +51,8 @@ class UserDetail extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'divisions_id');
+    }
 }
