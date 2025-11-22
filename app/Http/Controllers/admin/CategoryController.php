@@ -31,7 +31,7 @@ class CategoryController extends Controller
                 'string',
                 'max:255',
                 function ($attribute, $value, $fail) {
-                    if (\App\Models\Category::withTrashed()->where('code', $value)->exists()) {
+                    if (Category::withTrashed()->where('code', $value)->exists()) {
                         $fail('同じコードのカテゴリーが既に存在します（ゴミ箱含む）');
                     }
                 },
@@ -102,7 +102,7 @@ class CategoryController extends Controller
         foreach ($category->childrenRecursive as $child) {
             $this->deleteCategoryRecursively($child);
         }
-        $category->delete();
+        $category->delete(); // SoftDelete
     }
 
     // ゴミ箱
@@ -122,23 +122,16 @@ class CategoryController extends Controller
     public function restore($id)
     {
         $category = Category::withTrashed()->findOrFail($id);
-        $category->restore();
+        $this->restoreCategoryRecursively($category);
+
         return redirect()->route('admin.categories.trash')->with('success', 'カテゴリーを復元しました');
     }
 
-    // 完全削除
-    public function forceDelete($id)
-    {
-        $category = Category::withTrashed()->findOrFail($id);
-        $this->forceDeleteCategoryRecursively($category);
-        return redirect()->route('admin.categories.trash')->with('success', 'カテゴリーを完全削除しました');
-    }
-
-    protected function forceDeleteCategoryRecursively(Category $category)
+    protected function restoreCategoryRecursively(Category $category)
     {
         foreach ($category->childrenRecursive()->withTrashed()->get() as $child) {
-            $this->forceDeleteCategoryRecursively($child);
+            $this->restoreCategoryRecursively($child);
         }
-        $category->forceDelete();
+        $category->restore();
     }
 }
