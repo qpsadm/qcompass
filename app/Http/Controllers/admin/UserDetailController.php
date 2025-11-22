@@ -28,7 +28,7 @@ class UserDetailController extends Controller
             'address1' => 'nullable|string|max:255',
             'address2' => 'nullable|string|max:255',
             'emergency_contact' => 'nullable|string|max:50',
-            'avatar_path' => 'nullable|image|max:2048',
+            'avatar_path' => 'nullable|file|image|max:2048',
             'theme_id' => 'nullable|string|max:20',
             'status' => 'nullable|integer',
             'bio' => 'nullable|string',
@@ -43,15 +43,16 @@ class UserDetailController extends Controller
             $data['avatar_path'] = $request->file('avatar_path')->store('avatars', 'public');
         }
 
-        // 必須値のデフォルト設定
         $data['user_id'] = $user->id;
         $data['status'] = $data['status'] ?? 1;
 
         UserDetail::create($data);
 
-        return redirect()->route('admin.users.show', ['user' => $user->id, 'tab' => 'detail'])
+        return redirect()
+            ->route('admin.users.show', ['user' => $user->id, 'tab' => 'detail'])
             ->with('success', '詳細情報を作成しました。');
     }
+
 
     public function edit(User $user, UserDetail $detail)
     {
@@ -102,5 +103,13 @@ class UserDetailController extends Controller
         $user->detail?->delete();
         return redirect()->route('admin.users.show', ['user' => $user->id])
             ->with('success', '詳細情報を削除しました。');
+    }
+
+    public function show(User $user)
+    {
+        // detail を eager load
+        $user->load('detail');
+
+        return view('admin.users.show', compact('user'));
     }
 }
