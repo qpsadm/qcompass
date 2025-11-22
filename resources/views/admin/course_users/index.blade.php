@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+<div class="w-full px-4 pt-4 pb-6 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
     <h1 class="text-2xl font-bold mb-4">ユーザー講座一覧</h1>
 
     <div class="flex items-center justify-between mb-4">
+        <!-- 新規作成 -->
         <a href="{{ route('admin.course_users.create') }}"
             class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
             <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
@@ -53,13 +54,12 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="3" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
-
         </table>
     </div>
 
