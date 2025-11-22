@@ -21,15 +21,55 @@
         </div>
 
         <!-- 右：検索フォーム -->
-        <form method="GET" action="{{ route('admin.users.index') }}" class="flex items-center space-x-2">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="ユーザー名・コードで検索"
-                class="border px-2 py-1 rounded">
-
-            <button type="submit" class="bg-blue-500  px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_search.svg') }}" class="w-4 h-4">
+        <div x-data="searchBox()" class="flex items-center space-x-2">
+            <form :action="url" method="GET" class="relative flex-1">
+                <input
+                    type="text"
+                    name="search"
+                    x-model="search"
+                    placeholder="ユーザー名・コードで検索"
+                    @keydown.enter.prevent="submit()"
+                    class="w-full border px-2 py-1 rounded pr-8">
+                <!-- ×ボタン -->
+                <button
+                    type="button"
+                    x-show="search"
+                    @click="clear()"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                    &times;
+                </button>
+            </form>
+            <button @click="submit()"
+                class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                <img src="{{ asset('assets/images/icon/b_dustbox.svg') }}" class="w-4 h-4">
                 <span>検索</span>
             </button>
-        </form>
+        </div>
+
+        <script>
+            function searchBox() {
+                return {
+                    search: "{{ request('search') }}",
+                    url: "{{ route('admin.users.index') }}",
+                    submit() {
+                        const form = document.createElement('form');
+                        form.method = 'GET';
+                        form.action = this.url;
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'search';
+                        input.value = this.search;
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    },
+                    clear() {
+                        this.search = '';
+                        this.submit(); // クリアしたら即検索
+                    }
+                }
+            }
+        </script>
 
     </div>
 

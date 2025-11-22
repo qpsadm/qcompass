@@ -40,8 +40,6 @@
                     '講座' => $user->course->course_name ?? '未所属',
                     '作成者' => $user->created_user_name,
                     '更新者' => $user->updated_user_name,
-                    '削除者' => $user->deleted_user_name,
-                    '削除日' => $user->deleted_at,
                     '作成日' => $user->created_at,
                     '更新日' => $user->updated_at,
                     ] as $label => $value)
