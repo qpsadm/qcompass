@@ -32,9 +32,10 @@ class CourseTeacher extends Model
     public function getRoleNameAttribute()
     {
         return match ($this->role_in_course) {
-            1 => 'メイン講師',
-            2 => 'サブ講師',
-            3 => 'アシスタント',
+            1 => '責任者',
+            2 => '講師',
+            3 => 'キャリコン',
+            4 => '補助',
             default => '未設定',
         };
     }

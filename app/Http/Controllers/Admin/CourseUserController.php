@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CourseUser;
+use App\Models\User;
+use App\Models\Course;
 
 class CourseUserController extends Controller
 {
     public function index()
     {
-        $course_user = CourseUser::all();
+        // user と course を一緒にロードする
+        $course_user = CourseUser::with(['user', 'course'])->get();
+
         return view('admin.course_users.index', compact('course_user'));
     }
 
@@ -39,7 +43,14 @@ class CourseUserController extends Controller
     public function edit($id)
     {
         $CourseUser = CourseUser::findOrFail($id);
-        return view('admin.course_users.edit', compact('CourseUser'));
+
+        // ユーザー一覧（role_id が 4 以上）
+        $users = User::where('role_id', '>=', 4)->get();
+
+        // 講座一覧
+        $courses = Course::all();
+
+        return view('admin.course_users.edit', compact('CourseUser', 'users', 'courses'));
     }
 
     public function update(Request $request, $id)

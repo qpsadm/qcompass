@@ -24,32 +24,41 @@
             </div>
 
             {{-- 講師 --}}
-            <div>
-                <label class="block mb-1 font-semibold">講師</label>
-                <select name="user_id" class="w-full border rounded px-3 py-2">
+            <div class="mb-4">
+                <label class="block font-medium mb-1">講師 <span class="text-red-500">*</span></label>
+                <select name="user_id" class="border px-3 py-2 w-full rounded" required>
                     <option value="">選択してください</option>
                     @foreach($users as $user)
+                    @if($user->role_id >= 4) {{-- role_id 4以上のユーザーのみ --}}
                     <option value="{{ $user->id }}" {{ old('user_id', $CourseTeacher->user_id) == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }} ({{ $user->code }})
+                        {{ $user->name }}
                     </option>
+                    @endif
                     @endforeach
                 </select>
-                @error('user_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                @error('user_id')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- 担当区分 --}}
             <div>
-                <label class="block mb-1 font-semibold">担当区分</label>
-                <select name="role_in_course" class="w-full border rounded px-3 py-2">
-                    <option value="">選択してください</option>
-                    @foreach($rolesInCourse as $role)
-                    <option value="{{ $role->id }}" {{ old('role_in_course', $CourseTeacher->role_in_course) == $role->id ? 'selected' : '' }}>
-                        {{ $role->name }}
-                    </option>
-                    @endforeach
+                <label class="block font-medium mb-1">担当区分 <span class="text-red-500">*</span></label>
+                <select name="role_in_course" class="border px-3 py-2 w-full rounded" required>
+                    @php
+                    $selectedRole = old('role_in_course', $CourseTeacher->role_in_course ?? '');
+                    @endphp
+
+                    <option value="1" {{ $selectedRole == 1 ? 'selected' : '' }}>責任者</option>
+                    <option value="2" {{ $selectedRole == 2 ? 'selected' : '' }}>講師</option>
+                    <option value="3" {{ $selectedRole == 3 ? 'selected' : '' }}>キャリコン</option>
+                    <option value="4" {{ $selectedRole == 4 ? 'selected' : '' }}>補助</option>
                 </select>
-                @error('role_in_course') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                @error('role_in_course')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
+
 
             <div class="flex gap-3 mt-4">
                 <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">

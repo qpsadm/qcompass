@@ -54,17 +54,9 @@ class CourseTeacherController extends Controller
     public function edit($id)
     {
         $CourseTeacher = CourseTeacher::findOrFail($id);
-
-        // 講座リスト
         $courses = Course::all();
-
-        // ユーザーリスト
         $users = User::all();
-
-        // 担当区分リスト
-        $rolesInCourse = RoleInCourse::all(); // ここをDBテーブルに合わせて変更
-
-        return view('admin.course_teachers.edit', compact('CourseTeacher', 'courses', 'users', 'rolesInCourse'));
+        return view('admin.course_teachers.edit', compact('CourseTeacher', 'courses', 'users'));
     }
 
     public function update(Request $request, $id)
