@@ -70,6 +70,7 @@
             '性別' => isset($user->detail->gender)
             ? ($user->detail->gender == 1 ? '男性' : ($user->detail->gender == 2 ? '女性' : '不明'))
             : '-',
+            '生年月日' => $user->detail->birthday?->format('Y-m-d') ?? '-',
             '写真' => $user->detail->avatar_path
             ? '<img src="' . asset('storage/' . $user->detail->avatar_path) . '" class="w-24 h-24 object-cover rounded-full">'
             : '未登録',
