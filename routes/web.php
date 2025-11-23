@@ -32,7 +32,8 @@ use App\Http\Controllers\Admin\{
     AnnouncementController,
     AnnouncementTypeController,
     CourseUserController,
-    DivisionController
+    DivisionController,
+    ReportController,
 };
 
 // ユーザー向け
