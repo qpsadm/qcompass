@@ -82,7 +82,8 @@
                             {{-- プレビューボタン --}}
                             <button type="button"
                                 class="flex items-center text-green-600 hover:text-green-700 preview-button"
-                                data-content='@json($agenda->content)'>
+                                data-content='@json($agenda->content)'
+                                data-title="{{ $agenda->agenda_name }}">
                                 <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">プレビュー</span>
                             </button>
@@ -144,44 +145,7 @@
 </div>
 
 {{-- プレビュー用スクリプト --}}
-<script>
-    document.querySelectorAll('.preview-button').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // JSON文字列として取得してパース
-            let contentHTML = this.dataset.content;
-            try {
-                contentHTML = JSON.parse(contentHTML);
-            } catch (e) {
-                console.error('JSON parse error', e);
-                contentHTML = '';
-            }
-
-            const previewWindow = window.open('', 'PreviewWindow', 'width=800,height=600');
-            if (!previewWindow) {
-                alert('ポップアップブロックを解除してください。');
-                return;
-            }
-
-            previewWindow.document.open();
-            previewWindow.document.write(`
-            <!DOCTYPE html>
-            <html lang="ja">
-            <head>
-                <meta charset="UTF-8">
-                <title>内容・概要 プレビュー</title>
-                <link rel="stylesheet" href="/css/app.css">
-                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
-            </head>
-            <body class="p-6">
-                <h2 class="text-xl font-bold mb-4">内容・概要 プレビュー</h2>
-                <div class="prose">${contentHTML}</div>
-            </body>
-            </html>
-        `);
-            previewWindow.document.close();
-        });
-    });
-</script>
+<script src="{{ asset('js/previewWindow.js') }}" defer></script>
 
 <style>
     [x-cloak] {
