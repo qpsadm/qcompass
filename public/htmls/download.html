@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本サイトについて | QLIP-Compass</title>
+
+    <!-- include(f_common_css.blade.php) -->
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/f_variable.css">
+    <link rel="stylesheet" href="../assets/css/f_common.css">
+
+    <!-- yield(page_css.blade.php) -->
+    <link rel="stylesheet" href="../assets/css/f_page.css">
+    <link rel="stylesheet" href="../assets/css/f_test.css">
+</head>
+<body>
+
+    <!-- include(f_frame.blade.php) -->
+    <header>
+        <div class="header-container">
+            <ul class="gnav">
+                <li><a class="home" href="top.html">ホーム</a></li>
+                <li><a class="news" href="news/news_list_all.html">お知らせ</a></li>
+                <li><a class="agenda" href="agenda/agenda_list.html">アジェンダ</a></li>
+                <li><a class="study" href="study/study_qa_list.html">学習支援</a></li>
+                <li><a class="work" href="support/support_offer_list.html">就職支援</a></li>
+                <li><a class="mypage" href="mypage/mypage.html">マイページ</a></li>
+            </ul>
+
+            <!-- responsive -->
+            <div class="site-logo">
+                <img src="../assets/images/f_site-logo.svg" alt="">
+            </div>
+            <div class="hamburger-btn">
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="side-menu">
+        <div class="side-menu-top">
+            <div class="site-logo">
+                <img src="../assets/images/f_site-logo.svg" alt="">
+            </div>
+
+            <div class="contents-box">
+
+                <div class="calendar">
+                    <div class="calendar-data">
+                        <div class="month"></div>
+                        <div class="day"></div>
+                        <span class="border"></span>
+                        <div class="week"></div>
+                    </div>
+                </div>
+
+                <div class="countdown">
+                    <p class="countdown-title">修了まであと…</p>
+                    <div class="countdown-data">
+                        <span class="data-number">108</span>
+                        <span class="data-sub-title">日</span>
+                    </div>
+                </div>
+
+                <div class="today-short">
+                    <p class="short-title">今日のひとこと</p>
+                    <span class="short-text">"シンプルこそ究極の洗練なり"</span>
+                    <span>ダビンチ</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="side-menu-bottom">
+            <ul class="side-menu-list">
+                <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
+                <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
+                <li><a class="report" href="mypage/report.html">日報作成</a></li>
+            </ul>
+
+            <div class="logout-btn">
+                <a href="">ログアウト</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="frame-right"></div>
+    <div class="frame-bottom"></div>
+    <div class="frame-left"></div>
+    <!-- /include(f_frame.blade.php) -->
+
+    <main>
+        <div class="container">
+
+            <!-- include(f_page_title.blade.php) -->
+            <div class="page-title">
+                <h2>ダウンロード</h2>
+            </div>
+            <!-- /include(f_page_title.blade.php) -->
+
+            <!-- include(f_category_menu.blade.php) -->
+            <div class="page-content">
+
+                <h3>欠席届</h3>
+                <p>欠席される方は、欠席届を記入して講師に提出してください。<br>
+                    欠席届のダウンロードは以下のリンクよりダウンロードしてください。</p>
+
+                <div id="fileInput" class="">
+                    <a href="../../assets/images/f_pamphlet_test.pdf" target="_blank">欠席届</a>
+                    <a class="btn" href="">ダウンロード</a>
+                </div>
+
+                <h3>求職活動報告書</h3>
+                <p>求職活動を行われた方は、求職活動報告書を記入して講師に提出してください。<br>
+                    求職活動報告書は以下のリンクよりダウンロードしてください。</p>
+
+                <div id="fileInput" class="">
+                    <a href="../../assets/images/f_pamphlet_test.pdf" target="_blank">求職活動報告書</a>
+                    <a class="btn" href="">ダウンロード</a>
+                </div>
+
+                <h3>遅刻・中座・早退等届</h3>
+                <p>遅刻・中座・早退される方は、遅刻・中座・早退等届を記入して講師に提出してください。<br>
+                    遅刻・中座・早退等届のダウンロードは以下のリンクよりダウンロードしてください。</p>
+
+                <div id="fileInput" class="">
+                    <a href="../../assets/images/f_pamphlet_test.pdf" target="_blank">遅刻・中座・早退等届</a>
+                    <a class="btn" href="">ダウンロード</a>
+                </div>
+
+                <h3>退校願</h3>
+                <p>退校される方は、退校願を記入して講師に提出してください。講師より退校の手続きをご案内させていただきます。<br>
+                退校願は以下のリンクよりダウンロードしてください。</p>
+
+                <div id="fileInput" class="">
+                    <a href="../../assets/images/f_pamphlet_test.pdf" target="_blank">退校願</a>
+                    <a class="btn" href="">ダウンロード</a>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- include(f_footer.blade.php) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                </div>
+                <div class="footer-company-info">
+                    <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
+                    <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
+                    <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
+                </div>
+                <div class="footer-icons">
+                    <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
+                    <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                </div>
+            </div>
+            <div>
+                <ul class="footer-company-view">
+                    <li><a href="">講座情報</a></li>
+                    <li><a href="">講師紹介</a></li>
+                    <li><a href="">各種届出書式</a></li>
+                    <li><a href="">お問い合わせ</a></li>
+                    <li><a href="">本サイトについて</a></li>
+                    <li><a href="">受講規則</a></li>
+                    <li><a href="">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 qlip-compass. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- /include(f_footer.blade.php) -->
+
+    <!-- include(f_common_js.blade.php) -->
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/f_common.js"></script>
+
+    <!-- yield(page_js.blade.php) -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
+</body>
+</html>
