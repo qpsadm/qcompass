@@ -29,7 +29,14 @@
                 <tr class="hover:bg-gray-50">
                     <td class="border px-4 py-2">{{ $division->code }}</td>
                     <td class="border px-4 py-2">{{ $division->name }}</td>
-                    <td class="border px-4 py-2 text-center">{{ $division->is_show ? '✔' : '✖' }}</td>
+                    {{-- 表示/非表示 --}}
+                    <td class="border px-4 py-2 text-center">
+                        @if($division->is_show)
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                        @else
+                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                        @endif
+                    </td>
                     <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td> <!-- 追加 -->
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center flex-nowrap space-x-2">

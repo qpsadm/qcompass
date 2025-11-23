@@ -29,11 +29,14 @@ class DivisionController extends Controller
         Division::create([
             ...$request->all(),
             'created_user_name' => auth()->user()->name ?? 'system',
+            'is_show' => $request->has('is_show') ? 1 : 0,
         ]);
 
         return redirect()->route('admin.divisions.index')
             ->with('success', '部署を登録しました');
     }
+
+
 
     public function edit(Division $division)
     {
@@ -49,7 +52,7 @@ class DivisionController extends Controller
 
         $division->update([
             ...$request->all(),
-            'updated_user_name' => auth()->user()->name ?? 'system',
+            'is_show' => $request->has('is_show') ? 1 : 0,
         ]);
 
         return redirect()->route('admin.divisions.index')

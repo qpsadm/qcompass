@@ -21,17 +21,17 @@ class AnnouncementTypeController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'type_name' => 'required|string|max:255',
-            'is_show'   => 'required|boolean',
         ]);
 
-        $data['created_user_name'] = auth()->user()->name ?? 'system';
+        $data = $request->all();
+        $data['is_show'] = $request->has('is_show') ? 1 : 0; // チェックされていなければ0
 
         AnnouncementType::create($data);
 
         return redirect()->route('admin.announcement_types.index')
-            ->with('success', 'お知らせ分類を作成しました。');
+            ->with('success', '作成しました');
     }
 
     public function edit($id)
@@ -40,22 +40,24 @@ class AnnouncementTypeController extends Controller
         return view('admin.announcement_types.edit', compact('type'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, AnnouncementType $type)
     {
-        $type = AnnouncementType::findOrFail($id);
-
-        $data = $request->validate([
+        $request->validate([
             'type_name' => 'required|string|max:255',
-            'is_show'   => 'required|boolean',
         ]);
 
-        $data['updated_user_name'] = auth()->user()->name ?? 'system';
-
-        $type->update($data);
+        // hidden input で必ず is_show が送信されるので has() でも大丈夫
+        $type->update([
+            'type_name' => $request->type_name,
+            'is_show' => $request->has('is_show') ? 1 : 0,
+        ]);
 
         return redirect()->route('admin.announcement_types.index')
-            ->with('success', 'お知らせ分類を更新しました。');
+            ->with('success', '更新しました');
     }
+
+
+
 
     public function destroy($id)
     {
