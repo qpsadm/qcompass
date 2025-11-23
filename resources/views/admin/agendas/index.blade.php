@@ -16,8 +16,11 @@
         {{-- 検索 --}}
         <div x-data="searchBox()" class="flex items-center space-x-2">
             <form :action="url" method="GET" class="relative flex-1">
-                <input type="text" name="search" x-model="search" placeholder="アジェンダ名で検索" @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
-                <button type="button" x-show="search" @click="clear()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;</button>
+                <input type="text" name="search" x-model="search" placeholder="アジェンダ名で検索"
+                    @keydown.enter.prevent="submit()"
+                    class="w-full border px-2 py-1 rounded pr-8">
+                <button type="button" x-show="search" @click="clear()"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;</button>
             </form>
             <button @click="submit()" class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_dustbox.svg') }}" class="w-4 h-4">
@@ -67,9 +70,8 @@
                 @forelse ($agendas as $agenda)
                 <tr class="hover:bg-gray-50">
                     <td class="border px-4 py-2">{{ $agenda->agenda_name }}</td>
-                    {{-- 表示/非表示 --}}
                     <td class="border px-4 py-2 text-center">
-                        @if($agenda->is_show )
+                        @if($agenda->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
                         @else
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
@@ -79,7 +81,7 @@
                     <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '不明' }}</td>
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center flex-nowrap space-x-2">
-                            {{-- プレビューボタン --}}
+                            {{-- プレビュー --}}
                             <button type="button"
                                 class="flex items-center text-green-600 hover:text-green-700 preview-button"
                                 data-content='@json($agenda->content)'
@@ -88,13 +90,11 @@
                                 <span class="hidden lg:inline ml-1">プレビュー</span>
                             </button>
 
-                            {{-- 詳細 --}}
+                            {{-- 詳細・編集 --}}
                             <a href="{{ route('admin.agendas.show', $agenda->id) }}" class="flex items-center text-blue-600 hover:text-blue-700">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">詳細</span>
                             </a>
-
-                            {{-- 編集 --}}
                             <a href="{{ route('admin.agendas.edit', $agenda->id) }}" class="flex items-center text-blue-600 hover:text-blue-700">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">編集</span>
@@ -106,7 +106,6 @@
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
                             </button>
-
                         </div>
                     </td>
                 </tr>
@@ -124,23 +123,40 @@
         </div>
     </div>
 
-    {{-- 共通削除モーダル --}}
-    <div x-show="open" x-cloak x-transition.opacity.duration.200ms class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div x-show="open" x-transition.scale.duration.200ms class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
-            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
-            <p class="text-gray-700 text-center mb-5">
-                「<span x-text="deleteName"></span>」を削除しますか？
-            </p>
-            <div class="flex justify-center space-x-4">
-                <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">キャンセル</button>
-                <form :action="deleteUrl" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除する</button>
-                </form>
+    {{-- モーダル --}}
+    <!-- モーダル -->
+    <div x-data="{ open: false, deleteUrl: '', deleteName: '' }" x-cloak>
+        <div x-show="open"
+            x-transition.opacity.duration.200ms
+            style="display: none;"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+            <div x-transition.scale.duration.200ms
+                class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+
+                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+                <p class="text-gray-700 text-center mb-5">
+                    「<span x-text="deleteName"></span>」を削除しますか？
+                </p>
+
+                <div class="flex justify-center space-x-4">
+                    <button @click="open = false"
+                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        キャンセル
+                    </button>
+
+                    <form :action="deleteUrl" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            削除する
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
 
 </div>
 

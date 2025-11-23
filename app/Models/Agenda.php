@@ -55,4 +55,8 @@ class Agenda extends Model
     {
         return $this->category ? $this->category->course : null;
     }
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_agendas', 'agenda_id', 'course_id');
+    }
 }
