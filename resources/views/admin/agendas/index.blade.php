@@ -67,7 +67,14 @@
                 @forelse ($agendas as $agenda)
                 <tr class="hover:bg-gray-50">
                     <td class="border px-4 py-2">{{ $agenda->agenda_name }}</td>
-                    <td class="border px-4 py-2">{{ $agenda->is_show ? '表示' : '非表示' }}</td>
+                    {{-- 表示/非表示 --}}
+                    <td class="border px-4 py-2 text-center">
+                        @if($agenda->is_show )
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                        @else
+                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                        @endif
+                    </td>
                     <td class="border px-4 py-2">{{ $agenda->status === 'yes' ? '承認済み' : '下書き' }}</td>
                     <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '不明' }}</td>
                     <td class="border px-4 py-2 text-center">

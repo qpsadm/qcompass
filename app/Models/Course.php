@@ -64,6 +64,7 @@ class Course extends Model
             ->withPivot(['note', 'is_show'])
             ->withTimestamps();
     }
+
     public function quizzes()
     {
         return $this->hasMany(\App\Models\Quiz::class, 'course_id');

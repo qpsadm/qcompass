@@ -161,4 +161,32 @@ class AgendaController extends Controller
         }
         return $options;
     }
+    // app/Http/Controllers/Admin/AgendaController.php
+
+    public function preview($agendaId)
+    {
+        // Agenda を取得、Category もロード
+        $agenda = Agenda::with('category')->find($agendaId);
+
+        if (!$agenda) {
+            abort(404, 'アジェンダが存在しません。');
+        }
+
+        $category = $agenda->category;
+
+        if (!$category) {
+            abort(404, 'アジェンダに関連するカテゴリが存在しません。');
+        }
+
+        $course = $category->course ?? null;
+
+        if (!$course) {
+            abort(404, 'このアジェンダに関連するコースが存在しません。');
+        }
+
+        // categories と agendas をコース単位でまとめる
+        $categories = $course->categories()->with('agendas')->get();
+
+        return view('admin.agendas.preview', compact('course', 'categories'));
+    }
 }

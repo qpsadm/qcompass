@@ -227,4 +227,26 @@ class CourseController extends Controller
 
         return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
+
+    public function agendas($courseId)
+    {
+        // 講座 → カテゴリ → アジェンダを取得
+        $course = Course::with('categories.agendas')->findOrFail($courseId);
+
+        return view('admin.course_category.agendas', compact('course'));
+    }
+
+    public function updateAgendas(Request $request, $courseId)
+    {
+        // $request->agendas は選択された agenda_id の配列
+        $selectedAgendas = $request->input('agendas', []);
+
+        // 講座に紐づくカテゴリ経由でアジェンダを更新するロジック
+        // ここは必要に応じて pivot テーブルやフラグで管理
+        // 例としてログ出力
+        \Log::info("Course $courseId selected agendas:", $selectedAgendas);
+
+        return redirect()->route('admin.courses.agendas', $courseId)
+            ->with('success', 'アジェンダ設定を更新しました');
+    }
 }

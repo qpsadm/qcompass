@@ -94,6 +94,16 @@ Route::middleware(['auth', 'role:8'])
         Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
         Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 
+        // 講座ID付き create
+        Route::get('course_category/create/{courseId}', [CourseCategoryController::class, 'create'])
+            ->name('course_category.create');
+
+        Route::get('agendas/{agenda}/preview', [AgendaController::class, 'preview'])
+            ->name('agendas.preview');
+        Route::get('{course}/agendas', [CourseController::class, 'agendas'])->name('courses.agendas');
+        Route::post('{course}/agendas', [CourseController::class, 'updateAgendas'])->name('courses.agendas.update');
+
+
         // リソース系
         Route::resources([
             'courses' => CourseController::class,
@@ -121,9 +131,7 @@ Route::middleware(['auth', 'role:8'])
             'job_offers' => JobOfferController::class,
         ]);
 
-        // 講座ID付き create
-        Route::get('course_category/create/{courseId}', [CourseCategoryController::class, 'create'])
-            ->name('course_category.create');
+
 
         // 受講生一覧
         Route::get('courses/{course}/students', [CourseController::class, 'students'])

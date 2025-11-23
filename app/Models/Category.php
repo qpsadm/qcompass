@@ -47,4 +47,14 @@ class Category extends Model
     {
         return $this->belongsTo(Theme::class, 'theme_id'); // categoriesテーブルに theme_id がある場合
     }
+
+    public function agendas()
+    {
+        return $this->hasMany(\App\Models\Agenda::class, 'category_id', 'id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }
