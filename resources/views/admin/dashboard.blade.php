@@ -75,6 +75,36 @@
             @endif
         </div>
 
+        {{-- 最新日報 --}}
+        {{-- 最新日報 --}}
+        <div class="bg-white shadow rounded p-5">
+            <h2 class="text-lg font-semibold mb-3 flex items-center">
+                <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4 mr-2">
+                最新日報
+            </h2>
+
+            @if($latestReports->isEmpty())
+            <p class="text-gray-500">日報はありません。</p>
+            @else
+            <ul class="space-y-2">
+                @foreach($latestReports as $report)
+                <li class="border-b pb-2">
+                    <a href="{{ route('admin.reports.show', $report->id) }}" class="font-medium text-blue-600 hover:underline">
+                        {{ $report->title }}
+                    </a>
+                    <div class="text-sm text-gray-500">
+                        {{ $report->created_at->format('Y-m-d') }} - {{ $report->user->name ?? '不明' }}
+                        @if($report->course)
+                        <span class="ml-2 text-gray-400">({{ $report->course->course_name }})</span>
+                        @endif
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+            @endif
+        </div>
+
+
     </div>
 </div>
 @endsection

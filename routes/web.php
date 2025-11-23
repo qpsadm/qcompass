@@ -172,6 +172,8 @@ Route::middleware(['auth', 'role:8'])
 
         // レポート関連
         Route::get('reports/preview', [ReportController::class, 'previewBlade'])->name('reports.previewBlade');
+        Route::post('reports/preview', [ReportController::class, 'previewBlade'])
+            ->name('reports.previewBlade');
         Route::resource('reports', ReportController::class)->where(['report' => '[0-9]+']);
     });
 
