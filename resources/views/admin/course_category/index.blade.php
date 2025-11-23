@@ -31,10 +31,14 @@
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center space-x-2">
                             {{-- 編集/カテゴリ設定 --}}
-                            <a href="{{ route('admin.course_category.create', $course->id) }}"
+                            <a href="{{ route('admin.course_category.create',$course->id) }}"
                                 class="flex items-center bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">カテゴリ設定</span>
+                            </a>
+                            <a href="{{ route('admin.courses.agendas', $course->id) }}"
+                                class="flex items-center bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition">
+                                <span class="hidden lg:inline ml-1">アジェンダ</span>
                             </a>
                         </div>
                     </td>

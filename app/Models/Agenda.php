@@ -50,15 +50,13 @@ class Agenda extends Model
     {
         return $this->hasMany(AgendaFile::class);
     }
-    // 講座との多対多
+    // course を安全に取得するアクセサ
+    public function getCourseAttribute()
+    {
+        return $this->category ? $this->category->course : null;
+    }
     public function courses()
     {
-        return $this->belongsToMany(
-            Course::class,       // 関連モデル
-            'course_agendas',    // 中間テーブル名
-            'agenda_id',         // 中間テーブルの自分側キー（Agenda → course_agendas）
-            'course_id'          // 中間テーブルの相手側キー（Course）
-        )->withPivot('order_no', 'note')
-            ->withTimestamps();
+        return $this->belongsToMany(Course::class, 'course_agendas', 'agenda_id', 'course_id');
     }
 }
