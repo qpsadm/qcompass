@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title', 255)->comment('タイトル');
             $table->unsignedInteger('type_id')->comment('カテゴリID');
             $table->text('content')->nullable()->comment('詳細内容');
-            $table->unsignedInteger('course_id')->comment('講座ID');
+            $table->unsignedInteger('course_id')->nullable()->comment('講座ID');
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
             $table->tinyInteger('status')->default(0)->comment('状態');
 

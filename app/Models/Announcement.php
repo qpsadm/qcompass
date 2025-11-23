@@ -30,4 +30,9 @@ class Announcement extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class, 'type_id');
+    }
 }

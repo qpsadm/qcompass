@@ -34,7 +34,9 @@
                     <td class="border px-4 py-2">{{ $item->id }}</td>
                     <td class="border px-4 py-2">{{ $item->title }}</td>
                     <td class="border px-4 py-2">{{ $item->type->type_name ?? '-' }}</td>
-                    <td class="border px-4 py-2">{{ $item->course->name ?? '-' }}</td>
+                    <td class="border px-4 py-2">
+                        {{ ($item->course_id ?? 0) === 0 ? '全員向け' : ($item->course->course_name ?? '-') }}
+                    </td>
 
                     {{-- 表示/非表示 --}}
                     <td class="border px-4 py-2 text-center">

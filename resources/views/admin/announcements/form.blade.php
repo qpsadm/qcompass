@@ -14,7 +14,9 @@
 
         {{-- カテゴリ --}}
         <tr class="border-b">
-            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ</th>
+            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ
+                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+            </th>
             <td class="px-4 py-2">
                 <select name="type_id" class="border rounded px-3 py-2 w-64">
                     <option value="">選択してください</option>
@@ -30,14 +32,14 @@
 
         {{-- 講座 --}}
         <tr class="border-b">
-            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座</th>
+            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座
+                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+            </th>
             <td class="px-4 py-2">
                 <select name="course_id" class="border rounded px-3 py-2 w-64">
-                    <option value="0" @selected(old('course_id', $announcement->course_id ?? 0) == 0)>全員向け</option>
+                    <option value="">全員向け</option>
                     @foreach ($courses as $course)
-                    <option value="{{ $course->id }}" @selected(old('course_id', $announcement->course_id ?? 0) == $course->id)>
-                        {{ $course->course_name }}
-                    </option>
+                    <option value="{{ $course->id }}" @selected($announcement->course_id == $course->id)>{{ $course->course_name }}</option>
                     @endforeach
                 </select>
                 @error('course_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
@@ -53,17 +55,24 @@
             </td>
         </tr>
 
-        {{-- 表示 --}}
+        {{-- 表示フラグ --}}
         <tr class="border-b">
-            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示する？</th>
-            <td class="px-4 py-2 flex items-center">
-                <input type="checkbox" id="is_show" name="is_show" value="1"
-                    @if(old('is_show', $announcement->is_show ?? 1)) checked @endif
-                class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-                <label for="is_show" class="ml-2">表示</label>
-                @error('is_show') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示</th>
+            <td class="px-4 py-2">
+                {{-- hidden で未チェック時に 0 を送信 --}}
+                <input type="hidden" name="is_show" value="0">
+
+                {{-- チェックボックス --}}
+                <input type="checkbox" name="is_show" value="1"
+                    @checked(old('is_show', $announcement->is_show ?? 1))>
+                表示
+
+                @error('is_show')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
             </td>
         </tr>
+
 
         {{-- 状態 --}}
         <tr class="border-b">

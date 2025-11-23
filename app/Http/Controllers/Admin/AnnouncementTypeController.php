@@ -46,6 +46,7 @@ class AnnouncementTypeController extends Controller
     }
 
     // 更新処理
+    // 更新処理
     public function update(Request $request, $id)
     {
         $type = AnnouncementType::findOrFail($id);
@@ -54,11 +55,17 @@ class AnnouncementTypeController extends Controller
             'type_name' => 'required|string|max:255',
         ]);
 
+        // 新しい表示フラグ
+        $isShow = $request->input('is_show', 0) ? 1 : 0;
+
         $type->update([
             'type_name' => $request->type_name,
-            'is_show' => $request->input('is_show', 0) ? 1 : 0, // チェックされていなければ0
+            'is_show' => $isShow,
             'updated_user_name' => auth()->user()->name ?? 'system',
         ]);
+
+        // 🔹ここで紐づくお知らせも連動して更新
+        $type->announcements()->update(['is_show' => $isShow]);
 
         return redirect()->route('admin.announcement_types.index')
             ->with('success', '更新しました');

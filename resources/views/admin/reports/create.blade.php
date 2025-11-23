@@ -10,7 +10,9 @@
             <tbody>
                 {{-- 講座 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                    </th>
                     <td class="px-4 py-2">
                         <select name="course_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>
@@ -27,7 +29,9 @@
 
                 {{-- 日付 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日付</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日付
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                    </th>
                     <td class="px-4 py-2">
                         <input type="date" name="date" value="{{ old('date') }}" class="border rounded px-3 py-2 w-64">
                         @error('date') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
@@ -36,7 +40,9 @@
 
                 {{-- タイトル --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">タイトル</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">タイトル
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                    </th>
                     <td class="px-4 py-2">
                         <input type="text" name="title" value="{{ old('title') }}" class="border rounded px-3 py-2 w-full">
                         @error('title') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
@@ -45,7 +51,9 @@
 
                 {{-- 日報内容 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日報内容</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日報内容
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                    </th>
                     <td class="px-4 py-2">
                         <textarea name="content" rows="4" class="border rounded px-3 py-2 w-full">{{ old('content') }}</textarea>
                         @error('content') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
@@ -54,7 +62,9 @@
 
                 {{-- 感想・気付き・質問 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">感想・気付き・質問</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">感想・気付き・質問
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                    </th>
                     <td class="px-4 py-2">
                         <textarea name="impression" rows="3" class="border rounded px-3 py-2 w-full">{{ old('impression') }}</textarea>
                         @error('impression') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
