@@ -19,6 +19,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+    cursor: pointer;
 }
 
 .accordion-btn span,
@@ -202,6 +203,7 @@ textarea {
 
 .question-area {
     padding: 10px;
+    cursor: pointer;
 }
 
 .answer-area {
@@ -222,4 +224,8 @@ textarea {
     font-size: 18px;
     line-height: 27px;
     letter-spacing: 1px;
+}
+
+.accordion-menu.active .accordion-btn span::before {
+    transform: rotate(0deg);
 }
