@@ -112,10 +112,17 @@ class AgendaController extends Controller
     public function destroy($id)
     {
         $agenda = Agenda::findOrFail($id);
+
+        // 論理削除前に pivot テーブルの関連を解除
+        $agenda->courses()->detach();
+
+        // アジェンダ自体を論理削除
         $agenda->delete();
 
-        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました。');
+        return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました（論理削除）');
     }
+
+
     /**
      * アジェンダ詳細
      */

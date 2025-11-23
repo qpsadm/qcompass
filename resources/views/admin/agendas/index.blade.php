@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md"
+    x-data="{ open: false, deleteUrl: '', deleteName: '' }">
     <h1 class="text-2xl font-bold mb-4">アジェンダ一覧</h1>
 
     {{-- 上部操作ボタン --}}
     <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-2">
-            <a href="{{ route('admin.agendas.create') }}" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+            <a href="{{ route('admin.agendas.create') }}"
+                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
@@ -124,39 +126,31 @@
     </div>
 
     {{-- モーダル --}}
-    <!-- モーダル -->
-    <div x-data="{ open: false, deleteUrl: '', deleteName: '' }" x-cloak>
-        <div x-show="open"
-            x-transition.opacity.duration.200ms
-            style="display: none;"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-
-            <div x-transition.scale.duration.200ms
-                class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
-
-                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
-                <p class="text-gray-700 text-center mb-5">
-                    「<span x-text="deleteName"></span>」を削除しますか？
-                </p>
-
-                <div class="flex justify-center space-x-4">
-                    <button @click="open = false"
-                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                        キャンセル
+    <div x-show="open"
+        x-transition.opacity.duration.200ms
+        style="display: none;"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div x-transition.scale.duration.200ms
+            class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+            <p class="text-gray-700 text-center mb-5">
+                「<span x-text="deleteName"></span>」を削除しますか？
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button @click="open = false"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    キャンセル
+                </button>
+                <form :action="deleteUrl" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        削除する
                     </button>
-
-                    <form :action="deleteUrl" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                            削除する
-                        </button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-
 
 </div>
 
