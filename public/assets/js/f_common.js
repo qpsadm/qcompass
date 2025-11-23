@@ -16,6 +16,34 @@ clickArea.click(function () {
     accordionMenu.toggleClass("active");
 });
 
+// accordion-menu open/close
+// const accordionMenu = $(".accordion-menu");
+// const questionArea = $(".question-area");
+// const answerArea = $(".answer-area");
+
+// questionArea.click(function () {
+//     $(this).next().slideToggle(300);
+//     answerArea.toggleClass("active");
+//     // accordionMenu.toggleClass("active");
+// });
+
+const questionArea = $(".question-area");
+
+questionArea.click(function () {
+    const answer = $(this).next(".answer-area");
+
+    // すでに開いている回答以外をすべて閉じる
+    $(".answer-area").not(answer).slideUp(300);
+
+    // 自分の回答部分だけトグル
+    answer.slideToggle(300);
+});
+
+
+
+
+
+
 // calendar
 window.onload = function () {
     var today = new Date();
