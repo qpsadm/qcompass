@@ -1,97 +1,160 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 pb-24 max-w-6xl">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6">講座一覧</h1>
+<div class="container mx-auto p-6 pb-24 max-w-6xl" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6">講座一覧</h1>
 
-            {{-- 上部操作 --}}
-            <div class="flex justify-between mb-4">
+        {{-- 上部操作 --}}
+        <div class="flex justify-between mb-4">
+            <div class="flex items-center space-x-2">
                 <a href="{{ route('admin.courses.create') }}"
-                    class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition">
-                    新規作成
+                    class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                    <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                    <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>
-
-                <form method="GET" action="{{ route('admin.courses.index') }}" class="flex gap-2">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="講座コード・講座名・主催者で検索"
-                        class="border px-3 py-1 rounded flex-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <button type="submit"
-                        class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition">検索</button>
-                </form>
             </div>
 
-            <table class="table-auto border-collapse border w-full">
-                <thead>
+            <div x-data="searchBox()" class="flex items-center space-x-2">
+                <form :action="url" method="GET" class="relative flex-1">
+                    <input type="text" name="search" x-model="search" placeholder="講座コード・講座名で検索"
+                        @keydown.enter.prevent="submit()"
+                        class="w-full border px-2 py-1 rounded pr-8">
+                    <button type="button" x-show="search" @click="clear()"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;</button>
+                </form>
+                <button @click="submit()"
+                    class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                    <img src="{{ asset('assets/images/icon/b_search.svg') }}" class="w-4 h-4">
+                    <span class="hidden lg:inline ml-1">検索</span>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function searchBox() {
+                return {
+                    search: "{{ request('search') }}",
+                    url: "{{ route('admin.courses.index') }}",
+                    submit() {
+                        const form = document.createElement('form');
+                        form.method = 'GET';
+                        form.action = this.url;
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'search';
+                        input.value = this.search;
+                        form.appendChild(input);
+                        document.body.appendChild(form);
+                        form.submit();
+                    },
+                    clear() {
+                        this.search = '';
+                        this.submit();
+                    }
+                }
+            }
+        </script>
+
+        <div class="overflow-x-auto">
+            <table class="table-auto border-collapse border w-full text-sm">
+                <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2">講座コード</th>
-                        <th class="border px-4 py-2">分野</th>
-                        <th class="border px-4 py-2">種類</th>
-                        <th class="border px-4 py-2">主催者名</th>
+                        <th class="border px-4 py-2 w-32">講座コード</th>
                         <th class="border px-4 py-2">講座名</th>
-                        <th class="border px-4 py-2">認定番号</th>
+                        <th class="border px-4 py-2">分野</th>
+                        <th class="border px-4 py-2">期間</th>
                         <th class="border px-4 py-2">状態</th>
-                        <th class="border px-4 py-2">作成日</th>
-                        <th class="border px-4 py-2">操作</th>
+                        <th class="border px-4 py-2">表示</th>
+                        <th class="border px-4 py-2 w-60 text-center">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($courses as $Course)
-                        <tr>
-                            <td class="border px-4 py-2">{{ $Course->course_code }}</td>
-                            <td class="border px-4 py-2">{{ $Course->courseType->name ?? '-' }}</td>
-                            <td class="border px-4 py-2">{{ $Course->level->name ?? '-' }}</td>
-                            <td class="border px-4 py-2">{{ $Course->organizer->name ?? '-' }}</td>
-                            <td class="border px-4 py-2">{{ $Course->course_name }}</td>
-                            <td class="border px-4 py-2">{{ $Course->certification_number }}</td>
-                            <td class="border px-4 py-2">{{ \App\Models\Course::STATUS[(int) $Course->status] ?? '不明' }}</td>
-                            <td class="border px-4 py-2">{{ $Course->created_at->format('Y-m-d') }}</td>
-                            <td class="border px-4 py-2">
-                                <a href="{{ route('admin.courses.show', $Course->id) }}" class="text-green-600">詳細</a>
-                                <a href="{{ route('admin.courses.edit', $Course->id) }}" class="text-blue-600 ml-2">編集</a>
+                    @forelse($courses as $course)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $course->course_code }}</td>
+                        <td class="border px-4 py-2">{{ $course->course_name }}</td>
+                        <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $course->start_date }} ～ {{ $course->end_date }}</td>
+                        <td class="border px-4 py-2">
+                            @if($course->status == 'draft')
+                            📝 下書き
+                            @elseif($course->status == 'open')
+                            ✅ 公開
+                            @else
+                            🔒 閉講
+                            @endif
+                        </td>
+                        <td class="border px-4 py-2 text-center">
+                            @if($course->is_show)
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                            @else
+                            <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                            @endif
+                        </td>
 
-                                {{-- 統一削除モーダル --}}
-                                <div x-data="{ open: false }" x-cloak>
-                                    <button @click="open = true" class="text-red-600 hover:text-red-400">削除</button>
-
-                                    <div x-show="open" x-transition.opacity.duration.200ms
-                                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                                        <div x-show="open" x-transition.scale.duration.200ms
-                                            class="bg-white p-6 rounded-lg shadow-md max-w-sm w-full">
-                                            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
-                                            <p class="text-gray-700 text-center mb-5">
-                                                「{{ $Course->course_name }}」を削除しますか？
-                                            </p>
-                                            <div class="flex justify-center gap-4">
-                                                <button @click="open = false"
-                                                    class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">キャンセル</button>
-                                                <form action="{{ route('admin.courses.destroy', $Course->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                                                        削除
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                        <td class="border px-4 py-2 text-center">
+                            <div class="flex items-center justify-center space-x-2">
+                                <a href="{{ route('admin.courses.show', $course->id) }}"
+                                    class="text-green-600 hover:text-green-700 flex items-center space-x-1">
+                                    <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4">
+                                    <span class="hidden lg:inline ml-1">詳細</span>
+                                </a>
+                                <a href="{{ route('admin.courses.edit', $course->id) }}"
+                                    class="text-blue-600 hover:text-blue-700 flex items-center space-x-1">
+                                    <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
+                                    <span class="hidden lg:inline ml-1">編集</span>
+                                </a>
+                                <button @click="open = true; deleteUrl='{{ route('admin.courses.destroy', $course->id) }}'; deleteName='{{ $course->course_name }}';"
+                                    class="text-red-600 hover:text-red-700 flex items-center space-x-1">
+                                    <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
+                                    <span class="hidden lg:inline ml-1">削除</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center text-gray-500 py-4">データがありません</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
-            <!-- ページネーション -->
             <div class="mt-4">
                 {{ $courses->appends(request()->query())->links() }}
             </div>
         </div>
-    </div>
 
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
+        {{-- 共通削除モーダル --}}
+        <div x-show="open" x-cloak x-transition.opacity.duration.200ms
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div x-show="open" x-transition.scale.duration.200ms
+                class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+                <p class="text-gray-700 text-center mb-5">
+                    「<span x-text="deleteName"></span>」を削除しますか？
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        キャンセル
+                    </button>
+                    <form :action="deleteUrl" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            削除する
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{-- /共通削除モーダル --}}
+    </div>
+</div>
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
 @endsection
