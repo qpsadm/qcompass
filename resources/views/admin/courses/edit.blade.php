@@ -1,226 +1,184 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-4">講座編集</h1>
+<div class="container mx-auto p-4 max-w-5xl">
+    <h1 class="text-3xl font-bold mb-6">講座編集：{{ $Course->course_name ?? '新規作成' }}</h1>
 
-        <form action="{{ route('admin.courses.update', $Course->id) }}" method="POST">
-            @csrf
-            @method('PUT')
+    <form action="{{ isset($Course) ? route('admin.courses.update', $Course->id) : route('admin.courses.store') }}"
+        method="POST" enctype="multipart/form-data">
+        @csrf
+        @if(isset($Course)) @method('PUT') @endif
 
-            {{-- 講座コード --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">講座コード</label>
-                <input type="text" name="course_code" value="{{ old('course_code', $Course->course_code) }}"
-                    class="border-gray-300 border px-2 py-1 w-[300px] rounded-md
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
+        <table class="w-full table-auto border-collapse">
+            <tbody>
+                {{-- 講座コード --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座コード</th>
+                    <td class="px-4 py-2">
+                        <input type="text" name="course_code" value="{{ old('course_code', $Course->course_code ?? '') }}"
+                            class="border rounded px-3 py-2 w-64">
+                        @error('course_code') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 講座分野 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">講座分野</label>
-                <select name="course_type_id"
-                    class="border-gray-300 border px-2 py-1 w-[100px] rounded-md
-                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required>
-                    <option value="">選択してください</option>
-                    @foreach ($courseTypes as $type)
-                    <option value="{{ $type->id }}"
-                        {{ old('course_type_id', $Course->course_type_id) == $type->id ? 'selected' : '' }}>
-                        {{ $type->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- 講座名 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座名</th>
+                    <td class="px-4 py-2">
+                        <input type="text" name="course_name" value="{{ old('course_name', $Course->course_name ?? '') }}"
+                            class="border rounded px-3 py-2 w-80">
+                        @error('course_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 講座種類 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">講座種類</label>
-                <select name="level_id"
-                    class="border-gray-300 border px-2 py-1 w-[250px] rounded-md
-                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required>
-                    <option value="">選択してください</option>
-                    @foreach ($levels as $level)
-                    <option value="{{ $level->id }}"
-                        {{ old('level_id', $Course->level_id) == $level->id ? 'selected' : '' }}>
-                        {{ $level->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- 講座分野 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座分野</th>
+                    <td class="px-4 py-2">
+                        <select name="course_type_id" class="border rounded px-3 py-2 w-64">
+                            <option value="">選択してください</option>
+                            @foreach ($courseTypes as $type)
+                            <option value="{{ $type->id }}" {{ old('course_type_id', $Course->course_type_id ?? '') == $type->id ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('course_type_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 主催者 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">主催者</label>
-                <select name="organizer_id"
-                    class="border-gray-300 border px-2 py-1 w-[200px] rounded-md
-                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required>
-                    <option value="">選択してください</option>
-                    @foreach ($organizers as $org)
-                    <option value="{{ $org->id }}"
-                        {{ old('organizer_id', $Course->organizer_id) == $org->id ? 'selected' : '' }}>
-                        {{ $org->name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- 講座種類 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座種類</th>
+                    <td class="px-4 py-2">
+                        <select name="level_id" class="border rounded px-3 py-2 w-64">
+                            <option value="">選択してください</option>
+                            @foreach ($levels as $level)
+                            <option value="{{ $level->id }}" {{ old('level_id', $Course->level_id ?? '') == $level->id ? 'selected' : '' }}>
+                                {{ $level->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('level_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 講座名 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">講座名</label>
-                <input type="text" name="course_name" value="{{ old('course_name', $Course->course_name) }}"
-                    class="border-gray-300 border px-2 py-1 w-[400px] rounded-md
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
+                {{-- 主催者 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">主催者</th>
+                    <td class="px-4 py-2">
+                        <select name="organizer_id" class="border rounded px-3 py-2 w-64">
+                            <option value="">選択してください</option>
+                            @foreach ($organizers as $org)
+                            <option value="{{ $org->id }}" {{ old('organizer_id', $Course->organizer_id ?? '') == $org->id ? 'selected' : '' }}>
+                                {{ $org->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('organizer_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 開催会場 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">実施会場</label>
-                <input type="text" name="venue" value="{{ old('venue', $Course->venue) }}"
-                    class="border-gray-300 border px-2 py-1 w-[500px] rounded-md
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
+                {{-- 開催会場 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">実施会場</th>
+                    <td class="px-4 py-2">
+                        <input type="text" name="venue" value="{{ old('venue', $Course->venue ?? '') }}"
+                            class="border rounded px-3 py-2 w-80">
+                        @error('venue') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 開始日・終了日 --}}
-            <div class="mb-4 flex gap-4">
-                <div>
-                    <label class="block font-medium mb-1">開始日</label>
-                    <input type="date" name="start_date" value="{{ old('start_date', $Course->start_date) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">終了日</label>
-                    <input type="date" name="end_date" value="{{ old('end_date', $Course->end_date) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- 開始日・終了日 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">期間</th>
+                    <td class="px-4 py-2 flex gap-2">
+                        <input type="date" name="start_date" value="{{ old('start_date', $Course->start_date ?? '') }}" class="border rounded px-3 py-2">
+                        ～
+                        <input type="date" name="end_date" value="{{ old('end_date', $Course->end_date ?? '') }}" class="border rounded px-3 py-2">
+                    </td>
+                </tr>
 
-            {{-- 総授業時間・時限数 --}}
-            <div class="mb-4 flex gap-4">
-                <div>
-                    <label class="block font-medium mb-1">総授業時間</label>
-                    <input type="text" name="total_hours" value="{{ old('total_hours', $Course->total_hours) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">時限数</label>
-                    <input type="text" name="periods" value="{{ old('periods', $Course->periods) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- 開始時間・終了時間 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">時間</th>
+                    <td class="px-4 py-2 flex gap-2">
+                        <input type="time" name="start_time" value="{{ old('start_time', $Course->start_time ?? '') }}" class="border rounded px-3 py-2">
+                        ～
+                        <input type="time" name="finish_time" value="{{ old('finish_time', $Course->finish_time ?? '') }}" class="border rounded px-3 py-2">
+                    </td>
+                </tr>
 
-            {{-- 開始時間・終了時間 --}}
-            <div class="mb-4 flex gap-4">
-                <div>
-                    <label class="block font-medium mb-1">開始時間</label>
-                    <input type="time" name="start_time" value="{{ old('start_time', $Course->start_time) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">終了時間</label>
-                    <input type="time" name="finish_time" value="{{ old('finish_time', $Course->finish_time) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- 総授業時間・時限数 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">授業時間 / 時限数</th>
+                    <td class="px-4 py-2 flex gap-2">
+                        <input type="number" name="total_hours" value="{{ old('total_hours', $Course->total_hours ?? '') }}" class="border rounded px-3 py-2 w-32">
+                        /
+                        <input type="number" name="periods" value="{{ old('periods', $Course->periods ?? '') }}" class="border rounded px-3 py-2 w-24">
+                    </td>
+                </tr>
 
-            {{-- 閲覧期間 --}}
-            <div class="mb-4 flex gap-4">
-                <div>
-                    <label class="block font-medium mb-1">閲覧開始</label>
-                    <input type="date" name="start_viewing"
-                        value="{{ old('start_viewing', $Course->start_viewing) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">閲覧終了</label>
-                    <input type="date" name="finish_viewing"
-                        value="{{ old('finish_viewing', $Course->finish_viewing) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- 日別計画書 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日別計画書</th>
+                    <td class="px-4 py-2">
+                        <input type="file" name="plan_path" class="border rounded px-3 py-2 w-full mb-2">
+                        @if(isset($Course) && $Course->plan_path)
+                        <a href="{{ asset('storage/' . $Course->plan_path) }}" target="_blank" class="text-blue-500 underline">現在のファイルを確認</a>
+                        @endif
+                    </td>
+                </tr>
 
-            {{-- 日別計画書・チラシ --}}
-            <div class="mb-4 flex gap-4">
-                <div class="flex-1">
-                    <label class="block font-medium mb-1">日別計画書パス</label>
-                    <input type="text" name="plan_path" value="{{ old('plan_path', $Course->plan_path) }}"
-                        class="border-gray-300 border px-2 py-1 w-full rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div class="flex-1">
-                    <label class="block font-medium mb-1">チラシパス</label>
-                    <input type="text" name="flier_path" value="{{ old('flier_path', $Course->flier_path) }}"
-                        class="border-gray-300 border px-2 py-1 w-full rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- フライヤー --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">フライヤー</th>
+                    <td class="px-4 py-2">
+                        <input type="file" name="flier_path" class="border rounded px-3 py-2 w-full mb-2">
+                        @if(isset($Course) && $Course->flier_path)
+                        <a href="{{ asset('storage/' . $Course->flier_path) }}" target="_blank" class="text-blue-500 underline">現在のファイルを確認</a>
+                        @endif
+                    </td>
+                </tr>
 
-            {{-- 定員・申込者数・修了者数 --}}
-            <div class="mb-4 flex gap-4">
-                <div>
-                    <label class="block font-medium mb-1">定員</label>
-                    <input type="text" name="capacity" value="{{ old('capacity', $Course->capacity) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">申込者数</label>
-                    <input type="text" name="entering" value="{{ old('entering', $Course->entering) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block font-medium mb-1">修了者数</label>
-                    <input type="text" name="completed" value="{{ old('completed', $Course->completed) }}"
-                        class="border-gray-300 border px-2 py-1 rounded-md
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
+                {{-- 定員・申込者数・修了者数 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">定員 / 申込 / 修了</th>
+                    <td class="px-4 py-2 flex gap-2">
+                        <input type="number" name="capacity" value="{{ old('capacity', $Course->capacity ?? '') }}" class="border rounded px-3 py-2 w-24">
+                        /
+                        <input type="number" name="entering" value="{{ old('entering', $Course->entering ?? '') }}" class="border rounded px-3 py-2 w-24">
+                        /
+                        <input type="number" name="completed" value="{{ old('completed', $Course->completed ?? '') }}" class="border rounded px-3 py-2 w-24">
+                    </td>
+                </tr>
 
-            {{-- 説明 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">説明</label>
-                <textarea name="description"
-                    class="border-gray-300 border px-2 py-1 w-full rounded-md
-                                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ old('description', $Course->description) }}</textarea>
-            </div>
+                {{-- 説明 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">説明</th>
+                    <td class="px-4 py-2">
+                        <textarea name="description" class="border rounded px-3 py-2 w-full">{{ old('description', $Course->description ?? '') }}</textarea>
+                    </td>
+                </tr>
 
-            {{-- 状態 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">状態</label>
-                <select name="status"
-                    class="border-gray-300 border px-2 py-1 w-[120px] rounded-md
-               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    @foreach (\App\Models\Course::STATUS as $key => $label)
-                    <option value="{{ $key }}" {{ $Course->status == $key ? 'selected' : '' }}>
-                        {{ $label }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- 状態 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">状態</th>
+                    <td class="px-4 py-2">
+                        <select name="status" class="border rounded px-3 py-2 w-48">
+                            @foreach (\App\Models\Course::STATUS as $key => $label)
+                            <option value="{{ $key }}" {{ (isset($Course) && $Course->status == $key) ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            <div class="flex gap-2 mb-8">
-                <button type="submit"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                    更新
-                </button>
-                <a href="{{ route('admin.courses.index') }}"
-                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
-                    一覧に戻る
-                </a>
-            </div>
-        </form>
-    </div>
+        <div class="mt-6 flex gap-3">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">保存</button>
+            <a href="{{ route('admin.courses.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
+        </div>
+    </form>
 </div>
 @endsection

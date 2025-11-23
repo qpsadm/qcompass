@@ -200,4 +200,10 @@ class CourseController extends Controller
             ];
         }));
     }
+
+    public function students(Course $course)
+    {
+        $students = $course->users()->with('detail')->paginate(20); // users() は講座に紐づく受講生リレーション
+        return view('admin.courses.students', compact('course', 'students'));
+    }
 }
