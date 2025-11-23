@@ -97,10 +97,10 @@
             </button>
             <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
                 <li><a href="{{ route('admin.announcements.index') }}"
-                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">一覧</a>
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせ一覧</a>
                 </li>
                 <li><a href="{{ route('admin.announcement_types.index') }}"
-                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">一覧</a>
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">分類一覧</a>
                 </li>
                 <li><a href="{{ route('admin.announcements.create') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
