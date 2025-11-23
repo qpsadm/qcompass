@@ -18,6 +18,8 @@
             </div>
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">保存</button>
+
+            <a href="{{ route('admin.course_users.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
         </form>
     </div>
     @endsection

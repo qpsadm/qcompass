@@ -107,6 +107,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // バリデーション
         $validated = $request->validate([
             'code' => 'required|string|max:10',
             'name' => 'required|string|max:50',
@@ -117,19 +118,36 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
+        // パスワードがある場合だけハッシュ化
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);
         }
 
-        $validated['updated_user_name'] = auth()->user()->id;
+        // updated_user_name は id ではなく名前にしておくと store と統一できる
+        $validated['updated_user_name'] = auth()->user()->name;
 
+        // users テーブル更新（courses_id は除外）
         $user->update($validated);
 
+        // pivot テーブルに保存
+        if (!empty($request->courses_id)) {
+            $user->courses()->sync(
+                collect($request->courses_id)
+                    ->mapWithKeys(fn($id) => [$id => ['updated_user_name' => auth()->user()->name]])
+                    ->toArray()
+            );
+        } else {
+            $user->courses()->sync([]); // 削除する場合
+        }
+
         return redirect()->route('admin.users.show', $user->id)
-            ->with('success', '基本情報を更新しました。');
+            ->with('success', 'ユーザー情報を更新しました。');
     }
+
+
+
 
 
     /**

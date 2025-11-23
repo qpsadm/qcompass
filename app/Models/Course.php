@@ -16,8 +16,9 @@ class Course extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'course_users', 'course_id', 'user_id')
+            ->withPivot('created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name')
             ->withTimestamps()
-            ->withPivot('created_user_name', 'updated_user_name', 'deleted_user_name');
+            ->wherePivotNull('deleted_at'); // ← ここで削除済み除外
     }
 
     // 状態の定数定義
@@ -74,6 +75,7 @@ class Course extends Model
         // 関連キー: user_id
         return $this->belongsToMany(User::class, 'course_teachers', 'course_id', 'user_id')
             ->where('role_id', '>=', 4) // 講師の条件
-            ->whereNull('course_teachers.deleted_at'); // 論理削除対応
+            ->whereNull('course_teachers.deleted_at') // 論理削除対応
+            ->wherePivotNull('deleted_at'); // ← 同様
     }
 }

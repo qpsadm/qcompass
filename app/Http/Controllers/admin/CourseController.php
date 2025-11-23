@@ -201,9 +201,30 @@ class CourseController extends Controller
         }));
     }
 
-    public function students(Course $course)
+    public function students(Course $course, Request $request)
     {
-        $students = $course->users()->with('detail')->paginate(20); // users() は講座に紐づく受講生リレーション
-        return view('admin.courses.students', compact('course', 'students'));
+        $typeId = $request->query('type');
+
+        // pivot 経由でユーザー取得、soft delete 無視
+        $studentsQuery = $course->users()
+            ->where('role_id', 3) // 3 = 生徒のみ
+            ->wherePivotNull('deleted_at'); // pivot の削除フラグを考慮
+
+        // 講座種別で絞り込み
+        if ($typeId) {
+            $studentsQuery->whereHas('courses', function ($q) use ($typeId) {
+                $q->where('course_type_id', $typeId)
+                    ->wherePivotNull('deleted_at'); // pivot の削除も考慮
+            });
+        }
+
+        $students = $studentsQuery->paginate(20);
+
+        // 担当講師も pivot の削除考慮して取得
+        $teachers = $course->teachers()
+            ->wherePivotNull('deleted_at')
+            ->get();
+
+        return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
 }

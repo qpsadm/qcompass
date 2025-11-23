@@ -50,8 +50,9 @@ class User extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_users', 'user_id', 'course_id')
+            ->withPivot('created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name')
             ->withTimestamps()
-            ->withPivot('created_user_name', 'updated_user_name', 'deleted_user_name');
+            ->wherePivotNull('deleted_at'); // ← 必須
     }
 
     public function role()

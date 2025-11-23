@@ -87,10 +87,10 @@
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">担当講座</th>
                     <td class="px-4 py-2">
                         <select name="courses_id" class="border rounded px-3 py-2 w-64">
-                            @foreach($courses as $course)
-                            <option value="{{ $course->id }}"
-                                {{ old('courses_id', $user->courses_id) == $course->id ? 'selected' : '' }}>
-                                {{ $course->course_name }}
+                            <option value="">選択してください</option>
+                            @foreach ($courses as $course)
+                            <option value="{{ $course->id }}" {{ old('courses_id') == $course->id ? 'selected' : '' }}>
+                                {{ $course->course_name }} ({{ $course->course_code }})
                             </option>
                             @endforeach
                         </select>
