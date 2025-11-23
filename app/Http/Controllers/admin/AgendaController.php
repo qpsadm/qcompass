@@ -13,18 +13,19 @@ class AgendaController extends Controller
     /**
      * アジェンダ一覧
      */
-    public function index()
+    public function index(Request $request)
     {
-        $noticeCategoryId = Category::where('code', 'notice')->value('id');
+        // 検索対応（例：名前検索）
+        $query = Agenda::query();
 
-        $agendas = Agenda::with(['category', 'createdUser', 'courses'])
-            ->whereNull('deleted_at')
-            ->where('category_id', '!=', $noticeCategoryId)
-            ->get();
+        if ($search = $request->input('search')) {
+            $query->where('agenda_name', 'like', "%{$search}%");
+        }
+
+        $agendas = $query->orderBy('id', 'desc')->paginate(10); // paginate に変更
 
         return view('admin.agendas.index', compact('agendas'));
     }
-
     /**
      * 作成画面
      */
