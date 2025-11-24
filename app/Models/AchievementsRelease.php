@@ -9,5 +9,22 @@ class AchievementsRelease extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'achievement_master_id', 'unlocked_at', 'condition_met'];
+    protected $table = 'achievement_releases';
+
+    protected $fillable = [
+        'user_id',
+        'achievement_master_id',
+        'unlocked_at',
+        'condition_met',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function achievement()
+    {
+        return $this->belongsTo(Achievement::class, 'achievement_master_id');
+    }
 }

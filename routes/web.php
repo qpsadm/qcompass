@@ -34,6 +34,8 @@ use App\Http\Controllers\Admin\{
     CourseUserController,
     DivisionController,
     ReportController,
+    AchievementController,
+    AchievementsReleaseController,
 };
 
 // ユーザー向け
@@ -129,6 +131,8 @@ Route::middleware(['auth', 'role:8'])
             'learnings' => LearningController::class,
             'certifications' => CertificationsController::class,
             'job_offers' => JobOfferController::class,
+            'achievements' => AchievementController::class,
+            'achievements_release' => AchievementsReleaseController::class,
         ]);
 
 

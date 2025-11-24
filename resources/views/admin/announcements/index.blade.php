@@ -61,6 +61,12 @@
                     {{-- 操作 --}}
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center flex-nowrap space-x-2">
+                            <!-- 詳細 -->
+                            <a href="{{ route('admin.announcements.show', $item->id) }}"
+                                class="flex items-center text-green-600">
+                                <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4">
+                                <span class="hidden lg:inline ml-1">詳細</span>
+                            </a>
 
                             <!-- 編集 -->
                             <a href="{{ route('admin.announcements.edit', $item->id) }}"

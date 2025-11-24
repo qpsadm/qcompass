@@ -173,8 +173,11 @@
                 <li><a href="{{ route('admin.tags.index') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">タグ管理</a>
                 </li>
-                <li><a href="{{ route('admin.levels.index') }}"
+                <li><a href="{{ route('admin.achievements.index') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">実績管理</a>
+                </li>
+                <li><a href="{{ route('admin.achievements_release.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">実績解除管理</a>
                 </li>
                 <li><a href="{{ route('admin.daily_quotes.index') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言管理</a>

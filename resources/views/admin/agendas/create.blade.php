@@ -18,70 +18,85 @@
         </div>
         @endif
 
-        {{-- 作成・編集フォーム --}}
         <form id="agenda-form"
             action="{{ isset($agenda->id) ? route('admin.agendas.update', $agenda->id) : route('admin.agendas.store') }}"
             method="POST">
             @csrf
-            @if (isset($agenda->id))
+            @if(isset($agenda->id))
             @method('PUT')
             @endif
 
-            {{-- アジェンダ名 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">アジェンダ名</label>
-                <input type="text" name="agenda_name" value="{{ old('agenda_name', $agenda->agenda_name ?? '') }}"
-                    class="border px-2 py-1 w-full rounded" required>
-            </div>
+            <table class="w-full table-auto border-collapse">
+                <tbody>
+                    {{-- アジェンダ名 --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">アジェンダ名
+                            <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                        </th>
+                        <td class="px-4 py-2">
+                            <input type="text" name="agenda_name" value="{{ old('agenda_name', $agenda->agenda_name ?? '') }}"
+                                class="border rounded px-3 py-2 w-full">
+                        </td>
+                    </tr>
 
-            {{-- カテゴリ --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">カテゴリ</label>
-                <select name="category_id" class="border px-2 py-1 w-[250] rounded">
-                    <option value="">選択してください</option>
-                    @foreach ($categories as $cat)
-                    <option value="{{ $cat['id'] }}"
-                        {{ old('category_id', $agenda->category_id ?? '') == $cat['id'] ? 'selected' : '' }}>
-                        {{ $cat['name'] }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                    {{-- カテゴリ --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ</th>
+                        <td class="px-4 py-2">
+                            <select name="category_id" class="border rounded px-3 py-2 w-80">
+                                <option value="">選択してください</option>
+                                @foreach($categories as $cat)
+                                <option value="{{ $cat['id'] }}" {{ old('category_id', $agenda->category_id ?? '') == $cat['id'] ? 'selected' : '' }}>
+                                    {{ $cat['name'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
 
-            {{-- 内容・概要 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">内容・概要</label>
-                <textarea name="content" id="agenda-content" class="border px-2 py-1 w-full rounded">{{ old('content', $agenda->content ?? '') }}</textarea>
-            </div>
+                    {{-- 内容・概要 --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">内容・概要</th>
+                        <td class="px-4 py-2">
+                            <textarea name="content" id="agenda-content" rows="6"
+                                class="border rounded px-3 py-2 w-full">{{ old('content', $agenda->content ?? '') }}</textarea>
+                        </td>
+                    </tr>
 
-            {{-- 表示フラグ --}}
-            <div class="mb-4">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="is_show" value="1"
-                        {{ old('is_show', $agenda->is_show ?? 0) ? 'checked' : '' }} class="mr-2">
-                    表示する
-                </label>
-            </div>
+                    {{-- 表示フラグ --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
+                        <td class="px-4 py-2">
+                            <label class="inline-flex items-center space-x-2">
+                                <input type="checkbox" name="is_show" value="1" {{ old('is_show', $agenda->is_show ?? 0) ? 'checked' : '' }} class="border rounded">
+                                <span>表示する</span>
+                            </label>
+                        </td>
+                    </tr>
 
-            {{-- 承認状態 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">承認状態</label>
-                <select name="status" class="border px-2 py-1 w-[200] rounded" required>
-                    <option value="yes" {{ old('status', $agenda->status ?? '') == 'yes' ? 'selected' : '' }}>承認済み
-                    </option>
-                    <option value="no" {{ old('status', $agenda->status ?? '') == 'no' ? 'selected' : '' }}>下書き
-                    </option>
-                </select>
-            </div>
+                    {{-- 承認状態 --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">承認状態</th>
+                        <td class="px-4 py-2">
+                            <select name="status" class="border rounded px-3 py-2 w-60">
+                                <option value="yes" {{ old('status', $agenda->status ?? '') == 'yes' ? 'selected' : '' }}>承認済み</option>
+                                <option value="no" {{ old('status', $agenda->status ?? '') == 'no' ? 'selected' : '' }}>下書き</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                {{ isset($agenda->id) ? '更新' : '保存' }}
-            </button>
+            <div class="mt-6 flex gap-3">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                    {{ isset($agenda->id) ? '更新' : '保存' }}
+                </button>
+                <a href="{{ route('admin.agendas.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
+            </div>
         </form>
-
     </div>
 
-
+    {{-- CKEditor --}}
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
         var editor = CKEDITOR.replace('agenda-content', {
@@ -89,13 +104,11 @@
             allowedContent: true,
         });
 
-        // フォーム送信前に CKEditor の内容を textarea に反映
         document.getElementById('agenda-form').addEventListener('submit', function(e) {
             for (var instance in CKEDITOR.instances) {
                 CKEDITOR.instances[instance].updateElement();
             }
         });
     </script>
-
 </div>
 @endsection

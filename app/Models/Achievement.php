@@ -2,12 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Achievement extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'condition_type', 'condition_value', 'deleted_at'];
+    protected $table = 'achievements';
+    protected $fillable = [
+        'title',
+        'description',
+        'condition_type',
+        'condition_value',
+    ];
+
+    public function releases()
+    {
+        return $this->hasMany(AchievementRelease::class, 'achievement_master_id');
+    }
 }
