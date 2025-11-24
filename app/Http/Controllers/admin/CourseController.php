@@ -54,8 +54,8 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'course_code' => 'nullable',
-            'course_type_ID' => 'nullable',
-            'Level_id' => 'nullable',
+            'course_type_id' => 'nullable',
+            'level_id' => 'nullable',
             'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'nullable',
             'venue' => 'nullable',
@@ -129,8 +129,8 @@ class CourseController extends Controller
 
         $validated = $request->validate([
             'course_code' => 'nullable',
-            'course_type_ID' => 'nullable',
-            'Level_id' => 'nullable',
+            'course_type_id' => 'nullable',
+            'level_id' => 'nullable',
             'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'nullable',
             'venue' => 'nullable',
