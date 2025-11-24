@@ -16,17 +16,7 @@ clickArea.click(function () {
     accordionMenu.toggleClass("active");
 });
 
-// accordion-menu open/close
-// const accordionMenu = $(".accordion-menu");
-// const questionArea = $(".question-area");
-// const answerArea = $(".answer-area");
-
-// questionArea.click(function () {
-//     $(this).next().slideToggle(300);
-//     answerArea.toggleClass("active");
-//     // accordionMenu.toggleClass("active");
-// });
-
+// q&a
 const questionArea = $(".question-area");
 
 questionArea.click(function () {
