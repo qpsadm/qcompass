@@ -12,14 +12,20 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('tag_id');
-            // Laravel自動管理
-            $table->timestamps(); // created_at / updated_at
-            $table->softDeletes(); // deleted_at
+            $table->timestamps();
+            $table->softDeletes();
 
-            // 追加のユーザー情報
+            // 追加情報
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            // ✅ 外部キー設定
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+
+            // ✅ 重複禁止
+            $table->unique(['question_id', 'tag_id']);
         });
     }
 

@@ -15,4 +15,16 @@ class Tag extends Model
     ];
     // タイムスタンプ無効化
     public $timestamps = false;
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'question_tags')
+            ->withTimestamps()
+            ->withPivot([
+                'created_user_name',
+                'updated_user_name',
+                'deleted_user_name',
+                'deleted_at'
+            ]);
+    }
 }

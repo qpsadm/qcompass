@@ -28,4 +28,15 @@ class Question extends Model
     {
         return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
     }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'question_tags')
+            ->withTimestamps()
+            ->withPivot([
+                'created_user_name',
+                'updated_user_name',
+                'deleted_user_name',
+                'deleted_at'
+            ]);
+    }
 }
