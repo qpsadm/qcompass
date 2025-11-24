@@ -76,7 +76,7 @@ class QuizController extends Controller
 
     public function destroy(Quiz $quiz)
     {
-        $quiz->delete();
+        $quiz->delete(); // 物理削除ではなくソフトデリート
         return redirect()->route('admin.quizzes.index')->with('success', '削除完了');
     }
     // GET: クイズプレイ画面
