@@ -18,39 +18,28 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="border px-4 py-2">質問者ID</th>
-                    <th class="border px-4 py-2">関連アジェンダID</th>
-                    <th class="border px-4 py-2">講座ID</th>
+                    <th class="border px-4 py-2">講座</th>
                     <th class="border px-4 py-2">質問タイトル</th>
-                    <th class="border px-4 py-2">回答講師ID</th>
-                    <th class="border px-4 py-2">質問内容</th>
-                    <th class="border px-4 py-2">回答内容</th>
+                    <th class="border px-4 py-2">回答講師</th>
                     <th class="border px-4 py-2 text-center">公開/非公開</th>
-                    <th class="border px-4 py-2">削除日</th>
                     <th class="border px-4 py-2 w-60 text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($questions as $question)
                 <tr class="hover:bg-gray-50">
-                    <td class="border px-4 py-2">{{ $question->asker_id }}</td>
-                    <td class="border px-4 py-2">{{ $question->agenda_id }}</td>
-                    <td class="border px-4 py-2">{{ $question->course_id }}</td>
+                    <td class="border px-4 py-2">{{ $question->course->course_name ?? '-' }}</td>
                     <td class="border px-4 py-2">{{ $question->title }}</td>
-                    <td class="border px-4 py-2">{{ $question->responder_id }}</td>
-                    <td class="border px-4 py-2">{{ $question->content }}</td>
-                    <td class="border px-4 py-2">{{ $question->answer }}</td>
+                    <td class="border px-4 py-2">{{ $question->responder->name ?? '-' }}</td>
 
-                    {{-- 公開/非公開 --}}
-                    <td class="border px-4 py-2 text-center">
+                    {{-- 表示/非表示 --}}
+                    <td class="border px-4 py-2 w-20 text-center">
                         @if($question->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">公開</span>
                         @else
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
                         @endif
                     </td>
-
-                    <td class="border px-4 py-2">{{ $question->deleted_at }}</td>
 
                     {{-- 操作 --}}
                     <td class="border px-4 py-2 text-center">

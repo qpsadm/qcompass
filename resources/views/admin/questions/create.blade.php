@@ -1,101 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6 min-h-screen">
-    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 max-w-3xl mx-auto"
-        x-data="{
-             selectedCourse: '{{ old('course_id', '') }}',
-             teachers: [],
-             init() {
-                 this.filterTeachers();
-             },
-             filterTeachers() {
-                 if (this.selectedCourse) {
-                     this.teachers = @json($coursesTeachers)[this.selectedCourse] || [];
-                 } else {
-                     this.teachers = [];
-                 }
-             }
-         }"
-        x-init="init()">
+<div class="container mx-auto p-4 max-w-5xl">
+    <h1 class="text-3xl font-bold mb-6">質問作成</h1>
 
-        <h1 class="text-2xl font-bold mb-6">質問作成</h1>
+    <form action="{{ route('admin.questions.store') }}" method="POST" x-data="questionForm()" x-init="init()">
+        @csrf
+        <table class="w-full table-auto border-collapse">
+            <tbody>
+                {{-- 講座 --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                    </th>
+                    <td class="px-4 py-2">
+                        <select name="course_id" x-model="selectedCourse" @change="filterTeachers()"
+                            class="border rounded px-3 py-2 w-80">
+                            <option value="">選択してください</option>
+                            @foreach ($courses as $course)
+                            <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                {{ $course->course_name }} ({{ $course->course_code }})
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('course_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-        <form action="{{ route('admin.questions.store') }}" method="POST">
-            @csrf
+                {{-- 質問タイトル --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">質問タイトル
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                    </th>
+                    <td class="px-4 py-2">
+                        <input type="text" name="title" value="{{ old('title') }}"
+                            class="border rounded px-3 py-2 w-96">
+                        @error('title') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 講座選択 --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">講座</label>
-                <select name="course_id"
-                    x-model="selectedCourse"
-                    @change="filterTeachers()"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    <option value="">選択してください</option>
-                    @foreach ($courses as $course)
-                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                        {{ $course->course_name }} ({{ $course->course_code }})
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- 回答講師 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">回答講師
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                    </th>
+                    <td class="px-4 py-2">
+                        <select name="responder_id" class="border rounded px-3 py-2 w-80">
+                            <option value="">選択してください</option>
+                            <template x-for="teacher in teachers" :key="teacher.id">
+                                <option :value="teacher.id" x-text="teacher.name"></option>
+                            </template>
+                        </select>
+                        @error('responder_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 質問タイトル --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">質問タイトル</label>
-                <input type="text" name="title" value="{{ old('title') }}"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            </div>
+                {{-- 質問内容 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">質問内容 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span></th>
+                    <td class="px-4 py-2">
+                        <textarea name="content" rows="4" class="border rounded px-3 py-2 w-full">{{ old('content') }}</textarea>
+                        @error('content') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 回答講師選択 --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">回答講師</label>
-                <select name="responder_id"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                    <option value="">選択してください</option>
-                    <template x-for="teacher in teachers" :key="teacher.id">
-                        <option :value="teacher.id" x-text="teacher.name"></option>
-                    </template>
-                </select>
-            </div>
+                {{-- 回答内容 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">回答内容 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span></th>
+                    <td class="px-4 py-2">
+                        <textarea name="answer" rows="4" class="border rounded px-3 py-2 w-full">{{ old('answer') }}</textarea>
+                        @error('answer') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
 
-            {{-- 質問内容 --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">質問内容</label>
-                <textarea name="content" rows="3"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">{{ old('content') }}</textarea>
-            </div>
+                {{-- 公開 / 非公開 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">公開 / 非公開</th>
+                    <td class="px-4 py-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="is_show" value="1" {{ old('is_show', 1) ? 'checked' : '' }}>
+                            <span>公開</span>
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            {{-- 回答内容 --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">回答内容</label>
-                <textarea name="answer" rows="3"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">{{ old('answer') }}</textarea>
-            </div>
-
-            {{-- 公開 / 非公開 --}}
-            <div class="mb-5">
-                <label class="block text-gray-700 font-semibold mb-2">公開 / 非公開</label>
-                <div class="flex items-center space-x-4">
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="is_show" value="1" {{ old('is_show', 1) ? 'checked' : '' }}>
-                        <span class="text-gray-700">公開</span>
-                    </label>
-                </div>
-            </div>
-
-            {{-- 保存＋一覧に戻る --}}
-            <div class="flex gap-2 mt-2">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
-                    保存
-                </button>
-
-                <a href="{{ route('admin.questions.index') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
-                    一覧に戻る
-                </a>
-            </div>
-        </form>
-    </div>
+        <div class="mt-6 flex gap-3">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">保存する</button>
+            <a href="{{ route('admin.questions.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
+        </div>
+    </form>
 </div>
+
+<script>
+    function questionForm() {
+        return {
+            selectedCourse: @json(old('course_id')),
+            coursesTeachers: @json($coursesTeachers),
+            teachers: [],
+            init() {
+                this.filterTeachers();
+            },
+            filterTeachers() {
+                const key = String(this.selectedCourse).trim();
+                this.teachers = this.coursesTeachers[key] || [];
+            }
+        }
+    }
+</script>
 @endsection

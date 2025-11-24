@@ -43,7 +43,7 @@
                 @foreach($latestAgendas as $agenda)
                 <li class="border-b pb-2">
                     <a href="{{ route('admin.agendas.show', $agenda->id) }}" class="font-medium text-blue-600 hover:underline">
-                        {{ $agenda->title }}
+                        {{ $agenda->agenda_name }}
                     </a>
                     <div class="text-sm text-gray-500">{{ $agenda->created_at->format('Y-m-d') }}</div>
                 </li>

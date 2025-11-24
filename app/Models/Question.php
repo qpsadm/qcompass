@@ -11,13 +11,21 @@ class Question extends Model
 
     protected $fillable = ['asker_id', 'agenda_id', 'course_id', 'title', 'responder_id', 'content', 'answer', 'is_show', 'deleted_at'];
 
-    public function quiz()
+
+    // 講座
+    public function course()
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
-    public function choices()
+    // 回答講師
+    public function responder()
     {
-        return $this->hasMany(QuestionChoice::class)->orderBy('order');
+        return $this->belongsTo(User::class, 'responder_id');
+    }
+
+    public function course_teachers()
+    {
+        return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
     }
 }

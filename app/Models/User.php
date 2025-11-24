@@ -55,6 +55,11 @@ class User extends Authenticatable
             ->wherePivotNull('deleted_at'); // ← 必須
     }
 
+    public function course_teachers()
+    {
+        return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id'); // 外部キーは users.role_id
