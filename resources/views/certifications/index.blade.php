@@ -13,47 +13,63 @@
     @endphp
 
     <a href="{{ route('admin.certifications.create') }}"
-        class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block">新規作成</a>
+        class="bg-green-500 text-white px-4 py-2 rounded mb-4 inline-block hover:bg-green-600 transition">
+        新規作成
+    </a>
 
-    <table class="w-full border">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border px-2 py-1">ID</th>
-                <th class="border px-2 py-1">資格名</th>
-                <th class="border px-2 py-1">資格レベル</th>
-                <th class="border px-2 py-1">説明・備考</th>
-                <th class="border px-2 py-1">参照URL</th>
-                <th class="border px-2 py-1">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($certifications as $certification)
-            <tr>
-                <td class="border px-2 py-1">{{ $certification->id }}</td>
-                <td class="border px-2 py-1">{{ $certification->name }}</td>
-                <td class="border px-2 py-1">{{ $levelLabels[$certification->level] ?? $certification->level }}</td>
-                <td class="border px-2 py-1">{{ $certification->description }}</td>
-                <td class="border px-2 py-1">
-                    @if ($certification->url)
-                        <a href="{{ $certification->url }}" target="_blank" class="text-blue-600 underline">リンク</a>
-                    @else
-                        なし
-                    @endif
-                </td>
-                <td class="border px-2 py-1">
-                    <a href="{{ route('admin.certifications.edit', $certification->id) }}" class="text-blue-600 hover:underline">
-                        編集
-                    </a>
-                    <a href="#"
-                       @click.prevent="open = true; deleteUrl='{{ route('admin.certifications.destroy', $certification->id) }}'; deleteName='{{ $certification->name }}';"
-                       class="text-red-600 hover:underline ml-4">
-                        削除
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full border">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border px-2 py-1">ID</th>
+                    <th class="border px-2 py-1">資格名</th>
+                    <th class="border px-2 py-1">資格レベル</th>
+                    <th class="border px-2 py-1">説明・備考</th>
+                    <th class="border px-2 py-1">参照URL</th>
+                    <th class="border px-2 py-1">表示</th> <!-- 追加 -->
+                    <th class="border px-2 py-1">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($certifications as $certification)
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-2 py-1">{{ $certification->id }}</td>
+                    <td class="border px-2 py-1">{{ $certification->name }}</td>
+                    <td class="border px-2 py-1">{{ $levelLabels[$certification->level] ?? $certification->level }}</td>
+                    <td class="border px-2 py-1">{{ $certification->description }}</td>
+                    <td class="border px-2 py-1">
+                        @if ($certification->url)
+                            <a href="{{ $certification->url }}" target="_blank" class="text-blue-600 underline">リンク</a>
+                        @else
+                            なし
+                        @endif
+                    </td>
+                    <td class="border px-2 py-1 text-center">
+                        @if((bool)$certification->is_show)
+                            <span class="text-green-600 font-bold">✔</span>
+                        @else
+                            <span class="text-red-600 font-bold">❌</span>
+                        @endif
+                    </td>
+                    <td class="border px-2 py-1 text-center">
+                        <a href="{{ route('admin.certifications.edit', $certification->id) }}" class="text-blue-600 hover:underline">
+                            編集
+                        </a>
+                        <a href="#"
+                           @click.prevent="open = true; deleteUrl='{{ route('admin.certifications.destroy', $certification->id) }}'; deleteName='{{ $certification->name }}';"
+                           class="text-red-600 hover:underline ml-4">
+                            削除
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="border px-2 py-2 text-center text-gray-500">データがありません</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
     <!-- モーダル（テーブル外） -->
     <div x-show="open" x-cloak x-transition.opacity.duration.200ms
