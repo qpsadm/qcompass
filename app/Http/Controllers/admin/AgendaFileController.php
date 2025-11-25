@@ -28,29 +28,39 @@ class AgendaFileController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'agenda_id' => 'required|exists:agendas,id',
             'file_path' => 'required|file',
-            'file_name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000', // バリデーションはnullable
+            'file_name' => 'required|string',
         ]);
 
         $file = $request->file('file_path');
 
-        $path = $file->store('agenda_files');
+        // 元の拡張子を取得
+        $extension = $file->getClientOriginalExtension();
 
+        // ユーザー指定のファイル名 + 元の拡張子
+        $filename = $request->file_name . '.' . $extension;
+
+        // 保存（storage/app/agenda_files に保存）
+        $path = $file->storeAs('agenda_files', $filename);
+
+        // DB登録
         $agendaFile = new \App\Models\AgendaFile();
-        $agendaFile->agenda_id   = $validated['agenda_id'];
-        $agendaFile->file_path   = $path;
-        $agendaFile->file_name   = $validated['file_name'];
-        $agendaFile->file_type   = $file->getClientMimeType();
-        $agendaFile->file_size   = round($file->getSize() / 1024, 2);
-        $agendaFile->description = $validated['description'] ?? ''; // 空文字に変換
-        $agendaFile->user_id     = auth()->id();
+        $agendaFile->agenda_id = $request->agenda_id;
+        $agendaFile->file_path = $path;
+        $agendaFile->file_name = $filename;
+        $agendaFile->file_type = $file->getMimeType();
+        $agendaFile->file_size = $file->getSize();
+        $agendaFile->description = $request->description;
         $agendaFile->save();
 
-        return redirect()->route('admin.agenda_files.index')->with('success', 'AgendaFile作成完了');
+        return redirect()->route('admin.agenda_files.index')
+            ->with('success', 'アジェンダファイルを保存しました。');
     }
+
+
+
 
 
 

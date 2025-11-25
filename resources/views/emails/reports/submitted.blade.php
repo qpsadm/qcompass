@@ -22,7 +22,7 @@
         {{ $report->notice }}
     @endif
 
-    @component('mail::button', ['url' => route('reports.index')])
+    @component('mail::button', ['url' => route('admin.reports.index')])
         日報一覧を見る
     @endcomponent
 @endcomponent
