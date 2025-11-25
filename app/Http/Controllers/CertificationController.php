@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Certifications; // ← ここ！
+use App\Models\Certification;
 
-class CertificationsController extends Controller
+class CertificationController extends Controller
 {
     public function index()
     {
-        $certifications = Certifications::all();
+        $certifications = Certification::all();
         return view('certifications.index', compact('certifications'));
     }
 
@@ -25,36 +25,36 @@ class CertificationsController extends Controller
             'level' => 'nullable|integer|min:1|max:2',
             'description' => 'nullable|string',
             'url' => 'nullable|url|max:255',
-            'display_flag' => 'nullable|boolean',
+            'is_show' => 'nullable|boolean',
         ]);
 
-        Certifications::create($validated);
+        Certification::create($validated);
 
         return redirect()->route('admin.certifications.index')->with('success', '資格作成完了');
     }
 
     public function show($id)
     {
-        $certification = Certifications::findOrFail($id);
+        $certification = Certification::findOrFail($id);
         return view('certifications.show', compact('certification'));
     }
 
     public function edit($id)
     {
-        $certification = Certifications::findOrFail($id);
+        $certification = Certification::findOrFail($id);
         return view('certifications.edit', compact('certification'));
     }
 
     public function update(Request $request, $id)
     {
-        $certification = Certifications::findOrFail($id);
+        $certification = Certification::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'level' => 'nullable|integer|min:1|max:2',
             'description' => 'nullable|string',
             'url' => 'nullable|url|max:255',
-            'display_flag' => 'nullable|boolean',
+            'is_show' => 'nullable|boolean',
         ]);
 
         $certification->update($validated);
@@ -64,7 +64,7 @@ class CertificationsController extends Controller
 
     public function destroy($id)
     {
-        Certifications::findOrFail($id)->delete();
+        Certification::findOrFail($id)->delete();
         return redirect()->route('admin.certifications.index')->with('success', '資格削除完了');
     }
 }

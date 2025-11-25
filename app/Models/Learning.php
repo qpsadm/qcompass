@@ -12,7 +12,7 @@ class Learning extends Model
 
     protected $fillable = [
         'type',
-        'name',
+        'title',
         'author',
         'publisher',
         'publication_date',
@@ -21,6 +21,6 @@ class Learning extends Model
         'image',
         'level',
         'description',
-        'display_flag'
+        'is_show'
     ];
 }
