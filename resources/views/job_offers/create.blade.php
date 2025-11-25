@@ -41,10 +41,15 @@
 
                 {{-- PDFファイルパス --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">PDFファイル保存パス</label>
-                    <input type="text" name="file_path" value="{{ old('file_path', $JobOffer->file_path ?? '') }}"
-                        class="border px-2 py-1 w-full rounded">
+                    <label class="block font-medium mb-1">PDFファイル</label>
+
+                    @if (isset($JobOffer) && $JobOffer->file_path)
+                        <p>現在のファイル: <a href="{{ asset('storage/' . $JobOffer->file_path) }}" target="_blank">確認</a></p>
+                    @endif
+
+                    <input type="file" name="pdf_file" class="border px-2 py-1 w-full rounded">
                 </div>
+
 
                 {{-- 表示開始日時 --}}
                 <div class="mb-4">
