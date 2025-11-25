@@ -20,7 +20,10 @@ class CourseUserController extends Controller
 
     public function create()
     {
-        return view('admin.course_users.create');
+        $users = User::all();      // ユーザー一覧
+        $courses = Course::all();  // 講座一覧
+
+        return view('admin.course_users.create', compact('users', 'courses'));
     }
 
     public function store(Request $request)

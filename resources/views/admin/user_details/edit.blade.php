@@ -36,21 +36,6 @@
                         </td>
                     </tr>
 
-                    {{-- 部署 --}}
-                    <tr>
-                        <th class="border p-2 text-left bg-gray-50 w-1/4">部署</th>
-                        <td class="border p-2">
-                            <select name="divisions_id" class="w-48 border rounded px-2 py-1">
-                                <option value="">選択してください</option>
-                                @foreach($divisions as $division)
-                                <option value="{{ $division->id }}" {{ old('divisions_id', $detail->divisions_id) == $division->id ? 'selected' : '' }}>
-                                    {{ $division->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </td>
-                    </tr>
-
                     {{-- 電話番号1 --}}
                     <tr>
                         <th class="border p-2 text-left bg-gray-50">電話番号1</th>

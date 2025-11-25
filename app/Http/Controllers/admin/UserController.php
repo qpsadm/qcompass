@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Course;
+use App\Models\Division;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +19,9 @@ class UserController extends Controller
     {
         $user = auth()->user();
         $search = $request->input('search');
+
+        // 表示可能な部署を取得
+        $divisions = Division::where('is_show', true)->get();
 
         // 担当講師の場合は担当コースのユーザーだけ対象
         if ($user->role_id == 2) {
@@ -36,7 +40,7 @@ class UserController extends Controller
             $users = User::with('role', 'courses')->paginate(15);
         }
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'divisions'));
     }
 
     /**
@@ -46,8 +50,8 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $courses = Course::all();
-
-        return view('admin.users.create', compact('roles', 'courses'));
+        $divisions = Division::all();   // ← 追加
+        return view('admin.users.create', compact('roles', 'courses', 'divisions'));
     }
 
     /**
@@ -98,8 +102,10 @@ class UserController extends Controller
     {
         $roles = Role::all();      // これがないと空になります
         $courses = Course::all();  // 講座も同様
+        // division マスタ
+        $divisions = Division::where('is_show', 1)->get();
 
-        return view('admin.users.edit', compact('user', 'roles', 'courses'));
+        return view('admin.users.edit', compact('user', 'roles', 'courses', 'divisions'));
     }
 
     /**
@@ -115,6 +121,7 @@ class UserController extends Controller
             'roman_name' => 'nullable|string|max:50',
             'password' => 'nullable|string|min:6',
             'role_id' => 'required|exists:roles,id',
+            'division_id' => 'nullable|integer',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 

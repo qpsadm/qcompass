@@ -69,7 +69,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetail::class, 'user_id', 'id');
     }
-
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division_id');
+    }
     /**
      * Scout 用に検索対象を定義
      */
