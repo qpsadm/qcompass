@@ -104,7 +104,8 @@ Route::middleware(['auth', 'role:8'])
             ->name('agendas.preview');
         Route::get('{course}/agendas', [CourseController::class, 'agendas'])->name('courses.agendas');
         Route::post('{course}/agendas', [CourseController::class, 'updateAgendas'])->name('courses.agendas.update');
-
+        Route::get('agenda_files/{agenda_file}/preview', [AgendaFileController::class, 'preview'])
+            ->name('agenda_files.preview');
 
         // リソース系
         Route::resources([

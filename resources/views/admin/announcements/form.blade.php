@@ -114,5 +114,10 @@
             }
         });
     </script>
+    <style>
+        .cke_notifications_area {
+            display: none !important;
+        }
+    </style>
 </div>
 @endsection

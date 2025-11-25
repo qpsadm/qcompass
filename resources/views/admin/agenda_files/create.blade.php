@@ -1,93 +1,93 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-lg">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">アジェンダファイル作成</h1>
+<div class="container mx-auto p-4 max-w-lg">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">アジェンダファイル作成</h1>
 
-            <form action="{{ route('admin.agenda_files.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <table class="w-full table-auto border-collapse">
-                    <tbody>
-                        {{-- アジェンダ選択 --}}
-                        <tr class="border-b">
-                            <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">
-                                アジェンダ <span class="text-red-500">*</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <select name="agenda_id"
-                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required>
-                                    <option value="">選択してください</option>
-                                    @foreach ($agendas as $agenda)
-                                        <option value="{{ $agenda->id }}"
-                                            {{ old('agenda_id') == $agenda->id ? 'selected' : '' }}>
-                                            {{ $agenda->agenda_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('agenda_id')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </td>
-                        </tr>
+        <form action="{{ route('admin.agenda_files.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <table class="w-full table-auto border-collapse">
+                <tbody>
+                    {{-- アジェンダ選択 --}}
+                    <tr class="border-b">
+                        <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">
+                            アジェンダ <span class="text-red-500">*</span>
+                        </th>
+                        <td class="px-4 py-2">
+                            <select name="agenda_id"
+                                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required>
+                                <option value="">選択してください</option>
+                                @foreach ($agendas as $agenda)
+                                <option value="{{ $agenda->id }}"
+                                    {{ old('agenda_id') == $agenda->id ? 'selected' : '' }}>
+                                    {{ $agenda->agenda_name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('agenda_id')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
 
-                        {{-- ファイル --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                ファイル <span class="text-red-500">*</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <input type="file" name="file_path"
-                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required>
-                                @error('file_path')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </td>
-                        </tr>
+                    {{-- ファイル --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                            ファイル <span class="text-red-500">*</span>
+                        </th>
+                        <td class="px-4 py-2">
+                            <input type="file" name="file_path"
+                                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required>
+                            @error('file_path')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
 
-                        {{-- ファイル名 --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">ファイル名</th>
-                            <td class="px-4 py-2">
-                                <input type="text" name="file_name" value="{{ old('file_name') }}"
-                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                @error('file_name')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </td>
-                        </tr>
+                    {{-- ファイル名 --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">ファイル名</th>
+                        <td class="px-4 py-2">
+                            <input type="text" name="file_name" value="{{ old('file_name') }}"
+                                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            @error('file_name')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
 
-                        {{-- ファイルタイプ（hidden） --}}
-                        <input type="hidden" name="file_type" value="">
+                    {{-- ファイルタイプ（hidden） --}}
+                    <input type="hidden" name="file_type" value="">
 
-                        {{-- 説明 --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">用途・備考</th>
-                            <td class="px-4 py-2">
-                                <input type="text" name="description" value="{{ old('description') }}"
-                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                @error('description')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    {{-- 説明 --}}
+                    <tr class="border-b">
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">用途・備考</th>
+                        <td class="px-4 py-2">
+                            <input type="text" name="description" value="{{ old('description') }}"
+                                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            @error('description')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-                {{-- ボタン --}}
-                <div class="flex gap-3 mt-6 justify-start">
-                    <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-sm transition">
-                        保存
-                    </button>
-                    <a href="{{ route('admin.agenda_files.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-sm transition">
-                        一覧に戻る
-                    </a>
-                </div>
-            </form>
-        </div>
+            {{-- ボタン --}}
+            <div class="flex gap-3 mt-6 justify-start">
+                <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-sm transition">
+                    保存
+                </button>
+                <a href="{{ route('admin.agenda_files.index') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-sm transition">
+                    一覧に戻る
+                </a>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

@@ -60,7 +60,7 @@ class Course extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'course_categorys', 'course_id', 'category_id')
+        return $this->belongsToMany(Category::class, 'course_categories', 'course_id', 'category_id')
             ->withPivot(['note', 'is_show'])
             ->withTimestamps();
     }

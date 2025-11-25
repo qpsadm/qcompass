@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('course_categorys', function (Blueprint $table) {
+        Schema::create('course_categories', function (Blueprint $table) {
 
             $table->id()->comment('主キー');
             $table->unsignedBigInteger('course_id')->comment('講座ID');
@@ -35,6 +35,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('course_categorys');
+        Schema::dropIfExists('course_categories');
     }
 };
