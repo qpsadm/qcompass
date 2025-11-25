@@ -168,6 +168,11 @@ Route::middleware(['auth', 'role:8'])
         Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
         Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
 
+        Route::get('agenda_files/download/{id}', [AgendaFileController::class, 'download'])
+            ->name('agenda_files.download');
+        Route::get('agenda_files/preview/{id}', [AgendaFileController::class, 'preview'])
+            ->name('agenda_files.preview');
+
         // クイズ関連
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
         Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
