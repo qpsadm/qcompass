@@ -5,118 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>質疑応答 | QLIP-Compass</title>
 
-    <!-- include(f_common_css.blade.php) -->
+    <!-- 共通css -->
     <link rel="stylesheet" href="../../assets/css/reset.css">
     <link rel="stylesheet" href="../../assets/css/f_variable.css">
     <link rel="stylesheet" href="../../assets/css/f_common.css">
 
-    <!-- yield(page_css.blade.php) -->
-    <link rel="stylesheet" href="../../assets/css/f_page.css">
-    <link rel="stylesheet" href="../../assets/css/f_test.css">
+    <!-- yield(code-page-css) -->
+    <link rel="stylesheet" href="../../assets/css/f_qa.css">
 </head>
 <body>
 
-    <!-- include(f_frame.blade.php) -->
+    <!-- include(f_header.blade.php) -->
     <header>
         <div class="header-container">
-            <ul class="gnav">
-                <li><a class="home" href="../top.html">ホーム</a></li>
-                <li><a class="news" href="../news/news_list_all.html">お知らせ</a></li>
-                <li><a class="agenda" href="../agenda/agenda_list.html">アジェンダ</a></li>
-                <li class="active"><a class="study" href="study_qa_list.html">学習支援</a></li>
-                <li><a class="work" href="../support/support_offer_list.html">就職支援</a></li>
-                <li><a class="mypage" href="../mypage/mypage.html">マイページ</a></li>
-            </ul>
+            <nav class="gnav">
+                <ul>
+                    <li><a class="home" href="../top.html">ホーム</a></li>
+                    <li><a class="news" href="../news/news_list_all.html">お知らせ</a></li>
+                    <li><a class="agenda" href="../agenda/agenda_list.html">アジェンダ</a></li>
+                    <li class="active"><a class="study" href="study_qa_list.html">学習支援</a></li>
+                    <li><a class="work" href="../support/support_offer_list.html">就職支援</a></li>
+                    <li><a class="mypage" href="../mypage/mypage.html">マイページ</a></li>
+                </ul>
+            </nav>
 
             <!-- responsive -->
             <div class="site-logo">
-                <img src="../../assets/images/f_site-logo_test.svg" alt="">
+                <a href=""><img src="../../assets/images/f_site-logo.svg" alt=""></a>
             </div>
             <div class="hamburger-btn">
                 <span></span>
             </div>
+            <div class="hamburger-menu">
+
+            </div>
         </div>
     </header>
+    <!-- /include(f_header.blade.php) -->
 
+    <!-- include(f_side_menu.blade.php) -->
     <div class="side-menu">
-        <div class="side-menu-top">
-            <div class="site-logo">
-                <img src="../../assets/images/f_site-logo_test.svg" alt="">
-            </div>
+        <div class="side-menu-container">
+            <div class="side-menu-top">
+                <div class="site-logo">
+                    <a href=""><img src="../../assets/images/f_site-logo.svg" alt=""></a>
+                </div>
 
-            <div class="contents-box">
+                <div class="contents-box">
 
-                <div class="calendar">
-                    <div class="calendar-data">
-                        <div class="month">12</div>
-                        <div class="day">29</div>
-                        <span class="border"></span>
-                        <div class="week">WED</div>
+                    <div class="calendar">
+                        <div class="calendar-data">
+                            <div class="month"></div>
+                            <div class="day"></div>
+                            <span class="border"></span>
+                            <div class="week"></div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <p class="countdown-title">修了まであと</p>
+                        <div class="countdown-data">
+                            <span class="data-number">108</span>
+                            <span class="data-sub-title">日</span>
+                        </div>
+                    </div>
+
+                    <div class="today-short">
+                        <p class="short-title">今日のひとこと</p>
+                        <span class="short-text">我々は繰り返す事により形成される</span>
+                        <span class="short-name">（アリストテレス）</span>
                     </div>
                 </div>
 
-                <div class="countdown">
-                    <p class="countdown-title">修了まであと…</p>
-                    <div class="countdown-data">
-                        <span class="data-number">108</span>
-                        <span class="data-sub-title">日</span>
-                    </div>
-                </div>
-
-                <div class="today-short">
-                    <p class="short-title">今日のひとこと</p>
-                    <span class="short-text">"シンプルこそ究極の洗練なり"</span>
-                    <span>ダビンチ</span>
-                </div>
             </div>
 
-        </div>
+            <div class="side-menu-bottom">
+                <ul class="side-menu-list">
+                    <li><a class="calendar-list" href="../../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
+                    <li><a class="question" href="study_qa_list.html">質疑応答</a></li>
+                    <li><a class="report" href="../mypage/report.html">日報作成</a></li>
+                </ul>
 
-        <div class="side-menu-bottom">
-            <ul class="side-menu-list">
-                <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
-                <li><a class="question" href="study_qa_list.html">質疑応答</a></li>
-                <li><a class="report" href="../mypage/report.html">日報作成</a></li>
-            </ul>
-
-            <div class="logout-btn">
-                <a href="">ログアウト</a>
+                <div class="logout-btn">
+                    <a href="">ログアウト</a>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="frame-right"></div>
-    <div class="frame-bottom"></div>
-    <div class="frame-left"></div>
-    <!-- /include(f_frame.blade.php) -->
+    <!-- /include(f_side_menu.blade.php) -->
 
     <main>
         <div class="container">
-
-            <!-- include(f_page_title.blade.php) -->
             <div class="page-title">
                 <h2>質疑応答</h2>
 
                 <div class="search">
                     <div class="search-container">
                         <input class="search-text" type="text" placeholder="キーワード検索">
-                        <input class="submit" type="submit" value="">
+                        <input class="search-submit" type="submit" value="">
                     </div>
                 </div>
             </div>
-            <!-- /include(f_page_title.blade.php) -->
 
             <div class="category-menu">
                 <ul>
                     <li class="active"><a href="news_list_all.html">ALL</a></li>
-                    <li class=""><a href="news_list_main.html">訓練校に関するお知らせ</a></li>
-                    <li class=""><a href="news_list_websys.html">本講座に関するお知らせ</a></li>
+                    <li><a href="">受講関連</a></li>
+                    <li><a href="">HTML&CSS</a></li>
+                    <li><a href="">JavaScript</a></li>
+                    <li><a href="">プログラミング言語</a></li>
+                    <li><a href="">デザイン</a></li>
+                    <li><a href="">コンピュータ概論</a></li>
+                    <li><a href="">ネットワーク概論</a></li>
+                    <li><a href="">プログラミング概論</a></li>
+                    <li><a href="">就職活動</a></li>
+                    <li><a href="">その他</a></li>
                 </ul>
             </div>
 
-            <div class="qa-container">
-                <div class="question-area">
-                    <div class="question-icon">Q</div>
+            <div class="qa-accordion">
+                <div class="question-container">
+                    <div class="question-icon">
+                        <span>Q</span>
+                    </div>
                     <div class="question-text">
                         <p>JavaScriptのdocumentに関する質問です。HTML、CSSのコマンドや要素はdocumentのオブジェクトの中に設定されていると思ってよいですか？</p>
                     </div>
@@ -124,9 +135,11 @@
                         <span></span>
                     </div>
                 </div>
-                <div class="answer-area">
-                    <div class="answer-flex">
-                        <div class="answer-icon">A</div>
+                <div class="answer-container">
+                    <div class="answer-content">
+                        <div class="answer-icon">
+                            <span>A</span>
+                        </div>
                         <div class="answer-text">
                             <p>HTMLやCSSの要素は、DOM (Document Object Model) の一部としてdocumentのオブジェクト内に配置されています。HTMLの構造(例：タグ) は DOM ツリーのノード、CSSといったスタイルも DOM の一部として操作可能です。</p>
                         </div>
@@ -134,9 +147,11 @@
                 </div>
             </div>
 
-            <div class="qa-container">
-                <div class="question-area">
-                    <div class="question-icon">Q</div>
+            <div class="qa-accordion">
+                <div class="question-container">
+                    <div class="question-icon">
+                        <span>Q</span>
+                    </div>
                     <div class="question-text">
                         <p>Googleフォントに関する質問です。
                         Google Fontsのフォント適用の際[https://fonts.googleapis.com]に事前に接続するメリットがわかりません。
@@ -149,22 +164,26 @@
                         <span></span>
                     </div>
                 </div>
-                <div class="answer-area">
-                    <div class="answer-flex">
-                        <div class="answer-icon">A</div>
+                <div class="answer-container">
+                    <div class="answer-content">
+                        <div class="answer-icon">
+                            <span>A</span>
+                        </div>
                         <div class="answer-text">
                             <p>1行目と3行目の「https://fonts.googleapis.com」はフォントを適用するための CSSファイル（フォントのURLやスタイルの情報）が置かれています。
-                        2行目の「https://fonts.gstatic.com」は実際の フォントファイル（woff2などの形式）が置かれています。
-                        通常、ブラウザは 「フォントのCSSを取得 → その後フォントファイルを取得」 という順序で処理します。しかし、1行目のpreconnectを指定すると、フォントのCSSを取得する前に、先にサーバーとの接続を確立しておく ことができます。
-                        preconnect を使わなくてもフォントは正しく適用されますが、ページの表示速度を向上させるための最適化手法なので、できるだけ使ったほうが良いと思います。特にWebフォントはパフォーマンスに影響を与えるので、preconnect を入れることで、よりスムーズなページ表示が可能になるというのが理由です。</p>
+                            2行目の「https://fonts.gstatic.com」は実際の フォントファイル（woff2などの形式）が置かれています。
+                            通常、ブラウザは 「フォントのCSSを取得 → その後フォントファイルを取得」 という順序で処理します。しかし、1行目のpreconnectを指定すると、フォントのCSSを取得する前に、先にサーバーとの接続を確立しておく ことができます。
+                            preconnect を使わなくてもフォントは正しく適用されますが、ページの表示速度を向上させるための最適化手法なので、できるだけ使ったほうが良いと思います。特にWebフォントはパフォーマンスに影響を与えるので、preconnect を入れることで、よりスムーズなページ表示が可能になるというのが理由です。</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="qa-container">
-                <div class="question-area">
-                    <div class="question-icon">Q</div>
+            <div class="qa-accordion">
+                <div class="question-container">
+                    <div class="question-icon">
+                        <span>Q</span>
+                    </div>
                     <div class="question-text">
                         <p>HTMLを使用してコンピューターに意味を伝えるのはなぜですか？
                         Webページを見るのは人なのだから、CSSで見ためを変えれば、わざわざタグを増やさなくてもいいのではと思いました。
@@ -174,48 +193,61 @@
                         <span></span>
                     </div>
                 </div>
-                <div class="answer-area">
-                    <div class="answer-flex">
-                        <div class="answer-icon">A</div>
+                <div class="answer-container">
+                    <div class="answer-content">
+                        <div class="answer-icon">
+                            <span>A</span>
+                        </div>
                         <div class="answer-text">
                             <p>制作者は「人」と「コンピューター」の両方を意識する必要があります。
-                        Webページは「人」だけでなく「検索エンジン」や「スクリーンリーダー」などのシステムも読み取るものなので、適切なHTMLタグを使うことが重要です。
-                        またGoogleの評価が良くなる というメリットもありますが、もっと大切なのは、「意味を正しく伝える」ことでより多くの人に情報を届けやすくすること です。
-                        CSSだけで見た目を変えればいい、という考えも間違いではありませんが、HTMLのタグは単なる見た目以上の役割を持っている、というのがポイントです。</p>
+                            Webページは「人」だけでなく「検索エンジン」や「スクリーンリーダー」などのシステムも読み取るものなので、適切なHTMLタグを使うことが重要です。
+                            またGoogleの評価が良くなる というメリットもありますが、もっと大切なのは、「意味を正しく伝える」ことでより多くの人に情報を届けやすくすること です。
+                            CSSだけで見た目を変えればいい、という考えも間違いではありませんが、HTMLのタグは単なる見た目以上の役割を持っている、というのがポイントです。</p>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <nav class="pagination">
+                <ul>
+                    <li class="prev"><a href="#"></a></li>
+                    <li><a href="#">1</a></li>
+                    <li class="active"><span>2</span></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li class="next"><a href="#"></a></li>
+                </ul>
+            </nav>
+
+            <div class="bread-crumbs">
+                <ol>
+                    <li><a href="">ホーム</a></li>
+                    <li><a href="">質疑応答</a></li>
+                </ol>
+            </div>
         </div>
     </main>
-
-    <div class="bread-crumbs">
-        <ol>
-            <li><a href="">ホーム</a></li>
-            <li><a href="">質疑応答</a></li>
-        </ol>
-    </div>
 
     <!-- include(f_footer.blade.php) -->
     <footer>
         <div class="footer-container">
             <div class="footer-info">
                 <div class="footer-logo">
-                    <img src="../../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                    <a href=""><img src="../../assets/images/f_footer-logo.svg" alt="コンパスロゴ"></a>
                 </div>
                 <div class="footer-company-info">
                     <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
                     <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
                     <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
                 </div>
-                <div class="footer-icons">
+                <div class="footer-sns-icons">
                     <img src="../../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
                     <img src="../../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
                 </div>
             </div>
             <div>
-                <ul class="footer-company-view">
+                <ul class="footer-menu-list">
                     <li><a href="">講座情報</a></li>
                     <li><a href="">講師紹介</a></li>
                     <li><a href="">ダウンロード</a></li>
@@ -237,6 +269,5 @@
     <script src="../../assets/js/f_common.js"></script>
 
     <!-- yield(page_js.blade.php) -->
-
 </body>
 </html>

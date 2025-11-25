@@ -1,42 +1,37 @@
 "use-strict";
 
-// hamburger-menu open/close
+// hamburger open/close
 const hamburgerBtn = $(".hamburger-btn");
 
 hamburgerBtn.click(function () {
-    $(this).next().slideToggle(300);
     $(this).toggleClass("active");
 });
 
-
 // accordion-menu open/close
 const accordionMenu = $(".accordion-menu");
-const menuTitle = $(".menu-title");
+const clickArea = $(".click-area");
 
-menuTitle.click(function () {
+clickArea.click(function () {
     $(this).next().slideToggle(300);
     accordionMenu.toggleClass("active");
 });
 
+// q&a
+const questionArea = $(".question-area");
 
-// qa-accordion
-const qaAccordion = $(".qa-accordion");
-const questionContainer = $(".question-container");
+questionArea.click(function () {
+    const answer = $(this).next(".answer-area");
 
-questionContainer.click(function () {
-    const parentAccordion = $(this).closest(".qa-accordion");
-    const answer = $(this).next(".answer-container");
+    // すでに開いている回答以外をすべて閉じる
+    $(".answer-area").not(answer).slideUp(300);
 
-    // 他のアコーディオンを閉じる & active を外す
-    qaAccordion.not(parentAccordion).removeClass("active")
-        .find(".answer-container").slideUp(300);
-
-    // 自分の回答をトグル
+    // 自分の回答部分だけトグル
     answer.slideToggle(300);
-
-    // 自分のアコーディオンだけ active をトグル
-    parentAccordion.toggleClass("active");
 });
+
+
+
+
 
 
 // calendar
@@ -69,3 +64,21 @@ window.onload = function () {
 
     $("#date").val(`${yyyy}-${mm}-${dd}`);
 }
+
+//ダウンロードファイルアイコンの判定
+$(document).ready(function () {
+    $("#fileInput a").each(function () {
+        var href = $(this).attr("href").toLowerCase();
+
+        // 一旦クラスをクリア（念のため）
+        $(this).removeClass("file-pdf file-excel file-default");
+
+        if (href.endsWith(".pdf")) {
+            $(this).addClass("file-pdf");
+        } else if (href.endsWith(".xlsx") || href.endsWith(".xls")) {
+            $(this).addClass("file-excel");
+        } else {
+            $(this).addClass("file-default");
+        }
+    });
+});

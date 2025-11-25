@@ -2,6 +2,16 @@
 
 /* 日報フォーム */
 
+.form-content {
+    max-width: 1000px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
+.form-content p {
+    margin-bottom: 50px;
+}
 
 .form-item {
     display: flex;
@@ -63,11 +73,20 @@ textarea {
 }
 
 .privacy-policy {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .privacy-policy p {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.privacy-policy a {
+    color: var(--sub-color-3);
+    text-decoration: underline;
+}
+
+.privacy-policy a:hover {
+    color: var(--accent-color);
 }
 
 .privacy-policy-button {
@@ -85,14 +104,14 @@ textarea {
 }
 
 .privacy-policy-button {
-    margin-top: 50px;
+    margin: 50px auto;
 }
 
 .privacy-policy-button:hover {
     box-shadow: 0 7px 30px -5px rgb(0, 0, 0, 0.3);
 }
 
-@media screen and (max-width: 1324px) {
+@media screen and (max-width: 959px) {
     .form-item {
         display: block;
     }

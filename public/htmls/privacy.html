@@ -5,105 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プライバシーポリシー・利用規約 | QLIP-Compass</title>
 
-    <!-- include(f_common_css.blade.php) -->
+    <!-- 共通css -->
     <link rel="stylesheet" href="../assets/css/reset.css">
     <link rel="stylesheet" href="../assets/css/f_variable.css">
     <link rel="stylesheet" href="../assets/css/f_common.css">
 
-    <!-- yield(page_css.blade.php) -->
-    <link rel="stylesheet" href="../assets/css/f_page.css">
+    <!-- yield(code-page-css) -->
+    <link rel="stylesheet" href="../assets/css/f_editor.css">
 </head>
 <body>
 
-    <!-- include(f_frame.blade.php) -->
+    <!-- include(f_header.blade.php) -->
     <header>
         <div class="header-container">
-            <ul class="gnav">
-                <li><a class="home" href="top.html">ホーム</a></li>
-                <li><a class="news" href="news/news_list_all.html">お知らせ</a></li>
-                <li><a class="agenda" href="agenda/agenda_list.html">アジェンダ</a></li>
-                <li><a class="study" href="study/study_qa_list.html">学習支援</a></li>
-                <li><a class="work" href="support/support_offer_list.html">就職支援</a></li>
-                <li><a class="mypage" href="mypage/mypage.html">マイページ</a></li>
-            </ul>
+            <nav class="gnav">
+                <ul>
+                    <li><a class="home" href="top.html">ホーム</a></li>
+                    <li><a class="news" href="news/news_list_all.html">お知らせ</a></li>
+                    <li><a class="agenda" href="agenda/agenda_list.html">アジェンダ</a></li>
+                    <li><a class="study" href="study/study_qa_list.html">学習支援</a></li>
+                    <li><a class="work" href="support/support_offer_list.html">就職支援</a></li>
+                    <li><a class="mypage" href="mypage/mypage.html">マイページ</a></li>
+                </ul>
+            </nav>
 
             <!-- responsive -->
             <div class="site-logo">
-                <img src="../assets/images/f_site-logo.svg" alt="">
+                <a href=""><img src="../assets/images/f_site-logo.svg" alt=""></a>
             </div>
             <div class="hamburger-btn">
                 <span></span>
             </div>
+            <div class="hamburger-menu">
+
+            </div>
         </div>
     </header>
+    <!-- /include(f_header.blade.php) -->
 
+    <!-- include(f_side_menu.blade.php) -->
     <div class="side-menu">
-        <div class="side-menu-top">
-            <div class="site-logo">
-                <img src="../assets/images/f_site-logo.svg" alt="">
-            </div>
+        <div class="side-menu-container">
+            <div class="side-menu-top">
+                <div class="site-logo">
+                    <a href=""><img src="../assets/images/f_site-logo.svg" alt=""></a>
+                </div>
 
-            <div class="contents-box">
+                <div class="contents-box">
 
-                <div class="calendar">
-                    <div class="calendar-data">
-                        <div class="month"></div>
-                        <div class="day"></div>
-                        <span class="border"></span>
-                        <div class="week"></div>
+                    <div class="calendar">
+                        <div class="calendar-data">
+                            <div class="month"></div>
+                            <div class="day"></div>
+                            <span class="border"></span>
+                            <div class="week"></div>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <p class="countdown-title">修了まであと</p>
+                        <div class="countdown-data">
+                            <span class="data-number">108</span>
+                            <span class="data-sub-title">日</span>
+                        </div>
+                    </div>
+
+                    <div class="today-short">
+                        <p class="short-title">今日のひとこと</p>
+                        <span class="short-text">我々は繰り返す事により形成される</span>
+                        <span class="short-name">（アリストテレス）</span>
                     </div>
                 </div>
 
-                <div class="countdown">
-                    <p class="countdown-title">修了まであと…</p>
-                    <div class="countdown-data">
-                        <span class="data-number">108</span>
-                        <span class="data-sub-title">日</span>
-                    </div>
-                </div>
-
-                <div class="today-short">
-                    <p class="short-title">今日のひとこと</p>
-                    <span class="short-text">"シンプルこそ究極の洗練なり"</span>
-                    <span>ダビンチ</span>
-                </div>
             </div>
 
-        </div>
+            <div class="side-menu-bottom">
+                <ul class="side-menu-list">
+                    <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
+                    <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
+                    <li><a class="report" href="mypage/report.html">日報作成</a></li>
+                </ul>
 
-        <div class="side-menu-bottom">
-            <ul class="side-menu-list">
-                <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a></li>
-                <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
-                <li><a class="report" href="mypage/report.html">日報作成</a></li>
-            </ul>
-
-            <div class="logout-btn">
-                <a href="">ログアウト</a>
+                <div class="logout-btn">
+                    <a href="">ログアウト</a>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="frame-right"></div>
-    <div class="frame-bottom"></div>
-    <div class="frame-left"></div>
-    <!-- /include(f_frame.blade.php) -->
+    <!-- /include(f_side_menu.blade.php) -->
 
     <main>
         <div class="container">
             <div class="page-title">
                 <h2>プライバシーポリシー・利用規約</h2>
             </div>
-            <!-- /include(f_page_title.blade.php) -->
 
             <div class="page-content">
                 <div class="content">
                     <h3>利用規約</h3>
                     <p>この利用規約（以下、「本規約」といいます。）は、「QLIP Connect」（以下、「当社」といいます。）がこのウェブサイト上で提供するサービス（以下、「本サービス」といいます。） の利用条件を定めるものです。
-                登録ユーザーの皆さま（以下、「ユーザー」といいます。）には、本規約に従って、本サービスをご利用いただきます。</p>
+                    登録ユーザーの皆さま（以下、「ユーザー」といいます。）には、本規約に従って、本サービスをご利用いただきます。</p>
                 </div>
 
-                <!-- 以下h4タグにスタイルの適用をお願いします。カンプ上では先頭に青い丸があり、文字サイズもpタグの文字より2px大きくなっていました。 -->
                 <div class="content">
                     <h4>第1条（適用）</h4>
                     <p>本規約は、ユーザーと当社との間の本サービスの利用に関わる一切の関係に適用されるものとします。 当社は本サービスに関し、本規約のほか、ご利用にあたってのルール等、各種の定め（以下、「個別規定」といいます。）をすることがあります。これら個別規定はその名称のいかんに関わらず、本規約の一部を構成するものとします。本規約の規定が前条の個別規定の規定と矛盾する場合には、個別規定において特段の定めなき限り、個別規定が優先されるものとします。</p>
@@ -111,20 +114,19 @@
 
                 <div class="content">
                     <h4>第2条（利用登録）</h4>
-                    <p>本サービスにおいては、登録希望者が本規約に同意の上、当社の定める方法によって利用登録を申請し、当社がこれを承認することによって、利用登録が完了するものとします。 当社は、利用登録の申請者に以下の事由があると判断した場合、利用登録の申請を承認しないことがあり、その理由については一切の開示義務を負わないものとします。
+                    <p>本サービスにおいては、登録希望者が本規約に同意の上、当社の定める方法によって利用登録を申請し、当社がこれを承認することによって、利用登録が完了するものとします。 当社は、利用登録の申請者に以下の事由があると判断した場合、利用登録の申請を承認しないことがあり、その理由については一切の開示義務を負わないものとします。</p>
                     <!-- liタグの黒丸表示と、pタグの行頭と黒丸の位置が合うようにpaddingleftの調整をお願いします -->
                     <ul>
                         <li>利用登録の申請に際して虚偽の事項を届け出た場合</li>
                         <li>本規約に違反したことがある者からの申請である場合</li>
                         <li>その他、当社が利用登録を相当でないと判断した場合</li>
                     </ul>
-                    </p>
                 </div>
 
                 <div class="content">
                     <h4>第3条(ユーザーID及びパスワードの管理)</h4>
                     <p>ユーザーは、自己の責任において、本サービスのユーザーID及びパスワードを適切に管理するものとします。
-                    ユーザーは、いかなる場合にも、ユーザーID及びパスワードを第三者に譲渡または貸与し、もしくは第三者と共用することはできません。当社は、ユーザーIDとパスワードの組み合わせが登録情報と一致してログインされた場合には、そのユーザーIDを登録しているユーザー自身による利用とみなします。ユーザーID及びパスワードが第三者によって使用されたことによって生じた損害は、当社に故意又は重大な過失がある場合を除き、当社は一切の責任を負わないものとします。</p>
+                                    ユーザーは、いかなる場合にも、ユーザーID及びパスワードを第三者に譲渡または貸与し、もしくは第三者と共用することはできません。当社は、ユーザーIDとパスワードの組み合わせが登録情報と一致してログインされた場合には、そのユーザーIDを登録しているユーザー自身による利用とみなします。ユーザーID及びパスワードが第三者によって使用されたことによって生じた損害は、当社に故意又は重大な過失がある場合を除き、当社は一切の責任を負わないものとします。</p>
                 </div>
 
                 <!-- プライバシーポリシー -->
@@ -142,28 +144,28 @@
                 <div class="content">
                     <h4>第2条（収集する情報の範囲）</h4>
                     <p>本サイトでは以下の情報を収集します。
-                    <!-- liタグの黒丸表示と、pタグの行頭と黒丸の位置が合うようにpaddingleftの調整をお願いします -->
-                    <ul>
-                        <li>インターネットドメイン名・IPアドレス・閲覧履歴</li>
-                        <li>掲示板やコミュニティ機能で投稿された情報</li>
-                        <li>利用登録時に入力された氏名・連絡先・メールアドレス・職業訓練履歴等の情報</li>
-                        <li>※Cookieの利用は利便性向上を目的とし、個人を特定する情報は含みません。</li>
-                    </ul>
-                    </p>
+                                    <!-- liタグの黒丸表示と、pタグの行頭と黒丸の位置が合うようにpaddingleftの調整をお願いします -->
+                                    <ul>
+                                        <li>インターネットドメイン名・IPアドレス・閲覧履歴</li>
+                                        <li>掲示板やコミュニティ機能で投稿された情報</li>
+                                        <li>利用登録時に入力された氏名・連絡先・メールアドレス・職業訓練履歴等の情報</li>
+                                        <li>※Cookieの利用は利便性向上を目的とし、個人を特定する情報は含みません。</li>
+                                    </ul>
+                                    </p>
                 </div>
 
                 <div class="content">
                     <h4>第3条(利用目的)</h4>
                     <p>取得した個人情報は以下の目的に利用します。
-                        <!-- liタグの黒丸表示と、pタグの行頭と黒丸の位置が合うようにpaddingleftの調整をお願いします -->
-                        <ul>
-                            <li>訓練講座の管理運営</li>
-                            <li>講師・訓練生・卒業生間のコミュニケーション支援</li>
-                            <li>掲示板・コミュニティ機能の提供</li>
-                            <li>重要なお知らせやイベント情報の通知</li>
-                            <li>サイト利用状況の分析・サービス向上</li>
-                        </ul>
-                    </p>
+                                        <!-- liタグの黒丸表示と、pタグの行頭と黒丸の位置が合うようにpaddingleftの調整をお願いします -->
+                                        <ul>
+                                            <li>訓練講座の管理運営</li>
+                                            <li>講師・訓練生・卒業生間のコミュニケーション支援</li>
+                                            <li>掲示板・コミュニティ機能の提供</li>
+                                            <li>重要なお知らせやイベント情報の通知</li>
+                                            <li>サイト利用状況の分析・サービス向上</li>
+                                        </ul>
+                                    </p>
                 </div>
 
                 <div class="content">
@@ -206,12 +208,19 @@
                     <p>本サイト内のコンテンツの無断転載を禁止します。引用の範囲を超える転載については、法的措置を行う場合があります。転載希望の際は必ず事前にご連絡ください。</p>
                 </div>
             </div>
-        </div>
-        <div class="bread-crumbs">
-            <ol>
-                <li><a href="">ホーム</a></li>
-                <li><a href="">プライバシーポリシー</a></li>
-            </ol>
+
+            <div class="btn-list">
+                <ul>
+                    <li class="default-btn"><a href="top.html">ホームへ</a></li>
+                </ul>
+            </div>
+
+            <div class="bread-crumbs">
+                <ol>
+                    <li><a href="">ホーム</a></li>
+                    <li><a href="">プライバシーポリシー・利用規約</a></li>
+                </ol>
+            </div>
         </div>
     </main>
 
@@ -220,23 +229,23 @@
         <div class="footer-container">
             <div class="footer-info">
                 <div class="footer-logo">
-                    <img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+                    <a href=""><img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ"></a>
                 </div>
                 <div class="footer-company-info">
                     <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
                     <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
                     <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
                 </div>
-                <div class="footer-icons">
+                <div class="footer-sns-icons">
                     <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
                     <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
                 </div>
             </div>
             <div>
-                <ul class="footer-company-view">
+                <ul class="footer-menu-list">
                     <li><a href="">講座情報</a></li>
                     <li><a href="">講師紹介</a></li>
-                    <li><a href="">各種届出書式</a></li>
+                    <li><a href="">ダウンロード</a></li>
                     <li><a href="">お問い合わせ</a></li>
                     <li><a href="">本サイトについて</a></li>
                     <li><a href="">受講規則</a></li>
@@ -255,7 +264,5 @@
     <script src="../assets/js/f_common.js"></script>
 
     <!-- yield(page_js.blade.php) -->
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
 </body>
 </html>

@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+
+/* kv
+------------------------------------- */
+.kv {
+    margin-bottom: 45px;
+
+}
+
+.kv video {
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* section-box
+------------------------------------- */
+.section-box {
+    margin-bottom: 30px;
+    padding: 35px;
+    background-color: var(--sub-color-2);
+    border-radius: 15px;
+}
+
+.section-box .box-title {
+    margin-bottom: 40px;
+}
+
+.section-box .box-title h2 {
+    position: relative;
+    width: calc(100% - 330px);
+    padding-left: 33px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.section-box .box-title h2::before,
+.section-box .box-title h2::after {
+    content: "";
+    position: absolute;
+    background-color: #74A0FF;
+}
+
+.section-box .box-title h2::before {
+    top: 5px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+}
+
+.section-box .box-title h2::after {
+    top: 18px;
+    left: 13px;
+    width: 10px;
+    height: 10px;
+}
+
+.section-box .content-list {
+    margin-bottom: 10px;
+}
+
+.section-flex {
+    display: flex;
+    gap: 40px;
+}
+
+.facebook {
+    width: 370px;
+}
+
+.agenda {
+    flex: 1;
+}
+
+.section-box.facebook {
+    padding: 35px 20px 20px;
+}
+
+.section-box.facebook .box-title {
+    margin-bottom: 25px;
+}
+
+.more-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.more-btn a {
+    display: block;
+    width: 100px;
+    padding: 7px 0;
+    border-radius: 10px;
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    font-size: 16px;
+    text-align: center;
+}
