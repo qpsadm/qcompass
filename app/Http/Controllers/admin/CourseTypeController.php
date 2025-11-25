@@ -11,7 +11,7 @@ class CourseTypeController extends Controller
 {
     public function index()
     {
-        $course_type = CourseType::all();
+        $course_type = CourseType::with('organizer')->get();
         return view('admin.course_type.index', compact('course_type'));
     }
 
@@ -44,7 +44,8 @@ class CourseTypeController extends Controller
     public function edit($id)
     {
         $CourseType = CourseType::findOrFail($id);
-        return view('admin.course_type.edit', compact('CourseType'));
+        $organizers = Organizer::all();
+        return view('admin.course_type.edit', compact('CourseType', 'organizers'));
     }
 
     public function update(Request $request, $id)

@@ -1,47 +1,90 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-4">講座分野編集</h1>
-        <form action="{{ route('admin.course_type.update', $CourseType->id) }}" method="POST">
-            @csrf
-            @method('PUT')
+    <div class="container mx-auto p-4 min-h-screen">
+        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">講座分野編集</h1>
 
-            {{-- 名前 --}}
-            <div class="mb-4">
-                <label for="name" class="block font-medium mb-1">名前</label>
-                <input type="text" name="name" id="name"
-                    value="{{ old('name', $CourseType->name ?? '') }}"
-                    class="border-gray-300 border px-2 py-1 w-[300px] rounded-md
-                              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
+            {{-- バリデーションエラー --}}
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-600 p-3 rounded mb-4 text-sm">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            {{-- 表示設定 --}}
-            <div class="mb-4">
-                <label class="block font-medium mb-1">表示設定</label>
+            <form action="{{ route('admin.course_type.update', $CourseType->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                <label class="inline-flex items-center gap-2 cursor-pointer">
-                    <input type="hidden" name="is_show" value="0">
-                    <input type="checkbox" name="is_show" value="1"
-                        @checked(old('is_show', $CourseType->is_show))>
-                    <span class="text-gray-700">表示する</span>
-                </label>
-            </div>
+                <table class="w-full table-auto border-collapse bg-white rounded-lg shadow-md">
+                    <tbody>
+                        {{-- 実施主体 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                                実施主体
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <select name="organizer_id" id="organizer_id"
+                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                                    <option value="">選択してください</option>
+                                    @foreach ($organizers as $organizer)
+                                        <option value="{{ $organizer->id }}"
+                                            {{ old('organizer_id', $CourseType->organizer_id) == $organizer->id ? 'selected' : '' }}>
+                                            {{ $organizer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('organizer_id')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
 
-            <div class="flex gap-2 mt-2">
-                <!-- 保存ボタン -->
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
-                    保存
-                </button>
+                        {{-- 名前 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                                名前
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <input type="text" name="name" value="{{ old('name', $CourseType->name) }}"
+                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                @error('name')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
 
-                <!-- 一覧に戻るボタン -->
-                <a href="{{ route('admin.course_type.index') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
-                    一覧に戻る
-                </a>
-            </div>
-        </form>
+                        {{-- 表示フラグ --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示設定</th>
+                            <td class="px-4 py-2">
+                                <input type="hidden" name="is_show" value="0">
+                                <input type="checkbox" name="is_show" value="1" @checked(old('is_show', $CourseType->is_show))
+                                    class="h-4 w-4">
+                                <label class="font-medium">表示する</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flex gap-3 mt-6 justify-center">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-sm transition">
+                        保存する
+                    </button>
+                    <a href="{{ route('admin.course_type.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-sm transition">
+                        一覧に戻る
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 @endsection
