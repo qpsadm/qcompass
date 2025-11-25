@@ -48,7 +48,7 @@
                 {{-- タイトル --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">タイトル<span class="text-red-500">*</span></label>
-                    <input type="text" name="name" class="border px-2 py-1 w-full rounded" value="{{ old('name') }}"
+                    <input type="text" name="title" class="border px-2 py-1 w-full rounded" value="{{ old('title') }}"
                         required>
                 </div>
 
@@ -90,8 +90,7 @@
                 {{-- 表示フラグ --}}
                 <div class="mb-6">
                     <label class="block font-medium mb-1">表示設定</label>
-                    <input type="checkbox" name="display_flag" value="1"
-                        {{ old('display_flag', 1) ? 'checked' : '' }}>
+                    <input type="checkbox" name="is_show" value="1" {{ old('is_show', 1) ? 'checked' : '' }}>
                     <span>公開する</span>
                 </div>
 
@@ -100,6 +99,8 @@
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                         登録する
                     </button>
+        
+                    <a href="{{ route('admin.learnings.index') }}" class="ml-2 text-gray-600">キャンセル</a>
                 </div>
             </form>
         </div>

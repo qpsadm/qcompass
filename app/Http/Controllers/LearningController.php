@@ -36,7 +36,7 @@ class LearningController extends Controller
             'image' => 'nullable|string|max:255',
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
-            'display_flag' => 'nullable|boolean',
+            'is_show' => 'nullable|boolean',
         ]);
 
         Learning::create($validated);
@@ -76,7 +76,7 @@ class LearningController extends Controller
             'image' => 'nullable|string|max:255',
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
-            'display_flag' => 'nullable|boolean',
+            'is_show' => 'nullable|boolean',
         ]);
 
         $learning->update($validated);

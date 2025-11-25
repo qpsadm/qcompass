@@ -44,7 +44,7 @@ use App\Http\Controllers\User\QuizController as UserQuizController;
 // 学習・資格・求人
 use App\Http\Controllers\{
     LearningController,
-    CertificationsController,
+    CertificationController,
     JobOfferController
 };
 
@@ -129,7 +129,7 @@ Route::middleware(['auth', 'role:8'])
             'agenda_files' => AgendaFileController::class,
             'quizzes' => QuizController::class,
             'learnings' => LearningController::class,
-            'certifications' => CertificationsController::class,
+            'certifications' => CertificationController::class,
             'job_offers' => JobOfferController::class,
             'achievements' => AchievementController::class,
             'achievements_release' => AchievementsReleaseController::class,

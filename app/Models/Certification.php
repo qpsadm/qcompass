@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Certifications extends Model
+class Certification extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,6 +17,6 @@ class Certifications extends Model
         'level',
         'description',
         'url',
-        'display_flag',
+        'is_show',
     ];
 }

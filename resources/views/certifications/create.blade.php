@@ -23,8 +23,7 @@
                 {{-- 資格名 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">資格名<span class="text-red-500">*</span></label>
-                    <input type="text" name="name" class="border px-2 py-1 w-full rounded"
-                        value="{{ old('name') }}">
+                    <input type="text" name="name" class="border px-2 py-1 w-full rounded" value="{{ old('name') }}">
                 </div>
 
                 {{-- 資格レベル --}}
@@ -47,7 +46,8 @@
                 {{-- URL --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">参照URL</label>
-                    <input type="text" name="url" class="border px-2 py-1 w-full rounded" value="{{ old('url') }}">
+                    <input type="text" name="url" class="border px-2 py-1 w-full rounded"
+                        value="{{ old('url') }}">
                 </div>
 
                 {{-- 表示フラグ --}}
@@ -62,6 +62,9 @@
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                         登録する
                     </button>
+
+
+                    <a href="{{ route('admin.learnings.index') }}" class="ml-2 text-gray-600">キャンセル</a>
                 </div>
             </form>
         </div>

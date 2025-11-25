@@ -44,14 +44,14 @@
             <label class="block font-semibold mb-1">レベル</label>
             <select name="level" class="border px-2 py-1 w-full">
                 <option value="1" {{ $learning->level == 1 ? 'selected' : '' }}>初級</option>
-                <option value="2" {{ $learning->level == 2 ? 'selected' : '' }}>中級</option>
-                <option value="3" {{ $learning->level == 3 ? 'selected' : '' }}>上級</option>
+
+                <option value="2" {{ $learning->level == 2 ? 'selected' : '' }}>上級</option>
             </select>
         </div>
 
         <div class="mb-4">
             <label class="inline-flex items-center">
-                <input type="checkbox" name="display_flag" class="mr-2" value="1" {{ $learning->display_flag ? 'checked' : '' }}>
+                <input type="checkbox" name="is_show" class="mr-2" value="1" {{ $learning->is_show ? 'checked' : '' }}>
                 公開する
             </label>
         </div>
