@@ -39,6 +39,9 @@ class LearningController extends Controller
             'is_show' => 'nullable|boolean',
         ]);
 
+        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+
+
         Learning::create($validated);
 
         return redirect()->route('admin.learnings.index')->with('success', 'Learning作成完了');
@@ -79,8 +82,11 @@ class LearningController extends Controller
             'is_show' => 'nullable|boolean',
         ]);
 
+
+        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
         $learning->update($validated);
 
+ 
         return redirect()->route('admin.learnings.index')->with('success', 'Learning更新完了');
     }
 
