@@ -19,4 +19,8 @@ class Certification extends Model
         'url',
         'is_show',
     ];
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }
