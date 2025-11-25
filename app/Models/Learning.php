@@ -23,4 +23,12 @@ class Learning extends Model
         'description',
         'is_show'
     ];
+
+    /**
+     * Blade 側で $learning->is_visible としてアクセスできるようにする
+     */
+    public function getIsVisibleAttribute()
+    {
+        return (bool) $this->is_show;
+    }
 }
