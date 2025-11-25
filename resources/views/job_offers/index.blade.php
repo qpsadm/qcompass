@@ -15,7 +15,7 @@
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border px-4 py-2">求人票のタイトル</th>
-                        <th class="border px-4 py-2">会社名/説明文</th>
+                        <th class="border px-4 py-2">説明</th>
                         <th class="border px-4 py-2">PDFファイル保存パス</th>
                         <th class="border px-4 py-2">更新者ID</th>
                         <th class="border px-4 py-2">削除日</th>
@@ -26,9 +26,10 @@
                     @foreach ($job_offers as $jobOffer)
                         <tr>
                             <td class="border px-4 py-2">{{ $jobOffer->title }}</td>
-                            <td class="border px-4 py-2">{{ $jobOffer->company }}</td>
+                            <td class="border px-4 py-2">{{ $jobOffer->description  }}</td>
                             <td class="border px-4 py-2">{{ $jobOffer->file_path }}</td>
-                            <td class="border px-4 py-2">{{ $jobOffer->user_id }}</td>
+                            <td class="border px-4 py-2">{{ $jobOffer->updated_user_name }}</td>
+
                             <td class="border px-4 py-2">{{ $jobOffer->deleted_at }}</td>
                             <td class="border px-4 py-2">
                                 <a href="{{ route('admin.job_offers.show', $jobOffer->id) }}" class="text-green-600">詳細</a>
