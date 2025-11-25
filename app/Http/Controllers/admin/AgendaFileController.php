@@ -36,19 +36,19 @@ class AgendaFileController extends Controller
 
         $file = $request->file('file_path');
 
-        // 元の拡張子を取得
+        // 元の拡張子
         $extension = $file->getClientOriginalExtension();
 
-        // ユーザー指定のファイル名 + 元の拡張子
+        // ユーザー指定のファイル名 + 拡張子
         $filename = $request->file_name . '.' . $extension;
 
-        // 保存（storage/app/agenda_files に保存）
-        $path = $file->storeAs('agenda_files', $filename);
+        // public ディスクに保存（storage/app/public/images
+        $path = $file->storeAs('images', $filename, 'public');
 
         // DB登録
         $agendaFile = new \App\Models\AgendaFile();
         $agendaFile->agenda_id = $request->agenda_id;
-        $agendaFile->file_path = $path;
+        $agendaFile->file_path = $path;   // 保存パスをDBに保存
         $agendaFile->file_name = $filename;
         $agendaFile->file_type = $file->getMimeType();
         $agendaFile->file_size = $file->getSize();
@@ -62,18 +62,17 @@ class AgendaFileController extends Controller
 
 
 
-
-
     public function show($id)
     {
-        $AgendaFile = AgendaFile::findOrFail($id);
-        return view('admin.agenda_files.show', compact('AgendaFile'));
+        $agendaFile = AgendaFile::with('agenda')->findOrFail($id);
+        return view('admin.agenda_files.show', compact('agendaFile'));
     }
 
     public function edit($id)
     {
-        $AgendaFile = AgendaFile::findOrFail($id);
-        return view('admin.agenda_files.edit', compact('AgendaFile'));
+        $agendaFile = AgendaFile::findOrFail($id); // 小文字変数に統一
+        $agendas = \App\Models\Agenda::orderBy('created_at', 'desc')->get();
+        return view('admin.agenda_files.edit', compact('agendaFile', 'agendas'));
     }
 
     public function update(Request $request, $id)
@@ -93,9 +92,32 @@ class AgendaFileController extends Controller
         return redirect()->route('admin.agenda_files.index')->with('success', 'AgendaFile更新完了');
     }
 
-    public function destroy($id)
+    public function destroy(AgendaFile $agendaFile)
     {
-        AgendaFile::findOrFail($id)->delete();
-        return redirect()->route('admin.agenda_files.index')->with('success', 'AgendaFile削除完了');
+        $agendaFile->delete(); // モデルイベントでファイルも削除される
+        return redirect()->route('admin.agenda_files.index')->with('success', 'ファイルを削除しました');
+    }
+
+    public function download($id)
+    {
+        $agendaFile = AgendaFile::findOrFail($id);
+
+        // ファイルが存在するか確認
+        if (!\Storage::disk('public')->exists($agendaFile->file_path)) {
+            abort(404, 'ファイルが存在しません');
+        }
+
+        // ダウンロード
+        return \Storage::disk('public')->download($agendaFile->file_path, $agendaFile->file_name);
+    }
+    public function preview($id)
+    {
+        $agendaFile = AgendaFile::findOrFail($id);
+
+        if (!\Storage::disk('public')->exists($agendaFile->file_path)) {
+            abort(404, 'ファイルが存在しません');
+        }
+
+        return response()->file(storage_path('app/public/' . $agendaFile->file_path));
     }
 }

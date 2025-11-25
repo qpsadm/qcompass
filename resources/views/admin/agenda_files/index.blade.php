@@ -30,17 +30,41 @@
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_name }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_path }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_size }}</td>
-                                <td class="border px-4 py-2 space-x-2">
+                                <td class="border px-4 py-2 space-x-2" x-data="{ open: false }">
                                     <a href="{{ route('admin.agenda_files.show', $AgendaFile->id) }}"
                                         class="text-green-600 hover:underline">詳細</a>
                                     <a href="{{ route('admin.agenda_files.edit', $AgendaFile->id) }}"
                                         class="text-blue-600 hover:underline">編集</a>
-                                    <form action="{{ route('admin.agenda_files.destroy', $AgendaFile->id) }}" method="POST"
-                                        class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline">削除</button>
-                                    </form>
+
+                                    <!-- 削除ボタン -->
+                                    <button @click="open = true" type="button" class="text-red-600 hover:underline">
+                                        削除
+                                    </button>
+
+                                    <!-- モーダル -->
+                                    <div x-show="open"
+                                        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+                                            <h2 class="text-lg font-bold mb-4">本当に削除しますか？</h2>
+                                            <p class="mb-4">{{ $AgendaFile->file_name }} を削除します。元に戻せません。</p>
+                                            <div class="flex justify-end gap-2">
+                                                <button @click="open = false"
+                                                    class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">
+                                                    キャンセル
+                                                </button>
+                                                <form action="{{ route('admin.agenda_files.destroy', $AgendaFile->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                                                        削除
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </td>
                             </tr>
                         @endforeach

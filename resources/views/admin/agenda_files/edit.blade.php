@@ -30,8 +30,7 @@
                     <input type="file" name="file_path" class="border px-2 py-1 w-full rounded">
                     @if ($agendaFile->file_path)
                         <p class="text-sm text-gray-500 mt-1">現在のファイル:
-                            {{ $agendaFile->file_name ?? $agendaFile->file_path }}
-                        </p>
+                            {{ $agendaFile->file_name ?? $agendaFile->file_path }}</p>
                     @endif
                 </div>
 
@@ -57,14 +56,11 @@
                 </div>
 
                 <div class="flex gap-2 mt-4">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                        保存
-                    </button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">保存</button>
                     <a href="{{ route('admin.agenda_files.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
-                        一覧に戻る
-                    </a>
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">一覧に戻る</a>
                 </div>
             </form>
         </div>
-    @endsection
+    </div>
+@endsection
