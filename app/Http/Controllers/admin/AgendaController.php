@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Agenda;
-
+use App\Models\AgendaFile;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -39,8 +39,12 @@ class AgendaController extends Controller
         $agenda = new Agenda();
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        return view('admin.agendas.create', compact('categories', 'agenda'));
+        // ← すでに登録されているファイル一覧取得
+        $files = \App\Models\AgendaFile::withTrashed()->orderBy('id', 'desc')->get();
+
+        return view('admin.agendas.create', compact('categories', 'agenda', 'files'));
     }
+
 
     /**
      * 保存
@@ -49,7 +53,7 @@ class AgendaController extends Controller
     {
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
-            'category_id' => 'nullable|integer',
+            'category_id' => 'required|integer', // 正しく修正
             'is_show' => 'nullable|boolean',
             'status' => 'required|in:yes,no',
             'content' => 'nullable|string',
@@ -70,8 +74,11 @@ class AgendaController extends Controller
      */
     public function edit(Agenda $agenda)
     {
-
-        $selectedCourses = $agenda->courses->pluck('id')->toArray();
+        $agenda->load([
+            'files' => function ($q) {
+                $q->withTrashed();
+            }
+        ]);
 
         $rootCategories = Category::with('children')
             ->whereNull('parent_id')
@@ -80,8 +87,12 @@ class AgendaController extends Controller
 
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        return view('admin.agendas.edit', compact('agenda', 'selectedCourses', 'categories'));
+        return view('admin.agendas.edit', compact('agenda', 'categories'));
     }
+
+
+
+
 
     /**
      * 更新
@@ -91,7 +102,7 @@ class AgendaController extends Controller
         // バリデーションに description を追加
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
-            'category_id' => 'nullable|integer',
+            'category_id' => 'required|integer', // 正しく修正
             'is_show' => 'nullable|boolean',
             'status' => 'required|in:yes,no',
             'content' => 'nullable|string',
@@ -190,5 +201,18 @@ class AgendaController extends Controller
 
         // 印刷用ビューに渡す
         return view('admin.agendas.preview', compact('agenda', 'category', 'course'));
+    }
+
+    public function files(Agenda $agenda = null)
+    {
+        if ($agenda) {
+            // 編集画面 → そのアジェンダの画像
+            $files = $agenda->files;
+        } else {
+            // 新規作成画面 → 全部の登録済み画像
+            $files = \App\Models\AgendaFile::latest()->get();
+        }
+
+        return view('admin.agendas.files', compact('agenda', 'files'));
     }
 }

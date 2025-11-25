@@ -36,16 +36,20 @@
                             <td class="px-4 py-2">
                                 <input type="text" name="agenda_name"
                                     value="{{ old('agenda_name', $agenda->agenda_name ?? '') }}"
-                                    class="border rounded px-3 py-2 w-full">
+                                    class="border rounded px-3 py-2 w-full" required>
                             </td>
                         </tr>
 
                         {{-- カテゴリ --}}
                         <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ</th>
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                            </th>
                             <td class="px-4 py-2">
-                                <select name="category_id" class="border rounded px-3 py-2 w-80">
-                                    <option value="">選択してください</option>
+                                <select name="category_id" class="border rounded px-3 py-2 w-80" required>
+                                    <option value="" disabled
+                                        {{ old('category_id', $agenda->category_id ?? '') === null ? 'selected' : '' }}>
+                                        選択してください</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat['id'] }}"
                                             {{ old('category_id', $agenda->category_id ?? '') == $cat['id'] ? 'selected' : '' }}>
@@ -89,8 +93,20 @@
                             </td>
                         </tr>
                     </tbody>
-
                 </table>
+
+                {{-- 画像一覧 --}}
+                @if (isset($agenda) && $agenda->id)
+                    <a href="{{ route('admin.agendas.files', $agenda->id) }}" target="_blank">
+                        登録済みファイル一覧
+                    </a>
+                @else
+                    <a href="{{ route('admin.agendas.files') }}" target="_blank">
+                        登録済みファイル一覧
+                    </a>
+                @endif
+
+
 
 
                 <div class="mt-6 flex gap-3">

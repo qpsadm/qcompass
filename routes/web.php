@@ -170,9 +170,8 @@ Route::middleware(['auth', 'role:8'])
 
         Route::get('agenda_files/download/{id}', [AgendaFileController::class, 'download'])
             ->name('agenda_files.download');
-        Route::get('agenda_files/preview/{id}', [AgendaFileController::class, 'preview'])
-            ->name('agenda_files.preview');
-
+        Route::get('agendas/{agenda?}/files', [AgendaController::class, 'files'])
+            ->name('agendas.files');
         // クイズ関連
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
         Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');

@@ -65,6 +65,22 @@
                     <label for="content" class="block font-medium mb-1">内容・概要</label>
                     <textarea name="content" id="content" class="border px-2 py-1 w-full rounded">{{ old('content', $agenda->content ?? '') }}</textarea>
                 </div>
+                {{-- 画像一覧 --}}
+                @if ($agenda->files->isNotEmpty())
+                    <ul>
+                        @foreach ($agenda->files as $file)
+                            <li>
+                                <a href="{{ Storage::disk('public')->url($file->file_path) }}" target="_blank">
+                                    {{ $file->file_name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>登録済みファイルはありません</p>
+                @endif
+
+
 
                 <div class="flex gap-2 mt-4">
                     <!-- 更新ボタン -->
