@@ -9,12 +9,13 @@ use App\Models\UserDetail;
 use App\Models\Role;
 use App\Models\Theme;
 use App\Models\Course;
-use App\Models\Division;
+
 
 class UserDetailController extends Controller
 {
     public function create(User $user)
     {
+        $themes = Theme::all();
         // 既に詳細があれば編集画面にリダイレクト
         if ($user->detail) {
             return redirect()->route('admin.user_details.edit', [
@@ -23,10 +24,8 @@ class UserDetailController extends Controller
             ]);
         }
 
-        // 表示可能な部署を取得
-        $divisions = Division::where('is_show', true)->get();
 
-        return view('admin.user_details.create', compact('user', 'divisions'));
+        return view('admin.user_details.create', compact('user', 'themes'));
     }
 
     public function store(Request $request, User $user)
@@ -77,9 +76,9 @@ class UserDetailController extends Controller
         $roles = Role::all();      // 権限用
         $courses = Course::all();  // 講座用
         $themes = Theme::all();    // テーマカラー用
-        $divisions = Division::where('is_show', true)->get(); // 部署追加
 
-        return view('admin.user_details.edit', compact('user', 'detail', 'roles', 'courses', 'themes', 'divisions'));
+
+        return view('admin.user_details.edit', compact('user', 'detail', 'roles', 'courses', 'themes'));
     }
 
     public function update(Request $request, User $user, UserDetail $detail)
