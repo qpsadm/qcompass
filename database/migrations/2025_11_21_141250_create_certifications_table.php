@@ -19,8 +19,8 @@ return new class extends Migration
             // 表示フラグを統一
             $table->boolean('is_show')->default(1)->comment('表示フラグ 1=表示, 0=非表示');
 
-            $table->softDeletes()->comment('削除日');
-            $table->timestamps()->comment('作成日/更新日');
+            $table->softDeletes();
+            $table->timestamps();
         });
 
         // もし過去に display_flag カラムが残っていた場合は、rename して統一する
