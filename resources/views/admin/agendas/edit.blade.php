@@ -66,19 +66,57 @@
                     <textarea name="content" id="content" class="border px-2 py-1 w-full rounded">{{ old('content', $agenda->content ?? '') }}</textarea>
                 </div>
                 {{-- 画像一覧 --}}
-                @if ($agenda->files->isNotEmpty())
-                    <ul>
+                <table class="w-full border-collapse mt-4">
+                    <thead>
+                        <tr class="border-b bg-gray-100">
+                            <th class="p-2 text-left">プレビュー</th>
+                            <th class="p-2 text-left">ファイル名</th>
+                            <th class="p-2 text-left">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @foreach ($agenda->files as $file)
-                            <li>
-                                <a href="{{ Storage::disk('public')->url($file->file_path) }}" target="_blank">
+                            <tr class="border-b">
+                                <td class="p-2">
+                                    <img src="{{ asset('storage/' . $file->file_path) }}" class="h-16 object-cover">
+                                </td>
+                                <td class="p-2">
                                     {{ $file->file_name }}
-                                </a>
-                            </li>
+                                </td>
+                                <td class="p-2 flex gap-2">
+                                    <!-- URLコピー -->
+                                    <button type="button" class="text-blue-500 underline"
+                                        onclick="copyToClipboard('{{ asset('storage/' . $file->file_path) }}')">
+                                        URLコピー
+                                    </button>
+                                    <!-- 別ウィンドウプレビュー -->
+                                    <button type="button" class="text-green-500 underline"
+                                        onclick="openPreview('{{ asset('storage/' . $file->file_path) }}')">
+                                        プレビュー
+                                    </button>
+                                </td>
+                            </tr>
                         @endforeach
-                    </ul>
-                @else
-                    <p>登録済みファイルはありません</p>
-                @endif
+                    </tbody>
+                </table>
+
+                <script>
+                    function copyToClipboard(text) {
+                        navigator.clipboard.writeText(text).then(() => {
+                            alert('URLをコピーしました！');
+                        }).catch(err => {
+                            alert('コピーに失敗しました');
+                            console.error(err);
+                        });
+                    }
+
+                    function openPreview(url) {
+                        window.open(url, '_blank', 'width=800,height=600,resizable=yes,scrollbars=yes');
+                    }
+                </script>
+
+
+
 
 
 
