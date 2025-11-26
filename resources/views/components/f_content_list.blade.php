@@ -25,7 +25,7 @@
                 {{-- タイトル（講座名 + カテゴリー名 + タイトル） --}}
                 <td class="title">
                     <a href="{{ route('user.announcements.show', $item->id) }}">
-                        [{{ $item->type?->type_name ?? '未分類' }}]
+                        【{{ $item->type?->type_name ?? '未分類' }}】
                         {{ $item->title }}
                     </a>
                 </td>
