@@ -64,7 +64,10 @@
                     </button>
 
 
-                    <a href="{{ route('admin.learnings.index') }}" class="ml-2 text-gray-600">キャンセル</a>
+                    <a href="{{ route('admin.certifications.index') }}"
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition">
+                        一覧に戻る
+                    </a>
                 </div>
             </form>
         </div>
