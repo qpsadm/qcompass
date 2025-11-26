@@ -21,12 +21,23 @@ class QuestionController extends Controller
     // 作成画面
     public function create()
     {
-        $courses = Course::with('teachers')->get();
+        $courses = Course::with('teachers')->get(); // 講座情報を取得
+        $coursesTeachers = []; // 講座に紐づく教師情報を格納する配列
 
-        
-        $tags = Tag::all();
+        // 各講座に紐づく教師情報を整理
+        foreach ($courses as $course) {
+            $coursesTeachers[$course->id] = $course->teachers->map(function ($teacher) {
+                return [
+                    'id' => $teacher->id,
+                    'name' => $teacher->name,
+                ];
+            });
+        }
 
-        return view('admin.questions.create', compact('courses', 'tags'));
+        $tags = Tag::all(); // タグ情報を取得
+
+        // ビューに必要なデータを渡す
+        return view('admin.questions.create', compact('courses', 'tags', 'coursesTeachers'));
     }
 
     // 保存
@@ -42,7 +53,7 @@ class QuestionController extends Controller
             'is_show'      => 'nullable|boolean',
         ]);
 
-        Question::create($validated);
+        Question::create($validated); // 質問を作成
 
         return redirect()->route('admin.questions.index')->with('success', '質問を作成しました');
     }
@@ -50,10 +61,23 @@ class QuestionController extends Controller
     // 編集画面
     public function edit(Question $question)
     {
+        // 編集するために講座とタグを取得
         $courses = Course::with('teachers')->get();
         $tags = Tag::all();
 
-        return view('admin.questions.edit', compact('question', 'courses', 'tags'));
+        // 各講座に紐づく教師情報を整理
+        $coursesTeachers = [];
+        foreach ($courses as $course) {
+            $coursesTeachers[$course->id] = $course->teachers->map(function ($teacher) {
+                return [
+                    'id' => $teacher->id,
+                    'name' => $teacher->name,
+                ];
+            });
+        }
+
+        // ビューに必要なデータを渡す
+        return view('admin.questions.edit', compact('question', 'courses', 'tags', 'coursesTeachers'));
     }
 
     // 更新
@@ -69,15 +93,22 @@ class QuestionController extends Controller
             'is_show'      => 'nullable|boolean',
         ]);
 
-        $question->update($validated);
+        $question->update($validated); // 質問を更新
 
         return redirect()->route('admin.questions.index')->with('success', '質問を更新しました');
+    }
+
+    // 詳細
+    public function show($id)
+    {
+        $question = Question::findOrFail($id);  // 質問IDで質問を取得
+        return view('admin.questions.show', compact('question'));  // 質問をビューに渡す
     }
 
     // 削除
     public function destroy(Question $question)
     {
-        $question->delete();
+        $question->delete(); // 質問を削除
         return redirect()->route('admin.questions.index')->with('success', '質問を削除しました');
     }
 }

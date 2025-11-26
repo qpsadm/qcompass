@@ -18,7 +18,7 @@ class Question extends Model
         'content',
         'answer',
         'is_show',
-        'tag_id', 
+        'tag_id',
         'deleted_at'
     ];
 
@@ -38,11 +38,5 @@ class Question extends Model
     public function tag()
     {
         return $this->belongsTo(Tag::class, 'tag_id');
-    }
-
-    // 講座ごとの担当講師（Alpine.js用）
-    public function course_teachers()
-    {
-        return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
     }
 }
