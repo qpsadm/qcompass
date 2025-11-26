@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+.section-box {
+    margin-bottom: 30px;
+    padding: 35px;
+    background-color: var(--sub-color-2);
+    border-radius: 15px;
+}
+
+.section-box .box-title {
+    margin-bottom: 40px;
+}
+
+.section-box .box-title h3 {
+    position: relative;
+    padding-left: 33px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.section-box .box-title h3::before,
+.section-box .box-title h3::after {
+    content: "";
+    position: absolute;
+    background-color: #74A0FF;
+}
+
+.section-box .box-title h3::before {
+    top: 5px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+}
+
+.section-box .box-title h3::after {
+    top: 18px;
+    left: 13px;
+    width: 10px;
+    height: 10px;
+}
+
+.section-box .content-list {
+    margin-bottom: 10px;
+}
+
+.section-flex {
+    display: flex;
+    gap: 40px;
+}
+
+.profile {
+    width: 370px;
+}
+
+.calendar {
+    flex: 1;
+}
+
+.section-box.facebook {
+    padding: 35px 20px 20px;
+}
+
+.section-box.facebook .box-title {
+    margin-bottom: 25px;
+}
+
+.memo textarea {
+    width: 100%;
+    border: 1px solid #5e5e5e;
+}
+
+.more-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.memo button {
+    display: block;
+    width: 100px;
+    padding: 7px 0;
+    border-radius: 10px;
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    font-size: 16px;
+    text-align: center;
+}
