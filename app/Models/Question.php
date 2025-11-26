@@ -1,92 +1,42 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Models;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Question;
-use App\Models\Course;
-use App\Models\User;
-use App\Models\Tag;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class QuestionController extends Controller
+class Question extends Model
 {
-    // 一覧
-    public function index()
+    use HasFactory;
+
+    protected $fillable = [
+        'asker_id',
+        'target_id',
+        'course_id',
+        'title',
+        'responder_id',
+        'content',
+        'answer',
+        'is_show',
+        'tag_id',
+        'deleted_at'
+    ];
+
+    // 講座
+    public function course()
     {
-        $questions = Question::with(['course', 'responder', 'tag'])->paginate(20);
-        return view('admin.questions.index', compact('questions'));
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
-    // 作成画面
-    public function create()
+    // 回答講師
+    public function responder()
     {
-        $courses = Course::with('teachers')->get();
-
-        $coursesTeachers = [];
-        foreach ($courses as $course) {
-            $coursesTeachers[$course->id] = $course->teachers->map(function ($teacher) {
-                return [
-                    'id' => $teacher->id,
-                    'name' => $teacher->name,
-                ];
-            });
-        }
-
-        $tags = Tag::all();
-
-        return view('admin.questions.create', compact('courses', 'tags', 'coursesTeachers'));
+        return $this->belongsTo(User::class, 'responder_id');
     }
 
-    // 保存
-    public function store(Request $request)
+    // タグ（1対1）
+    public function tag()
     {
-        $validated = $request->validate([
-            'course_id'    => 'nullable|exists:courses,id',
-            'title'        => 'required|string|max:255',
-            'responder_id' => 'nullable|exists:users,id',
-            'content'      => 'required|string',
-            'answer'       => 'nullable|string',
-            'tag_id'       => 'required|exists:tags,id',
-            'is_show'      => 'nullable|boolean',
-        ]);
-
-        Question::create($validated);
-
-        return redirect()->route('admin.questions.index')->with('success', '質問を作成しました');
-    }
-
-    // 編集画面
-    public function edit(Question $question)
-    {
-        $courses = Course::with('teachers')->get();
-        $tags = Tag::all();
-
-        return view('admin.questions.edit', compact('question', 'courses', 'tags'));
-    }
-
-    // 更新
-    public function update(Request $request, Question $question)
-    {
-        $validated = $request->validate([
-            'course_id'    => 'nullable|exists:courses,id',
-            'title'        => 'required|string|max:255',
-            'responder_id' => 'nullable|exists:users,id',
-            'content'      => 'required|string',
-            'answer'       => 'nullable|string',
-            'tag_id'       => 'required|exists:tags,id',
-            'is_show'      => 'nullable|boolean',
-        ]);
-
-        $question->update($validated);
-
-        return redirect()->route('admin.questions.index')->with('success', '質問を更新しました');
-    }
-
-    // 削除
-    public function destroy(Question $question)
-    {
-        $question->delete();
-        return redirect()->route('admin.questions.index')->with('success', '質問を削除しました');
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
 }

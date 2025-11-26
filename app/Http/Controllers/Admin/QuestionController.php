@@ -9,7 +9,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Tag;
 
-class QuestionsController extends Controller
+class QuestionController extends Controller
 {
     // 一覧
     public function index()
@@ -82,6 +82,13 @@ class QuestionsController extends Controller
         $question->update($validated);
 
         return redirect()->route('admin.questions.index')->with('success', '質問を更新しました');
+    }
+
+    //詳細
+    public function show($id)
+    {
+        $question = Question::findOrFail($id);  // 質問IDで質問を取得
+        return view('admin.questions.show', compact('question'));  // 質問をビューに渡す
     }
 
     // 削除
