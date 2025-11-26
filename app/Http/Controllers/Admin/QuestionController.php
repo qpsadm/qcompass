@@ -49,7 +49,7 @@ class QuestionController extends Controller
             'responder_id' => 'nullable|exists:users,id',
             'content'      => 'required|string',
             'answer'       => 'nullable|string',
-            'tag_id'       => 'required|exists:tags,id', // ラジオ必須
+            'tags_id'       => 'required|exists:tags,id', // ラジオ必須
             'is_show'      => 'nullable|boolean',
         ]);
 
@@ -89,7 +89,7 @@ class QuestionController extends Controller
             'responder_id' => 'nullable|exists:users,id',
             'content'      => 'required|string',
             'answer'       => 'nullable|string',
-            'tag_id'       => 'required|exists:tags,id',
+            'tags_id'       => 'required|exists:tags,id',
             'is_show'      => 'nullable|boolean',
         ]);
 
