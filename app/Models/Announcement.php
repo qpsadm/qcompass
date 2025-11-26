@@ -39,4 +39,3 @@ class Announcement extends Model
     {
         return $this->morphMany(AgendaFile::class, 'target');
     }
-}

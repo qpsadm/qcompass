@@ -100,14 +100,47 @@ Route::middleware(['auth', 'role:8'])
         Route::get('course_category/create/{courseId}', [CourseCategoryController::class, 'create'])
             ->name('course_category.create');
 
-        Route::get('agendas/{agenda}/preview', [AgendaController::class, 'preview'])
-            ->name('agendas.preview');
-        Route::get('{course}/agendas', [CourseController::class, 'agendas'])->name('courses.agendas');
-        Route::post('{course}/agendas', [CourseController::class, 'updateAgendas'])->name('courses.agendas.update');
-        Route::get('agenda_files/{agenda_file}/preview', [AgendaFileController::class, 'preview'])
-            ->name('agenda_files.preview');
+        // CKEditor
+        Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 
-        // リソース系
+        // =============================
+        // アジェンダ・お知らせ共通ファイル管理
+        // =============================
+        Route::prefix('files')->name('files.')->group(function () {
+            // type = agenda / announcement
+
+            // 一覧表示
+            Route::get('{type}/{targetId}', [AgendaFileController::class, 'files'])
+                ->name('index');
+
+            // 新規作成フォーム
+            Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])
+                ->name('create');
+
+            // 保存
+            Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])
+                ->name('store');
+
+            // プレビュー
+            Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])
+                ->name('preview');
+
+            // 編集フォーム
+            Route::get('{type}/{id}/edit', [AgendaFileController::class, 'edit'])
+                ->name('edit');
+
+            // 更新
+            Route::put('{type}/{id}', [AgendaFileController::class, 'update'])
+                ->name('update');
+
+            // 削除
+            Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])
+                ->name('destroy');
+        });
+
+        // =============================
+        // その他リソース系
+        // =============================
         Route::resources([
             'courses' => CourseController::class,
             'users' => UserController::class,
@@ -127,7 +160,6 @@ Route::middleware(['auth', 'role:8'])
             'categories' => CategoryController::class,
             'tags' => TagController::class,
             'agendas' => AgendaController::class,
-            'agenda_files' => AgendaFileController::class,
             'quizzes' => QuizController::class,
             'learnings' => LearningController::class,
             'certifications' => CertificationController::class,
@@ -135,8 +167,6 @@ Route::middleware(['auth', 'role:8'])
             'achievements' => AchievementController::class,
             'achievements_release' => AchievementsReleaseController::class,
         ]);
-
-
 
         // 受講生一覧
         Route::get('courses/{course}/students', [CourseController::class, 'students'])
@@ -160,19 +190,12 @@ Route::middleware(['auth', 'role:8'])
         Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
         Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
 
-        // CKEditor
-        Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
-
         // アジェンダ関連
         Route::post('agendas/upload', [AgendaController::class, 'upload'])->name('agendas.upload');
         Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
         Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
         Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
 
-        Route::get('agenda_files/download/{id}', [AgendaFileController::class, 'download'])
-            ->name('agenda_files.download');
-        Route::get('agendas/{agenda?}/files', [AgendaController::class, 'files'])
-            ->name('agendas.files');
         // クイズ関連
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
         Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
