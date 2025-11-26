@@ -10,8 +10,8 @@
                 <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
             </div>
             <div class="footer-sns-icons">
-                <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
-                <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                <img src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン">
+                <img src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン">
             </div>
         </div>
         <div>
