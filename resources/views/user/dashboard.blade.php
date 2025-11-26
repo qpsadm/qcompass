@@ -1,6 +1,6 @@
-@extends('layouts.f_layout');
+@extends('layouts.f_layout')
 
-@section('title', '新着情報一覧 | QLIP-Compass');
+@section('title', '新着情報一覧 | QLIP-Compass')
 
 @section('main-content')
     <div class="container">
