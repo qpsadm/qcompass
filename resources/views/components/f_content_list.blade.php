@@ -13,7 +13,9 @@
         <tr>
             <td class="date">{{ $item->created_at->format('Y/m/d') }}</td>
             <td class="category">
-                <p class="category-{{ $item->type?->slug ?? 'default' }}">{{ $courseName }}</p>
+                <p class="category-{{ $item->type?->slug ?? 'default' }} {{ !empty($item->course?->course_name) ? 'course-hon' : 'course-all' }}">
+                    {{ $courseName }}
+                </p>
             </td>
             <td class="title">
                 <a href="{{ route('user.news.news_info', $item->id) }}">
