@@ -15,6 +15,6 @@ class NewsController extends Controller
             ->get();
 
         // ビューを返す
-        return view('user.news.news_list_all', compact('announcements'));
+        return view('user.news.news_list', compact('announcements'));
     }
 }
