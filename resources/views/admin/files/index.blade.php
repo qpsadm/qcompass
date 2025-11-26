@@ -32,12 +32,21 @@
                             <td class="border px-4 py-2">{{ $file->file_name }}</td>
                             <td class="border px-4 py-2">{{ $file->description }}</td>
                             <td class="border px-4 py-2">{{ $file->created_at }}</td>
-                            <td class="border px-4 py-2">
+                            <td class="border px-4 py-2 flex gap-2">
+
                                 <a href="{{ route('admin.files.preview', ['type' => $type, 'id' => $file->id]) }}"
                                     class="text-blue-500 underline" target="_blank">プレビュー</a>
-                                |
+
                                 <a href="{{ route('admin.files.edit', ['type' => $type, 'id' => $file->id]) }}"
                                     class="text-green-500 underline">編集</a>
+
+                                <form action="{{ route('admin.files.destroy', ['type' => $type, 'id' => $file->id]) }}"
+                                    method="POST" onsubmit="return confirm('本当に削除しますか？');" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 underline">削除</button>
+                                </form>
+
                             </td>
                         </tr>
                     @endforeach
