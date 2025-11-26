@@ -2,7 +2,13 @@
     <table>
         @foreach ($items as $item)
         @php
-        $courseName = $item->course?->name ?: '全講座';
+        // course_name が空でなければ "本講座" にする
+        $courseName = $item->course?->course_name;
+        if (!empty($courseName)) {
+        $courseName = '本講座';
+        } else {
+        $courseName = '全講座';
+        }
         @endphp
         <tr>
             <td class="date">{{ $item->created_at->format('Y/m/d') }}</td>
