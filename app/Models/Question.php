@@ -9,7 +9,7 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['asker_id', 'agenda_id', 'course_id', 'title', 'responder_id', 'content', 'answer', 'is_show', 'deleted_at'];
+    protected $fillable = ['asker_id', 'target_id', 'course_id', 'title', 'responder_id', 'content', 'answer', 'is_show', 'deleted_at'];
 
 
     // 講座

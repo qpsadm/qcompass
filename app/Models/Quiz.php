@@ -10,7 +10,7 @@ class Quiz extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['code', 'title', 'description', 'course_id', 'agenda_id', 'type', 'time_limit', 'total_score', 'passing_score', 'random_order', 'active_from', 'active_to', 'created_by', 'deleted_at'];
+    protected $fillable = ['code', 'title', 'description', 'course_id', 'target_id', 'type', 'time_limit', 'total_score', 'passing_score', 'random_order', 'active_from', 'active_to', 'created_by', 'deleted_at'];
     protected $casts = [
         'type' => 'integer',
         'time_limit' => 'integer',

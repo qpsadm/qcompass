@@ -26,7 +26,7 @@
                     <tbody>
                         @foreach ($agenda_files as $AgendaFile)
                             <tr class="hover:bg-gray-50">
-                                <td class="border px-4 py-2">{{ $AgendaFile->agenda_id }}</td>
+                                <td class="border px-4 py-2">{{ $AgendaFile->target_id }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_name }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_path }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_size }}</td>

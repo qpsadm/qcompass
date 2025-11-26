@@ -13,11 +13,11 @@
                 {{-- アジェンダ選択 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">アジェンダ <span class="text-red-500">*</span></label>
-                    <select name="agenda_id" class="border px-2 py-1 w-full rounded" required>
+                    <select name="target_id" class="border px-2 py-1 w-full rounded" required>
                         <option value="">選択してください</option>
                         @foreach ($agendas as $agenda)
                             <option value="{{ $agenda->id }}"
-                                {{ old('agenda_id', $agendaFile->agenda_id) == $agenda->id ? 'selected' : '' }}>
+                                {{ old('target_id', $agendaFile->target_id) == $agenda->id ? 'selected' : '' }}>
                                 {{ $agenda->agenda_name }}
                             </option>
                         @endforeach

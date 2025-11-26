@@ -21,7 +21,7 @@ class AgendaTagController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'agenda_id' => 'nullable',
+            'target_id' => 'nullable',
             'tag_id' => 'nullable',
             'deleted_at' => 'nullable',
         ]);
@@ -45,7 +45,7 @@ class AgendaTagController extends Controller
     {
         $AgendaTag = AgendaTag::findOrFail($id);
         $validated = $request->validate([
-            'agenda_id' => 'nullable',
+            'target_id' => 'nullable',
             'tag_id' => 'nullable',
             'deleted_at' => 'nullable',
         ]);

@@ -238,7 +238,7 @@ class CourseController extends Controller
 
     public function updateAgendas(Request $request, $courseId)
     {
-        // $request->agendas は選択された agenda_id の配列
+        // $request->agendas は選択された target_id の配列
         $selectedAgendas = $request->input('agendas', []);
 
         // 講座に紐づくカテゴリ経由でアジェンダを更新するロジック

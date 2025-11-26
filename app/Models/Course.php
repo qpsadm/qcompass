@@ -38,7 +38,7 @@ class Course extends Model
             Agenda::class,
             'course_agendas',
             'course_id',
-            'agenda_id'
+            'target_id'
         )->withPivot('order_no', 'note')
             ->withTimestamps();
     }

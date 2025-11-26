@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('agenda_tags', function (Blueprint $table) {
             $table->id(); // 主キー
-            $table->foreignId('agenda_id');
+            $table->foreignId('target_id');
             $table->foreignId('tag_id');
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
