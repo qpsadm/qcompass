@@ -5,7 +5,7 @@
         @endif
 
         @if ($listBtn)
-            <li class="default-btn"><a href="news_list_all.html">一覧画面へ</a></li>
+            <li class="default-btn"><a href="{{ $listUrl }}">{{ $listLabel }}</a></li>
         @endif
 
         @if ($nextBtn)
