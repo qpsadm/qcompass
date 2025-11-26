@@ -45,6 +45,7 @@
     {{-- ヘッダー --}}
     @include('includes.f_header')
 
+    {{-- サイドメニュー --}}
     @include('includes.f_side_menu')
 
     {{-- メインコンテンツ --}}
