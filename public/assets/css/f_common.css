@@ -825,15 +825,11 @@ footer {
     text-align: center;
 }
 
-.content-list .category p {
+.content-list .category .course-all {
     background-color: #c59cff;
 }
 
-.content-list .category-news {
-    background-color: #c59cff;
-}
-
-.content-list .category-agenda {
+.content-list .category .course-hon {
     background-color: #83BE85;
 }
 
