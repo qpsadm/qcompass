@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('course_agendas', function (Blueprint $table) {
             $table->id(); // 主キー id
             $table->foreignId('course_id');
-            $table->foreignId('agenda_id');
+            $table->foreignId('target_id');
             $table->integer('order_no');
             $table->string('note', 255)->nullable(); // varchar → string に修正
             // Laravel自動管理

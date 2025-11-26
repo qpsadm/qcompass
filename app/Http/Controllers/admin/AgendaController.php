@@ -37,12 +37,11 @@ class AgendaController extends Controller
             ->get();
 
         $agenda = new Agenda();
+        $agenda->load('files'); // ← 追加（空でもOK）
+
         $categories = $this->buildCategoryOptions($rootCategories);
 
-        // ← すでに登録されているファイル一覧取得
-        $files = \App\Models\AgendaFile::withTrashed()->orderBy('id', 'desc')->get();
-
-        return view('admin.agendas.create', compact('categories', 'agenda', 'files'));
+        return view('admin.agendas.create', compact('categories', 'agenda'));
     }
 
 
@@ -74,11 +73,9 @@ class AgendaController extends Controller
      */
     public function edit(Agenda $agenda)
     {
-        $agenda->load([
-            'files' => function ($q) {
-                $q->withTrashed();
-            }
-        ]);
+        $agenda->load(['files' => function ($q) {
+            $q->withTrashed();
+        }]);
 
         $rootCategories = Category::with('children')
             ->whereNull('parent_id')
@@ -89,10 +86,6 @@ class AgendaController extends Controller
 
         return view('admin.agendas.edit', compact('agenda', 'categories'));
     }
-
-
-
-
 
     /**
      * 更新

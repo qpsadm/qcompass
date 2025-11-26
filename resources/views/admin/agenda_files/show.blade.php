@@ -8,7 +8,9 @@
             <tbody>
                 <tr>
                     <td class="border px-4 py-2 font-bold">アジェンダ</td>
-                    <td class="border px-4 py-2">{{ $agendaFile->agenda?->agenda_name ?? '未設定' }}</td>
+                    <td class="border px-4 py-2">
+                        {{ $agendaFile->target_type === 'App\Models\Agenda' ? $agendaFile->target->agenda_name : '未設定' }}
+                    </td>
                 </tr>
                 <tr>
                     <td class="border px-4 py-2 font-bold">ファイル名</td>

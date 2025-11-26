@@ -22,7 +22,7 @@ class CourseAgendaController extends Controller
     {
         $validated = $request->validate([
             'course_id' => 'nullable',
-            'agenda_id' => 'nullable',
+            'target_id' => 'nullable',
             'order_no' => 'nullable',
             'note' => 'nullable',
             'deleted_at' => 'nullable',
@@ -48,7 +48,7 @@ class CourseAgendaController extends Controller
         $CourseAgenda = CourseAgenda::findOrFail($id);
         $validated = $request->validate([
             'course_id' => 'nullable',
-            'agenda_id' => 'nullable',
+            'target_id' => 'nullable',
             'order_no' => 'nullable',
             'note' => 'nullable',
             'deleted_at' => 'nullable',

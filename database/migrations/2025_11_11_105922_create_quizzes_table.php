@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title', 255)->comment('クイズタイトル');
             $table->text('description')->nullable()->comment('クイズの説明文');
             $table->bigInteger('course_id')->nullable()->comment('紐づくコースID');
-            $table->bigInteger('agenda_id')->nullable()->comment('紐づくアジェンダID');
+            $table->bigInteger('target_id')->nullable()->comment('紐づくアジェンダID');
             $table->tinyInteger('type')->default(1)->comment('クイズ種類 1=exam,2=survey,3=practice');
 
             $table->integer('time_limit')->nullable()->comment('制限時間（分）');

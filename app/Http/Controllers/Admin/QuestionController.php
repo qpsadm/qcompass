@@ -100,7 +100,7 @@ class QuestionController extends Controller
 
         $validated = $request->validate([
             'asker_id' => 'nullable',
-            'agenda_id' => 'nullable',
+            'target_id' => 'nullable',
             'course_id' => 'nullable',
             'title' => 'nullable',
             'responder_id' => 'nullable',

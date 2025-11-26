@@ -11,7 +11,14 @@ class AgendaFile extends Model
 {
     use HasFactory, SoftDeletes; // ← ここがポイント
 
-    protected $fillable = ['agenda_id', 'file_path', 'file_name', 'file_type', 'description'];
+    protected $fillable = [
+        'target_id',
+        'target_type',
+        'file_path',
+        'file_name',
+        'file_type',
+        'description',
+    ];
 
     protected static function booted()
     {
@@ -23,8 +30,9 @@ class AgendaFile extends Model
     }
 
     // Agenda とのリレーション
-    public function agenda()
+
+    public function target()
     {
-        return $this->belongsTo(Agenda::class);
+        return $this->morphTo();
     }
 }
