@@ -15,7 +15,7 @@
                 <p class="category-{{ $item->type?->slug ?? 'default' }}">{{ $courseName }}</p>
             </td>
             <td class="title">
-                <a href="{{ route('user.announcements.show', $item->id) }}">
+                <a href="{{ route('user.news.news_info', $item->id) }}">
                     【{{ $item->type?->type_name ?? '未分類' }}】{{ $item->title }}
                 </a>
             </td>

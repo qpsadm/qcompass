@@ -88,12 +88,11 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     Route::get('dashboard', [UserUserController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('announcements/{announcement}', [\App\Http\Controllers\User\AnnouncementController::class, 'show'])
-        ->name('announcements.show');
-
     // ニュース一覧
     Route::get('news/news_list', [NewsController::class, 'newsListAll'])
         ->name('news.news_list');
+    Route::get('news/news_info/{announcement}', [NewsController::class, 'news_info'])
+        ->name('news.news_info');
 });
 
 

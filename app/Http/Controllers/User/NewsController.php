@@ -8,6 +8,12 @@ use App\Models\Announcement;
 
 class NewsController extends Controller
 {
+    public function news_info(Announcement $announcement)
+    {
+        return view('user.news.news_info', compact('announcement'));
+    }
+
+
     public function newsListAll()
     {
         // 承認済みのみ取得
