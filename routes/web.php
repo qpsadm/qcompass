@@ -10,6 +10,7 @@ use App\Http\Controllers\CKEditorController;
 
 use App\Http\Controllers\User\UserController as UserUserController; // ← ユーザー用
 use App\Http\Controllers\Admin\UserController as AdminUserController; // ← 管理者用
+use App\Http\Controllers\User\NewsController;
 
 // 管理画面
 use App\Http\Controllers\Admin\{
@@ -89,6 +90,10 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     Route::get('announcements/{announcement}', [\App\Http\Controllers\User\AnnouncementController::class, 'show'])
         ->name('announcements.show');
+
+    // ニュース一覧ページ
+    Route::get('news/news_list_all.html', [NewsController::class, 'newsListAll'])
+        ->name('news.list_all');
 });
 
 
