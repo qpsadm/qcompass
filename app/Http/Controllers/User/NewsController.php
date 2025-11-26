@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Announcement;
 
 class NewsController extends Controller
 {
-    // ニュース一覧
     public function newsListAll()
     {
-        // ニュースを取得（例: status が approved のみ）
-        $announcements = \App\Models\Announcement::where('status', 'approved')
+        // 承認済みニュースのみ取得
+        $announcements = Announcement::where('status', 'approved')
             ->orderBy('created_at', 'desc')
             ->get();
 
