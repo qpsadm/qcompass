@@ -3,34 +3,42 @@
 @section('content')
     <div class="container mx-auto p-4 max-w-lg">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">アジェンダファイル作成</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">
+                {{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} ファイル作成
+            </h1>
 
-            <form action="{{ route('admin.agenda_files.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.files.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
+                <input type="hidden" name="target_type" value="{{ $type }}">
+                <input type="hidden" name="target_id" value="{{ $target->id ?? 0 }}">
+
                 <table class="w-full table-auto border-collapse">
                     <tbody>
-                        {{-- アジェンダ選択 --}}
-                        <tr class="border-b">
-                            <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">
-                                アジェンダ <span class="text-red-500">*</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <select name="target_id"
-                                    class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required>
-                                    <option value="">選択してください</option>
-                                    @foreach ($agendas as $agenda)
-                                        <option value="{{ $agenda->id }}"
-                                            {{ old('target_id') == $agenda->id ? 'selected' : '' }}>
-                                            {{ $agenda->agenda_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('target_id')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </td>
-                        </tr>
+                        {{-- 対象選択（target_idが未指定の場合だけ） --}}
+                        @if (!isset($target))
+                            <tr class="border-b">
+                                <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">
+                                    {{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} <span class="text-red-500">*</span>
+                                </th>
+                                <td class="px-4 py-2">
+                                    <select name="target_id"
+                                        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                        <option value="">選択してください</option>
+                                        @foreach ($targets as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ old('target_id') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->{$type === 'agenda' ? 'agenda_name' : 'title'} }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('target_id')
+                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </td>
+                            </tr>
+                        @endif
 
                         {{-- ファイル --}}
                         <tr class="border-b">
@@ -59,9 +67,6 @@
                             </td>
                         </tr>
 
-                        {{-- ファイルタイプ（hidden） --}}
-                        <input type="hidden" name="file_type" value="">
-
                         {{-- 説明 --}}
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">用途・備考</th>
@@ -82,7 +87,7 @@
                         class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-sm transition">
                         保存
                     </button>
-                    <a href="{{ route('admin.agenda_files.index') }}"
+                    <a href="{{ route('admin.files.index', ['type' => $type, 'targetId' => $target->id ?? 0]) }}"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-sm transition">
                         一覧に戻る
                     </a>

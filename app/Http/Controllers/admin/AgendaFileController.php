@@ -93,10 +93,21 @@ class AgendaFileController extends Controller
     /**
      * 編集フォーム
      */
-    public function edit($id)
+    // 編集フォーム
+    public function edit($type, $id)
     {
-        $agendaFile = AgendaFile::findOrFail($id);
-        return view('admin.agenda_files.edit', compact('agendaFile'));
+        $file = AgendaFile::findOrFail($id);
+
+        // typeごとの対象を取得（必要なら）
+        if ($type === 'agenda') {
+            $targets = \App\Models\Agenda::all();
+        } elseif ($type === 'announcement') {
+            $targets = \App\Models\Announcement::all();
+        } else {
+            abort(404);
+        }
+
+        return view('admin.files.edit', compact('file', 'type', 'targets'));
     }
 
     /**
@@ -142,7 +153,8 @@ class AgendaFileController extends Controller
     /**
      * プレビュー
      */
-    public function preview($id)
+    // プレビュー
+    public function preview($type, $id)
     {
         $agendaFile = AgendaFile::findOrFail($id);
 
@@ -151,5 +163,23 @@ class AgendaFileController extends Controller
         }
 
         return response()->file(storage_path('app/public/' . $agendaFile->file_path));
+    }
+    public function files($type, $targetId = 0)
+    {
+        if ($type === 'agenda') {
+            $query = AgendaFile::where('target_type', Agenda::class);
+        } elseif ($type === 'announcement') {
+            $query = AgendaFile::where('target_type', Announcement::class);
+        } else {
+            abort(404);
+        }
+
+        if ($targetId != 0) {
+            $query->where('target_id', $targetId);
+        }
+
+        $files = $query->orderBy('created_at', 'desc')->get();
+
+        return view('admin.files.index', compact('files', 'type', 'targetId'));
     }
 }
