@@ -8,14 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('quiz_statistics', function (Blueprint $table) {
+        Schema::create('quiz_question_choices', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('quiz_id');
-            $table->float('average_score')->nullable();
-            $table->integer('highest_score')->nullable();
-            $table->integer('attempts_count')->nullable();
+            $table->foreignId('quiz_question_id')
+                ->constrained('quiz_questions');
 
+            $table->text('choice_text');
+            $table->boolean('is_correct')->default(false);
+            $table->integer('order')->default(0);
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
@@ -29,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quiz_statistics');
+        Schema::dropIfExists('quiz_question_choices');
     }
 };

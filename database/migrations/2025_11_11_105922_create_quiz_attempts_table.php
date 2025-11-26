@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('quiz_attempts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->bigInteger('quiz_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('quiz_id');
             $table->timestamp('started_at');
             $table->timestamp('completed_at')->nullable();
             $table->integer('score')->nullable();

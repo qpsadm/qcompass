@@ -8,13 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('quiz_statistics', function (Blueprint $table) {
-            $table->id();
+        Schema::create('agenda_tags', function (Blueprint $table) {
+            $table->id(); // 主キー
 
-            $table->unsignedBigInteger('quiz_id');
-            $table->float('average_score')->nullable();
-            $table->integer('highest_score')->nullable();
-            $table->integer('attempts_count')->nullable();
+            $table->foreignId('agenda_id')
+                ->constrained('agendas')
+                ->onDelete('cascade')
+                ->comment('アジェンダID');
+
+            $table->foreignId('tag_id')
+                ->constrained('tags')
+                ->onDelete('cascade')
+                ->comment('タグID');
 
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
@@ -29,6 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quiz_statistics');
+        Schema::dropIfExists('agenda_tags');
     }
 };

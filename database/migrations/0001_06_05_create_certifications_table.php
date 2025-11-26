@@ -8,19 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('quiz_statistics', function (Blueprint $table) {
+        Schema::create('certifications', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('quiz_id');
-            $table->float('average_score')->nullable();
-            $table->integer('highest_score')->nullable();
-            $table->integer('attempts_count')->nullable();
+            $table->string('name')->unique()->comment('資格名');
 
-            // Laravel自動管理
-            $table->timestamps(); // created_at / updated_at
-            $table->softDeletes(); // deleted_at
+            $table->tinyInteger('level')->default(1); // 1:初級, 2:上級
 
-            // 追加のユーザー情報
+            $table->text('description')->nullable();
+            $table->string('url')->nullable();
+            $table->boolean('is_show')->default(true);
+            $table->softDeletes(); // deleted_at 用
+            $table->timestamps();
+
+            // 作成者・更新者・削除者
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
@@ -29,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quiz_statistics');
+        Schema::dropIfExists('certifications');
     }
 };

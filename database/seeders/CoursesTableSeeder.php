@@ -5,51 +5,37 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CoursesTableSeeder extends Seeder
+class CourseUserSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
+        // SQLite の場合は外部キー制約を一時的に OFF
         DB::statement('PRAGMA foreign_keys = OFF;');
-        DB::table('courses')->truncate();
 
-        DB::table('courses')->insert([
+        // 既存データをクリア
+        DB::table('course_users')->truncate();
+
+        // 例: ユーザー1と2をコース1に紐づける
+        DB::table('course_users')->insert([
             [
-                'course_code' => 'C001',
-                'course_name' => '基礎IT講座',
-                'course_type_id' => 1, // course_types テーブルの存在を確認
-                'level_id' => 1,       // levels テーブルの存在を確認
-                'organizer_id' => 1,   // organizers テーブルの存在を確認
-                'venue' => '東京会場',
-                'application_date' => '2025-10-20',
-                'certification_date' => '2025-11-14',
-                'certification_number' => 'CERT-001',
-                'start_date' => '2025-10-30',
-                'end_date' => '2025-11-29',
-                'total_hours' => 40,
-                'periods' => 20,
-                'start_time' => '09:00:00',
-                'finish_time' => '17:00:00',
-                'start_viewing' => '2025-10-30',
-                'finish_viewing' => '2025-12-19',
-                'description' => 'IT基礎の理解を深める講座です。',
-                'mail_address' => 'report@example.com',
-                'cc_address' => 'cc@example.com',
-                'status' => 'open',
-                'plan_path' => 'plans/C001.pdf',
-                'flier_path' => 'fliers/C001.pdf',
-                'capacity' => 30,
-                'entering' => 25,
-                'completed' => 20,
-                'is_show' => true,
+                'user_id' => 1,
+                'course_id' => 1,
                 'created_at' => now(),
-                'created_user_name' => 'admin',
                 'updated_at' => now(),
-                'updated_user_name' => 'admin',
+                'created_user_name' => 'システム管理者',
+                'updated_user_name' => 'システム管理者',
             ],
-
-            // 他の講座も同様に追加
+            [
+                'user_id' => 2,
+                'course_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_user_name' => 'システム管理者',
+                'updated_user_name' => 'システム管理者',
+            ],
         ]);
 
+        // SQLite の外部キー制約を再有効化
         DB::statement('PRAGMA foreign_keys = ON;');
     }
 }

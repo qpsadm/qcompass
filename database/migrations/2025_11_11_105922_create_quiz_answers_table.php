@@ -10,13 +10,16 @@ return new class extends Migration
     {
         Schema::create('quiz_answers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('attempt_id');
-            $table->bigInteger('question_id');
-            $table->bigInteger('choice_id')->nullable();
+            $table->unsignedBigInteger('attempt_id');
+            $table->unsignedBigInteger('question_id');
+            $table->unsignedBigInteger('choice_id')->nullable();
+
             $table->text('answer_text')->nullable();
             $table->boolean('is_correct')->nullable();
             $table->integer('score')->nullable();
+
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at
