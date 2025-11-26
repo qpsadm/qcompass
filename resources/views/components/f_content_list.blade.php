@@ -1,14 +1,9 @@
 <div class="content-list">
     <table>
         @foreach ($items as $item)
-        @if ($item->status===2) {{-- status が true の場合のみ --}}
         @php
-        $courseName = $item->course?->name ?: '本講座';
-        if (empty($courseName)) {
-        $courseName = '全講座';
-        }
+        $courseName = $item->course?->name ?: '全講座';
         @endphp
-
         <tr>
             <td class="date">{{ $item->created_at->format('Y/m/d') }}</td>
             <td class="category">
@@ -20,8 +15,6 @@
                 </a>
             </td>
         </tr>
-        @endif
         @endforeach
-
     </table>
 </div>

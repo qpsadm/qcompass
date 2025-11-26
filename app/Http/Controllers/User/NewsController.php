@@ -14,14 +14,14 @@ class NewsController extends Controller
     }
 
 
+    // ニュース一覧
     public function newsListAll()
     {
-        // 承認済みのみ取得
-        $announcements = Announcement::where('status', 'is_show')
+        // 承認済み or 表示対象のみ取得
+        $announcements = Announcement::where('status', 2) // status 2 が表示用
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Blade に渡す
         return view('user.news.news_list', compact('announcements'));
     }
 }
