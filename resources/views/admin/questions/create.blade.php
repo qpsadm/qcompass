@@ -10,9 +10,7 @@
                 <tbody>
                     {{-- 講座 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座
-
-                        </th>
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座</th>
                         <td class="px-4 py-2">
                             <select name="course_id" x-model="selectedCourse" @change="filterTeachers()"
                                 class="border rounded px-3 py-2 w-80">
@@ -46,9 +44,7 @@
 
                     {{-- 回答講師 --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">回答講師
-
-                        </th>
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">回答講師</th>
                         <td class="px-4 py-2">
                             <select name="responder_id" class="border rounded px-3 py-2 w-80">
                                 <option value="">選択してください</option>
@@ -90,19 +86,22 @@
 
                     {{-- タグ --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">タグ <span
-                                class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span></th>
-
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">タグ
+                            <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
+                        </th>
                         <td class="px-4 py-2">
                             <div class="flex flex-wrap gap-3">
-                                @foreach ($tags as $tag)
+                                <template x-for="tag in tags" :key="tag.id">
                                     <label class="flex items-center space-x-1">
-                                        <input type="radio" name="tags_id" value="{{ $tag->id }}"
-                                            {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}>
-                                        <span>{{ $tag->name }}</span>
+                                        <input type="radio" name="tags_id" :value="tag.id"
+                                            :checked="tag.id == selectedTag">
+                                        <span x-text="tag.name"></span>
                                     </label>
-                                @endforeach
+                                </template>
                             </div>
+                            @error('tags_id')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </td>
                     </tr>
 
@@ -139,6 +138,8 @@
                 selectedCourse: @json(old('course_id')),
                 coursesTeachers: @json($coursesTeachers),
                 teachers: [],
+                tags: @json($tags),  // タグデータを渡す
+                selectedTag: @json(old('tags_id')),  // タグ選択状態
                 init() {
                     this.filterTeachers();
                 },

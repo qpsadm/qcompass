@@ -437,7 +437,7 @@ header::after {
     justify-content: center;
 }
 
-.logout-btn a {
+.logout-btn button {
     padding: 13px 70px;
     border-radius: 50px;
     background-color: var(--main-color);
