@@ -37,9 +37,9 @@
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_path }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_size }}</td>
                                 <td class="border px-4 py-2 space-x-2" x-data="{ open: false }">
-                                    <a href="{{ route('admin.agenda_files.show', $AgendaFile->id) }}"
+                                    <a href="{{ route('admin.files.show', $AgendaFile->id) }}"
                                         class="text-green-600 hover:underline">詳細</a>
-                                    <a href="{{ route('admin.agenda_files.edit', $AgendaFile->id) }}"
+                                    <a href="{{ route('admin.files.edit', $AgendaFile->id) }}"
                                         class="text-blue-600 hover:underline">編集</a>
 
                                     <!-- 削除ボタン -->

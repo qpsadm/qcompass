@@ -3,14 +3,14 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6">アジェンダファイル編集</h1>
+            <h1 class="text-2xl font-bold mb-6">{{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} ファイル編集</h1>
 
-            <form action="{{ route('admin.agenda_files.update', $agendaFile->id) }}" method="POST"
+            <form action="{{ route('admin.files.update', ['type' => $type, 'id' => $agendaFile->id]) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
-                {{-- アジェンダ選択 --}}
+                {{-- 対象アジェンダ選択 --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">アジェンダ <span class="text-red-500">*</span></label>
                     <select name="target_id" class="border px-2 py-1 w-full rounded" required>
@@ -29,8 +29,9 @@
                     <label class="block font-medium mb-1">ファイル</label>
                     <input type="file" name="file_path" class="border px-2 py-1 w-full rounded">
                     @if ($agendaFile->file_path)
-                        <p class="text-sm text-gray-500 mt-1">現在のファイル:
-                            {{ $agendaFile->file_name ?? $agendaFile->file_path }}</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            現在のファイル: {{ $agendaFile->file_name ?? $agendaFile->file_path }}
+                        </p>
                     @endif
                 </div>
 
@@ -55,9 +56,10 @@
                         class="border px-2 py-1 w-full rounded">
                 </div>
 
+                {{-- ボタン --}}
                 <div class="flex gap-2 mt-4">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">保存</button>
-                    <a href="{{ route('admin.agenda_files.index') }}"
+                    <a href="{{ route('admin.files.index', ['type' => $type]) }}"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">一覧に戻る</a>
                 </div>
             </form>

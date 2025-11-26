@@ -81,7 +81,10 @@
                             <tbody>
                                 @foreach ($agenda->files as $file)
                                     @php
-                                        $previewUrl = route('admin.agenda_files.preview', $file->id);
+                                        $previewUrl = route('admin.files.preview', [
+                                            'type' => 'agenda',
+                                            'id' => $file->id,
+                                        ]);
                                     @endphp
                                     <tr class="hover:bg-gray-50">
                                         <td class="border px-3 py-2">{{ $file->file_name }}</td>
@@ -106,6 +109,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>

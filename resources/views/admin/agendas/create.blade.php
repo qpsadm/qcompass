@@ -96,15 +96,55 @@
                 </table>
 
                 {{-- 画像一覧 --}}
-                @if (isset($agenda) && $agenda->id)
-                    <a href="{{ route('admin.agendas.files', $agenda->id) }}" target="_blank">
-                        登録済みファイル一覧
-                    </a>
-                @else
-                    <a href="{{ route('admin.agendas.files') }}" target="_blank">
-                        登録済みファイル一覧
-                    </a>
+                @if (isset($agenda) && $agenda->id && $agenda->files->isNotEmpty())
+                    <div class="mt-6 bg-gray-50 p-4 rounded">
+                        <h2 class="text-lg font-semibold mb-2">登録済みファイル一覧</h2>
+                        <table class="w-full table-auto border-collapse border">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border px-3 py-2">ファイル名</th>
+                                    <th class="border px-3 py-2">サイズ</th>
+                                    <th class="border px-3 py-2">プレビュー</th>
+                                    <th class="border px-3 py-2">URLコピー</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($agenda->files as $file)
+                                    @php
+                                        // typeパラメータを渡す
+                                        $previewUrl = route('admin.files.preview', [
+                                            'type' => 'agenda',
+                                            'id' => $file->id,
+                                        ]);
+                                    @endphp
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="border px-3 py-2">{{ $file->file_name }}</td>
+                                        <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
+                                        </td>
+                                        <td class="border px-3 py-2">
+                                            @if (Str::startsWith($file->file_type, 'image/'))
+                                                <a href="{{ $previewUrl }}" target="_blank">
+                                                    <img src="{{ $previewUrl }}" class="w-20 h-20 object-cover rounded"
+                                                        alt="プレビュー">
+                                                </a>
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                        <td class="border px-3 py-2">
+                                            <button type="button"
+                                                class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
+                                                onclick="navigator.clipboard.writeText('{{ $previewUrl }}').then(() => { alert('URLをコピーしました'); });">
+                                                URLコピー
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @endif
+
 
 
 

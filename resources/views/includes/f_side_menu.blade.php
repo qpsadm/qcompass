@@ -2,7 +2,7 @@
     <div class="side-menu-container">
         <div class="side-menu-top">
             <div class="site-logo">
-                <a href=""><img src="../assets/images/f_site-logo.svg" alt=""></a>
+                <a href=""><img src="{{ asset('assets/images/f_site-logo.svg') }}" alt=""></a>
             </div>
 
             <div class="contents-box">

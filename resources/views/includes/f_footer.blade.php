@@ -2,16 +2,16 @@
     <div class="footer-container">
         <div class="footer-info">
             <div class="footer-logo">
-                <a href=""><img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ"></a>
+                <a href=""><img src="{{ asset('assets/images/f_footer-logo.svg') }}" alt="コンパスロゴ"></a>
             </div>
             <div class="footer-company-info">
                 <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
-                <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
+                <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5F・6F</p>
                 <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
             </div>
             <div class="footer-sns-icons">
-                <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
-                <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                <img src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン">
+                <img src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン">
             </div>
         </div>
         <div>

@@ -16,12 +16,8 @@ class AgendaFileController extends Controller
      */
     public function agendaIndex(Agenda $agenda)
     {
-        $agenda_files = AgendaFile::where('target_type', Agenda::class)
-            ->where('target_id', $agenda->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('admin.agenda_files.agenda_index', compact('agenda', 'agenda_files'));
+        // これは使わず共通 index に統一可能
+        return redirect()->route('admin.files.index', ['type' => 'agenda', 'targetId' => $agenda->id]);
     }
 
     /**
@@ -29,28 +25,26 @@ class AgendaFileController extends Controller
      */
     public function announcementIndex(Announcement $announcement)
     {
-        $announcement_files = AgendaFile::where('target_type', Announcement::class)
-            ->where('target_id', $announcement->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('admin.agenda_files.announcement_index', compact('announcement', 'announcement_files'));
+        // 同様に共通 index に統一
+        return redirect()->route('admin.files.index', ['type' => 'announcement', 'targetId' => $announcement->id]);
     }
 
     /**
      * 作成フォーム（共通）
      */
-    public function create($type, $id)
+    public function create($type, $id = null)
     {
         if ($type === 'agenda') {
-            $target = Agenda::findOrFail($id);
+            $target = $id ? Agenda::find($id) : null;
+            $targets = Agenda::all();
         } elseif ($type === 'announcement') {
-            $target = Announcement::findOrFail($id);
+            $target = $id ? Announcement::find($id) : null;
+            $targets = Announcement::all();
         } else {
             abort(404);
         }
 
-        return view('admin.agenda_files.create', compact('target', 'type'));
+        return view('admin.files.create', compact('target', 'targets', 'type'));
     }
 
     /**
@@ -84,19 +78,28 @@ class AgendaFileController extends Controller
         $agendaFile->description = $request->description;
         $agendaFile->save();
 
-        $route = $request->target_type === 'agenda' ? 'admin.agenda_files.agendaIndex' : 'admin.agenda_files.announcementIndex';
-
-        return redirect()->route($route, $request->target_id)
-            ->with('success', 'ファイルを保存しました。');
+        return redirect()->route('admin.files.index', [
+            'type' => $request->target_type,
+            'targetId' => $request->target_id
+        ])->with('success', 'ファイルを保存しました。');
     }
 
     /**
      * 編集フォーム
      */
-    public function edit($id)
+    public function edit($type, $id)
     {
-        $agendaFile = AgendaFile::findOrFail($id);
-        return view('admin.agenda_files.edit', compact('agendaFile'));
+        $file = AgendaFile::findOrFail($id);
+
+        if ($type === 'agenda') {
+            $targets = Agenda::all();
+        } elseif ($type === 'announcement') {
+            $targets = Announcement::all();
+        } else {
+            abort(404);
+        }
+
+        return view('admin.files.edit', compact('file', 'type', 'targets'));
     }
 
     /**
@@ -113,36 +116,44 @@ class AgendaFileController extends Controller
 
         $agendaFile->update($validated);
 
-        $route = $agendaFile->target_type === Agenda::class
-            ? 'admin.agenda_files.agendaIndex'
-            : 'admin.agenda_files.announcementIndex';
-
-        return redirect()->route($route, $agendaFile->target_id)
-            ->with('success', 'ファイルを更新しました。');
+        return redirect()->route('admin.files.index', [
+            'type' => $agendaFile->target_type === Agenda::class ? 'agenda' : 'announcement',
+            'targetId' => $agendaFile->target_id
+        ])->with('success', 'ファイルを更新しました。');
     }
 
     /**
      * 削除
      */
-    public function destroy($id)
+    public function destroy($type, $id)
     {
         $agendaFile = AgendaFile::findOrFail($id);
+
+        // ファイルがストレージに存在する場合は削除
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($agendaFile->file_path)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($agendaFile->file_path);
+        }
+
         $targetId = $agendaFile->target_id;
         $targetType = $agendaFile->target_type;
+
+        // DBレコードを削除
         $agendaFile->delete();
 
-        $route = $targetType === Agenda::class
-            ? 'admin.agenda_files.agendaIndex'
-            : 'admin.agenda_files.announcementIndex';
+        // リダイレクト先を判定
+        $route = $targetType === \App\Models\Agenda::class
+            ? 'admin.files.index'
+            : 'admin.files.index';
 
-        return redirect()->route($route, $targetId)
+        return redirect()->route($route, ['type' => $type, 'targetId' => $targetId])
             ->with('success', 'ファイルを削除しました。');
     }
+
 
     /**
      * プレビュー
      */
-    public function preview($id)
+    public function preview($type, $id)
     {
         $agendaFile = AgendaFile::findOrFail($id);
 
@@ -151,5 +162,27 @@ class AgendaFileController extends Controller
         }
 
         return response()->file(storage_path('app/public/' . $agendaFile->file_path));
+    }
+
+    /**
+     * ファイル一覧（共通）
+     */
+    public function files($type, $targetId = 0)
+    {
+        if ($type === 'agenda') {
+            $query = AgendaFile::where('target_type', Agenda::class);
+        } elseif ($type === 'announcement') {
+            $query = AgendaFile::where('target_type', Announcement::class);
+        } else {
+            abort(404);
+        }
+
+        if ($targetId != 0) {
+            $query->where('target_id', $targetId);
+        }
+
+        $files = $query->orderBy('created_at', 'desc')->get();
+
+        return view('admin.files.index', compact('files', 'type', 'targetId'));
     }
 }

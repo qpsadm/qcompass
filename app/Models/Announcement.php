@@ -35,7 +35,9 @@ class Announcement extends Model
     {
         return $this->hasMany(Announcement::class, 'type_id');
     }
+
     public function files()
     {
         return $this->morphMany(AgendaFile::class, 'target');
     }
+}
