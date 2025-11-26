@@ -41,32 +41,39 @@ class NewsController extends Controller
         ]);
     }
 
-
-
-    public function myNews(Request $request)
+    public function mainNews()
     {
-        $user = auth()->user();  // ユーザーオブジェクト
-        $userId = auth()->id();
-
-        // ユーザーが所属する講座IDを配列で取得
-        $userCourseIds = DB::table('course_users')
-            ->where('user_id', $userId)
-            ->pluck('course_id')   // 複数講座に所属している場合も対応
-            ->toArray();
-
-        // 承認済み & 表示対象 & 訓練校または自分の講座のお知らせを取得
-        $announcements = Announcement::where('is_show', 1)
-            ->where('status', 2)
-            ->where(function ($query) use ($userCourseIds) {
-                $query->whereNull('course_id')          // 訓練校のお知らせ
-                    ->orWhereIn('course_id', $userCourseIds); // 自分の講座
-            })
+        $announcements = Announcement::where('status', 2)
+            ->where('is_show', 1)
+            ->whereNull('course_id') // 訓練校だけ
             ->orderBy('created_at', 'desc')
             ->get();
 
         return view('user.news.news_list', [
             'announcements' => $announcements,
-            'category' => 'my', // Bladeでアクティブ表示用
+            'category' => 'main',
+        ]);
+    }
+
+
+    public function myNews()
+    {
+        $userId = auth()->id();
+
+        $userCourseIds = DB::table('course_users')
+            ->where('user_id', $userId)
+            ->pluck('course_id')
+            ->toArray();
+
+        $announcements = Announcement::where('status', 2)
+            ->where('is_show', 1)
+            ->whereIn('course_id', $userCourseIds) // 訓練校（NULL）は含めない
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.news.news_list', [
+            'announcements' => $announcements,
+            'category' => 'my',
         ]);
     }
 }
