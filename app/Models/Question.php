@@ -9,8 +9,18 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['asker_id', 'target_id', 'course_id', 'title', 'responder_id', 'content', 'answer', 'is_show', 'deleted_at'];
-
+    protected $fillable = [
+        'asker_id',
+        'target_id',
+        'course_id',
+        'title',
+        'responder_id',
+        'content',
+        'answer',
+        'is_show',
+        'tag_id', 
+        'deleted_at'
+    ];
 
     // 講座
     public function course()
@@ -24,19 +34,15 @@ class Question extends Model
         return $this->belongsTo(User::class, 'responder_id');
     }
 
+    // タグ（1対1）
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class, 'tag_id');
+    }
+
+    // 講座ごとの担当講師（Alpine.js用）
     public function course_teachers()
     {
         return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
-    }
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'question_tags')
-            ->withTimestamps()
-            ->withPivot([
-                'created_user_name',
-                'updated_user_name',
-                'deleted_user_name',
-                'deleted_at'
-            ]);
     }
 }

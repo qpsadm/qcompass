@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 max-w-5xl">
+<div class="container mx-auto p-6 max-w-5xl bg-white rounded-lg shadow-md">
     <h1 class="text-3xl font-bold mb-6">問題追加: {{ $quiz->title }}</h1>
 
     <form action="{{ route('admin.quizzes.quiz_questions.store', $quiz->id) }}" method="POST">
@@ -15,8 +15,8 @@
                     </th>
                     <td class="px-4 py-2">
                         <input type="text" name="question_text" placeholder="問題文"
-                            value="{{ old('question_text') }}"
-                            class="border rounded px-3 py-2 w-full" required>
+                               value="{{ old('question_text') }}"
+                               class="border rounded px-3 py-2 w-full" required>
                         @error('question_text') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
@@ -26,7 +26,7 @@
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">配点</th>
                     <td class="px-4 py-2">
                         <input type="number" name="score" value="{{ old('score', 0) }}" placeholder="0"
-                            class="border rounded px-3 py-2 w-32">
+                               class="border rounded px-3 py-2 w-32">
                         @error('score') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
@@ -50,7 +50,9 @@
                     <td class="px-4 py-2">
                         <div id="choiceInputs" class="mb-2"></div>
                         <button type="button" id="addChoice"
-                            class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400">選択肢を追加</button>
+                                class="bg-gray-300 px-2 py-1 rounded hover:bg-gray-400 transition">
+                            選択肢を追加
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -58,10 +60,11 @@
 
         {{-- 追加ボタン --}}
         <div class="mt-6 flex gap-3">
-            <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+            <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">
                 追加
             </button>
-            <a href="{{ route('admin.quizzes.edit', $quiz->id) }}" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+            <a href="{{ route('admin.quizzes.edit', $quiz->id) }}"
+               class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">
                 クイズ編集に戻る
             </a>
         </div>
@@ -113,7 +116,7 @@
         div.innerHTML = `
         <input type="text" name="choices[${index}][choice_text]" class="border px-2 py-1 rounded w-64" placeholder="選択肢 ${index+1}" required>
         <label class="ml-2">正解 <input type="checkbox" name="choices[${index}][is_correct]" value="1"></label>
-        <button type="button" class="removeChoice bg-red-400 text-white px-1 py-0.5 rounded ml-2">削除</button>
+        <button type="button" class="removeChoice bg-red-400 text-white px-1 py-0.5 rounded ml-2 hover:bg-red-500 transition">削除</button>
     `;
         choiceInputs.appendChild(div);
         div.querySelector('.removeChoice').addEventListener('click', () => {

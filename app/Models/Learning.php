@@ -13,14 +13,10 @@ class Learning extends Model
     protected $fillable = [
         'type',
         'title',
-        'author',
-        'publisher',
-        'publication_date',
-        'isbn',
-        'url',
-        'image',
-        'level',
         'description',
+        'image',
+        'url',
+        'level',
         'is_show'
     ];
 

@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 max-w-5xl">
+<div class="container mx-auto p-6 max-w-5xl bg-white rounded-lg shadow-md">
     <h1 class="text-3xl font-bold mb-6">クイズ編集: {{ $quiz->title }}</h1>
 
     <div class="mb-6 flex gap-3">
         <a href="{{ route('admin.quizzes.quiz_questions.create', $quiz->id) }}"
-            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+           class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
             新しい問題を追加
         </a>
         <a href="{{ route('admin.quizzes.quiz_questions.index', $quiz->id) }}"
-            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+           class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             問題一覧
         </a>
     </div>
@@ -29,7 +29,7 @@
                     </th>
                     <td class="px-4 py-2">
                         <input type="text" name="title" value="{{ old('title', $quiz->title) }}"
-                            class="border rounded px-3 py-2 w-64" required>
+                               class="border rounded px-3 py-2 w-64" required>
                         @error('title') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
@@ -41,9 +41,9 @@
                         <select name="course_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>
                             @foreach ($courses as $course)
-                            <option value="{{ $course->id }}" @selected(old('course_id', $quiz->course_id) == $course->id)>
-                                {{ $course->course_name }} ({{ $course->course_code ?? '' }})
-                            </option>
+                                <option value="{{ $course->id }}" @selected(old('course_id', $quiz->course_id) == $course->id)>
+                                    {{ $course->course_name }} ({{ $course->course_code ?? '' }})
+                                </option>
                             @endforeach
                         </select>
                         @error('course_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
@@ -67,10 +67,11 @@
 
         {{-- 保存＋一覧に戻る --}}
         <div class="mt-6 flex gap-3">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition">
                 保存する
             </button>
-            <a href="{{ route('admin.quizzes.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+            <a href="{{ route('admin.quizzes.index') }}"
+               class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition">
                 一覧に戻る
             </a>
         </div>

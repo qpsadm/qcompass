@@ -11,151 +11,73 @@ use App\Models\Tag;
 
 class QuestionController extends Controller
 {
+    // 一覧
     public function index()
     {
-        $questions = Question::with('tags')->get();
+        $questions = Question::with(['course', 'responder', 'tag'])->paginate(20);
         return view('admin.questions.index', compact('questions'));
     }
 
+    // 作成画面
     public function create()
     {
         $courses = Course::with('teachers')->get();
 
-        $coursesTeachers = [];
-        foreach ($courses as $course) {
-            $coursesTeachers[$course->id] = $course->teachers->map(function ($t) {
-                return [
-                    'id' => $t->id,
-                    'name' => $t->name,
-                ];
-            });
-        }
-
+        
         $tags = Tag::all();
 
-        return view('admin.questions.create', compact('courses', 'coursesTeachers', 'tags'));
+        return view('admin.questions.create', compact('courses', 'tags'));
     }
 
+    // 保存
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_id'    => 'required',
+            'course_id'    => 'nullable|exists:courses,id',
             'title'        => 'required|string|max:255',
-            'responder_id' => 'required',
+            'responder_id' => 'nullable|exists:users,id',
             'content'      => 'required|string',
             'answer'       => 'nullable|string',
+            'tag_id'       => 'required|exists:tags,id', // ラジオ必須
             'is_show'      => 'nullable|boolean',
-            'tags'         => 'nullable|array',
         ]);
 
-        $question = Question::create($validated);
+        Question::create($validated);
 
-        // ✅ タグ登録（pivot + 作成者保存）
-        if (!empty($request->tags)) {
-            foreach ($request->tags as $tagId) {
-                $question->tags()->attach($tagId, [
-                    'created_user_name' => auth()->user()->name ?? 'system',
-                ]);
-            }
-        }
-
-        return redirect()
-            ->route('admin.questions.index')
-            ->with('success', 'Question作成完了');
+        return redirect()->route('admin.questions.index')->with('success', '質問を作成しました');
     }
 
-    public function show($id)
+    // 編集画面
+    public function edit(Question $question)
     {
-        $Question = Question::with('tags')->findOrFail($id);
-        return view('admin.questions.show', compact('Question'));
-    }
-
-    public function edit($id)
-    {
-        $Question = Question::with('tags')->findOrFail($id);
-
-        $courses = Course::with(['teachers' => function ($q) {
-            $q->where('role_id', '>=', 4)
-                ->whereNull('users.deleted_at');
-        }])->get();
-
-        $coursesTeachers = [];
-        foreach ($courses as $course) {
-            $coursesTeachers[$course->id] = $course->teachers->map(function ($t) {
-                return [
-                    'id' => $t->id,
-                    'name' => $t->name,
-                ];
-            });
-        }
-
+        $courses = Course::with('teachers')->get();
         $tags = Tag::all();
 
-        return view('admin.questions.edit', compact('Question', 'courses', 'coursesTeachers', 'tags'));
+        return view('admin.questions.edit', compact('question', 'courses', 'tags'));
     }
 
-    public function update(Request $request, $id)
+    // 更新
+    public function update(Request $request, Question $question)
     {
-        $Question = Question::with('tags')->findOrFail($id);
-
         $validated = $request->validate([
-            'asker_id' => 'nullable',
-            'target_id' => 'nullable',
-            'course_id' => 'nullable',
-            'title' => 'nullable',
-            'responder_id' => 'nullable',
-            'content' => 'nullable',
-            'answer' => 'nullable',
-            'is_show' => 'nullable',
-            'deleted_at' => 'nullable',
-            'tags' => 'nullable|array',
+            'course_id'    => 'nullable|exists:courses,id',
+            'title'        => 'required|string|max:255',
+            'responder_id' => 'nullable|exists:users,id',
+            'content'      => 'required|string',
+            'answer'       => 'nullable|string',
+            'tag_id'       => 'required|exists:tags,id',
+            'is_show'      => 'nullable|boolean',
         ]);
 
-        $Question->update($validated);
+        $question->update($validated);
 
-        // ✅ タグ差分処理
-        $currentTags = $Question->tags()->pluck('tags.id')->toArray();
-        $newTags = $request->tags ?? [];
-
-        // ✅ 削除されたタグ → soft delete + 削除者記録
-        $toDelete = array_diff($currentTags, $newTags);
-        foreach ($toDelete as $tagId) {
-            $Question->tags()->updateExistingPivot($tagId, [
-                'deleted_user_name' => auth()->user()->name ?? 'system',
-                'deleted_at' => now(),
-            ]);
-        }
-
-        // ✅ 新規タグ追加
-        foreach ($newTags as $tagId) {
-            $Question->tags()->syncWithoutDetaching([
-                $tagId => [
-                    'updated_user_name' => auth()->user()->name ?? 'system',
-                ]
-            ]);
-        }
-
-        return redirect()
-            ->route('admin.questions.index')
-            ->with('success', 'Question更新完了');
+        return redirect()->route('admin.questions.index')->with('success', '質問を更新しました');
     }
 
-    public function destroy($id)
+    // 削除
+    public function destroy(Question $question)
     {
-        $Question = Question::with('tags')->findOrFail($id);
-
-        // ✅ pivot側 soft delete
-        foreach ($Question->tags as $tag) {
-            $Question->tags()->updateExistingPivot($tag->id, [
-                'deleted_user_name' => auth()->user()->name ?? 'system',
-                'deleted_at' => now(),
-            ]);
-        }
-
-        $Question->delete();
-
-        return redirect()
-            ->route('admin.questions.index')
-            ->with('success', 'Question削除完了');
+        $question->delete();
+        return redirect()->route('admin.questions.index')->with('success', '質問を削除しました');
     }
 }
