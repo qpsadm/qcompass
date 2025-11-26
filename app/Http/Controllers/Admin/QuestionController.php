@@ -9,7 +9,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Tag;
 
-class QuestionController extends Controller
+class QuestionsController extends Controller
 {
     // 一覧
     public function index()
@@ -23,7 +23,17 @@ class QuestionController extends Controller
     {
         $courses = Course::with('teachers')->get();
 
-        
+        $coursesTeachers = [];
+        foreach ($courses as $course) {
+            $coursesTeachers[$course->id] = $course->teachers->map(function ($teacher) {
+                return [
+                    'id' => $teacher->id,
+                    'name' => $teacher->name,
+                ];
+            });
+        }
+
+
         $tags = Tag::all();
 
         return view('admin.questions.create', compact('courses', 'tags'));
