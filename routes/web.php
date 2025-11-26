@@ -92,8 +92,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
         ->name('announcements.show');
 
     // ニュース一覧
-    Route::get('news/list', [NewsController::class, 'newsListAll'])
-        ->name('news.list');
+    Route::get('news/news_list', [NewsController::class, 'newsListAll'])
+        ->name('news.news_list');
 });
 
 
