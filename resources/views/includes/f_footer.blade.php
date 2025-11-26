@@ -1,0 +1,32 @@
+<footer>
+    <div class="footer-container">
+        <div class="footer-info">
+            <div class="footer-logo">
+                <a href=""><img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ"></a>
+            </div>
+            <div class="footer-company-info">
+                <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
+                <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
+                <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
+            </div>
+            <div class="footer-sns-icons">
+                <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
+                <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+            </div>
+        </div>
+        <div>
+            <ul class="footer-menu-list">
+                <li><a href="course/course_info.html">講座情報</a></li>
+                <li><a href="teacher/teacher_list.html">講師紹介</a></li>
+                <li><a href="download.html">ダウンロード</a></li>
+                <li><a href="contact.html">お問い合わせ</a></li>
+                <li><a href="about.html">本サイトについて</a></li>
+                <li><a href="rule.html">受講規則</a></li>
+                <li><a href="privacy.html">利用規約</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 qlip-compass. All rights reserved.</p>
+    </div>
+</footer>
