@@ -18,7 +18,8 @@ class NewsController extends Controller
     public function newsListAll()
     {
         // 承認済み or 表示対象のみ取得
-        $announcements = Announcement::where('status', 2) // status 2 が表示用
+        $announcements = Announcement::where('status', 2)
+            ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->get();
 
