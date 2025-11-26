@@ -80,8 +80,10 @@
                         <li><a href="{{ route('admin.agendas.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ一覧</a>
                         </li>
-                        <li><a href="{{ route('admin.agenda_files.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダファイル一覧</a>
+                        <li> <a href="{{ route('admin.files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                                アジェンダファイル一覧
+                            </a>
                         </li>
                         <li><a href="{{ route('admin.agendas.create') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">新規作成</a>
@@ -98,6 +100,11 @@
                     <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
                         <li><a href="{{ route('admin.announcements.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせ一覧</a>
+                        </li>
+                        <li> <a href="{{ route('admin.files.index', ['type' => 'announcement', 'targetId' => 0]) }}"
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                                お知らせファイル一覧
+                            </a>
                         </li>
                         <li><a href="{{ route('admin.announcement_types.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">分類一覧</a>

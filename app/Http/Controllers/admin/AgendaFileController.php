@@ -6,38 +6,61 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AgendaFile;
 use App\Models\Agenda;
+use App\Models\Announcement;
 use Illuminate\Support\Facades\Storage;
 
 class AgendaFileController extends Controller
 {
     /**
-     * ファイル一覧
+     * アジェンダ用ファイル一覧
      */
-    public function index()
+    public function agendaIndex(Agenda $agenda)
     {
-        $agenda_files = AgendaFile::with('target')
+        $agenda_files = AgendaFile::where('target_type', Agenda::class)
+            ->where('target_id', $agenda->id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.agenda_files.index', compact('agenda_files'));
+        return view('admin.agenda_files.agenda_index', compact('agenda', 'agenda_files'));
     }
 
     /**
-     * ファイル作成フォーム
+     * お知らせ用ファイル一覧
      */
-    public function create()
+    public function announcementIndex(Announcement $announcement)
     {
-        $agendas = Agenda::orderBy('created_at', 'desc')->get();
-        return view('admin.agenda_files.create', compact('agendas'));
+        $announcement_files = AgendaFile::where('target_type', Announcement::class)
+            ->where('target_id', $announcement->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.agenda_files.announcement_index', compact('announcement', 'announcement_files'));
     }
 
     /**
-     * 保存
+     * 作成フォーム（共通）
+     */
+    public function create($type, $id)
+    {
+        if ($type === 'agenda') {
+            $target = Agenda::findOrFail($id);
+        } elseif ($type === 'announcement') {
+            $target = Announcement::findOrFail($id);
+        } else {
+            abort(404);
+        }
+
+        return view('admin.agenda_files.create', compact('target', 'type'));
+    }
+
+    /**
+     * 保存（共通）
      */
     public function store(Request $request)
     {
         $request->validate([
-            'target_id' => 'required|exists:agendas,id',
+            'target_id' => 'required',
+            'target_type' => 'required|in:agenda,announcement',
             'file_path' => 'required|file',
             'file_name' => 'required|string',
             'description' => 'nullable|string',
@@ -47,12 +70,13 @@ class AgendaFileController extends Controller
         $extension = $file->getClientOriginalExtension();
         $filename = $request->file_name . '.' . $extension;
 
-        // storage/app/public/images に保存
         $path = $file->storeAs('images', $filename, 'public');
+
+        $targetType = $request->target_type === 'agenda' ? Agenda::class : Announcement::class;
 
         $agendaFile = new AgendaFile();
         $agendaFile->target_id = $request->target_id;
-        $agendaFile->target_type = Agenda::class; // polymorphic
+        $agendaFile->target_type = $targetType;
         $agendaFile->file_path = $path;
         $agendaFile->file_name = $filename;
         $agendaFile->file_type = $file->getMimeType();
@@ -60,17 +84,10 @@ class AgendaFileController extends Controller
         $agendaFile->description = $request->description;
         $agendaFile->save();
 
-        return redirect()->route('admin.agenda_files.index')
-            ->with('success', 'ファイルを保存しました。');
-    }
+        $route = $request->target_type === 'agenda' ? 'admin.agenda_files.agendaIndex' : 'admin.agenda_files.announcementIndex';
 
-    /**
-     * ファイル詳細
-     */
-    public function show($id)
-    {
-        $agendaFile = AgendaFile::with('target')->findOrFail($id);
-        return view('admin.agenda_files.show', compact('agendaFile'));
+        return redirect()->route($route, $request->target_id)
+            ->with('success', 'ファイルを保存しました。');
     }
 
     /**
@@ -78,9 +95,8 @@ class AgendaFileController extends Controller
      */
     public function edit($id)
     {
-        $agendaFile = AgendaFile::with('target')->findOrFail($id);
-        $agendas = Agenda::orderBy('created_at', 'desc')->get();
-        return view('admin.agenda_files.edit', compact('agendaFile', 'agendas'));
+        $agendaFile = AgendaFile::findOrFail($id);
+        return view('admin.agenda_files.edit', compact('agendaFile'));
     }
 
     /**
@@ -91,39 +107,36 @@ class AgendaFileController extends Controller
         $agendaFile = AgendaFile::findOrFail($id);
 
         $validated = $request->validate([
-            'target_id' => 'required|exists:agendas,id',
             'file_name' => 'required|string',
             'description' => 'nullable|string',
         ]);
 
         $agendaFile->update($validated);
 
-        return redirect()->route('admin.agenda_files.index')
+        $route = $agendaFile->target_type === Agenda::class
+            ? 'admin.agenda_files.agendaIndex'
+            : 'admin.agenda_files.announcementIndex';
+
+        return redirect()->route($route, $agendaFile->target_id)
             ->with('success', 'ファイルを更新しました。');
     }
 
     /**
      * 削除
      */
-    public function destroy(AgendaFile $agendaFile)
-    {
-        $agendaFile->delete(); // モデルイベントでファイルも削除される
-        return redirect()->route('admin.agenda_files.index')
-            ->with('success', 'ファイルを削除しました。');
-    }
-
-    /**
-     * ダウンロード
-     */
-    public function download($id)
+    public function destroy($id)
     {
         $agendaFile = AgendaFile::findOrFail($id);
+        $targetId = $agendaFile->target_id;
+        $targetType = $agendaFile->target_type;
+        $agendaFile->delete();
 
-        if (!Storage::disk('public')->exists($agendaFile->file_path)) {
-            abort(404, 'ファイルが存在しません');
-        }
+        $route = $targetType === Agenda::class
+            ? 'admin.agenda_files.agendaIndex'
+            : 'admin.agenda_files.announcementIndex';
 
-        return Storage::disk('public')->download($agendaFile->file_path, $agendaFile->file_name);
+        return redirect()->route($route, $targetId)
+            ->with('success', 'ファイルを削除しました。');
     }
 
     /**
