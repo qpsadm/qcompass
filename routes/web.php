@@ -79,6 +79,10 @@ Route::middleware('auth')->group(function () {
         ->name('user.quizzes.submit');
 });
 
+Route::get('/test-page', function () {
+    return view('fronts.news_list');
+});
+
 // =============================
 // 管理画面（role:8 のみアクセス）
 // =============================
