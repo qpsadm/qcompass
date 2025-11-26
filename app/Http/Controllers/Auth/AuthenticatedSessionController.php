@@ -69,7 +69,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         } else {
             // 一般ユーザーはダッシュボードへ
-            return redirect()->route('dashboard');
+            return redirect()->route('user.dashboard');
         }
     }
 

@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CKEditorController;
 
+use App\Http\Controllers\User\UserController as UserUserController; // ← ユーザー用
+use App\Http\Controllers\Admin\UserController as AdminUserController; // ← 管理者用
+
 // 管理画面
 use App\Http\Controllers\Admin\{
     AdminDashboardController,
     CourseController,
-    UserController,
     RoleController,
     UserDetailController,
     LevelController,
@@ -56,9 +58,14 @@ Route::get('/', fn() => view('welcome'));
 // =============================
 // ダッシュボード（ログイン必須）
 // =============================
-Route::get('/dashboard', fn() => view('dashboard'))
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', function () {
+    if (auth()->check()) {
+        return auth()->user()->role_id == 8
+            ? redirect()->route('admin.dashboard')
+            : redirect()->route('user.dashboard');
+    }
+    return redirect()->route('login');
+});
 
 // =============================
 // プロフィール管理
@@ -70,26 +77,26 @@ Route::middleware('auth')->group(function () {
 });
 
 // =============================
-// ユーザー用クイズ画面（一般ユーザー）
+// ユーザー用
 // =============================
-Route::middleware('auth')->group(function () {
-    Route::get('quizzes/{quiz}', [UserQuizController::class, 'show'])
-        ->name('user.quizzes.show');
-    Route::post('quizzes/{quiz}/submit', [UserQuizController::class, 'submit'])
-        ->name('user.quizzes.submit');
+// ユーザー専用ルート
+Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('user.dashboard');
+    });
+
+    Route::get('dashboard', [UserUserController::class, 'dashboard'])->name('dashboard');
 });
 
-Route::get('/test-page', function () {
-    return view('fronts.news_list');
-});
+
+
+
 
 // =============================
 // 管理画面（role:8 のみアクセス）
 // =============================
-Route::middleware(['auth', 'role:8'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
+    ->prefix('admin')->name('admin.')->group(function () {
 
         // ダッシュボード
         Route::get('dashboard', [AdminDashboardController::class, 'index'])
