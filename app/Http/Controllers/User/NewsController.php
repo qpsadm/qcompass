@@ -24,9 +24,9 @@ class NewsController extends Controller
 
         // course_id による絞り込み
         if ($category === 'main') {
-            $query->where('course_id', '>=', 1); // 訓練校の course_id
+            $query->whereNull('course_id'); // 訓練校は course_id が NULL
         } elseif ($category === 'websys') {
-            $query->where('course_id', NULL); // 本講座の course_id
+            $query->where('course_id', '>=', 1); // 本講座は course_id >= 1
         }
 
         $announcements = $query->orderBy('created_at', 'desc')->get();
