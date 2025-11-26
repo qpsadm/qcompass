@@ -15,14 +15,22 @@ class NewsController extends Controller
 
 
     // ニュース一覧
-    public function newsListAll()
+    public function newsListAll(Request $request)
     {
-        // 承認済み or 表示対象のみ取得
-        $announcements = Announcement::where('status', 2)
-            ->where('is_show', 1)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $category = $request->query('category', 'all'); // デフォルト all
 
-        return view('user.news.news_list', compact('announcements'));
+        $query = Announcement::where('status', 2) // 承認済み
+            ->where('is_show', 1);               // 表示対象のみ
+
+        // course_id による絞り込み
+        if ($category === 'main') {
+            $query->where('course_id', '>=', 1); // 訓練校の course_id
+        } elseif ($category === 'websys') {
+            $query->where('course_id', NULL); // 本講座の course_id
+        }
+
+        $announcements = $query->orderBy('created_at', 'desc')->get();
+
+        return view('user.news.news_list', compact('announcements', 'category'));
     }
 }
