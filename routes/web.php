@@ -89,9 +89,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('dashboard', [UserUserController::class, 'dashboard'])->name('dashboard');
 
     // ニュース一覧
-    Route::get('news/news_list', [NewsController::class, 'newsListAll'])
+    Route::get('news/', [NewsController::class, 'newsListAll'])
         ->name('news.news_list');
-    Route::get('news/news_info/{announcement}', [NewsController::class, 'news_info'])
+    Route::get('news/{announcement}', [NewsController::class, 'news_info'])
         ->name('news.news_info');
 });
 
