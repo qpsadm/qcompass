@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RolesSeeder extends Seeder
+class AnnouncementTypesSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         // 外部キー制約を一時的に OFF
         if (DB::getDriverName() === 'sqlite') {
@@ -17,12 +17,12 @@ class RolesSeeder extends Seeder
         }
 
         // 既存データをクリア
-        DB::table('roles')->truncate();
+        DB::table('announcement_types')->truncate();
 
-        // 初期データ挿入
-        DB::table('roles')->insert([
+        DB::table('announcement_types')->insert([
             [
-                'role_name' => 'ログイン不可',
+                'type_name' => 'お知らせ',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),
@@ -30,7 +30,8 @@ class RolesSeeder extends Seeder
             ],
 
             [
-                'role_name' => 'GUEST',
+                'type_name' => '生徒募集',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),
@@ -38,7 +39,8 @@ class RolesSeeder extends Seeder
             ],
 
             [
-                'role_name' => '生徒',
+                'type_name' => '企業説明会',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),
@@ -46,7 +48,8 @@ class RolesSeeder extends Seeder
             ],
 
             [
-                'role_name' => 'アルバイト',
+                'type_name' => 'イベント',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),
@@ -54,7 +57,8 @@ class RolesSeeder extends Seeder
             ],
 
             [
-                'role_name' => 'パート',
+                'type_name' => 'セミナー',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),
@@ -62,23 +66,8 @@ class RolesSeeder extends Seeder
             ],
 
             [
-                'role_name' => '講師',
-                'created_at' => now(),
-                'created_user_name' => 'システム管理者',
-                'updated_at' => now(),
-                'updated_user_name' => 'システム管理者',
-            ],
-
-            [
-                'role_name' => '事務',
-                'created_at' => now(),
-                'created_user_name' => 'システム管理者',
-                'updated_at' => now(),
-                'updated_user_name' => 'システム管理者',
-            ],
-
-            [
-                'role_name' => 'システム管理者',
+                'type_name' => 'その他',
+                'is_show' => true,
                 'created_at' => now(),
                 'created_user_name' => 'システム管理者',
                 'updated_at' => now(),

@@ -8,13 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('quiz_statistics', function (Blueprint $table) {
+        Schema::create('daily_quotes', function (Blueprint $table) {
+
             $table->id();
 
-            $table->unsignedBigInteger('quiz_id');
-            $table->float('average_score')->nullable();
-            $table->integer('highest_score')->nullable();
-            $table->integer('attempts_count')->nullable();
+            $table->string('quote', 255);
+            $table->string('author', 255);
+            $table->date('display_date')->nullable();
+            $table->boolean('is_show')->default(true);
 
             // Laravel自動管理
             $table->timestamps(); // created_at / updated_at
@@ -29,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('quiz_statistics');
+        Schema::dropIfExists('daily_quotes');
     }
 };

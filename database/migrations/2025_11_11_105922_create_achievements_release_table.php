@@ -10,8 +10,13 @@ return new class extends Migration
     {
         Schema::create('achievement_releases', function (Blueprint $table) {
             $table->id(); // 主キー
-            $table->foreignId('user_id')->nullable(); // ユーザーID
-            $table->foreignId('achievement_master_id')->nullable(); // 実績マスタID
+
+            $table->unsignedBigInteger('user_id')->nullable(); // ユーザーID
+            // $table->foreignId('user_id')->nullable(); // ユーザーID
+
+            $table->unsignedBigInteger('achievement_master_id')->nullable(); // 実績マスタID
+            // $table->foreignId('achievement_master_id')->nullable(); // 実績マスタID
+
             $table->timestamp('unlocked_at')->nullable();
             $table->text('condition_met')->nullable();
             // Laravel自動管理
