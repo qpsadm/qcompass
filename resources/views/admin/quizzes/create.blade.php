@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 max-w-5xl">
+<div class="container mx-auto p-6 max-w-5xl bg-white rounded-lg shadow-md">
     <h1 class="text-3xl font-bold mb-6">クイズ作成</h1>
 
     {{-- フォーム --}}
@@ -16,7 +16,7 @@
                     </th>
                     <td class="px-4 py-2">
                         <input type="text" name="title" value="{{ old('title') }}"
-                            class="border rounded px-3 py-2 w-64">
+                               class="border rounded px-3 py-2 w-64">
                         @error('title') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
@@ -28,9 +28,9 @@
                         <select name="course_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>
                             @foreach ($courses as $course)
-                            <option value="{{ $course->id }}" @selected(old('course_id')==$course->id)>
-                                {{ $course->course_name }} ({{ $course->course_code }})
-                            </option>
+                                <option value="{{ $course->id }}" @selected(old('course_id')==$course->id)>
+                                    {{ $course->course_name }} ({{ $course->course_code }})
+                                </option>
                             @endforeach
                         </select>
                         @error('course_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
@@ -78,10 +78,11 @@
 
         {{-- 保存＋一覧に戻る --}}
         <div class="mt-6 flex gap-3">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition">
                 保存する
             </button>
-            <a href="{{ route('admin.quizzes.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+            <a href="{{ route('admin.quizzes.index') }}"
+               class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition">
                 一覧に戻る
             </a>
         </div>
