@@ -86,8 +86,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
         return redirect()->route('user.dashboard');
     });
 
-    Route::get('dashboard', [UserUserController::class, 'dashboard'])->name('dashboard');
-
+    Route::get('dashboard', [NewsController::class, 'dashboard'])->name('dashboard');
     // ニュース一覧
     Route::get('news', [NewsController::class, 'newsListAll'])->name('news.news_list');
     Route::get('news/main', [NewsController::class, 'mainNews'])->name('news.main_news');

@@ -12,21 +12,6 @@ use App\Models\Announcement;
 
 class UserController extends Controller
 {
-    /**
-     * ユーザーダッシュボード
-     */
-    public function dashboard()
-    {
-        // 承認済みかつ表示対象のニュースのみ取得
-        $announcements = Announcement::where('status', 2)   // status = 2 が承認済み
-            ->where('is_show', 1)  // is_show = 1 が表示対象
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // 他の Dashboard 用データも取得する場合はここに追加
-
-        return view('user.dashboard', compact('announcements'));
-    }
 
     /**
      * 講座詳細
