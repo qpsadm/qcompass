@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Agenda;
-use App\Models\AgendaFile;
+use App\Models\Course;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,6 @@ class AgendaController extends Controller
      */
     public function index(Request $request)
     {
-        // 検索対応（例：名前検索）
         $query = Agenda::query();
 
         if ($search = $request->input('search')) {
@@ -26,6 +25,26 @@ class AgendaController extends Controller
 
         return view('admin.agendas.index', compact('agendas'));
     }
+
+    /**
+     * 講座ごとのアジェンダ一覧
+     */
+    public function indexByCourse(Course $course)
+    {
+        $course->load(['categories' => function ($q) {
+            $q->whereNull('categories.deleted_at') // ← テーブル名を明示
+                ->with(['agendas' => function ($q2) {
+                    $q2->whereNull('deleted_at')   // agendasテーブルだけなのでOK
+                        ->orderBy('id', 'desc');
+                }]);
+        }]);
+
+        return view('admin.course_category.agendas', compact('course'));
+    }
+
+
+
+
     /**
      * 作成画面
      */
@@ -37,13 +56,12 @@ class AgendaController extends Controller
             ->get();
 
         $agenda = new Agenda();
-        $agenda->load('files'); // ← 追加（空でもOK）
+        $agenda->load('files');
 
         $categories = $this->buildCategoryOptions($rootCategories);
 
         return view('admin.agendas.create', compact('categories', 'agenda'));
     }
-
 
     /**
      * 保存
@@ -52,7 +70,7 @@ class AgendaController extends Controller
     {
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
-            'category_id' => 'required|integer', // 正しく修正
+            'category_id' => 'required|integer',
             'is_show' => 'nullable|boolean',
             'status' => 'required|in:yes,no',
             'content' => 'nullable|string',
@@ -92,10 +110,9 @@ class AgendaController extends Controller
      */
     public function update(Request $request, Agenda $agenda)
     {
-        // バリデーションに description を追加
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
-            'category_id' => 'required|integer', // 正しく修正
+            'category_id' => 'required|integer',
             'is_show' => 'nullable|boolean',
             'status' => 'required|in:yes,no',
             'content' => 'nullable|string',
@@ -109,7 +126,6 @@ class AgendaController extends Controller
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを更新しました');
     }
 
-
     /**
      * 削除
      */
@@ -117,15 +133,11 @@ class AgendaController extends Controller
     {
         $agenda = Agenda::findOrFail($id);
 
-        // 論理削除前に pivot テーブルの関連を解除
         $agenda->courses()->detach();
-
-        // アジェンダ自体を論理削除
         $agenda->delete();
 
         return redirect()->route('admin.agendas.index')->with('success', 'アジェンダを削除しました（論理削除）');
     }
-
 
     /**
      * アジェンダ詳細
@@ -134,12 +146,13 @@ class AgendaController extends Controller
     {
         return view('admin.agendas.show', compact('agenda'));
     }
+
     /**
      * 論理削除済み一覧
      */
     public function trash()
     {
-        $agendas = Agenda::onlyTrashed()->get();
+        $agendas = Agenda::onlyTrashed()->paginate(10);
         return view('admin.agendas.trash', compact('agendas'));
     }
 
@@ -173,7 +186,6 @@ class AgendaController extends Controller
         return $options;
     }
 
-
     public function preview($agendaId)
     {
         $agenda = Agenda::with('category.courses')->find($agendaId);
@@ -192,20 +204,12 @@ class AgendaController extends Controller
             abort(404, 'このカテゴリに関連するコースが存在しません。');
         }
 
-        // 印刷用ビューに渡す
         return view('admin.agendas.preview', compact('agenda', 'category', 'course'));
     }
 
     public function files(Agenda $agenda = null)
     {
-        if ($agenda) {
-            // 編集画面 → そのアジェンダの画像
-            $files = $agenda->files;
-        } else {
-            // 新規作成画面 → 全部の登録済み画像
-            $files = \App\Models\AgendaFile::latest()->get();
-        }
-
+        $files = $agenda ? $agenda->files : \App\Models\AgendaFile::latest()->get();
         return view('admin.agendas.files', compact('agenda', 'files'));
     }
 }

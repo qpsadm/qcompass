@@ -141,7 +141,12 @@ Route::middleware(['auth', 'role:8'])
             Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])
                 ->name('destroy');
         });
-
+        //講座ごとのアジェンダ一覧
+        Route::get('courses/{course}/agendas', [AgendaController::class, 'indexByCourse'])
+            ->name('courses.agendas');
+        //プレビュー用
+        Route::get('agendas/{agenda}/preview', [\App\Http\Controllers\Admin\AgendaController::class, 'preview'])
+            ->name('agendas.preview');
         // =============================
         // その他リソース系
         // =============================
