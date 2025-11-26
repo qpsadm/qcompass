@@ -14,7 +14,7 @@
         <div>{!! $announcement->content !!}</div>
     </div>
 
-    <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="" listLabel="新着情報一覧へ" />
+    <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/news') }}" listLabel="新着情報一覧へ" />
 
     <x-f_bread_crumbs />
 </div>
