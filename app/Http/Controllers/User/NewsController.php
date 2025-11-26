@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Announcement;
 
 class NewsController extends Controller
 {
     public function newsListAll()
     {
-        // 承認済みニュースのみ取得
-        $announcements = Announcement::where('status', 'approved')
+        // 承認済みのみ取得
+        $announcements = Announcement::where('status', 'is_show')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // ビューを返す
+        // Blade に渡す
         return view('user.news.news_list', compact('announcements'));
     }
 }
