@@ -5,7 +5,8 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-3xl font-bold mb-6">質問編集</h1>
 
-            <form action="{{ route('admin.questions.update', $question->id) }}" method="POST" x-data="questionForm()" x-init="init()">
+            <form action="{{ route('admin.questions.update', $question->id) }}" method="POST" x-data="questionForm()"
+                x-init="init()">
                 @csrf
                 @method('PUT')
 
@@ -104,17 +105,14 @@
                             </th>
                             <td class="px-4 py-2">
                                 <div class="flex flex-wrap gap-3">
-                                    @php
-                                        $selectedTag = old('tag_id', $question->tag_id);
-                                    @endphp
-                                    @foreach ($tags as $tag)
+                                    <template x-for="tag in tags" :key="tag.id">
                                         <label
                                             class="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded border hover:bg-gray-200 cursor-pointer">
-                                            <input type="radio" name="tag_id" value="{{ $tag->id }}"
-                                                {{ $tag->id == $selectedTag ? 'checked' : '' }} required>
-                                            <span>{{ $tag->name }}</span>
+                                            <input type="radio" name="tag_id" :value="tag.id"
+                                                :checked="tag.id == selectedTag" required>
+                                            <span x-text="tag.name"></span>
                                         </label>
-                                    @endforeach
+                                    </template>
                                 </div>
                                 @error('tag_id')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -153,6 +151,8 @@
                 selectedCourse: @json(old('course_id', $question->course_id)),
                 coursesTeachers: @json($coursesTeachers),
                 teachers: [],
+                tags: @json($tags), // タグデータを渡す
+                selectedTag: @json(old('tag_id', $question->tag_id)), // タグ選択状態
                 init() {
                     this.filterTeachers();
                 },
