@@ -55,12 +55,11 @@
                                 回答講師
                             </th>
                             <td class="px-4 py-2">
-                                <select name="responder_id" class="border rounded px-3 py-2 w-full" required>
+                                <select name="responder_id" x-model="selectedResponder" class="border rounded px-3 py-2 w-full" required>
                                     <option value="">選択してください</option>
                                     <template x-for="teacher in teachers" :key="teacher.id">
                                         <option :value="teacher.id" x-text="teacher.name"
-                                            :selected="teacher.id == {{ old('responder_id', $question->responder_id) }}">
-                                        </option>
+                                            :selected="teacher.id == selectedResponder"></option>
                                     </template>
                                 </select>
                                 @error('responder_id')
@@ -141,7 +140,6 @@
                         class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -149,10 +147,11 @@
         function questionForm() {
             return {
                 selectedCourse: @json(old('course_id', $question->course_id)),
+                selectedResponder: @json(old('responder_id', $question->responder_id)),
                 coursesTeachers: @json($coursesTeachers),
                 teachers: [],
-                tags: @json($tags), // タグデータを渡す
-                selectedTag: @json(old('tag_id', $question->tag_id)), // タグ選択状態
+                tags: @json($tags),
+                selectedTag: @json(old('tag_id', $question->tag_id)),
                 init() {
                     this.filterTeachers();
                 },
