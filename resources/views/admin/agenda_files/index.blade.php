@@ -17,6 +17,7 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="border px-4 py-2 text-left">アジェンダID</th>
+                            <th class="border px-4 py-2 text-left">アジェンダ名</th>
                             <th class="border px-4 py-2 text-left">ファイル名</th>
                             <th class="border px-4 py-2 text-left">ファイルパス</th>
                             <th class="border px-4 py-2 text-left">ファイルサイズ</th>
@@ -26,7 +27,12 @@
                     <tbody>
                         @foreach ($agenda_files as $AgendaFile)
                             <tr class="hover:bg-gray-50">
-                                <td class="border px-4 py-2">{{ $AgendaFile->target_id }}</td>
+                                <td class="border px-4 py-2">
+                                    {{ $AgendaFile->target_id }}
+                                </td>
+                                <td class="border px-4 py-2">
+                                    {{ $AgendaFile->target ? $AgendaFile->target->agenda_name : '未設定' }}
+                                </td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_name }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_path }}</td>
                                 <td class="border px-4 py-2">{{ $AgendaFile->file_size }}</td>

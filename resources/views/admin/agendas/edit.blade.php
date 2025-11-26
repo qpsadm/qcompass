@@ -66,49 +66,53 @@
                     <textarea name="content" id="content" class="border px-2 py-1 w-full rounded">{{ old('content', $agenda->content ?? '') }}</textarea>
                 </div>
                 {{-- 画像一覧 --}}
-                @if (isset($agenda))
+                @if ($agenda->files->isNotEmpty())
                     <div class="mt-6 bg-gray-50 p-4 rounded">
                         <h2 class="text-lg font-semibold mb-2">登録済みファイル一覧</h2>
-
-                        @if ($agenda->files->isEmpty())
-                            <p class="text-gray-500">登録されているファイルはありません。</p>
-                        @else
-                            <table class="w-full table-auto border-collapse border">
-                                <thead>
-                                    <tr class="bg-gray-100">
-                                        <th class="border px-3 py-2 text-left">ファイル名</th>
-                                        <th class="border px-3 py-2 text-left">サイズ</th>
-                                        <th class="border px-3 py-2 text-left">操作</th>
+                        <table class="w-full table-auto border-collapse border">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border px-3 py-2">ファイル名</th>
+                                    <th class="border px-3 py-2">サイズ</th>
+                                    <th class="border px-3 py-2">プレビュー</th>
+                                    <th class="border px-3 py-2">URLコピー</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($agenda->files as $file)
+                                    @php
+                                        $previewUrl = route('admin.agenda_files.preview', $file->id);
+                                    @endphp
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="border px-3 py-2">{{ $file->file_name }}</td>
+                                        <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
+                                        </td>
+                                        <td class="border px-3 py-2">
+                                            @if (Str::startsWith($file->file_type, 'image/'))
+                                                <a href="{{ $previewUrl }}" target="_blank">
+                                                    <img src="{{ $previewUrl }}" class="w-20 h-20 object-cover rounded"
+                                                        alt="プレビュー">
+                                                </a>
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                        <td class="border px-3 py-2">
+                                            <button type="button"
+                                                class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
+                                                onclick="navigator.clipboard.writeText('{{ $previewUrl }}').then(() => { alert('URLをコピーしました'); });">
+                                                URLコピー
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($agenda->files as $file)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="border px-3 py-2">{{ $file->file_name }}</td>
-                                            <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
-                                            </td>
-                                            <td class="border px-3 py-2 space-x-2">
-                                                @if (Str::startsWith($file->file_type, 'image/'))
-                                                    <a href="{{ route('admin.agenda_files.preview', $file->id) }}"
-                                                        target="_blank" class="text-green-600 hover:underline">プレビュー</a>
-                                                @endif
-                                                <a href="{{ route('admin.agenda_files.download', $file->id) }}"
-                                                    class="text-blue-600 hover:underline">ダウンロード</a>
-                                                <form action="{{ route('admin.agenda_files.destroy', $file->id) }}"
-                                                    method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:underline"
-                                                        onclick="return confirm('本当に削除しますか？')">削除</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @endif
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 @endif
+
+
+
 
 
                 <div class="flex gap-2 mt-4">
