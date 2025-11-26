@@ -204,7 +204,8 @@
             <div class="mt-auto">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-center">
+                    <button type="submit"
+                        class="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-white text-center">
                         ログアウト
                     </button>
                 </form>
