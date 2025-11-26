@@ -825,6 +825,10 @@ footer {
     text-align: center;
 }
 
+.content-list .category p {
+    background-color: #c59cff;
+}
+
 .content-list .category-news {
     background-color: #c59cff;
 }
