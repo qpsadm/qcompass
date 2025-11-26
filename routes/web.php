@@ -103,9 +103,9 @@ Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
             ->name('dashboard');
 
         // ユーザー関連
-        Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
-        Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-        Route::delete('users/{id}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
+        Route::get('users/trash', [AdminUserController::class, 'trash'])->name('users.trash');
+        Route::post('users/{id}/restore', [AdminUserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{id}/forceDelete', [AdminUserController::class, 'forceDelete'])->name('users.forceDelete');
 
         // 講座ID付き create
         Route::get('course_category/create/{courseId}', [CourseCategoryController::class, 'create'])
@@ -159,7 +159,7 @@ Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
         // =============================
         Route::resources([
             'courses' => CourseController::class,
-            'users' => UserController::class,
+            'users' => AdminUserController::class,
             'roles' => RoleController::class,
             'levels' => LevelController::class,
             'daily_quotes' => DailyQuoteController::class,
