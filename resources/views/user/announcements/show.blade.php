@@ -6,7 +6,7 @@
 
 @section('main-content')
     <div class="container">
-        <x-f_page_title :search="true" title="{{ $announcement->title }}" />
+        <x-f_page_title :search="false" title="{{ $announcement->title }}" />
         {{-- <h1>{{ $announcement->title }}</h1> --}}
         {{-- <p>講座: {{ $announcement->course?->name ?? '全講座' }}</p>
         <p>カテゴリー: {{ $announcement->type?->name ?? '未分類' }}</p> --}}
