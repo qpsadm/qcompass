@@ -19,30 +19,24 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="telephone=no" name="format-detection">
 
-    <!-- faviconを読み込む -->
+    {{-- faviconを読み込む --}}
     <link href="{{ asset('assets/images/icon/favicon.ico') }}" id="favicon" rel="icon">
     <link href="{{ asset('assets/images/icon/apple_touch_icon_180x180.png') }}" rel="apple-touch-icon" sizes="180x180">
 
-    <!-- reset.cssファイルを読み込む -->
+    {{-- reset.cssファイルを読み込む --}}
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
-    <!-- 共通CSS -->
-    <link href="{{ asset('assets/css/common.css') }}" rel="stylesheet">
+    {{-- 共通cssファイルを読み込む --}}
+    <link href="{{ asset('assets/css/f_variable.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/f_common.css') }}" rel="stylesheet">
 
     {{-- 独自のCSSファイルを読み込む --}}
     @yield('code-page-css')
 
-    <!-- jqueryライブラリ -->
-    <script src="{{ asset('assets/js/vendor/jquery-3.6.3.min.js') }}"></script>
+    {{-- jqueryライブラリ --}}
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
 
     {{-- トークンを読み込む --}}
     <meta content="{{ csrf_token() }}" name="csrf-token">
-
-    <!-- フォント設定 -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap"
-        rel="stylesheet">
 
 </head>
 
@@ -50,6 +44,8 @@
 
     {{-- ヘッダー --}}
     @include('includes.f_header')
+
+    @include('includes.f_side_menu')
 
     {{-- メインコンテンツ --}}
     <main>
@@ -59,12 +55,12 @@
     {{-- フッター --}}
     @include('includes.f_footer')
 
-    <!-- 共通のjsファイル -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    {{-- 共通jsファイルを読み込む --}}
+    <script src="{{ asset('assets/js/f_common.js') }}"></script>
 
     {{-- 独自のJSファイルを読み込む --}}
     @yield('code-page-js')
-    
+
 </body>
 
 </html>
