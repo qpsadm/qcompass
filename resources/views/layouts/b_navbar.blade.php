@@ -16,7 +16,7 @@
 
                 <!-- ロゴ -->
                 <a href="{{ route('admin.dashboard') }}" class="self-center ml-2 md:ml-3">
-                    <img src="{{ asset('assets/images/logo9.svg') }}" alt="QLIP COMPASS" class="h-8">
+                    <img src="{{ asset('assets/images/f_site-logo.svg') }}" alt="QLIP COMPASS" class="h-8">
                 </a>
             </div>
 
@@ -26,8 +26,8 @@
                 <!-- ユーザー名 + ロール（タブレット以上表示） -->
                 <span class="hidden md:inline text-gray-700 whitespace-nowrap">
                     {{ Auth::user()->name ?? 'ゲスト' }}
-                    @if(Auth::check() && Auth::user()->role)
-                    ({{ Auth::user()->role->role_name }})
+                    @if (Auth::check() && Auth::user()->role)
+                        ({{ Auth::user()->role->role_name }})
                     @endif
                 </span>
 

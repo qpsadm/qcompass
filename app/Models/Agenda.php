@@ -48,7 +48,7 @@ class Agenda extends Model
     }
     public function files()
     {
-        return $this->hasMany(AgendaFile::class);
+        return $this->morphMany(AgendaFile::class, 'target');
     }
     // course を安全に取得するアクセサ
     public function getCourseAttribute()
@@ -57,6 +57,6 @@ class Agenda extends Model
     }
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_agendas', 'agenda_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'course_agendas', 'target_id', 'course_id');
     }
 }

@@ -9,5 +9,5 @@ class CourseAgenda extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id', 'agenda_id', 'order_no', 'note', 'deleted_at'];
+    protected $fillable = ['course_id', 'target_id', 'order_no', 'note', 'deleted_at'];
 }

@@ -10,7 +10,7 @@
                 <p><strong>クイズ名:</strong> {{ $Quiz->title }}</p>
                 <p><strong>概要説明:</strong> {{ $Quiz->description }}</p>
                 <p><strong>関連講座ID※任意※:</strong> {{ $Quiz->course_id }}</p>
-                <p><strong>関連アジェンダID※任意※:</strong> {{ $Quiz->agenda_id }}</p>
+                <p><strong>関連アジェンダID※任意※:</strong> {{ $Quiz->target_id }}</p>
                 <p><strong>問題タイプ:</strong> {{ $Quiz->type }}</p>
                 <p><strong>制限時間:</strong> {{ $Quiz->time_limit }}</p>
                 <p><strong>満点:</strong> {{ $Quiz->total_score }}</p>

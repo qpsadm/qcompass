@@ -9,5 +9,5 @@ class AgendaTag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['agenda_id', 'tag_id', 'deleted_at'];
+    protected $fillable = ['target_id', 'tag_id', 'deleted_at'];
 }

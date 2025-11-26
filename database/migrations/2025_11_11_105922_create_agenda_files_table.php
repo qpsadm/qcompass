@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('agenda_files', function (Blueprint $table) {
 
             $table->id()->comment('主キー');
-            $table->unsignedBigInteger('agenda_id')->comment('アジェンダID');
+            $table->unsignedBigInteger('target_id')->nullable()->comment('紐づくID');
+            $table->string('target_type', 50)->nullable()->comment('対象モデル');
             $table->string('file_path', 255)->comment('保存先パス');
             $table->string('file_name', 255)->comment('表示用のファイル名');
             $table->tinyInteger('file_type')->nullable()->comment('ファイル種別');
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー
-            $table->foreign('agenda_id')->references('id')->on('agendas');
+            $table->foreign('target_id')->references('id')->on('agendas');
 
             $table->comment('アジェンダ添付ファイルマスタ');
         });
