@@ -8,7 +8,7 @@
 
         <x-f_category_list />
 
-        <x-f_content_list />
+        <x-f_content_list :items="$announcements" />
 
         <x-f_pagination />
 

@@ -86,6 +86,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     });
 
     Route::get('dashboard', [UserUserController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/announcements/{announcement}', [AnnouncementController::class, 'show'])
+        ->name('announcements.show');
 });
 
 

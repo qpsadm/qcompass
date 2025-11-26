@@ -1,4 +1,4 @@
-<div class="content-list">
+{{-- <div class="content-list">
     <table>
         <tr>
             <td class="date">2025/10/29</td>
@@ -35,5 +35,30 @@
             </td>
             <td class="title"><a href="news_info.html">【キャリコン】第2回キャリアコンサルティングについて</a></td>
         </tr>
+    </table>
+</div> --}}
+@props(['items'])
+
+<div class="content-list">
+    <table>
+        @foreach ($items as $item)
+            <tr>
+                <td class="date">
+                    {{ $item->created_at->format('Y/m/d') }}
+                </td>
+
+                <td class="category">
+                    <p class="category-{{ $item->type?->slug ?? 'default' }}">
+                        {{ $item->type?->name ?? '未分類' }}
+                    </p>
+                </td>
+
+                <td class="title">
+                    <a href="{{ route('user.announcements.show', $item->id) }}">
+                        {{ $item->title }}
+                    </a>
+                </td>
+            </tr>
+        @endforeach
     </table>
 </div>

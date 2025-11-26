@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Agenda;
 use App\Models\Quiz;
 use App\Models\Report;
+use App\Models\Announcement;
 
 class UserController extends Controller
 {
@@ -16,12 +17,12 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-        $courses = Course::all(); // 受講可能な講座一覧
-        $agendas = Agenda::latest()->take(5)->get(); // 最新アジェンダ
-        $quizzes = Quiz::latest()->take(5)->get(); // 最新クイズ
-        $reports = Report::latest()->take(5)->get(); // 最新レポート
+        $announcements = Announcement::where('is_show', 1)
+            ->latest()
+            ->take(5)
+            ->get();
 
-        return view('user.dashboard', compact('courses', 'agendas', 'quizzes', 'reports'));
+        return view('user.dashboard', compact('announcements'));
     }
 
     /**
