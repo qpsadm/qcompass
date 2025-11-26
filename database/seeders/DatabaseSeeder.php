@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             CoursesTableSeeder::class,
             LevelsTableSeeder::class,
             AnnouncementTypesTableSeeder::class,
-
+            RolesSeeder::class,
             CourseUserSeeder::class,
             DivisionSeeder::class,
 
