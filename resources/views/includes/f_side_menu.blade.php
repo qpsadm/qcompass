@@ -42,7 +42,12 @@
             </ul>
 
             <div class="logout-btn">
-                <a href="">ログアウト</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">
+                        ログアウト
+                    </button>
+                </form>
             </div>
         </div>
     </div>
