@@ -12,7 +12,9 @@ return new class extends Migration
 
             $table->id()->comment('主キー');
 
-            $table->unsignedBigInteger('agenda_id')->nullable()->comment('アジェンダID');
+            // ポリモーフィック（お知らせ・アジェンダ共用）
+            $table->unsignedBigInteger('target_id')->comment('対象レコードID');
+            $table->string('target_type')->comment('対象モデルクラス名');
 
             $table->string('file_path', 255)->comment('保存先パス');
             $table->string('file_name', 255)->comment('表示用のファイル名');
@@ -30,7 +32,7 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー
-            $table->foreign('agenda_id')->references('id')->on('agendas')->onDelete('set null');
+            $table->foreign('target_id')->references('id')->on('agendas')->onDelete('set null');
 
             $table->comment('アジェンダ添付ファイルマスタ');
         });
