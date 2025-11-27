@@ -28,11 +28,20 @@ class AgendaController extends Controller
         }
 
         // 所属講座に紐づくカテゴリーID
-        $categories = DB::table('course_categories')
-            ->whereIn('course_id', $userCourseIds)
-            ->where('is_show', 1)
+        // $categories = DB::table('course_categories')
+        //     ->whereIn('course_id', $userCourseIds)
+        //     ->where('is_show', 1)
+        //     ->get();
+
+        // チャッピーによる変更
+        $categories = DB::table('categories')
+            ->whereIn('id', $userCourseIds)
             ->get();
         Log::info('取得カテゴリーID: ' . implode(',', $categories->pluck('category_id')->toArray()));
+
+
+
+
 
         // course_categories 経由でアジェンダ取得
         $agendas = DB::table('agendas as a')
