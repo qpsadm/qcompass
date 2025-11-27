@@ -6,15 +6,13 @@
 
 @section('main-content')
     <div class="container">
-        <x-f_page_title :search="false" title="{{ $announcement->title }}" />
+        <h1 class="text-2xl font-bold mb-4">{{ $agenda->agenda_name }}</h1>
 
-        <div class="page-content">
-            <div>{!! $announcement->content !!}</div>
-        </div>
+        <p>カテゴリーID: {{ $agenda->category_id }}</p>
+        <p>講座ID: {{ $agenda->content }}</p>
+        <p>ステータス: {{ $agenda->status }}</p>
+        <p>表示フラグ: {{ $agenda->is_show }}</p>
 
-        <x-f_btn_list :prevBtn="false" :listBtn="true" :nextBtn="false" listUrl="{{ url('user/agenda') }}"
-            listLabel="一覧画面へ" />
-
-        <x-f_bread_crumbs />
+        <a href="{{ route('user.agendas.my') }}" class="text-blue-600 hover:underline">一覧に戻る</a>
     </div>
 @endsection

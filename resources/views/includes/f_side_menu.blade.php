@@ -2,7 +2,8 @@
     <div class="side-menu-container">
         <div class="side-menu-top">
             <div class="site-logo">
-                <a href=""><img src="{{ asset('assets/images/f_site-logo.svg') }}" alt=""></a>
+                <a href="{{-- {{ route('user.top') }} --}}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
+                        alt="コンパスロゴ"></a>
             </div>
 
             <div class="contents-box">
@@ -37,10 +38,9 @@
             <ul class="side-menu-list">
                 <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf" target="_blank">日別計画表</a>
                 </li>
-                <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
-                <li><a class="report" href="mypage/report.html">日報作成</a></li>
+                <li><a class="question" href="{{-- {{ 'user.questions.questions_list' }} --}}">質疑応答</a></li>
+                <li><a class="report" href="{{-- {{ 'user.mypage.reports_create' }} --}}">日報作成</a></li>
             </ul>
-
             <div class="logout-btn">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

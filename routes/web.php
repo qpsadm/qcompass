@@ -43,6 +43,8 @@ use App\Http\Controllers\Admin\{
 
 // ユーザー向け
 use App\Http\Controllers\User\QuizController as UserQuizController;
+use App\Http\Controllers\User\AgendaController as UserAgendaController;
+
 
 // 学習・資格・求人
 use App\Http\Controllers\{
@@ -94,6 +96,12 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     //詳細
     Route::get('news/info/{announcement}', [NewsController::class, 'news_info'])
         ->name('news.news_info');
+
+    // 自分の講座アジェンダ一覧
+    Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])->name('agendas.my');
+
+    // アジェンダ詳細（必要なら）
+    Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.detail');
 });
 
 
