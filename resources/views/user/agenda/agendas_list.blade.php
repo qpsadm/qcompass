@@ -11,7 +11,9 @@
                 <table>
                     @foreach ($agendas as $agenda)
                         <tr>
-                            <td class="date">{{ $agenda->created_at }}</td>
+                            {{-- <td class="date">{{ $agenda->created_at }}</td> --}}
+                            <td class="date">{{ \Carbon\Carbon::parse($agenda->created_at)->format('Y/m/d') }}</td>
+
                             <td class="title">
                                 <a href="{{ route('user.agenda.info', ['id' => $agenda->id]) }}">
                                     {{ $agenda->agenda_name }}
