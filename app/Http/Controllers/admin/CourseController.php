@@ -47,7 +47,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_code' => 'nullable|string|max:50',
+            'course_code' => 'required|string|max:50',
             'course_type_id' => 'nullable|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
