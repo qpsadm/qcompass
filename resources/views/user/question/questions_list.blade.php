@@ -3,11 +3,43 @@
 @section('main-content')
     <div class="container">
         <x-f_page_title :search="true" title="質疑応答一覧" />
-        <x-f_category_list />
 
-        <x-f_content_list :items="$announcements" />
+        {{-- カテゴリーやタグのリストがあればここで表示 --}}
+        <x-f_category_list :categories="$categories ?? []" />
 
-        <x-f_pagination />
+        {{-- 質疑応答一覧 --}}
+        <div class="content-list">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>質問タイトル</th>
+                        <th>質問内容</th>
+                        <th>回答</th>
+                        <th>アジェンダ</th>
+                        <th>講座</th>
+                        <th>タグ</th>
+                        <th>回答者</th>
+                        <th>作成日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($questions as $q)
+                        <tr>
+                            <td>{{ $q->title }}</td>
+                            <td>{{ $q->content }}</td>
+                            <td>{{ $q->answer ?? '-' }}</td>
+                            <td>{{ $q->agenda?->agenda_name ?? '-' }}</td>
+                            <td>{{ $q->course?->course_name ?? '-' }}</td>
+                            <td>{{ $q->tag?->name ?? '-' }}</td>
+                            <td>{{ $q->responder?->name ?? '-' }}</td>
+                            <td>{{ $q->created_at->format('Y/m/d') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <x-f_pagination :paginator="$questions" />
         <x-f_bread_crumbs />
     </div>
 @endsection
