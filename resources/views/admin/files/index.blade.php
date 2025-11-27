@@ -1,10 +1,18 @@
 @extends('layouts.app')
 
+@php
+    $typeMap = [
+        'announcement' => 'お知らせ',
+        'agenda' => 'アジェンダ',
+    ];
+
+    $japaneseTitle = $typeMap[strtolower($type)] ?? ucfirst($type);
+@endphp
+
 @section('content')
     <div class="container mx-auto p-4">
 
-        <h1 class="text-2xl font-bold mb-4">{{ ucfirst($type) }} ファイル一覧</h1>
-
+        <h1 class="text-2xl font-bold mb-4">{{ $japaneseTitle }} ファイル一覧</h1>
         <div class="mb-4">
             <a href="{{ route('admin.files.create', ['type' => $type, 'targetId' => $targetId]) }}"
                 class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
