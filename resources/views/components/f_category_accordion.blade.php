@@ -44,16 +44,21 @@
             <span></span>
         </div>
     </div>
-    @foreach ($categories as $category)
+    {{-- @foreach ($categories as $category)
         @if ($category->children->count() > 0)
             <div class="menu-content">
                 <ul>
-                    <span>{{ $category->name }}</span>
                     @foreach ($category->children as $child)
                         <li><a href="#">{{ $child->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
         @endif
+        <span>{{ $category->name }}</span>
+    @endforeach --}}
+
+    {{-- チャッピーによる変更 --}}
+    @foreach ($categories as $category)
+        <div>{{ $category->name }}</div>
     @endforeach
 </div>
