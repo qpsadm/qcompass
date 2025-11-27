@@ -93,7 +93,7 @@
                             <div class="flex flex-wrap gap-3">
                                 <template x-for="tag in tags" :key="tag.id">
                                     <label class="flex items-center space-x-1">
-                                        <input type="radio" name="tags_id" :value="tag.id"
+                                        <input type="radio" name="tag_id" :value="tag.id"
                                             :checked="tag.id == selectedTag">
                                         <span x-text="tag.name"></span>
                                     </label>
@@ -138,8 +138,8 @@
                 selectedCourse: @json(old('course_id')),
                 coursesTeachers: @json($coursesTeachers),
                 teachers: [],
-                tags: @json($tags),  // タグデータを渡す
-                selectedTag: @json(old('tags_id')),  // タグ選択状態
+                tags: @json($tags), // タグデータを渡す
+                selectedTag: @json(old('tags_id')), // タグ選択状態
                 init() {
                     this.filterTeachers();
                 },
