@@ -20,9 +20,9 @@ class AdminDashboardController extends Controller
 
         // 開催中の講座
         $today = now()->format('Y-m-d');
-        $ongoingCourses = Course::where('start_date', '<=', $today)
-            ->where('end_date', '>=', $today)
-            ->orderBy('start_date', 'asc')
+        $ongoingCourses = Course::whereDate('start_date', '<=', today())
+            ->whereDate('end_date', '>=', today())
+            ->orderBy('start_date')
             ->get();
 
         // 最新5件の日報（ユーザー名・講座名も取得）

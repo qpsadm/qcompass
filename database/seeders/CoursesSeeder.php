@@ -27,11 +27,11 @@ class CoursesSeeder extends Seeder
                 'level_id' => 2,       // levels テーブルの存在を確認
                 'organizer_id' => 2,   // organizers テーブルの存在を確認
                 'venue' => '株式会社QLIPインターナショナル QLIPプログラミングスクール徳島本校',
-                'application_date' => '2025/02/21',
-                'certification_date' => '2025/03/10',
+                'application_date' => '2025-02-21',
+                'certification_date' => '2025-03-10',
                 'certification_number' => 'CERT-001',
-                'start_date' => '2025/05/22',
-                'end_date' => '2050/12/31',
+                'start_date' => '2025-05-22',
+                'end_date' => '2050-12-31',
                 'total_hours' => 653,
                 'periods' => 6,
                 'start_time' => '09:40:00',
