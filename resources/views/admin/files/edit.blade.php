@@ -15,9 +15,6 @@
                 <input type="hidden" name="target_type" value="{{ $type }}">
                 <input type="hidden" name="target_id" value="{{ $file->target_id }}">
 
-                <input type="hidden" name="target_type" value="{{ $type }}">
-                <input type="hidden" name="target_id" value="{{ $file->target_id }}">
-
                 {{-- 対象選択（target_idが未固定の場合のみ） --}}
                 @if (!isset($target))
                     <div class="mb-4">
