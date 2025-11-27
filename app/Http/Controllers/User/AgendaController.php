@@ -35,7 +35,6 @@ class AgendaController extends Controller
         Log::info('取得カテゴリーID: ' . implode(',', $categories->pluck('category_id')->toArray()));
 
         // course_categories 経由でアジェンダ取得
-        // course_categories 経由でアジェンダ取得
         $agendas = DB::table('agendas as a')
             ->join('course_categories as cc', 'a.category_id', '=', 'cc.category_id')
             ->whereIn('cc.course_id', $userCourseIds)

@@ -44,6 +44,7 @@ use App\Http\Controllers\Admin\{
 // ユーザー向け
 use App\Http\Controllers\User\QuizController as UserQuizController;
 use App\Http\Controllers\User\AgendaController as UserAgendaController;
+use App\Http\Controllers\User\CategoryController as UserCategoryController;
 
 
 // 学習・資格・求人
@@ -102,6 +103,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     // アジェンダ詳細（必要なら）
     Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
+
+    //category
+    Route::get('categories', [UserCategoryController::class, 'index'])->name('categories.index');
 });
 
 
