@@ -115,11 +115,11 @@
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">期間</th>
                         <td class="px-4 py-2 flex gap-2">
                             <input type="date" name="start_date"
-                                value="{{ old('start_date', isset($Course->start_date) ? $Course->start_date->format('Y-m-d') : '') }}"
+                                value="{{ old('start_date', isset($Course->start_date) ? \Carbon\Carbon::parse($Course->start_date)->format('Y-m-d') : '') }}"
                                 class="border rounded px-3 py-2">
                             ～
                             <input type="date" name="end_date"
-                                value="{{ old('end_date', isset($Course->end_date) ? $Course->end_date->format('Y-m-d') : '') }}"
+                                value="{{ old('end_date', isset($Course->end_date) ? \Carbon\Carbon::parse($Course->end_date)->format('Y-m-d') : '') }}"
                                 class="border rounded px-3 py-2">
                         </td>
                     </tr>
@@ -129,11 +129,11 @@
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">時間</th>
                         <td class="px-4 py-2 flex gap-2">
                             <input type="time" name="start_time"
-                                value="{{ old('start_time', isset($Course->start_time) ? $Course->start_time->format('H:i') : '') }}"
+                                value="{{ old('start_time', isset($Course->start_time) ? \Carbon\Carbon::parse($Course->start_time)->format('H:i') : '') }}"
                                 class="border rounded px-3 py-2">
                             ～
                             <input type="time" name="finish_time"
-                                value="{{ old('finish_time', isset($Course->finish_time) ? $Course->finish_time->format('H:i') : '') }}"
+                                value="{{ old('finish_time', isset($Course->finish_time) ? \Carbon\Carbon::parse($Course->finish_time)->format('H:i') : '') }}"
                                 class="border rounded px-3 py-2">
                         </td>
                     </tr>

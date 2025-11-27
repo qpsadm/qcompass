@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('course_type_id')->default(3)->comment('講座分野');
 
             // 初期値：2:実践
-            $table->unsignedBigInteger('level_id')->default(2)->comment('講座種類（レベル）');
+            $table->unsignedBigInteger('level_id')->nullable()->default(2)->comment('講座種類（レベル）');
 
-            // 初期値：1:ポリテックセンター徳島
+            // 初期値：1:ポリテクセンター徳島
             $table->unsignedBigInteger('organizer_id')->default(1)->comment('実施主体ID');
 
             $table->string('course_name', 255)->comment('講座名');

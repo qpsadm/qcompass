@@ -59,14 +59,18 @@
                                 <option value="">選択してください</option>
                                 @foreach ($levels as $level)
                                     <option value="{{ $level->id }}"
-                                        {{ old('level_id') == $level->id ? 'selected' : '' }}>{{ $level->name }}</option>
+                                        {{ old('level_id') == $level->id ? 'selected' : '' }}>
+                                        {{ $level->name }}
+                                    </option>
                                 @endforeach
                             </select>
+
                             @error('level_id')
                                 <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </td>
                     </tr>
+
 
                     {{-- 主催者 --}}
                     <tr class="border-b">
@@ -76,7 +80,7 @@
                                 <option value="">選択してください</option>
                                 @foreach ($organizers as $org)
                                     <option value="{{ $org->id }}"
-                                        {{ old('organizer_id') == $org->id ? 'selected' : '' }}>{{ $org->name }}
+                                        {{ old('organizer_id', 1) == $org->id ? 'selected' : '' }}>{{ $org->name }}
                                     </option>
                                 @endforeach
                             </select>
