@@ -48,39 +48,25 @@ class AgendaController extends Controller
     public function myCourseAgendaList()
     {
         $userId = Auth::id();
-
-        // カテゴリ一覧（アコーディオン用）
         $categories = $this->getUserCategories($userId);
-
-        if ($categories->isEmpty()) {
-            return view('user.agenda.agendas_list', [
-                'agendas' => collect(),
-                'categories' => collect(),
-            ]);
-        }
-
         $categoryIds = $categories->pluck('id')->toArray();
 
-        // 検索キーワード
-        $search = request('search');
+        $search = request('search'); // search パラメータを取得
+
+        $query = Agenda::whereIn('category_id', $categoryIds)
+            ->where('status', 'yes')
+            ->where('is_show', 1);
 
         if ($search) {
-            $agendas = Agenda::search($search)
-                ->get()
-                ->where('status', 'yes')
-                ->where('is_show', 1)
-                ->whereIn('category_id', $categoryIds)
-                ->sortByDesc('created_at');
-        } else {
-            $agendas = Agenda::whereIn('category_id', $categoryIds)
-                ->where('status', 'yes')
-                ->where('is_show', 1)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            // ScoutやLIKE検索でもOK
+            $query->where('agenda_name', 'like', "%{$search}%");
         }
+
+        $agendas = $query->orderBy('created_at', 'desc')->get();
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
+
 
     /**
      * 個別アジェンダ詳細
