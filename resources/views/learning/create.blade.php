@@ -30,6 +30,19 @@
                         1 => '初級',
                         2 => '上級',
                     ];
+                    $tag_id = [
+                        'hard' => '1. ハードウェア',
+                        'soft' => '2. ソフトウェア',
+                        'network' => '3. ネットワーク・通信',
+                        'data' => '4. データ・情報処理',
+                        'program' => '5. プログラミング',
+                        'webcreate' => '6. WEB制作',
+                        'webdesign' => '7.WEBデザイン',
+                        'security' => '8. セキュリティ',
+                        'certification' => '9. 資格',
+                        'job' => '10. 就職支援',
+                        'other' => '4. 記事',
+                    ];
                 @endphp
 
                 {{-- 種別 --}}
@@ -86,6 +99,21 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- タグ --}}
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">タグ<span class="text-red-500">*</span></label>
+                    <div class="flex flex-wrap gap-4">
+                        @foreach ($tags as $tag)
+                            <div>
+                                <input type="radio" name="tag_id" value="{{ $tag->id }}"
+                                    {{ old('tag_id') == $tag->id ? 'checked' : '' }} id="tag-{{ $tag->id }}">
+                                <label for="tag-{{ $tag->id }}" class="ml-2">{{ $tag->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
 
                 {{-- 表示フラグ --}}
                 <div class="mb-6">

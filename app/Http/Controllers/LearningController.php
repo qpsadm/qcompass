@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Learning;
+use App\Models\Tag;
 
 class LearningController extends Controller
 {
@@ -12,7 +13,8 @@ class LearningController extends Controller
      */
     public function index()
     {
-        $learnings = Learning::all();
+        // Learningモデルとその関連タグ情報を一緒に取得
+        $learnings = Learning::with('tag')->get();
         return view('learning.index', compact('learnings'));
     }
 
@@ -21,7 +23,9 @@ class LearningController extends Controller
      */
     public function create()
     {
-        return view('learning.create');
+        // タグ情報を取得
+        $tags = Tag::all();  // タグのリストを取得
+        return view('learning.create', compact('tags'));
     }
 
     /**
@@ -29,6 +33,7 @@ class LearningController extends Controller
      */
     public function store(Request $request)
     {
+        // バリデーション
         $validated = $request->validate([
             'type' => 'required|in:book,site,video,article',
             'title' => 'required|string|max:255',
@@ -37,13 +42,16 @@ class LearningController extends Controller
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
             'is_show' => 'nullable|boolean',
-            'tag_id' => 'nullable|exists:tags,id',
+            'tag_id' => 'nullable|exists:tags,id', // タグIDのバリデーション
         ]);
 
+        // 公開状態の処理
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
 
+        // タグIDの設定（タグが選択されていない場合は null）
         $validated['tag_id'] = $validated['tag_id'] ?? null;
 
+        // Learningデータの保存
         Learning::create($validated);
 
         return redirect()->route('admin.learnings.index')->with('success', 'Learning作成完了');
@@ -64,7 +72,8 @@ class LearningController extends Controller
     public function edit($id)
     {
         $learning = Learning::findOrFail($id);
-        return view('learning.edit', compact('learning'));
+        $tags = Tag::all();  // タグ情報を取得
+        return view('learning.edit', compact('learning', 'tags'));
     }
 
     /**
@@ -74,6 +83,7 @@ class LearningController extends Controller
     {
         $learning = Learning::findOrFail($id);
 
+        // バリデーション
         $validated = $request->validate([
             'type' => 'required|in:book,site,video,article',
             'title' => 'required|string|max:255',
@@ -82,14 +92,18 @@ class LearningController extends Controller
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
             'is_show' => 'nullable|boolean',
-            'tag_id' => 'nullable|exists:tags,id',
+            'tag_id' => 'nullable|exists:tags,id', // タグIDのバリデーション
         ]);
 
-
+        // 公開状態の処理
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
 
+        // タグIDの設定（タグが選択されていない場合は null）
+        $validated['tag_id'] = $validated['tag_id'] ?? null;
 
+        // 更新処理
         $learning->update($validated);
+
         return redirect()->route('admin.learnings.index')->with('success', 'Learning更新完了');
     }
 
