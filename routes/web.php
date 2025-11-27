@@ -99,7 +99,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
         ->name('news.news_info');
 
     // 自分の講座アジェンダ一覧
-    Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])->name('agendas.my');
+    Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])->name('agenda.agendas_list');
 
     // アジェンダ詳細（必要なら）
     Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
