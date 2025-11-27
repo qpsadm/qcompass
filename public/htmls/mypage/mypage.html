@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日報入力フォーム | QLIP-Compass</title>
+    <title>マイページ | QLIP-Compass</title>
 
     <!-- 共通css -->
     <link rel="stylesheet" href="../../assets/css/reset.css">
@@ -12,7 +12,7 @@
 
     <!-- yield(code-page-css) -->
     <link rel="stylesheet" href="../../assets/css/f_mypage.css">
-    <link rel="stylesheet" href="../../assets/css/f_top.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet"> -->
 </head>
 <body>
 
@@ -107,6 +107,18 @@
                         <h3>プロフィール</h3>
                     </div>
                     <div class="box-content">
+                        <div class="profile-icon">
+                            <img src="../../assets/images/f_profile-image.svg" alt="">
+                        </div>
+                        <div class="profile-data">
+                            <h4>kumasan</h4>
+                            <p class="mail">qlip-kumasan@example.com</p>
+                            <p class="tel">090-2825-0214</p>
+                            <p class="birthday">1998/02/14</p>
+                        </div>
+                        <div class="btn-area">
+                            <a href="">テーマカラー変更</a>
+                        </div>
                     </div>
                 </div>
 
@@ -116,7 +128,10 @@
                     </div>
                     <div class="box-content">
                         <div id='calendar'></div>
+                        <p>※日報を提出した日はチェックマークが表示されます。<br>
+                        　提出し忘れていないかチェックしましょう。</p>
                     </div>
+
                 </div>
             </div>
 
@@ -150,12 +165,12 @@
                 </div>
             </div>
 
-            <div class="section-box">
+            <div class="section-box memo">
                 <div class="box-title">
                     <h3>メモ</h3>
                 </div>
                 <div class="box-content">
-                    <form class="memo" action="">
+                    <form class="memo-form" action="">
                         <textarea name="" id="" rows="6"></textarea>
                         <button>保存</button>
                     </form>
