@@ -35,19 +35,20 @@
 </div> --}}
 
 <div class="accordion-menu">
-    @foreach ($categories as $category)
-        <div class="menu-title">
-            <div class="title">
-                <span>{{ $category->name }}</span>
-            </div>
-            <div class="accordion-btn">
-                <span></span>
-            </div>
-        </div>
 
+    <div class="menu-title">
+        <div class="title">
+            <span>カテゴリ</span>
+        </div>
+        <div class="accordion-btn">
+            <span></span>
+        </div>
+    </div>
+    @foreach ($categories as $category)
         @if ($category->children->count() > 0)
             <div class="menu-content">
                 <ul>
+                    <span>{{ $category->name }}</span>
                     @foreach ($category->children as $child)
                         <li><a href="#">{{ $child->name }}</a></li>
                     @endforeach
