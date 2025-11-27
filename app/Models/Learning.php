@@ -1,5 +1,7 @@
 <?php
 
+// Learning.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +22,12 @@ class Learning extends Model
         'is_show',
         'tag_id',
     ];
+
+    // Tagとのリレーション
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);  // `tag_id` で `Tag` モデルと関連づけ
+    }
 
     /**
      * Blade 側で $learning->is_visible としてアクセスできるようにする
