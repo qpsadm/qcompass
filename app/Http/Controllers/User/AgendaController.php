@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AgendaController extends Controller
 {
@@ -49,32 +50,36 @@ class AgendaController extends Controller
             ->where('a.is_show', 1)
             ->where('a.status', 'yes')   // DBの値に合わせて
             ->orderBy('a.created_at', 'desc')
-            ->select('a.*', 'cc.course_id')
+            ->select('a.*', 'cc.course_id');
 
         // 所属講座のカテゴリーIDを取得
-        // $categoryIds = DB::table('course_categories')
-        //     ->whereIn('course_id', $userCourseIds)
-        //     ->where('is_show', 1)
-        //     ->pluck('category_id')
-        //     ->toArray();
+        $categoryIds = DB::table('course_categories')
+            ->whereIn('course_id', $userCourseIds)
+            ->where('is_show', 1)
+            ->pluck('category_id')
+            ->toArray();
 
         // if (empty($categoryIds)) {
         //     $agendasByCategory = collect();
         //     return view('user.agenda.agendas_list', compact('agendasByCategory'));
         // }
 
+        if (!$agendas) {
+            abort(404, 'アジェンダが見つかりません');
+        }
+
         // アジェンダを取得
-        // $agendas = DB::table('agendas')
+        $agendas = DB::table('agendas')
         //     ->whereIn('course_id', $userCourseIds)
-        //     ->whereIn('category_id', $categoryIds)
-        //     ->where('status', 2)    // 承認済み
-        //     ->where('is_show', 1)   // 表示対象
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
+            ->whereIn('category_id', $categoryIds)
+            ->where('status', 'yes')    // 承認済み
+            ->where('is_show', 1)   // 表示対象
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // // カテゴリーごとにまとめる
         // $agendasByCategory = $agendas->groupBy('category_id');
 
-        return view('user.agenda.agendas_list', compact('agendasByCategory'));
+        return view('user.agenda.agendas_list', compact('agendas'));
     }
 }
