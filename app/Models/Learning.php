@@ -17,7 +17,8 @@ class Learning extends Model
         'image',
         'url',
         'level',
-        'is_show'
+        'is_show',
+        'tag_id',
     ];
 
     /**

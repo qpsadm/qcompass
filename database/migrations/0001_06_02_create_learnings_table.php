@@ -16,17 +16,18 @@ return new class extends Migration
             $table->tinyInteger('type')->comment('種別');
 
             // 外部キー
-            $table->unsignedBigInteger('tag_id')->comment('タグID');
+            $table->unsignedBigInteger('tag_id')->nullable()->comment('タグID');
+
 
             $table->string('title', 255)->comment('タイトル');
             $table->text('description')->nullable()->comment('説明');
             $table->string('image', 255)->nullable()->comment('画像');
             $table->string('url', 255)->nullable()->comment('URL');
 
-            $table->string('author', 255)->nullable()->comment('著者名');
-            $table->string('publisher', 255)->nullable()->comment('出版社');
-            $table->date('publication_date')->nullable()->comment('出版日');
-            $table->string('isbn', 20)->nullable()->comment('ISBNコード');
+            //     $table->string('author', 255)->nullable()->comment('著者名');
+            //      $table->string('publisher', 255)->nullable()->comment('出版社');
+            //            $table->date('publication_date')->nullable()->comment('出版日');
+            //            $table->string('isbn', 20)->nullable()->comment('ISBNコード');
 
             $table->tinyInteger('level')->nullable()->comment('レベル');
 

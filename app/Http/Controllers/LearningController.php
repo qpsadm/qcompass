@@ -37,10 +37,12 @@ class LearningController extends Controller
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
             'is_show' => 'nullable|boolean',
+            'tag_id' => 'nullable|exists:tags,id',
         ]);
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
 
+        $validated['tag_id'] = $validated['tag_id'] ?? null;
 
         Learning::create($validated);
 
@@ -80,13 +82,14 @@ class LearningController extends Controller
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
             'is_show' => 'nullable|boolean',
+            'tag_id' => 'nullable|exists:tags,id',
         ]);
 
 
         $validated['is_show'] = $request->has('is_show') ? 1 : 0;
-        $learning->update($validated);
 
- 
+
+        $learning->update($validated);
         return redirect()->route('admin.learnings.index')->with('success', 'Learning更新完了');
     }
 
