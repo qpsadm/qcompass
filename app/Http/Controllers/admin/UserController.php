@@ -61,13 +61,13 @@ class UserController extends Controller
     {
         // バリデーション
         $validated = $request->validate([
-            'code' => 'required|string|max:10',
+            'code' => 'required|string|max:10|unique:users,code', // ← 追加
             'name' => 'required|string|max:50',
             'furigana' => 'required|string|max:50',
             'roman_name' => 'required|string|max:50',
             'password' => 'required|string|min:6',
             'role_id' => 'required|exists:roles,id',
-            'division_id' => 'nullable|integer', // 所属部署
+            'division_id' => 'nullable|integer',
             'email' => 'nullable|email|unique:users,email',
         ]);
 
@@ -115,7 +115,7 @@ class UserController extends Controller
     {
         // バリデーション
         $validated = $request->validate([
-            'code' => 'required|string|max:10',
+            'code' => 'required|string|max:10|unique:users,code,' . $user->id, // ← 追加
             'name' => 'required|string|max:50',
             'furigana' => 'nullable|string|max:50',
             'roman_name' => 'nullable|string|max:50',
@@ -124,7 +124,6 @@ class UserController extends Controller
             'division_id' => 'nullable|integer',
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
-
         // パスワードがある場合だけハッシュ化
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
