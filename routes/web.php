@@ -166,6 +166,11 @@ Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
             Route::put('{type}/{id}', [AgendaFileController::class, 'update'])
                 ->name('update');
 
+            //ファイルの更新
+            Route::get('admin/files/agenda/{id}', [AgendaController::class, 'edit']);
+            Route::post('admin/files/agenda/{id}', [AgendaController::class, 'update']);
+
+
             // 削除
             Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])
                 ->name('destroy');
