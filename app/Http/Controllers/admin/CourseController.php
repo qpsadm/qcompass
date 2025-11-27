@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
-use App\Models\Organizer; //開催者
-use App\Models\Level; // Levels テーブルのモデル
+use App\Models\Organizer;
+use App\Models\Level;
 use App\Models\CourseType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
-
     public function index(Request $request)
     {
         $query = $request->input('search');
@@ -21,232 +21,173 @@ class CourseController extends Controller
 
         if ($query) {
             $courses = $courses->where(function ($q) use ($query) {
-                $q->where('course_code', 'like', "%{$query}%")       // 講座コード
-                    ->orWhere('course_name', 'like', "%{$query}%")    // 講座名
-                    ->orWhereHas('organizer', function ($q2) use ($query) { // 主催者名
-                        $q2->where('name', 'like', "%{$query}%");
-                    })
-                    ->orWhereHas('courseType', function ($q3) use ($query) { // 分野名
-                        $q3->where('name', 'like', "%{$query}%");
-                    })
-                    ->orWhereHas('level', function ($q4) use ($query) { // 種類名
-                        $q4->where('name', 'like', "%{$query}%");
-                    });
+                $q->where('course_code', 'like', "%{$query}%")
+                    ->orWhere('course_name', 'like', "%{$query}%")
+                    ->orWhereHas('organizer', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
+                    ->orWhereHas('courseType', fn($q3) => $q3->where('name', 'like', "%{$query}%"))
+                    ->orWhereHas('level', fn($q4) => $q4->where('name', 'like', "%{$query}%"));
             });
         }
 
         $courses = $courses->paginate(10);
-
         return view('admin.courses.index', compact('courses'));
     }
 
 
-
     public function create()
     {
-        $organizers = Organizer::all(); // 主催者取得
-        $levels = Level::all(); // 講座種類（難易度）
-        $courseTypes = CourseType::all();
-        return view('admin.courses.create', compact('organizers', 'levels', 'courseTypes'));
+        return view('admin.courses.create', [
+            'organizers' => Organizer::all(),
+            'levels'     => Level::all(),
+            'courseTypes' => CourseType::all(),
+        ]);
     }
+
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_code' => 'nullable',
-            'course_type_id' => 'nullable',
-            'level_id' => 'nullable',
+            'course_code' => 'nullable|string|max:50',
+            'course_type_id' => 'nullable|exists:course_types,id',
+            'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
-            'course_name' => 'nullable',
-            'venue' => 'nullable',
-            'application_date' => 'nullable',
-            'certification_date' => 'nullable',
-            'certification_number' => 'nullable',
-            'start_date' => 'nullable',
-            'end_date' => 'nullable',
-            'total_hours' => 'nullable',
-            'periods' => 'nullable',
+            'course_name' => 'required|string|max:255',
+            'venue' => 'nullable|string|max:255',
+            'application_date' => 'nullable|date',
+            'certification_date' => 'nullable|date',
+            'certification_number' => 'nullable|string|max:100',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'total_hours' => 'nullable|integer',
+            'periods' => 'nullable|integer',
             'start_time' => 'nullable',
             'finish_time' => 'nullable',
-            'start_viewing' => 'nullable',
-            'finish_viewing' => 'nullable',
-            'plan_path' => 'nullable',
-            'flier_path' => 'nullable',
-            'capacity' => 'nullable',
-            'entering' => 'nullable',
-            'completed' => 'nullable',
-            'description' => 'nullable',
-            'status' => 'nullable',
+            'start_viewing' => 'nullable|date',
+            'finish_viewing' => 'nullable|date',
+            'plan_path' => 'nullable|file|mimes:pdf,doc,docx,xlsx,xls',
+            'flier_path' => 'nullable|file|mimes:pdf,jpg,png,webp',
+            'capacity' => 'nullable|integer',
+            'entering' => 'nullable|integer',
+            'completed' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'mail_address' => 'nullable|email',
+            'cc_address' => 'nullable|string',
+            'status' => 'nullable|integer',
+            'is_show' => 'nullable|boolean',
             'category_ids' => 'array',
             'category_ids.*' => 'integer',
         ]);
 
-        $validated['created_user_name'] = auth()->user()->name ?? 'system';
-        $validated['status'] = isset($validated['status']) ? (int)$validated['status'] : 0;
-
-        // 講座作成
-        $course = Course::create($validated);
-
-        // 🔥 中間テーブルへ登録
-        if ($request->has('category_ids')) {
-            $syncData = [];
-
-            foreach ($request->category_ids as $catId) {
-                $syncData[$catId] = [
-                    'is_show' => 1,
-                    'created_user_name' => Auth::user()->name,
-                ];
-            }
-
-            $course->categories()->sync($syncData);
+        // ✅ ファイル保存
+        if ($request->hasFile('plan_path')) {
+            $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
+        }
+        if ($request->hasFile('flier_path')) {
+            $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
         }
 
-        return redirect()->route('admin.courses.index')->with('success', 'Course作成完了');
+        $validated['created_user_name'] = Auth::user()->name ?? 'system';
+
+        $course = Course::create($validated);
+
+        // ✅ categories（中間テーブル）
+        if ($request->filled('category_ids')) {
+            $course->categories()->sync(
+                collect($request->category_ids)->mapWithKeys(fn($id) => [
+                    $id => ['is_show' => 1, 'created_user_name' => Auth::user()->name]
+                ])
+            );
+        }
+
+        return redirect()->route('admin.courses.index')->with('success', '講座を登録しました');
     }
 
-
-
-    public function show($id)
-    {
-        $Course = Course::findOrFail($id);
-        return view('admin.courses.show', compact('Course'));
-    }
 
     public function edit($id)
     {
-        $Course = Course::findOrFail($id);
-
-        // セレクト用データ取得
-        $courseTypes = \App\Models\CourseType::all();
-        $levels = \App\Models\Level::all();
-        $organizers = \App\Models\Organizer::all();
-
-        return view('admin.courses.edit', compact('Course', 'courseTypes', 'levels', 'organizers'));
+        return view('admin.courses.edit', [
+            'Course' => Course::findOrFail($id),
+            'courseTypes' => CourseType::all(),
+            'levels' => Level::all(),
+            'organizers' => Organizer::all(),
+        ]);
     }
+
+
     public function update(Request $request, $id)
     {
-        $Course = Course::findOrFail($id);
+        $course = Course::findOrFail($id);
 
         $validated = $request->validate([
-            'course_code' => 'nullable',
-            'course_type_id' => 'nullable',
-            'level_id' => 'nullable',
+            'course_code' => 'nullable|string|max:50',
+            'course_type_id' => 'nullable|exists:course_types,id',
+            'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
-            'course_name' => 'nullable',
-            'venue' => 'nullable',
-            'application_date' => 'nullable',
-            'certification_date' => 'nullable',
-            'certification_number' => 'nullable',
-            'start_date' => 'nullable',
-            'end_date' => 'nullable',
-            'total_hours' => 'nullable',
-            'periods' => 'nullable',
+            'course_name' => 'required|string|max:255',
+            'venue' => 'nullable|string|max:255',
+            'application_date' => 'nullable|date',
+            'certification_date' => 'nullable|date',
+            'certification_number' => 'nullable|string|max:100',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'total_hours' => 'nullable|integer',
+            'periods' => 'nullable|integer',
             'start_time' => 'nullable',
             'finish_time' => 'nullable',
-            'start_viewing' => 'nullable',
-            'finish_viewing' => 'nullable',
-            'plan_path' => 'nullable',
-            'flier_path' => 'nullable',
-            'capacity' => 'nullable',
-            'entering' => 'nullable',
-            'completed' => 'nullable',
-            'description' => 'nullable',
-            'status' => 'nullable',
+            'start_viewing' => 'nullable|date',
+            'finish_viewing' => 'nullable|date',
+            'plan_path' => 'nullable|file|mimes:pdf,doc,docx,xlsx,xls',
+            'flier_path' => 'nullable|file|mimes:pdf,jpg,png,webp',
+            'capacity' => 'nullable|integer',
+            'entering' => 'nullable|integer',
+            'completed' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'mail_address' => 'nullable|email',
+            'cc_address' => 'nullable|string',
+            'status' => 'nullable|integer',
+            'is_show' => 'nullable|boolean',
             'category_ids' => 'array',
             'category_ids.*' => 'integer',
         ]);
 
-        $validated['updated_user_name'] = Auth::id();
-
-        $Course->update($validated);
-
-        // 🔥 中間テーブルを更新（sync）
-        $syncData = [];
-        if ($request->has('category_ids')) {
-            foreach ($request->category_ids as $catId) {
-                $syncData[$catId] = [
-                    'is_show' => 1,
-                    'updated_user_name' => Auth::user()->name,
-                ];
-            }
+        // ✅ ファイル更新
+        if ($request->hasFile('plan_path')) {
+            if ($course->plan_path) Storage::disk('public')->delete($course->plan_path);
+            $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
         }
 
-        $Course->categories()->sync($syncData);
+        if ($request->hasFile('flier_path')) {
+            if ($course->flier_path) Storage::disk('public')->delete($course->flier_path);
+            $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
+        }
 
-        return redirect()->route('admin.courses.index')->with('success', 'Course更新完了');
+        $validated['updated_user_name'] = Auth::user()->name ?? 'system';
+
+        $course->update($validated);
+
+        // ✅ 中間テーブル更新
+        if ($request->filled('category_ids')) {
+            $course->categories()->sync(
+                collect($request->category_ids)->mapWithKeys(fn($id) => [
+                    $id => ['is_show' => 1, 'updated_user_name' => Auth::user()->name]
+                ])
+            );
+        } else {
+            $course->categories()->detach();
+        }
+
+        return redirect()->route('admin.courses.index')->with('success', '講座を更新しました');
     }
 
 
     public function destroy($id)
     {
-        $Course = Course::findOrFail($id);
+        $course = Course::findOrFail($id);
 
-        $Course->deleted_user_name = Auth::id();
-        $Course->save();
+        $course->deleted_user_name = Auth::user()->name ?? 'system';
+        $course->save();
+        $course->delete();
 
-        $Course->delete();
-
-        return redirect()->route('admin.courses.index')->with('success', 'Course削除完了');
-    }
-    public function getTeachers($courseId)
-    {
-        $course = Course::with('teachers')->findOrFail($courseId);
-
-        // JSON形式で返す
-        return response()->json($course->teachers->map(function ($teacher) {
-            return [
-                'id' => $teacher->id,
-                'name' => $teacher->name,
-            ];
-        }));
-    }
-
-    public function students(Course $course, Request $request)
-    {
-        $typeId = $request->query('type');
-
-        // pivot 経由でユーザー取得、soft delete 無視
-        $studentsQuery = $course->users()
-            ->where('role_id', 3) // 3 = 生徒のみ
-            ->wherePivotNull('deleted_at'); // pivot の削除フラグを考慮
-
-        // 講座種別で絞り込み
-        if ($typeId) {
-            $studentsQuery->whereHas('courses', function ($q) use ($typeId) {
-                $q->where('course_type_id', $typeId)
-                    ->wherePivotNull('deleted_at'); // pivot の削除も考慮
-            });
-        }
-
-        $students = $studentsQuery->paginate(20);
-
-        // 担当講師も pivot の削除考慮して取得
-        $teachers = $course->teachers()
-            ->wherePivotNull('deleted_at')
-            ->get();
-
-        return view('admin.courses.students', compact('course', 'students', 'teachers'));
-    }
-
-    public function agendas($courseId)
-    {
-        // 講座 → カテゴリ → アジェンダを取得
-        $course = Course::with('categories.agendas')->findOrFail($courseId);
-
-        return view('admin.course_category.agendas', compact('course'));
-    }
-
-    public function updateAgendas(Request $request, $courseId)
-    {
-        // $request->agendas は選択された target_id の配列
-        $selectedAgendas = $request->input('agendas', []);
-
-        // 講座に紐づくカテゴリ経由でアジェンダを更新するロジック
-        // ここは必要に応じて pivot テーブルやフラグで管理
-        // 例としてログ出力
-        \Log::info("Course $courseId selected agendas:", $selectedAgendas);
-
-        return redirect()->route('admin.courses.agendas', $courseId)
-            ->with('success', 'アジェンダ設定を更新しました');
+        return redirect()->route('admin.courses.index')->with('success', '講座を削除しました');
     }
 }
