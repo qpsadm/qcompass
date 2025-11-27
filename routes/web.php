@@ -101,7 +101,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])->name('agendas.my');
 
     // アジェンダ詳細（必要なら）
-    Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.detail');
+    Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
 });
 
 
