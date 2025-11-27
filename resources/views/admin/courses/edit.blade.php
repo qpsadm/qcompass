@@ -110,7 +110,7 @@
                         </td>
                     </tr>
 
-                    {{-- 開始日・終了日 --}}
+                    {{-- 期間 --}}
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">期間</th>
                         <td class="px-4 py-2 flex gap-2">
@@ -124,7 +124,7 @@
                         </td>
                     </tr>
 
-                    {{-- 開始時間・終了時間 --}}
+                    {{-- 時間 --}}
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">時間</th>
                         <td class="px-4 py-2 flex gap-2">
@@ -138,7 +138,7 @@
                         </td>
                     </tr>
 
-                    {{-- 総授業時間・時限数 --}}
+                    {{-- 総授業時間 / 時限数 --}}
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">授業時間 / 時限数</th>
                         <td class="px-4 py-2 flex gap-2">
@@ -148,6 +148,107 @@
                             /
                             <input type="number" name="periods" value="{{ old('periods', $Course->periods ?? '') }}"
                                 class="border rounded px-3 py-2 w-24">
+                        </td>
+                    </tr>
+
+                    {{-- 申請日 --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">申請日</th>
+                        <td class="px-4 py-2">
+                            <input type="date" name="application_date"
+                                value="{{ old('application_date', $Course->application_date ?? '') }}"
+                                class="border rounded px-3 py-2">
+                            @error('application_date')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- 認定日 --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">認定日</th>
+                        <td class="px-4 py-2">
+                            <input type="date" name="certification_date"
+                                value="{{ old('certification_date', $Course->certification_date ?? '') }}"
+                                class="border rounded px-3 py-2">
+                            @error('certification_date')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- 認定番号 --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">認定番号</th>
+                        <td class="px-4 py-2">
+                            <input type="text" name="certification_number"
+                                value="{{ old('certification_number', $Course->certification_number ?? '') }}"
+                                class="border rounded px-3 py-2 w-64">
+                            @error('certification_number')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- 閲覧期間 --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">閲覧期間</th>
+                        <td class="px-4 py-2 flex gap-2">
+                            <input type="date" name="start_viewing"
+                                value="{{ old('start_viewing', $Course->start_viewing ?? '') }}"
+                                class="border rounded px-3 py-2">
+                            ～
+                            <input type="date" name="finish_viewing"
+                                value="{{ old('finish_viewing', $Course->finish_viewing ?? '') }}"
+                                class="border rounded px-3 py-2">
+                            @error('start_viewing')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                            @error('finish_viewing')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- 日報送信先 --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">日報送信先</th>
+                        <td class="px-4 py-2">
+                            <input type="email" name="mail_address"
+                                value="{{ old('mail_address', $Course->mail_address ?? '') }}"
+                                class="border rounded px-3 py-2 w-80">
+                            @error('mail_address')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- CC --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">CC</th>
+                        <td class="px-4 py-2">
+                            <input type="text" name="cc_address"
+                                value="{{ old('cc_address', $Course->cc_address ?? '') }}"
+                                class="border rounded px-3 py-2 w-80">
+                            @error('cc_address')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+
+                    {{-- 表示フラグ --}}
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示</th>
+                        <td class="px-4 py-2">
+                            <select name="is_show" class="border rounded px-3 py-2 w-32">
+                                <option value="1" {{ old('is_show', $Course->is_show ?? 1) == 1 ? 'selected' : '' }}>
+                                    表示</option>
+                                <option value="0" {{ old('is_show', $Course->is_show ?? 1) == 0 ? 'selected' : '' }}>
+                                    非表示</option>
+                            </select>
+                            @error('is_show')
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            @enderror
                         </td>
                     </tr>
 
@@ -175,7 +276,7 @@
                         </td>
                     </tr>
 
-                    {{-- 定員・申込者数・修了者数 --}}
+                    {{-- 定員 / 申込 / 修了 --}}
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">定員 / 申込 / 修了</th>
                         <td class="px-4 py-2 flex gap-2">
