@@ -40,9 +40,9 @@ class AgendaController extends Controller
 
         // アジェンダを取得
         $agendas = DB::table('agendas')
-            ->whereIn('course_id', $userCourseIds)
+            // ->whereIn('course_id', $userCourseIds)
             ->whereIn('category_id', $categoryIds)
-            ->where('status', 2)    // 承認済み
+            ->where('status', 'yes')    // 承認済み
             ->where('is_show', 1)   // 表示対象
             ->orderBy('created_at', 'desc')
             ->get();
@@ -50,6 +50,6 @@ class AgendaController extends Controller
         // カテゴリーごとにまとめる
         $agendasByCategory = $agendas->groupBy('category_id');
 
-        return view('user.agenda.agendas_list', compact('agendasByCategory'));
+        return view('user.agenda.agendas_list', compact('agendas'));
     }
 }

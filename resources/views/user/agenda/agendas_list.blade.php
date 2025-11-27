@@ -6,10 +6,12 @@
 
         {{-- <x-f_category_accordion /> --}}
 
-        @foreach ($agendasByCategory as $categoryId => $agendas)
-            <div class="content-list">
-                <table>
-                    @foreach ($agendas as $agenda)
+        @empty($agendas)
+        @else
+            @foreach ($agendas as $categoryId => $agenda)
+                <div class="content-list">
+                    <table>
+                        {{-- @foreach ($agenda as $item) --}}
                         <tr>
                             {{-- <td class="date">{{ $agenda->created_at }}</td> --}}
                             <td class="date">{{ \Carbon\Carbon::parse($agenda->created_at)->format('Y/m/d') }}</td>
@@ -20,10 +22,11 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
-                </table>
-            </div>
-        @endforeach
+                        {{-- @endforeach --}}
+                    </table>
+                </div>
+            @endforeach
+        @endempty
 
         <x-f_pagination />
         <x-f_bread_crumbs />
