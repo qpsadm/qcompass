@@ -10,49 +10,68 @@ use Illuminate\Support\Facades\DB;
 class AgendaController extends Controller
 {
     /**
-     * 自分の講座アジェンダ一覧（カテゴリー別）
+     * 共通：ユーザーが閲覧可能なカテゴリ一覧を取得
      */
-    public function myCourseAgendaList()
+    private function getUserCategories($userId)
     {
-        $userId = Auth::id();
-
-        // 所属講座IDを取得
+        // 所属講座ID
         $userCourseIds = DB::table('course_users')
             ->where('user_id', $userId)
             ->pluck('course_id')
             ->toArray();
 
         if (empty($userCourseIds)) {
-            $agendas = collect();
-            return view('user.agenda.agendas_list', compact('agendas'));
+            return collect();
         }
 
-        // 所属講座のカテゴリーIDを取得
+        // カテゴリID
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
-            ->where('is_show', 1) // course_categories には存在
+            ->where('is_show', 1)
             ->pluck('category_id')
             ->toArray();
 
         if (empty($categoryIds)) {
-            $agendas = collect();
-            return view('user.agenda.agendas_list', compact('agendas'));
+            return collect();
         }
+
+        // カテゴリ一覧
+        return DB::table('categories')
+            ->whereIn('id', $categoryIds)
+            ->orderBy('sort', 'asc')
+            ->get();
+    }
+
+    /**
+     * 自分の講座アジェンダ一覧
+     */
+    public function myCourseAgendaList()
+    {
+        $userId = Auth::id();
+
+        // カテゴリ一覧（アコーディオン用）
+        $categories = $this->getUserCategories($userId);
+
+        if ($categories->isEmpty()) {
+            return view('user.agenda.agendas_list', [
+                'agendas' => collect(),
+                'categories' => collect(),
+            ]);
+        }
+
+        $categoryIds = $categories->pluck('id')->toArray();
 
         // 検索キーワード
         $search = request('search');
 
         if ($search) {
-            // Scout検索
             $agendas = Agenda::search($search)
-                ->get() // Scoutの結果はコレクション
+                ->get()
                 ->where('status', 'yes')
                 ->where('is_show', 1)
                 ->whereIn('category_id', $categoryIds)
                 ->sortByDesc('created_at');
-            dd($agendas);
         } else {
-            // 通常のクエリ
             $agendas = Agenda::whereIn('category_id', $categoryIds)
                 ->where('status', 'yes')
                 ->where('is_show', 1)
@@ -60,7 +79,7 @@ class AgendaController extends Controller
                 ->get();
         }
 
-        return view('user.agenda.agendas_list', compact('agendas'));
+        return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
 
     /**
@@ -73,7 +92,10 @@ class AgendaController extends Controller
             ->where('status', 'yes')
             ->firstOrFail();
 
-        return view('user.agenda.agendas_info', compact('agenda'));
+        // アコーディオン用カテゴリ
+        $categories = $this->getUserCategories(Auth::id());
+
+        return view('user.agenda.agendas_info', compact('agenda', 'categories'));
     }
 
     /**
@@ -81,12 +103,15 @@ class AgendaController extends Controller
      */
     public function agendaByCategory($category_id)
     {
+        $userId = Auth::id();
+        $categories = $this->getUserCategories($userId);
+
         $agendas = Agenda::where('category_id', $category_id)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.agenda.agendas_list', compact('agendas'));
+        return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
 }

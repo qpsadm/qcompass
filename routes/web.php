@@ -100,14 +100,14 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     // 自分の講座アジェンダ一覧
     Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])->name('agenda.agendas_list');
-
+    // カテゴリ別アジェンダ一覧
+    Route::get('/agendas/category/{category_id}', [UserAgendaController::class, 'agendaByCategory'])
+        ->name('agenda.agenda_by_category');
     // アジェンダ詳細（必要なら）
     Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
     //質疑応答
     Route::get('questions', [UserQuestionController::class, 'index'])
         ->name('question.questions_list');
-    //category
-    Route::get('categories', [UserCategoryController::class, 'index'])->name('categories.index');
 });
 
 
