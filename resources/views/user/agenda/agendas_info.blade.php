@@ -13,7 +13,7 @@
         </div>
 
         <x-f_btn_list :prevBtn="false" :listBtn="true" :nextBtn="false" listUrl="{{ url('user/agenda') }}"
-            listLabel="最新のアジェンダ一覧へ" />
+            listLabel="一覧画面へ" />
 
         <x-f_bread_crumbs />
     </div>
