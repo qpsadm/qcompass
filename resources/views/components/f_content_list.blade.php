@@ -7,7 +7,7 @@
                 if (!empty($courseName)) {
                     $courseName = '本講座';
                 } else {
-                    $courseName = '全講座';
+                    $courseName = '全体';
                 }
             @endphp
             <tr>
