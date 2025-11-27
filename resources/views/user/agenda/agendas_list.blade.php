@@ -8,9 +8,9 @@
 
         @empty($agendas)
         @else
-            @foreach ($agendas as $categoryId => $agenda)
-                <div class="content-list">
-                    <table>
+            <div class="content-list">
+                <table>
+                    @foreach ($agendas as $categoryId => $agenda)
                         {{-- @foreach ($agenda as $item) --}}
                         <tr>
                             {{-- <td class="date">{{ $agenda->created_at }}</td> --}}
@@ -23,9 +23,9 @@
                             </td>
                         </tr>
                         {{-- @endforeach --}}
-                    </table>
-                </div>
-            @endforeach
+                    @endforeach
+                </table>
+            </div>
         @endempty
 
         <x-f_pagination />

@@ -20,8 +20,7 @@
     <meta content="telephone=no" name="format-detection">
 
     {{-- faviconを読み込む --}}
-    <link href="{{ asset('assets/images/icon/favicon.ico') }}" id="favicon" rel="icon">
-    <link href="{{ asset('assets/images/icon/apple_touch_icon_180x180.png') }}" rel="apple-touch-icon" sizes="180x180">
+    <link href="{{ asset('assets/images/icon/favicon.png') }}" id="favicon" rel="icon">
 
     {{-- reset.cssファイルを読み込む --}}
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
