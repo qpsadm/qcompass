@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Agenda;
 use Illuminate\Support\Facades\DB;
 
 class AgendaController extends Controller
@@ -29,7 +30,7 @@ class AgendaController extends Controller
         // 所属講座のカテゴリーIDを取得
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
-            ->where('is_show', 1)
+            ->where('is_show', 1) // course_categories には存在
             ->pluck('category_id')
             ->toArray();
 
@@ -38,13 +39,26 @@ class AgendaController extends Controller
             return view('user.agenda.agendas_list', compact('agendas'));
         }
 
-        // アジェンダを取得
-        $agendas = DB::table('agendas')
-            ->whereIn('category_id', $categoryIds)
-            ->where('status', 'yes')    // 承認済み
-            ->where('is_show', 1)       // 表示対象
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // 検索キーワード
+        $search = request('search');
+
+        if ($search) {
+            // Scout検索
+            $agendas = Agenda::search($search)
+                ->get() // Scoutの結果はコレクション
+                ->where('status', 'yes')
+                ->where('is_show', 1)
+                ->whereIn('category_id', $categoryIds)
+                ->sortByDesc('created_at');
+            dd($agendas);
+        } else {
+            // 通常のクエリ
+            $agendas = Agenda::whereIn('category_id', $categoryIds)
+                ->where('status', 'yes')
+                ->where('is_show', 1)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return view('user.agenda.agendas_list', compact('agendas'));
     }
@@ -54,16 +68,25 @@ class AgendaController extends Controller
      */
     public function agendaDetail($id)
     {
-        $agenda = DB::table('agendas')
-            ->where('id', $id)
+        $agenda = Agenda::where('id', $id)
             ->where('is_show', 1)
             ->where('status', 'yes')
-            ->first();
-
-        if (!$agenda) {
-            abort(404, 'アジェンダが見つかりません');
-        }
+            ->firstOrFail();
 
         return view('user.agenda.agendas_info', compact('agenda'));
+    }
+
+    /**
+     * カテゴリー別アジェンダ一覧
+     */
+    public function agendaByCategory($category_id)
+    {
+        $agendas = Agenda::where('category_id', $category_id)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.agenda.agendas_list', compact('agendas'));
     }
 }

@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Agenda extends Model
 {
     use HasFactory, SoftDeletes;
+    use Searchable;
 
     protected $table = 'agendas';
 
@@ -58,5 +60,14 @@ class Agenda extends Model
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_agendas', 'target_id', 'course_id');
+    }
+
+    // 必要に応じて検索対象カラムを指定
+    public function toSearchableArray()
+    {
+        return [
+            'title' => $this->title,
+            'content' => $this->content,
+        ];
     }
 }
