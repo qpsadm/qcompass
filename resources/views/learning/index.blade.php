@@ -35,6 +35,7 @@
                             <th class="border px-2 py-1">画像</th>
                             <th class="border px-2 py-1">URL</th>
                             <th class="border px-2 py-1">レベル</th>
+                            <th class="border px-2 py-1">タグ</th> {{-- タグ列追加 --}}
                             <th class="border px-2 py-1">表示</th>
                             <th class="border px-2 py-1">操作</th>
                         </tr>
@@ -60,6 +61,14 @@
                                     @endif
                                 </td>
                                 <td class="border px-2 py-1">{{ $levelLabels[$learning->level] ?? '-' }}</td>
+                                {{-- タグ表示 --}}
+                                <td class="border px-2 py-1">
+                                    @if ($learning->tag)
+                                        {{ $learning->tag->name }}
+                                    @else
+                                        なし
+                                    @endif
+                                </td>
                                 <td class="border px-2 py-1 text-center">
                                     @if ((bool) $learning->is_visible)
                                         <span class="text-green-600 font-bold">✔</span>
@@ -80,7 +89,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="border px-2 py-2 text-center text-gray-500">データがありません</td>
+                                <td colspan="10" class="border px-2 py-2 text-center text-gray-500">データがありません</td>
                             </tr>
                         @endforelse
                     </tbody>
