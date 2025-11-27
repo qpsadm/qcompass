@@ -4,7 +4,7 @@
     <div class="container">
         <x-f_page_title :search="true" title="最新のアジェンダ一覧" />
 
-        <x-f_category_accordion :categories="$categories" />
+        {{-- <x-f_category_accordion :categories="$categories" /> --}}
 
         @foreach ($agendasByCategory as $categoryId => $agendas)
             <div class="content-list">
