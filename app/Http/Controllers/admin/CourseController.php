@@ -48,7 +48,7 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'course_code' => 'required|string|max:50',
-            'course_type_id' => 'nullable|exists:course_types,id',
+            'course_type_id' => 'required|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'required|string|max:255',
@@ -86,6 +86,12 @@ class CourseController extends Controller
             $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
         }
 
+        $validated['level_id'] = $validated['level_id'] ?? 2;  // level_idが送信されない場合、デフォルト値2をセット
+
+
+
+        $validated['organizer_id'] = $validated['organizer_id'] ?? null;
+
         $validated['created_user_name'] = Auth::user()->name ?? 'system';
 
         $course = Course::create($validated);
@@ -119,8 +125,8 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
 
         $validated = $request->validate([
-            'course_code' => 'nullable|string|max:50',
-            'course_type_id' => 'nullable|exists:course_types,id',
+            'course_code' => 'required|string|max:50',
+            'course_type_id' => 'required|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
             'course_name' => 'required|string|max:255',
@@ -161,6 +167,9 @@ class CourseController extends Controller
             $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
         }
 
+        $validated['level_id'] = $validated['level_id'] ?? 2;  // level_idが送信されない場合、デフォルト値2をセット
+
+
         $validated['updated_user_name'] = Auth::user()->name ?? 'system';
 
         $course->update($validated);
@@ -177,6 +186,15 @@ class CourseController extends Controller
         }
 
         return redirect()->route('admin.courses.index')->with('success', '講座を更新しました');
+    }
+
+    public function show($id)
+    {
+        // もしCourseが見つからない場合は、404エラーを表示
+        $course = Course::findOrFail($id);
+
+        // 詳細画面に遷移するために、'Course'をビューに渡す
+        return view('admin.courses.show', compact('course'));
     }
 
 
