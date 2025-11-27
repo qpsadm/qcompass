@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class AgendaController extends Controller
 {
@@ -16,41 +15,16 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
 
-        // 所属講座ID取得
+        // 所属講座IDを取得
         $userCourseIds = DB::table('course_users')
             ->where('user_id', $userId)
             ->pluck('course_id')
             ->toArray();
 
         if (empty($userCourseIds)) {
-            $agendasByCategory = collect();
-            return view('user.agenda.agendas_list', compact('agendasByCategory'));
+            $agendas = collect();
+            return view('user.agenda.agendas_list', compact('agendas'));
         }
-
-        // 所属講座に紐づくカテゴリーID
-        // $categories = DB::table('course_categories')
-        //     ->whereIn('course_id', $userCourseIds)
-        //     ->where('is_show', 1)
-        //     ->get();
-
-        // チャッピーによる変更
-        $categories = DB::table('categories')
-            ->whereIn('id', $userCourseIds)
-            ->get();
-        Log::info('取得カテゴリーID: ' . implode(',', $categories->pluck('category_id')->toArray()));
-
-
-
-
-
-        // course_categories 経由でアジェンダ取得
-        $agendas = DB::table('agendas as a')
-            ->join('course_categories as cc', 'a.category_id', '=', 'cc.category_id')
-            ->whereIn('cc.course_id', $userCourseIds)
-            ->where('a.is_show', 1)
-            ->where('a.status', 'yes')   // DBの値に合わせて
-            ->orderBy('a.created_at', 'desc')
-            ->select('a.*', 'cc.course_id');
 
         // 所属講座のカテゴリーIDを取得
         $categoryIds = DB::table('course_categories')
@@ -59,27 +33,37 @@ class AgendaController extends Controller
             ->pluck('category_id')
             ->toArray();
 
-        // if (empty($categoryIds)) {
-        //     $agendasByCategory = collect();
-        //     return view('user.agenda.agendas_list', compact('agendasByCategory'));
-        // }
-
-        if (!$agendas) {
-            abort(404, 'アジェンダが見つかりません');
+        if (empty($categoryIds)) {
+            $agendas = collect();
+            return view('user.agenda.agendas_list', compact('agendas'));
         }
 
         // アジェンダを取得
         $agendas = DB::table('agendas')
-        //     ->whereIn('course_id', $userCourseIds)
             ->whereIn('category_id', $categoryIds)
             ->where('status', 'yes')    // 承認済み
-            ->where('is_show', 1)   // 表示対象
+            ->where('is_show', 1)       // 表示対象
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // // カテゴリーごとにまとめる
-        // $agendasByCategory = $agendas->groupBy('category_id');
-
         return view('user.agenda.agendas_list', compact('agendas'));
+    }
+
+    /**
+     * 個別アジェンダ詳細
+     */
+    public function agendaDetail($id)
+    {
+        $agenda = DB::table('agendas')
+            ->where('id', $id)
+            ->where('is_show', 1)
+            ->where('status', 'yes')
+            ->first();
+
+        if (!$agenda) {
+            abort(404, 'アジェンダが見つかりません');
+        }
+
+        return view('user.agenda.agendas_info', compact('agenda'));
     }
 }
