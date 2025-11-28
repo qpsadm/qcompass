@@ -1,6 +1,10 @@
 @extends('layouts.f_layout')
 
-<link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
+@section('title', '質疑応答一覧')
+
+@section('code-page-css')
+    <link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
+@endsection
 
 @section('main-content')
     <div class="container">
@@ -69,7 +73,6 @@
                 </div>
             @endforeach
             {{-- ここまで11/28 増井編集 --}}
-
 
         </div>
 
