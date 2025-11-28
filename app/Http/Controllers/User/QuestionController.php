@@ -11,15 +11,9 @@ class QuestionController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-
-        // 生徒が所属しているコースIDを取得
-        $courseIds = $user->courses()->pluck('courses.id');
-
-        // 所属コースの質問を取得
-        $questions = Question::whereIn('course_id', $courseIds)
-            ->where('is_show', 1)
-            ->with(['responder', 'course', 'tag']) // agendaは除外
+        // 全ユーザーが見れるようにする → コースで絞らない
+        $questions = Question::where('is_show', 1)
+            ->with(['responder', 'course', 'tag'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

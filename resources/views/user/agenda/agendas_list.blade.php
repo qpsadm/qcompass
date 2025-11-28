@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+@section('title', '最新のアジェンダ一覧')
+
 @section('main-content')
 <div class="container">
     <x-f_page_title
