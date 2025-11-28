@@ -1,5 +1,5 @@
 @php
-$currentCategory = $category ?? 'all';
+    $currentCategory = $category ?? 'all';
 @endphp
 
 <div class="category-menu">
