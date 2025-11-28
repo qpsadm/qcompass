@@ -1,6 +1,6 @@
 @extends('layouts.f_layout')
 
-@section('title', 'test')
+@section('title', $agenda->agenda_name)
 
 @section('code-page-css')
     <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
