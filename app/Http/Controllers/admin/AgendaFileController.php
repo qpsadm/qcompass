@@ -162,7 +162,7 @@ class AgendaFileController extends Controller
 
         return redirect()->route('admin.files.index', [
             'type' => $redirectType,
-            'targetId' => $agendaFile->target_id
+            'targetId' => 0
         ])->with('success', 'ファイルを更新しました。');
     }
 
@@ -211,7 +211,7 @@ class AgendaFileController extends Controller
     /**
      * ファイル一覧（共通）
      */
-    public function files($type, $targetId = 0)
+    public function files($type, $targetId = null)
     {
         if ($type === 'agenda') {
             $query = AgendaFile::where('target_type', Agenda::class);
@@ -221,7 +221,7 @@ class AgendaFileController extends Controller
             abort(404);
         }
 
-        if ($targetId != 0) {
+        if ($targetId) {  // null, 0 を除外
             $query->where('target_id', $targetId);
         }
 

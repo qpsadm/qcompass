@@ -72,7 +72,7 @@
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                         保存
                     </button>
-                    <a href="{{ route('admin.files.index', ['type' => $type, 'targetId' => $file->target_id]) }}"
+                    <a href="{{ route('admin.files.index', ['type' => $type, 'targetId' => 0]) }}"
                         class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
                         一覧に戻る
                     </a>

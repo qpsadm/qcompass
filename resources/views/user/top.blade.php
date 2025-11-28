@@ -7,8 +7,7 @@
 @section('main-content')
     <div class="container">
         <div class="kv">
-            <video src="../assets/images/f_kvmovie_sample.mp4" loop autoplay muted
-                poster="../assets/images/f_thumbnail_sample.jpeg"></video>
+            <video id="kv-video" loop autoplay muted></video>
         </div>
 
         <div class="section-box">
@@ -72,4 +71,9 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
+
+@section('code-page-js')
+    <script src="../assets/js/f_top.js"></script>
+@endsection
