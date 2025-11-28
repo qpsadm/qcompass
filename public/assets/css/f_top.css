@@ -96,3 +96,35 @@
     font-size: 16px;
     text-align: center;
 }
+
+@media screen and (max-width: 1324px) {
+    .section-box .box-title h2 {
+        width: calc(100%);
+    }
+
+    .agenda .content-list tr {
+        align-items: flex-end;
+    }
+
+    .agenda .content-list .title {
+        flex: unset;
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 959px) {
+    .section-flex {
+        flex-direction: column;
+    }
+
+    .facebook {
+        width: 100%;
+    }
+
+    .facebook iframe {
+        width: 100%;
+        aspect-ratio: 33 / 50;
+    }
+}
+
