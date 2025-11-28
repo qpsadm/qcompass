@@ -197,6 +197,21 @@
                     CKEDITOR.instances[instance].updateElement();
                 }
             });
+
+            function copyFileUrl(text) {
+                // navigator.clipboard が利用可能かチェック
+                if (!navigator.clipboard) {
+                    alert('お使いのブラウザではコピー機能がサポートされていません。');
+                    return;
+                }
+
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('ファイルURLをクリップボードにコピーしました。');
+                }).catch(err => {
+                    console.error('コピーに失敗しました: ', err);
+                    alert('コピーに失敗しました。');
+                });
+            }
         </script>
         <style>
             .cke_notifications_area {
