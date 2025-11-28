@@ -162,7 +162,7 @@ class AgendaFileController extends Controller
 
         return redirect()->route('admin.files.index', [
             'type' => $redirectType,
-            'targetId' => $agendaFile->target_id
+            'targetId' => 0
         ])->with('success', 'ファイルを更新しました。');
     }
 
