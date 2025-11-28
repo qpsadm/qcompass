@@ -9,5 +9,5 @@ public function dashboard()
         ->limit(5)
         ->get();
 
-    return view('user.dashboard', compact('announcements'));
+    return view('user.top', compact('announcements'));
 }

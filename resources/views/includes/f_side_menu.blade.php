@@ -2,7 +2,7 @@
     <div class="side-menu-container">
         <div class="side-menu-top">
             <div class="site-logo">
-                <a href="{{-- {{ route('user.top') }} --}}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
+                <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
                         alt="コンパスロゴ"></a>
             </div>
 

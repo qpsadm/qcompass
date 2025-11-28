@@ -68,7 +68,7 @@ Route::get('/dashboard', function () {
     if (auth()->check()) {
         return auth()->user()->role_id == 8
             ? redirect()->route('admin.dashboard')
-            : redirect()->route('user.dashboard');
+            : redirect()->route('user.top');
     }
     return redirect()->route('login');
 });
@@ -88,10 +88,12 @@ Route::middleware('auth')->group(function () {
 // ユーザー専用ルート
 Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(function () {
     Route::get('/', function () {
-        return redirect()->route('user.dashboard');
+        return redirect()->route('user.top');
     });
 
-    Route::get('dashboard', [NewsController::class, 'dashboard'])->name('dashboard');
+    Route::get('top', [NewsController::class, 'dashboard'])->name('top'); // 追加
+    // Route::get('dashboard', [NewsController::class, 'dashboard'])->name('dashboard');
+
     // ニュース一覧
     Route::get('news', [NewsController::class, 'newsListAll'])->name('news.news_list');
     Route::get('news/main', [NewsController::class, 'mainNews'])->name('news.main_news');
