@@ -46,6 +46,7 @@ use App\Http\Controllers\User\QuizController as UserQuizController;
 use App\Http\Controllers\User\AgendaController as UserAgendaController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\QuestionController as UserQuestionController;
+use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
 
 // 学習・資格・求人
 use App\Http\Controllers\{
@@ -108,6 +109,12 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     //質疑応答
     Route::get('questions', [UserQuestionController::class, 'index'])
         ->name('question.questions_list');
+
+    //求人票一覧
+    // 一覧ページ
+    Route::get('/job', [UserJobOfferController::class, 'index'])->name('user.job.job_offers_list');
+    // 詳細ページ
+    Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('user.job.job_offers_info');
 });
 
 
