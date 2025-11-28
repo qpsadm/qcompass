@@ -6,7 +6,7 @@
 
 @section('main-content')
     <div class="container">
-        <x-f_page_title :search="true" title="日報入力フォーム" />
+        <x-f_page_title :search="false" title="日報入力フォーム" />
 
         <div class="form-content">
             <p>本講座をスムーズに進めるために、日々の報告・連絡・相談が欠かせないと思います。<br>
