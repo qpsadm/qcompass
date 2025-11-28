@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+<link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
+
 @section('main-content')
     <div class="container">
         <x-f_page_title :search="true" title="質疑応答一覧" />
@@ -9,7 +11,8 @@
 
         {{-- 質疑応答一覧 --}}
         <div class="content-list">
-            <table class="table">
+
+            {{-- <table class="table">
                 <thead>
                     <tr>
                         <th>質問タイトル</th>
@@ -36,7 +39,38 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+
+            </table> --}}
+
+            {{-- ここから11/28 増井編集 --}}
+            @foreach ($questions as $q)
+                <div class="qa-accordion">
+                    <div class="question-container">
+                        <div class="question-icon">
+                            <span>Q</span>
+                        </div>
+                        <div class="question-text">
+                            <td>{{ $q->content }}</td>
+                        </div>
+                        <div class="accordion-btn">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="answer-container">
+                        <div class="answer-content">
+                            <div class="answer-icon">
+                                <span>A</span>
+                            </div>
+                            <div class="answer-text">
+                                <td>{{ $q->answer ?? '-' }}</td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            {{-- ここまで11/28 増井編集 --}}
+
+
         </div>
 
         <x-f_pagination :paginator="$questions" />
