@@ -9,11 +9,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CKEditorController;
 
 use App\Http\Controllers\User\UserController as UserUserController; // ← ユーザー用
-use App\Http\Controllers\Admin\UserController as AdminUserController; // ← 管理者用
+use App\Http\Controllers\admin\UserController as AdminUserController; // ← 管理者用
 use App\Http\Controllers\User\NewsController;
 
 // 管理画面
-use App\Http\Controllers\Admin\{
+use App\Http\Controllers\admin\{
     AdminDashboardController,
     CourseController,
     RoleController,
@@ -187,7 +187,7 @@ Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
         Route::get('courses/{course}/agendas', [AgendaController::class, 'indexByCourse'])
             ->name('courses.agendas');
         //プレビュー用
-        Route::get('agendas/{agenda}/preview', [\App\Http\Controllers\Admin\AgendaController::class, 'preview'])
+        Route::get('agendas/{agenda}/preview', [\App\Http\Controllers\admin\AgendaController::class, 'preview'])
             ->name('agendas.preview');
         // =============================
         // その他リソース系
@@ -258,7 +258,7 @@ Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
         });
 
         // クイズ結果（講座単位）
-        Route::get('courses/{course}/results', [App\Http\Controllers\Admin\QuizResultController::class, 'courseResults'])
+        Route::get('courses/{course}/results', [App\Http\Controllers\admin\QuizResultController::class, 'courseResults'])
             ->name('courses.results');
 
         // レポート関連
