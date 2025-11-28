@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+@section('title', '新着情報一覧')
+
 @section('main-content')
 <div class="container">
     <x-f_page_title :search="true" title="新着情報一覧" />
