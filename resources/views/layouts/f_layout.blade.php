@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 
     {{-- ページタイトル --}}
-    <title>@yield('title')</title>
+    <title>@yield('title') | QLIP-Compass</title>
 
     {{-- デスクリプション --}}
     <meta content="@yield('description')" name="description">

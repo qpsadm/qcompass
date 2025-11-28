@@ -6,16 +6,13 @@ $(function () {
     const today = new Date();
     const month = today.getMonth() + 1;
 
-    const videoPath = `/assets/images/kv/movie_${month}.mp4`;
-    const posterPath = `/assets/images/kv/poster_${month}.jpg`;
+    const videoPath = `../assets/images/kv/kv_movie_${month}.mp4`;
+    const posterPath = `../assets/images/kv/kv_poster_${month}.jpeg`;
 
     const $video = $("#kv-video");
 
-    $video.attr("poster", posterPath);
     $video.attr("src", videoPath);
+    $video.attr("poster", posterPath);
 
     $video.trigger("load");
 });
-
-// HTMLでのvideoタグ記述
-// <video id="kv-video" loop autoplay muted></video>
