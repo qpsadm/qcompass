@@ -3,43 +3,57 @@
 
 @section('main-content')
     <div class="container">
-        <x-f_page_title :search="false" title="求人一覧" />
+        <x-f_page_title :search="true" title="就職支援" />
 
 
-        <div class="page-content">
-            <table class="table-auto w-full border-collapse">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border px-4 py-2">タイトル</th>
-                        <th class="border px-4 py-2">説明文</th>
-                        <th class="border px-4 py-2">PDF</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($jobs as $job)
+        <div x-data="{ tab: 'offers' }">
+
+            <div class="tab-container">
+                <div class="btn-tab">
+                    <button class="tab-button" :class="{ 'active': tab === 'offers' }" @click="tab = 'offers'">
+                        ハローワークの求人票
+                    </button>
+
+                    <button class="tab-button" :class="{ 'active': tab === 'download' }" @click="tab = 'download'">
+                        履歴書・職務経歴書のダウンロード
+                    </button>
+                </div>
+            </div>
+
+            <div x-show="tab === 'offers'" class="content-box" x-cloak>
+                <div class="content-list">
+                    <table>
+                        @foreach ($jobs as $job)
+                            <tr>
+                                <td class="date">{{ \Carbon\Carbon::parse($job->created_at)->format('Y/m/d') }}</td>
+                                <td class="title"><a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+
+            <div x-show="tab === 'download'" class="content-box" x-cloak>
+                <div class="content-list">
+                    test
+                    {{-- <table>
+                        @foreach ($jobs as $job)
                         <tr>
-                            <td class="border px-4 py-2">
-                                <a href="{{ url('user/job/' . $job->id) }}" class="text-blue-600 underline">
-                                    {{ $job->title }}
-                                </a>
-                            </td>
-                            <td class="border px-4 py-2">{{ $job->description }}</td>
-                            <td class="border px-4 py-2">
-                                @if ($job->file_path)
-                                    <a href="{{ asset($job->file_path) }}" target="_blank"
-                                        class="text-blue-600 underline">PDF</a>
-                                @else
-                                    なし
-                                @endif
-                            </td>
+                            <td class="date">{{ \Carbon\Carbon::parse($job->created_at)->format('Y/m/d') }}</td>
+                            <td class="title"><a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a></td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @endforeach
+                    </table> --}}
+                </div>
+            </div>
+
         </div>
 
-
-        <x-f_btn_list :prevBtn="false" :listBtn="false" :nextBtn="false" />
+        <x-f_pagination />
         <x-f_bread_crumbs />
     </div>
+@endsection
+
+@section('code-page-js')
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @endsection

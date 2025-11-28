@@ -152,7 +152,7 @@ header::after {
         margin: 0 30px;
     }
 
-    .gnav {
+    .header-container>.gnav {
         display: none;
     }
 
@@ -214,9 +214,40 @@ header::after {
         top: 0;
         left: 0;
         width: 100vw;
-        height: 500px;
+        padding: 90px 30px 30px;
         background-color: var(--sub-color-1);
         z-index: 999;
+    }
+
+    .hamburger-container {
+        display: flex;
+        gap: 50px;
+    }
+
+    .hamburger-menu-left {
+        width: 270px;
+    }
+
+    .hamburger-menu-right {
+        flex: 1;
+        display: flex;
+    }
+
+    .hamburger-menu .contents-box {
+        width: 270px;
+        margin-bottom: 30px;
+    }
+
+    .hamburger-menu .logout-btn button {
+        width: 100%;
+        padding: 13px 0;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu-right {
+        flex-direction: column;
     }
 }
 
@@ -272,13 +303,15 @@ header::after {
     width: 100%;
 }
 
-.side-menu .contents-box {
+.side-menu .contents-box,
+.hamburger-menu .contents-box {
     padding: 15px;
     background-color: var(--main-color);
     border-radius: 15px;
 }
 
-.side-menu .calendar {
+.side-menu .calendar,
+.hamburger-menu .calendar {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -287,39 +320,48 @@ header::after {
     background-color: var(--text-color-3);
 }
 
-.side-menu .calendar-data {
+.side-menu .calendar-data,
+.hamburger-menu .calendar-data {
     position: relative;
     width: 190px;
     height: 95px;
 }
 
 .side-menu .calendar-data .month,
+.hamburger-menu .calendar-data .month,
 .side-menu .calendar-data .day,
+.hamburger-menu .calendar-data .day,
 .side-menu .calendar-data .border,
-.side-menu .calendar-data .week {
+.hamburger-menu .calendar-data .border,
+.side-menu .calendar-data .week,
+.hamburger-menu .calendar-data .week {
     position: absolute;
 }
 
-.side-menu .calendar-data .month {
+.side-menu .calendar-data .month,
+.hamburger-menu .calendar-data .month {
     top: 5px;
     left: 0;
     font-size: 45px;
 }
 
-.side-menu .calendar-data .day {
+.side-menu .calendar-data .day,
+.hamburger-menu .calendar-data .day {
     top: -22px;
     right: 0;
     font-size: 110px;
 }
 
-.side-menu .calendar-data .week {
+.side-menu .calendar-data .week,
+.hamburger-menu .calendar .week {
     bottom: 0;
     left: 0;
     color: var(--sub-color-3);
     font-size: 40px;
 }
 
-.side-menu .calendar-data .border {
+.side-menu .calendar-data .border,
+.hamburger-menu .calendar-data .border {
     top: 14px;
     left: 60px;
     transform: rotate(30deg);
@@ -330,7 +372,9 @@ header::after {
 }
 
 .side-menu .countdown,
-.side-menu .today-short {
+.hamburger-menu .countdown,
+.side-menu .today-short,
+.hamburger-menu .today-short {
     color: var(--text-color-3);
     text-align: center;
 }
@@ -702,13 +746,15 @@ footer {
 
 /* category-menu
 ------------------------------------- */
-.category-menu {
+.category-menu,
+.tab-container {
     margin-bottom: 50px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 .category-menu ul,
+.btn-tab,
 .accordion-menu .menu-content ul {
     display: flex;
     flex-wrap: wrap;
@@ -718,6 +764,7 @@ footer {
 }
 
 .category-menu li a,
+.btn-tab button,
 .accordion-menu .menu-content ul li a {
     display: block;
     padding: 10px 25px;
@@ -727,6 +774,8 @@ footer {
 
 .category-menu li a:hover,
 .category-menu li.active a,
+.btn-tab button:hover,
+.btn-tab button.active,
 .accordion-menu .menu-content ul li a:hover,
 .accordion-menu .menu-content ul li.active a {
     border-radius: 11px;
