@@ -97,7 +97,10 @@
                                                         alt="プレビュー">
                                                 </a>
                                             @else
-                                                N/A
+                                                <a href="javascript:void(0)" onclick="openPreview('{{ $previewUrl }}')"
+                                                    class="text-blue-500 hover:text-blue-700 underline text-sm">
+                                                    プレビュー
+                                                </a>
                                             @endif
                                         </td>
                                         <td class="border px-3 py-2">
