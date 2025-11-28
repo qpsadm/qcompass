@@ -100,6 +100,6 @@ class NewsController extends Controller
         // ダッシュボードではALLを取得（自分の講座 + 訓練校）
         $announcements = $this->getUserAnnouncements('all');
 
-        return view('user.dashboard', compact('announcements'));
+        return view('user.top', compact('announcements'));
     }
 }

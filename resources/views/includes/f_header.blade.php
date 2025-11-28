@@ -2,7 +2,7 @@
     <div class="header-container">
         <nav class="gnav">
             <ul>
-                <li class="active"><a class="home" href="{{ route('user.dashboard') }}">ホーム</a></li>
+                <li class="active"><a class="home" href="{{ route('user.top') }}">ホーム</a></li>
                 <li><a class="news" href="{{ route('user.news.news_list') }}">お知らせ</a></li>
                 <li><a class="agenda" href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
                 <li><a class="study" href="{{ route('user.question.questions_list') }}">学習支援</a></li>
@@ -13,7 +13,7 @@
 
         <!-- responsive -->
         <div class="site-logo">
-            <a href="{{-- {{ route('user.top') }} --}}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
+            <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
                     alt="コンパスロゴ"></a>
         </div>
         <div class="hamburger-btn">

@@ -12,7 +12,7 @@ class RedirectNonUserDashboard
     {
         // 管理者専用ページにユーザーがアクセスした場合
         if (Auth::check() && $request->is('admin/*') && Auth::user()->role_id != 8) {
-            return redirect()->route('user.dashboard');
+            return redirect()->route('user.top');
         }
 
         return $next($request);

@@ -26,7 +26,7 @@ class AdminMiddleware
                 return response()->json(['message' => 'Forbidden.'], 403);
             }
 
-            return redirect()->route('user.dashboard');
+            return redirect()->route('user.top');
         }
 
         return $next($request);
