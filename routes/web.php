@@ -47,6 +47,7 @@ use App\Http\Controllers\User\AgendaController as UserAgendaController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\QuestionController as UserQuestionController;
 use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
+use App\Http\Controllers\User\ReportController  as UserReportController;
 
 // 学習・資格・求人
 use App\Http\Controllers\{
@@ -115,6 +116,10 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('/job', [UserJobOfferController::class, 'index'])->name('user.job.job_offers_list');
     // 詳細ページ
     Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('user.job.job_offers_info');
+
+    //日報
+    Route::get('reports', [UserReportController::class, 'index'])->name('mypage.reports_info');
+    Route::get('reports/create', [UserReportController::class, 'create'])->name('mypage.reports_create');
 });
 
 
