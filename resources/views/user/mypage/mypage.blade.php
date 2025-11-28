@@ -50,7 +50,7 @@
                 <h3>各種スケジュール</h3>
             </div>
             <div class="box-content">
-                <div class="content-list">
+                {{-- <div class="content-list">
                     <table>
                         <tr>
                             <td class="category">
@@ -71,7 +71,9 @@
                             <td class="title"><a href="">第1回朝礼のテーマについて</a></td>
                         </tr>
                     </table>
-                </div>
+                </div> --}}
+
+                <x-f_content_list :items="$announcements" />
             </div>
         </div>
 
