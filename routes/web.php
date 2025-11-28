@@ -118,7 +118,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('user.job.job_offers_info');
 
     //日報
-    Route::resource('reports', ReportController::class);
+    Route::resource('reports', UserReportController::class);
 });
 
 
