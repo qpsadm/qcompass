@@ -59,6 +59,7 @@ class AnnouncementController extends Controller
     public function edit($id)
     {
         $announcement = Announcement::findOrFail($id);
+
         $types = AnnouncementType::all();
         $courses = Course::all();
 
@@ -91,6 +92,12 @@ class AnnouncementController extends Controller
 
         return redirect()->route('admin.announcements.index')
             ->with('success', 'お知らせを更新しました。');
+    }
+
+    public function files()
+    {
+        // Announcement モデルが複数のファイルを持つ場合、
+        return $this->hasMany(\App\Models\File::class);
     }
 
     public function destroy($id)
