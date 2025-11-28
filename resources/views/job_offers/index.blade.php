@@ -30,7 +30,10 @@
                             {{-- PDFアイコン --}}
                             <td class="border px-4 py-2 text-center">
                                 @if ($jobOffer->file_path)
-                                    <a href="{{ url('storage/' . $jobOffer->file_path) }}" target="_blank">📄</a>
+                                    <a href="{{ url('storage/' . $jobOffer->file_path) }}" target="_blank">
+                                        <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" alt="PDF"
+                                            class="w-6 h-6 inline-block">
+                                    </a>
                                 @else
                                     ❌
                                 @endif

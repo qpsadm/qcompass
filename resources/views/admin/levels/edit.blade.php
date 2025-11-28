@@ -52,18 +52,25 @@
                     </tr>
 
                     {{-- 表示設定 --}}
-                    <tr>
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示設定</th>
-                        <td class="px-4 py-2">
-                            <label class="inline-flex items-center gap-2">
-                                <input type="hidden" name="is_show" value="0">
-                                <input type="checkbox" name="is_show" value="1"
-                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                                    {{ old('is_show', $Level->is_show) == 1 ? 'checked' : '' }}>
-                                <span class="text-gray-700 font-medium">表示する</span>
-                            </label>
+                    <tr class="border-b">
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
+                        <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', $division->is_show ?? 1) }} }">
+                            <div class="flex gap-2">
+                                <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                    <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
+                                    公開
+                                </label>
+
+                                <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                    <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
+                                    非公開
+                                </label>
+                            </div>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
 

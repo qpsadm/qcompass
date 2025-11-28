@@ -60,11 +60,21 @@
                 </div>
 
                 {{-- 表示フラグ --}}
-                <div class="mb-6">
-                    <label class="block font-medium mb-1">表示設定</label>
-                    <input type="checkbox" name="is_show" value="1"
-                        {{ old('is_show', $certification->is_show) ? 'checked' : '' }}>
-                    <span>公開する</span>
+                <div class="mb-4" x-data="{ is_show: {{ old('is_show', $JobOffer->is_show ?? 0) }} }">
+                    <span class="font-medium mr-2">表示フラグ</span>
+                    <div class="flex gap-2">
+                        <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                            <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
+                            公開
+                        </label>
+
+                        <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                            <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
+                            非公開
+                        </label>
+                    </div>
                 </div>
 
                 {{-- 送信ボタン --}}

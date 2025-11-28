@@ -28,40 +28,33 @@
                     <input type="file" name="pdf_file" class="border px-2 py-1 w-full rounded">
                 </div>
 
-<div class="mb-4">
-    <span class="font-medium mr-2">表示フラグ<br>※非公開の場合はグレー</span>
-    <label class="inline-flex items-center cursor-pointer">
-        <input type="checkbox" name="is_show" value="1" class="hidden" id="is_show_checkbox"
-            {{ old('is_show', $JobOffer->is_show ?? 0) ? 'checked' : '' }}>
-        <span id="is_show_label"
-            class="px-4 py-2 rounded-full text-white transition-colors duration-200
-                {{ old('is_show', $JobOffer->is_show ?? 0) ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 hover:bg-gray-500' }}">
-            公開する
-        </span>
-    </label>
-</div>
+                <div class="mb-4" x-data="{ is_show: {{ old('is_show', $JobOffer->is_show ?? 0) }} }">
+                    <span class="font-medium mr-2">表示フラグ</span>
+                    <div class="flex gap-2">
+                        <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                            <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
+                            公開
+                        </label>
 
-<script>
-    // チェックボックスの状態に応じて色を切り替える
-    const checkbox = document.getElementById('is_show_checkbox');
-    const label = document.getElementById('is_show_label');
+                        <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                            <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
+                            非公開
+                        </label>
+                    </div>
+                </div>
 
-    checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-            label.classList.remove('bg-gray-400', 'hover:bg-gray-500');
-            label.classList.add('bg-green-500', 'hover:bg-green-600');
-        } else {
-            label.classList.remove('bg-green-500', 'hover:bg-green-600');
-            label.classList.add('bg-gray-400', 'hover:bg-gray-500');
-        }
-    });
-</script>
 
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">更新する</button>
-                <a href="{{ route('admin.job_offers.index') }}"
-                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                    一覧に戻る
-                </a>
+
+
+                <div class="mt-6 flex gap-2">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">更新する</button>
+                    <a href="{{ route('admin.job_offers.index') }}"
+                        class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        一覧に戻る
+                    </a>
+                </div>
         </div>
         </form>
     </div>
