@@ -2,12 +2,19 @@
     <!-- セッションステータス -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form class="login-form" method="POST" action="{{ route('login') }}">
         @csrf
 
+        <div class="login-item">
+            <label for="name">会社名</label>
+            <p>株式会社 QLIP</p>
+        </div>
+
         <!-- Course 選択 / 表示 -->
-        <div>
-            <x-input-label for="course_id" :value="__('Course')" />
+        <div class="login-item">
+
+            {{-- <x-input-label for="course_id" :value="__('Course')" /> --}}
+            <label for="name">講座名</label>
 
             @if ($selected_course)
                 {{-- URLで指定された場合はラベル表示 --}}
@@ -34,38 +41,33 @@
 
 
         <!-- Name -->
-        <div class="mt-4">
-            <x-input-label for="login_name" :value="__('Name')" />
-            <x-text-input id="login_name" class="block mt-1 w-full" type="text" name="login_name" :value="old('login_name')"
-                required autofocus />
+        <div class="login-item">
+            {{-- <x-input-label for="login_name" :value="__('Name')" /> --}}
+            <label for="name">お名前</label>
+            <x-text-input id="login_name" class="block mt-1 w-full" type="text" name="login_name" :value="old('login_name')" placeholder="yamada_taro" required autofocus />
             <x-input-error :messages="$errors->get('login_name')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
+        <div class="login-item">
+            {{-- <x-input-label for="password" :value="__('Password')" /> --}}
+            <label for="name">パスワード</label>
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" placeholder="パスワードを入力してください" required
                 autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <p class="considerations">※パスワード等をお忘れの場合は、管理者までお問い合わせください。</p>
+
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="remember-me">
+            <label for="remember_me">
+                <input id="remember_me" type="checkbox" name="remember">
+                <span>{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
+        <div class="login-btn-container">
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
