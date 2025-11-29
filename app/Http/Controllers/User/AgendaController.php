@@ -100,4 +100,13 @@ class AgendaController extends Controller
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
+
+    public function getAgendasDataByCategory(int $category_id)
+    {
+        return Agenda::where('category_id', $category_id)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 }
