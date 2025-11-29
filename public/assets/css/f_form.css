@@ -89,25 +89,24 @@ textarea {
     color: var(--accent-color);
 }
 
-.privacy-policy-button {
+.form-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 306px;
     margin: 15px auto;
-    padding: 0.6em 1.2em;
+    padding: 13px 70px;
     border-radius: 25px;
     background-color: #FFB71D;
     color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-    font-size: 1em;
+    font-size: 18px;
 }
 
-.privacy-policy-button {
+.form-btn {
     margin: 50px auto;
 }
 
-.privacy-policy-button:hover {
+.form-btn:hover {
     box-shadow: 0 7px 30px -5px rgb(0, 0, 0, 0.3);
 }
 
@@ -123,4 +122,31 @@ textarea {
     textarea {
         width: 100%;
     }
+}
+
+
+/* confirm */
+.confirm {
+    text-align: center;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
+.confirm h2 {
+    margin-bottom: 60px;
+    font-size: 32px;
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+.confirm p {
+    font-size: 18px;
+}
+
+.confirm p+p {
+    margin-top: 30px;
+}
+
+.confirm .form-btn {
+    display: inline-block;
 }
