@@ -6,6 +6,7 @@ const hamburgerBtn = $(".hamburger-btn");
 hamburgerBtn.click(function () {
     $(this).next().slideToggle(300);
     $(this).toggleClass("active");
+    $('body').toggleClass("no-scroll")
 });
 
 
