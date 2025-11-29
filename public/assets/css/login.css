@@ -51,17 +51,39 @@
 }
 
 .login-item input,
-.login-item select {
+.login-item select,
+.remember-me input {
     padding: 10px;
     border: 1px solid var(--text-color-2);
     border-radius: 6px;
     background-color: var(--text-color-3);
     font-weight: 500;
+}
+
+.login-item input,
+.login-item select {
     flex: 1;
 }
 
 .considerations {
     margin: 10px 0 0 110px;
+}
+
+.remember-me {
+    margin-top: 30px;
+}
+
+.remember-me label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    /* accent-color: var(--checkbox-color); */
+    width: 18px;
+    height: 18px;
+    border: 1px solid #000;
 }
 
 .login-btn-container {
