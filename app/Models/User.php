@@ -55,6 +55,23 @@ class User extends Authenticatable
             ->wherePivotNull('deleted_at'); // ← 必須
     }
 
+    // User.php の courses() メソッドの下あたりに追加
+    public function myCourses()
+    {
+        return $this->courses() // すでに belongsToMany で定義済み
+            ->where('is_show', 1) // 表示フラグ
+            ->select([
+                'courses.id',
+                'courses.course_name',
+                'courses.start_date',
+                'courses.end_date',
+                'courses.plan_path',
+                'courses.flier_path'
+            ])
+            ->withPivot('created_user_name', 'updated_user_name'); // 必要なら
+    }
+
+
     public function course_teachers()
     {
         return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
