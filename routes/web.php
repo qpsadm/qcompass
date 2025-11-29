@@ -123,8 +123,14 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     //日報
     // Route::resource('reports', UserReportController::class);
-    Route::get('reports', [UserReportController::class, 'create'])->name('reports_create');
+    // 日報一覧
+    Route::get('reports', [UserReportController::class, 'index'])->name('reports_info');
+    // 日報作成フォーム
+    Route::get('reports/create', [UserReportController::class, 'create'])->name('reports_create');
+    // 日報保存
     Route::post('reports', [UserReportController::class, 'store'])->name('reports_store');
+    // 日報確認
+    Route::get('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
 });
 
 
