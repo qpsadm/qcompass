@@ -5,27 +5,31 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Tag;
 
 class QuestionController extends Controller
 {
-    public function index($category = null)
+    public function index(Request $request)
     {
-        $category = $category ?? 'all';
+        $tagId = $request->query('tag');
 
-        $questions = \App\Models\Question::where('is_show', 1);
+        // 公開されている質問だけ取得
+        $questions = Question::query()->where('is_show', 1);
 
-        if ($category === 'main') {
-            $questions->where('course_id', $this->mainCourseId ?? 1);
-        } elseif ($category === 'my') {
-            $questions->where('responder_id', auth()->id());
+        // タグで絞り込み
+        if ($tagId) {
+            $questions->where('tag_id', $tagId);
         }
 
+        // 作成日の新しい順で取得
         $questions = $questions->orderBy('created_at', 'desc')->paginate(10);
 
+        // タグ一覧を取得
+        $tags = Tag::all();
+
         return view('user.question.questions_list', [
-            'category' => $category,
             'questions' => $questions,
+            'tags' => $tags,
         ]);
     }
 }

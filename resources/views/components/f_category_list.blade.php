@@ -1,25 +1,21 @@
-@props(['type' => 'news', 'category' => 'all'])
+@props(['type' => 'news', 'tags' => []])
 
+@if($type === 'news')
+{{-- ニュースはカテゴリータブを表示 --}}
 @php
-$currentCategory = $category;
-
 $categories = [
 'all' => 'ALL',
-'main' => $type === 'news' ? '訓練校に関するお知らせ' : '訓練校に関するお知らせ',
-'my' => $type === 'news' ? '本講座に関するお知らせ' : '本講座に関するお知らせ',
+'main' => '訓練校に関するお知らせ',
+'my' => '本講座に関するお知らせ',
 ];
 
 $routes = [
-'all' => $type === 'news'
-? route('user.news.news_list')
-: route('user.question.questions_list', ['category' => 'all']),
-'main' => $type === 'news'
-? route('user.news.main_news')
-: route('user.question.questions_list', ['category' => 'main']),
-'my' => $type === 'news'
-? route('user.news.my_news')
-: route('user.question.questions_list', ['category' => 'my']),
+'all' => route('user.news.news_list', ['category' => 'all']),
+'main' => route('user.news.main_news'),
+'my' => route('user.news.my_news'),
 ];
+
+$currentCategory = request('category', 'all');
 @endphp
 
 <div class="category-menu">
@@ -31,3 +27,19 @@ $routes = [
         @endforeach
     </ul>
 </div>
+@endif
+
+@if($type === 'question' && count($tags))
+{{-- 質疑応答はタグタブだけ表示 --}}
+<div class="tag-menu">
+    <ul>
+        @foreach($tags as $tag)
+        <li class="{{ request('tag') == $tag->id ? 'active' : '' }}">
+            <a href="{{ route('user.question.questions_list', ['tag' => $tag->id]) }}">
+                {{ $tag->name }}
+            </a>
+        </li>
+        @endforeach
+    </ul>
+</div>
+@endif

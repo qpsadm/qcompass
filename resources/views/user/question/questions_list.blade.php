@@ -11,7 +11,7 @@
     <x-f_page_title :search="true" title="質疑応答一覧" />
 
     {{-- カテゴリーやタグのリストがあればここで表示 --}}
-    <x-f_category_list type="question" :category="$category" />
+    <x-f_category_list type="question" :tags="$tags" />
 
     {{-- 質疑応答一覧 --}}
     <div class="content-list">
