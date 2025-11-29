@@ -49,6 +49,8 @@ use App\Http\Controllers\User\QuestionController as UserQuestionController;
 use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
 use App\Http\Controllers\User\ReportController  as UserReportController;
 
+use App\Http\Controllers\User\FrontTopController;
+
 // 学習・資格・求人
 use App\Http\Controllers\{
     LearningController,
@@ -91,7 +93,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
         return redirect()->route('user.top');
     });
 
-    Route::get('top', [NewsController::class, 'dashboard'])->name('top'); // 追加
+    Route::get('top', [FrontTopController::class, 'index'])->name('top'); // 追加
     // Route::get('dashboard', [NewsController::class, 'dashboard'])->name('dashboard');
 
     // ニュース一覧
@@ -115,9 +117,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     //求人票一覧
     // 一覧ページ
-    Route::get('/job', [UserJobOfferController::class, 'index'])->name('user.job.job_offers_list');
+    Route::get('/job', [UserJobOfferController::class, 'index'])->name('job.job_offers_list');
     // 詳細ページ
-    Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('user.job.job_offers_info');
+    Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('job.job_offers_info');
 
     //日報
     Route::resource('reports', UserReportController::class);

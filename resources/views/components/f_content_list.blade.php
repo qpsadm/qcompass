@@ -1,29 +1,45 @@
 <div class="content-list">
     <table>
         @foreach ($items as $item)
+        @php
+        // 日付
+        $date = $item->created_at->format('Y/m/d');
+
+        // タイトル用カラム（デフォルト 'title'）
+        $titleField = $titleField ?? 'title';
+        $title = $item->{$titleField} ?? '未設定';
+
+        // リンク用ルートとパラメータ名（デフォルトはニュース）
+        $linkRoute = $linkRoute ?? 'user.news.news_info';
+        $paramName = $paramName ?? 'announcement';
+        $link = route($linkRoute, [$paramName => $item->id]);
+
+        // ニュースかAgendaかをフラグで判定
+        $isAgenda = $isAgenda ?? false;
+        @endphp
+
+        <tr>
+            <td class="date">{{ $date }}</td>
+
+            @unless($isAgenda)
             @php
-                // course_name が空でなければ "本講座" にする
-                $courseName = $item->course?->course_name;
-                if (!empty($courseName)) {
-                    $courseName = '本講座';
-                } else {
-                    $courseName = '全体';
-                }
+            // ニュース用カテゴリ
+            $courseName = isset($item->course) && !empty($item->course->course_name) ? '本講座' : '全体';
+            $categorySlug = $item->type?->slug ?? 'default';
             @endphp
-            <tr>
-                <td class="date">{{ $item->created_at->format('Y/m/d') }}</td>
-                <td class="category">
-                    <p
-                        class="category-{{ $item->type?->slug ?? 'default' }} {{ !empty($item->course?->course_name) ? 'course-hon' : 'course-all' }}">
-                        {{ $courseName }}
-                    </p>
-                </td>
-                <td class="title">
-                    <a href="{{ route('user.news.news_info', $item->id) }}">
-                        【{{ $item->type?->type_name ?? '未分類' }}】{{ $item->title }}
-                    </a>
-                </td>
-            </tr>
+            <td class="category">
+                <p class="category-{{ $categorySlug }} {{ $courseName === '本講座' ? 'course-hon' : 'course-all' }}">
+                    {{ $courseName }}
+                </p>
+            </td>
+            @endunless
+
+            <td class="title">
+                <a href="{{ $link }}">
+                    {{ $title }}
+                </a>
+            </td>
+        </tr>
         @endforeach
     </table>
 </div>
