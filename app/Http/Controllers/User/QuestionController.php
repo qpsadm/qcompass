@@ -9,14 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index($category = null)
     {
-        // 全ユーザーが見れるようにする → コースで絞らない
-        $questions = Question::where('is_show', 1)
-            ->with(['responder', 'course', 'tag'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $category = $category ?? 'all';
 
-        return view('user.question.questions_list', compact('questions'));
+        $questions = \App\Models\Question::where('is_show', 1);
+
+        if ($category === 'main') {
+            $questions->where('course_id', $this->mainCourseId ?? 1);
+        } elseif ($category === 'my') {
+            $questions->where('responder_id', auth()->id());
+        }
+
+        $questions = $questions->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('user.question.questions_list', [
+            'category' => $category,
+            'questions' => $questions,
+        ]);
     }
 }

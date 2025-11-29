@@ -3,20 +3,20 @@
 @section('title', '質疑応答一覧')
 
 @section('code-page-css')
-    <link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
 @endsection
 
 @section('main-content')
-    <div class="container">
-        <x-f_page_title :search="true" title="質疑応答一覧" />
+<div class="container">
+    <x-f_page_title :search="true" title="質疑応答一覧" />
 
-        {{-- カテゴリーやタグのリストがあればここで表示 --}}
-        <x-f_category_list :categories="$categories ?? []" />
+    {{-- カテゴリーやタグのリストがあればここで表示 --}}
+    <x-f_category_list type="question" :category="$category" />
 
-        {{-- 質疑応答一覧 --}}
-        <div class="content-list">
+    {{-- 質疑応答一覧 --}}
+    <div class="content-list">
 
-            {{-- <table class="table">
+        {{-- <table class="table">
                 <thead>
                     <tr>
                         <th>質問タイトル</th>
@@ -33,50 +33,50 @@
                     @foreach ($questions as $q)
                         <tr>
                             <td>{{ $q->title }}</td>
-                            <td>{{ $q->content }}</td>
-                            <td>{{ $q->answer ?? '-' }}</td>
-                            <td>{{ $q->agenda?->agenda_name ?? '-' }}</td>
-                            <td>{{ $q->course?->course_name ?? '-' }}</td>
-                            <td>{{ $q->tag?->name ?? '-' }}</td>
-                            <td>{{ $q->responder?->name ?? '-' }}</td>
-                            <td>{{ $q->created_at->format('Y/m/d') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
+        <td>{{ $q->content }}</td>
+        <td>{{ $q->answer ?? '-' }}</td>
+        <td>{{ $q->agenda?->agenda_name ?? '-' }}</td>
+        <td>{{ $q->course?->course_name ?? '-' }}</td>
+        <td>{{ $q->tag?->name ?? '-' }}</td>
+        <td>{{ $q->responder?->name ?? '-' }}</td>
+        <td>{{ $q->created_at->format('Y/m/d') }}</td>
+        </tr>
+        @endforeach
+        </tbody>
 
-            </table> --}}
+        </table> --}}
 
-            {{-- ここから11/28 増井編集 --}}
-            @foreach ($questions as $q)
-                <div class="qa-accordion">
-                    <div class="question-container">
-                        <div class="question-icon">
-                            <span>Q</span>
-                        </div>
-                        <div class="question-text">
-                            <td>{{ $q->content }}</td>
-                        </div>
-                        <div class="accordion-btn">
-                            <span></span>
-                        </div>
+        {{-- ここから11/28 増井編集 --}}
+        @foreach ($questions as $q)
+        <div class="qa-accordion">
+            <div class="question-container">
+                <div class="question-icon">
+                    <span>Q</span>
+                </div>
+                <div class="question-text">
+                    <td>{{ $q->content }}</td>
+                </div>
+                <div class="accordion-btn">
+                    <span></span>
+                </div>
+            </div>
+            <div class="answer-container">
+                <div class="answer-content">
+                    <div class="answer-icon">
+                        <span>A</span>
                     </div>
-                    <div class="answer-container">
-                        <div class="answer-content">
-                            <div class="answer-icon">
-                                <span>A</span>
-                            </div>
-                            <div class="answer-text">
-                                <td>{{ $q->answer ?? '-' }}</td>
-                            </div>
-                        </div>
+                    <div class="answer-text">
+                        <td>{{ $q->answer ?? '-' }}</td>
                     </div>
                 </div>
-            @endforeach
-            {{-- ここまで11/28 増井編集 --}}
-
+            </div>
         </div>
+        @endforeach
+        {{-- ここまで11/28 増井編集 --}}
 
-        <x-f_pagination :paginator="$questions" />
-        <x-f_bread_crumbs />
     </div>
+
+    <x-f_pagination :paginator="$questions" />
+    <x-f_bread_crumbs />
+</div>
 @endsection

@@ -112,7 +112,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     // アジェンダ詳細（必要なら）
     Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
     //質疑応答
-    Route::get('questions', [UserQuestionController::class, 'index'])
+    Route::get('questions/{category?}', [UserQuestionController::class, 'index'])
         ->name('question.questions_list');
 
     //求人票一覧
