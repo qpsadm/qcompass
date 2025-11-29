@@ -91,6 +91,22 @@
     /* transform: translateY(8px); */
 }
 
+/* footer */
+.login-footer {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+}
+
+.login-footer-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    color: var(--text-color-3);
+}
+
+/* 背景のアイコンランダム表示 */
 .random_arrange.is-visible {
     opacity: 1;
     transform: translateY(0);
