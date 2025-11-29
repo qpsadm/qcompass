@@ -9,21 +9,21 @@
         $titleField = $titleField ?? 'title';
         $title = $item->{$titleField} ?? '未設定';
 
-        // リンク用ルートとパラメータ名（デフォルトはニュース）
+        // リンク用ルート（ニュースなら news_info、それ以外は外部で指定可能）
         $linkRoute = $linkRoute ?? 'user.news.news_info';
         $paramName = $paramName ?? 'announcement';
         $link = route($linkRoute, [$paramName => $item->id]);
 
-        // ニュースかAgendaかをフラグで判定
-        $isAgenda = $isAgenda ?? false;
+        // ニュースかどうかをフラグで判定（外から渡すか自動判定）
+        $isNews = $isNews ?? false;
         @endphp
 
         <tr>
             <td class="date">{{ $date }}</td>
 
-            @unless($isAgenda)
+            {{-- ニュースだけカテゴリ表示 --}}
+            @if($isNews)
             @php
-            // ニュース用カテゴリ
             $courseName = isset($item->course) && !empty($item->course->course_name) ? '本講座' : '全体';
             $categorySlug = $item->type?->slug ?? 'default';
             @endphp
@@ -32,7 +32,7 @@
                     {{ $courseName }}
                 </p>
             </td>
-            @endunless
+            @endif
 
             <td class="title">
                 <a href="{{ $link }}">

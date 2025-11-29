@@ -16,7 +16,7 @@
         </div>
         <div class="box-content">
             <x-f_content_list
-                :items="$globalAnnouncements" />
+                :items="$globalAnnouncements" :is-news="true" />
             <div class="more-btn">
                 <a href="{{ route('user.news.main_news') }}">more</a>
             </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="box-content">
             <x-f_content_list
-                :items="$courseAnnouncements " />
+                :items="$courseAnnouncements " :is-news="true" />
             <div class="more-btn">
                 <a href="{{ route('user.news.my_news') }}">more</a>
             </div>
@@ -44,7 +44,7 @@
             <x-f_content_list
                 :items="$jobs"
                 link-route="user.job.job_offers_info"
-                param-name="id" />
+                param-name="id" :is-news="false" />
             <div class="more-btn">
                 <a href="{{ route('user.job.job_offers_list') }}">more</a>
             </div>
@@ -74,7 +74,7 @@
                     title-field="agenda_name"
                     link-route="user.agenda.info"
                     param-name="id"
-                    :is-agenda="true" />
+                    :is-news="false" />
                 <div class="more-btn">
                     <a href="{{ route('user.agenda.agendas_list') }}">more</a>
                 </div>
