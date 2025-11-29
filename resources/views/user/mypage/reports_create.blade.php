@@ -14,7 +14,10 @@
 
         <form class="report-form" action="{{ route('user.reports_store') }}" method="POST">
             @csrf
-
+            {{-- 講座ID（hidden） --}}
+            @if(!empty($courses))
+            <input type="hidden" name="course_id" value="{{ $courses->first()->id }}">
+            @endif
             {{-- 氏名・メール --}}
             <div class="form-item">
                 <div class="item-label">
@@ -39,11 +42,6 @@
                 </div>
                 <input type="date" id="date" name="date" value="{{ date('Y-m-d') }}" required>
             </div>
-
-            {{-- 講座ID（hidden） --}}
-            @if(!empty($courses))
-            <input type="hidden" name="course_id" value="{{ $courses->first()->id }}">
-            @endif
 
             {{-- 日報内容 --}}
             <div class="form-item">
