@@ -123,8 +123,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     //日報
     // Route::resource('reports', UserReportController::class);
-    Route::get('mypage/reports', [UserReportController::class, 'create'])
-        ->name('mypage.reports_create');
+    Route::get('reports', [UserReportController::class, 'create'])->name('reports_create');
+    Route::post('reports', [UserReportController::class, 'store'])->name('reports_store');
 });
 
 
