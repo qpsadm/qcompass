@@ -30,9 +30,17 @@ $currentCategory = request('category', 'all');
 @endif
 
 @if($type === 'question' && count($tags))
-{{-- 質疑応答はタグタブだけ表示 --}}
-<div class="tag-menu">
+{{-- 質疑応答はタグだけ表示 --}}
+<div class="category-menu">
     <ul>
+        {{-- ALL --}}
+        <li class="{{ request('tag') === null ? 'active' : '' }}">
+            <a href="{{ route('user.question.questions_list') }}">
+                ALL
+            </a>
+        </li>
+
+        {{-- タグ一覧 --}}
         @foreach($tags as $tag)
         <li class="{{ request('tag') == $tag->id ? 'active' : '' }}">
             <a href="{{ route('user.question.questions_list', ['tag' => $tag->id]) }}">
@@ -42,4 +50,5 @@ $currentCategory = request('category', 'all');
         @endforeach
     </ul>
 </div>
+
 @endif
