@@ -79,4 +79,14 @@ class Course extends Model
             ->whereNull('course_teachers.deleted_at') // 論理削除対応
             ->wherePivotNull('deleted_at'); // ← 同様
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(
+            User::class,      // 関連モデル
+            'course_users',    // 中間テーブル名
+            'course_id',      // 中間テーブル内のこのモデルのキー
+            'user_id'         // 中間テーブル内の関連モデルのキー
+        );
+    }
 }

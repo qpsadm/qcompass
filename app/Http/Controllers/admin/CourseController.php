@@ -10,6 +10,8 @@ use App\Models\Level;
 use App\Models\CourseType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+
 
 class CourseController extends Controller
 {
@@ -47,7 +49,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_code' => 'required|string|max:50',
+            'course_code' => 'required|string|max:50|unique:courses,course_code',
             'course_type_id' => 'required|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
@@ -125,7 +127,13 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
 
         $validated = $request->validate([
-            'course_code' => 'required|string|max:50',
+
+            'course_code' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('courses', 'course_code')->ignore($course->id),
+            ],
             'course_type_id' => 'required|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
@@ -207,5 +215,15 @@ class CourseController extends Controller
         $course->delete();
 
         return redirect()->route('admin.courses.index')->with('success', '講座を削除しました');
+    }
+
+    public function students(Course $course)
+    {
+        // Course モデルに hasManyThrough などで students() が定義されている前提
+        $students = $course->students()->paginate(10);
+
+        $teachers = $course->teachers()->paginate(10);
+
+        return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
 }
