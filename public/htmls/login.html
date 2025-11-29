@@ -5,60 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン | QLIP-Compass</title>
 
-    <!-- include(f_common_css.blade.php) -->
+    <!-- 共通css -->
     <link rel="stylesheet" href="../assets/css/reset.css">
     <link rel="stylesheet" href="../assets/css/f_variable.css">
     <link rel="stylesheet" href="../assets/css/f_common.css">
 
-    <!-- yield(page_css.blade.php) -->
-    <link rel="stylesheet" href="../assets/css/f_page.css">
+    <!-- yield(code-page-css) -->
+    <link rel="stylesheet" href="../assets/css/login.css">
+
+    <link rel="icon" href="../assets/images/icon/favicon.png">
 </head>
 <body>
+    <div class="login-container">
 
-    <main>
-        <div class="container">
-            <form action=""></form>
-        </div>
-    </main>
+        <div class="login-form-container">
+            <div class="site-logo">
+                <img src="../assets/images/f_site-logo.svg" alt="ロゴ">
+            </div>
 
-    <!-- include(f_footer.blade.php) -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-info">
-                <div class="footer-logo">
-                    <img src="../assets/images/f_footer-logo.svg" alt="コンパスロゴ">
+            <form class="login-form">
+                <div class="login-item">
+                    <label for="name">会社名</label>
+                    <p>株式会社 QLIP</p>
                 </div>
-                <div class="footer-company-info">
-                    <p>株式会社QLIPインターナショナル<br>QLIPプログラミングスクール</p>
-                    <p>〒 770-0832<br>徳島県徳島市寺島本町東3丁目12-8  K1ビル5Fと6F</p>
-                    <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
+
+                <div class="login-item">
+                    <label for="name">講座名</label>
+                    <select name="course-name">
+                        <option value="man">WEBシステム開発実践科1 第10期</option>
+                        <option value="man">WEBプログラマー養成科</option>
+                    </select>
                 </div>
-                <div class="footer-icons">
-                    <img src="../assets/images/icon/f_icon_facebook.png" alt="facebookアイコン">
-                    <img src="../assets/images/icon/f_icon_instagram.svg" alt="instagramアイコン">
+                <div class="login-item">
+                    <label for="name">お名前</label>
+                    <input type="text" id="user-id" placeholder="yamada_taro" required>
                 </div>
-            </div>
-            <div>
-                <ul class="footer-company-view">
-                    <li><a href="">講座情報</a></li>
-                    <li><a href="">講師紹介</a></li>
-                    <li><a href="">各種届出書式</a></li>
-                    <li><a href="">お問い合わせ</a></li>
-                    <li><a href="">本サイトについて</a></li>
-                    <li><a href="">受講規則</a></li>
-                    <li><a href="">利用規約</a></li>
-                </ul>
-            </div>
+
+                <div class="login-item">
+                    <label for="name">パスワード</label>
+                    <input type="text" id="user-pw" placeholder="パスワードを入力してください" required>
+                </div>
+
+                <p class="considerations">※パスワード等をお忘れの場合は、管理者までお問い合わせください。</p>
+
+                <div class="login-btn-container">
+                    <button type="submit" class="login-btn">ログイン</button>
+                </div>
+            </form>
         </div>
-        <div class="copyright">
-            <p>© 2025 qlip-compass. All rights reserved.</p>
-        </div>
-    </footer>
-    <!-- /include(f_footer.blade.php) -->
+
+        <img src="../assets/images/test/github_icon.png" alt="icon_1" class="random_arrange" style="top:10%; left:20%;">
+        <img src="../assets/images/test/apple_icon.png" alt="icon_2" class="random_arrange" style="top:28%; left:2%;">
+        <img src="../assets/images/test/illustrator_icon.png" alt="icon_3" class="random_arrange" style="top:48%; left:15%;">
+        <img src="../assets/images/test/js_icon.png" alt="icon_4" class="random_arrange" style="top:30%; left:29%;">
+        <img src="../assets/images/test/windows_icon.png" alt="icon_5" class="random_arrange" style="top:3%; left:65%;">
+        <img src="../assets/images/test/photoshop_icon.png" alt="icon_6" class="random_arrange" style="top:25%; left:77%;">
+        <img src="../assets/images/test/php_icon.png" alt="icon_7" class="random_arrange" style="top:3%; left:85%;">
+        <img src="../assets/images/test/vscode_icon.png" alt="icon_8" class="random_arrange" style="top:42%; left:90%;">
+        <img src="../assets/images/test/laravel_icon.png" alt="icon_9" class="random_arrange" style="top:50%; left:70%;">
+        <img src="../assets/images/test/html_icon.png" alt="icon_10" class="random_arrange" style="top:70%; left:77%;">
+        <img src="../assets/images/test/codepen_icon.png" alt="icon_11" class="random_arrange" style="top:2%; left:5%;">
+
+    </div>
+
+
+
+
+
+    <!-- include(f_header.blade.php) -->
 
     <!-- include(f_common_js.blade.php) -->
-    <script src="../assets/js/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/f_common.js"></script>
+    <!-- <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/f_common.js"></script> -->
 
     <!-- yield(page_js.blade.php) -->
 </body>
