@@ -76,7 +76,7 @@
                 <p><a href="#" target="_blank">個人情報保護方針を確認する</a></p>
             </div>
 
-            <button type="submit" class="privacy-policy-button">個人情報保護方針に同意して送信</button>
+            <button type="submit" class="form-btn">個人情報保護方針に同意して送信</button>
         </form>
 
     </div>
