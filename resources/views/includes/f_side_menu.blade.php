@@ -17,13 +17,17 @@
                     </div>
                 </div>
 
-                <div class="countdown">
-                    <p class="countdown-title">修了まであと</p>
-                    <div class="countdown-data">
-                        <span class="data-number">108</span>
-                        <span class="data-sub-title">日</span>
+                @foreach($courses as $course)
+                <div class="course-item">
+                    <div class="countdown">
+                        <p class="countdown-title">修了まであと</p>
+                        <div class="countdown-data">
+                            <span class="data-number">{{ $course->remaining_days }}</span>
+                            <span class="data-sub-title">日</span>
+                        </div>
                     </div>
                 </div>
+                @endforeach
 
                 <div class="today-short">
                     <p class="short-title">今日のひとこと</p>

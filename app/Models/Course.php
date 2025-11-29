@@ -89,4 +89,13 @@ class Course extends Model
             'user_id'         // 中間テーブル内の関連モデルのキー
         );
     }
+
+    public function getRemainingDaysAttribute()
+    {
+        $today = now()->startOfDay();
+        $endDate = \Carbon\Carbon::parse($this->end_date)->startOfDay();
+
+        $diff = $today->diffInDays($endDate, false); // 過ぎていたらマイナス
+        return $diff > 0 ? $diff : 0;
+    }
 }
