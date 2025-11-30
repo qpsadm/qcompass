@@ -48,8 +48,11 @@ use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\QuestionController as UserQuestionController;
 use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
 use App\Http\Controllers\User\ReportController  as UserReportController;
-
 use App\Http\Controllers\User\FrontTopController;
+use App\Http\Controllers\User\QuoteController as UserQuoteController;
+
+
+
 
 // 学習・資格・求人
 use App\Http\Controllers\{
@@ -131,6 +134,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::post('reports', [UserReportController::class, 'store'])->name('reports_store');
     // 日報確認
     Route::get('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
+
+    //今日の一言
+    Route::get('quotes', [UserQuoteController::class, 'index'])->name('quotes.index');
 });
 
 

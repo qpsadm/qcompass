@@ -30,10 +30,15 @@
                 @endforeach
 
                 <div class="today-short">
-                    <p class="short-title">今日のひとこと</p>
-                    <span class="short-text">我々は繰り返す事により形成される</span>
-                    <span class="short-name">（アリストテレス）</span>
+                    @if($todayQuote)
+                    <span class="short-text">{{ $todayQuote->quote_full }}</span>
+                    <span class="short-name">（{{ $todayQuote->author_full ?? '作者不明' }}）</span>
+                    @else
+                    <span class="short-text">名言が登録されていません</span>
+                    @endif
                 </div>
+
+
             </div>
 
         </div>

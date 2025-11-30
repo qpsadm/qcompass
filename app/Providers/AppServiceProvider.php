@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
+use App\Models\Quote;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,8 +27,19 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('includes.f_side_menu', function ($view) {
             $user = Auth::user();
+
+            // コース情報
             $courses = $user ? $user->courses()->where('is_show', 1)->get() : collect();
-            $view->with('courses', $courses);
+
+            // 今日のひとこと（ランダム）
+            $todayQuote = Quote::where('is_show', true)
+                ->inRandomOrder()
+                ->first();
+
+            $view->with([
+                'courses'    => $courses,
+                'todayQuote' => $todayQuote,
+            ]);
         });
     }
 }
