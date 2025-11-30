@@ -89,7 +89,7 @@ class ReportController extends Controller
 
         $course = $report->course;
 
-        return view('user.mypage.reports_show', compact('report', 'course'));
+        return view('user.mypage.reports_info', compact('report', 'course'));
     }
 
     // 削除（必要なら）

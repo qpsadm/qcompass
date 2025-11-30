@@ -17,12 +17,15 @@ class MypageController extends Controller
         // 未提出日報
         $pending_diaries = $this->getPendingDiaries($user);
 
-        // 提出済み日報（同じ日付は1件だけ）
-        $submitted_reports = $user->reports()
-            ->select('date', 'id') // idは何か1件だけ残すため
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->get();
+        // 提出済み日報（日付ごとに最新1件のみ）
+        $submitted_reports = $user->reports
+            ->sortByDesc('date')     // 日付順にソート
+            ->unique('date')         // 日付ごとにユニーク
+            ->values()               // インデックスを詰める
+            ->map(function ($report) {
+                $report->url = route('user.reports_info', ['report' => $report->id]);
+                return $report;
+            });
 
         // お知らせ
         $announcements = Announcement::latest()->take(5)->get();
@@ -62,7 +65,7 @@ class MypageController extends Controller
                     $diary->date = $date->format('Y-m-d');
                     $diary->course_id = $course->id;
                     $diary->course_name = $course->course_name;
-                    // 日報作成URLをここで生成
+                    // 日報作成URL
                     $diary->url = route('user.reports_create', [
                         'course_id' => $course->id,
                         'date' => $date->format('Y-m-d')
@@ -73,7 +76,7 @@ class MypageController extends Controller
             }
         }
 
-        // 日付でユニークにして、同じ日が複数の講座でも1件だけにする
+        // 日付でユニークにして、同じ日が複数講座でも1件だけに
         $pending = collect($pending)->unique('date')->values()->all();
 
         return $pending;

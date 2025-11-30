@@ -1,34 +1,60 @@
 @extends('layouts.f_layout')
 
-@section('title', '日報一覧')
+@section('code-page-css')
+<link rel="stylesheet" href="{{ asset('assets/css/f_form.css') }}">
+@endsection
+
+@section('title', '日報詳細')
 
 @section('main-content')
-    <h1>日報一覧</h1>
+<div class="container">
+    <x-f_page_title :search="false" title="日報詳細" />
 
-    <table border="1" cellpadding="5">
-        <thead>
-            <tr>
-                <th>日付</th>
-                <th>タイトル</th>
-                <th>日報</th>
-                <th>感想・気付き・質問</th>
-                <th>連絡事項</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($reports as $report)
-                <tr>
-                    <td>{{ $report->date }}</td>
-                    <td>{{ $report->title }}</td>
-                    <td>{{ $report->content }}</td>
-                    <td>{{ $report->impression }}</td>
-                    <td>{{ $report->notice }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5">日報はありません</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="form-content">
+
+        {{-- 日報内容 --}}
+        <div class="confirm-item">
+            <div class="item-label">
+                <label>報告日</label>
+            </div>
+            <p>{{ $report->date }}</p>
+        </div>
+
+        <div class="confirm-item">
+            <div class="item-label">
+                <label>タイトル</label>
+            </div>
+            <p>{{ $report->title }}</p>
+        </div>
+
+        <div class="confirm-item">
+            <div class="item-label">
+                <label>日報</label>
+            </div>
+            <p>{!! nl2br(e($report->content)) !!}</p>
+        </div>
+
+        <div class="confirm-item">
+            <div class="item-label">
+                <label>感想・気付き・質問</label>
+            </div>
+            <p>{!! nl2br(e($report->impression)) !!}</p>
+        </div>
+
+        <div class="confirm-item">
+            <div class="item-label">
+                <label>連絡事項</label>
+            </div>
+            <p>{!! nl2br(e($report->notice)) !!}</p>
+        </div>
+
+        {{-- 戻るボタン --}}
+        <div class="btn-area">
+            <a href="{{ route('user.mypage') }}" class="form-btn">一覧に戻る</a>
+        </div>
+
+    </div>
+
+    <x-f_bread_crumbs />
+</div>
 @endsection

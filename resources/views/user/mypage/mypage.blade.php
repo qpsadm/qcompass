@@ -134,14 +134,16 @@
                 title: '',
                 start: '{{ \Carbon\Carbon::parse($report->date)->format("Y-m-d") }}',
                 allDay: true,
-                backgroundColor: 'transparent', // 背景透明
-                borderColor: 'transparent', // 枠線透明
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
                 extendedProps: {
-                    isPending: false
+                    isPending: false,
+                    url: '{{ route("user.reports_info", ["report" => $report->id]) }}'
                 }
             },
             @endforeach
         ];
+
 
         window.APP_URL = "{{ url('/') }}";
 
