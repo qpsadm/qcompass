@@ -12,7 +12,7 @@ class JobOfferController extends Controller
     // 一覧ページ
     public function index()
     {
-        $jobs = JobOffer::paginate(10); // 求人票もページネーション
+        $jobs = JobOffer::paginate(5); // 求人票もページネーション
         $agendas = Agenda::where('category_id', 35)
             ->where('status', 'yes')
             ->where('is_show', 1)
