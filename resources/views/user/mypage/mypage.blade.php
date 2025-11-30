@@ -112,9 +112,30 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+
+        var events = [
+            @foreach($pending_diaries as $diary) {
+                title: '未提出: {{ $diary["course_name"] }}',
+                start: '{{ $diary["date"] }}',
+                color: 'red'
+            },
+            @endforeach
+
+            @foreach($submitted_reports as $report) {
+                title: '提出済',
+                start: '{{ \Carbon\Carbon::parse($report->date)->format("Y-m-d") }}',
+                color: 'green'
+            },
+            @endforeach
+        ];
+
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth'
+            initialView: 'dayGridMonth',
+            locale: 'ja',
+            height: 600,
+            events: events
         });
+
         calendar.render();
     });
 </script>

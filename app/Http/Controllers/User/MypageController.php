@@ -14,23 +14,26 @@ class MypageController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $user_details = $user->detail;
 
-        // user_details（存在しない時もあるので first() を使う）
-        $user_details = UserDetail::where('user_id', $user->id)->first();
+        // 未提出日報
+        $pending_diaries = $this->getPendingDiaries($user);
+
+        // 提出済み日報
+        $submitted_reports = $user->reports;
 
         // お知らせ
         $announcements = Announcement::latest()->take(5)->get();
 
-        // 未提出日記
-        $unsubmitted_reports = $this->getPendingDiaries($user);
-
         return view('user.mypage.mypage', compact(
             'user',
             'user_details',
-            'unsubmitted_reports',
+            'pending_diaries',
+            'submitted_reports',
             'announcements'
         ));
     }
+
 
     private function getPendingDiaries($user)
     {
