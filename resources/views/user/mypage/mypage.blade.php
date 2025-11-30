@@ -25,13 +25,13 @@
                 <div class="profile-data">
                     <h4>{{ $user->name }}</h4>
                     <p class="mail">
-                        {{ $user->email ?? '未登録' }}
+                        {{ $user->email ?? '未登録'}}
                     </p>
                     <p class="tel">
                         {{ $user_details?->phone1 ?? '未登録' }}
                     </p>
                     <p class="birthday">
-                        {{ $user_details?->birthday?->format('Y-m-d') ?? '未登録' }}
+                        {{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}
                     </p>
                 </div>
 
@@ -113,18 +113,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
+        // イベントデータ
         var events = [
-            @foreach($pending_diaries as $diary) {
-                title: '未提出: {{ $diary["course_name"] }}',
-                start: '{{ $diary["date"] }}',
-                color: 'red'
-            },
-            @endforeach
-
             @foreach($submitted_reports as $report) {
-                title: '提出済',
+                title: '', // チェックマークだけ表示したいなら空文字
                 start: '{{ \Carbon\Carbon::parse($report->date)->format("Y-m-d") }}',
-                color: 'green'
+                allDay: true,
+                extendedProps: {
+                    isSubmitted: true
+                }
             },
             @endforeach
         ];
@@ -133,7 +130,20 @@
             initialView: 'dayGridMonth',
             locale: 'ja',
             height: 600,
-            events: events
+            events: events,
+
+            // 日付セルのカスタム描画
+            eventContent: function(arg) {
+                // 提出済みイベントのみチェックマーク画像
+                if (arg.event.extendedProps.isSubmitted) {
+                    return {
+                        html: '<img src="{{ asset("assets/images/f_icon_check2.svg") }}">'
+                    };
+                }
+                return {
+                    html: arg.event.title
+                }; // それ以外はタイトルだけ
+            }
         });
 
         calendar.render();
