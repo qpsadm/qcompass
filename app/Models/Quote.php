@@ -16,10 +16,12 @@ class Quote extends Model
         return $this->hasMany(QuotePart::class);
     }
 
+    // author_parts テーブルのリレーション
     public function authorParts()
     {
-        return $this->hasMany(AuthorPart::class);
+        return $this->hasMany(AuthorPart::class, 'quote_id', 'id');
     }
+
     public function getQuoteFullAttribute()
     {
         return $this->quoteParts->pluck('text')->implode('');
@@ -28,5 +30,11 @@ class Quote extends Model
     public function getAuthorFullAttribute()
     {
         return $this->authorParts->pluck('text')->implode('');
+    }
+
+    // quote_parts テーブルのリレーション
+    public function parts()
+    {
+        return $this->hasMany(QuotePart::class, 'quote_id', 'id');
     }
 }
