@@ -50,7 +50,7 @@
 
     </div>
 
-    <x-f_pagination />
+    <x-f_pagination :paginator="$agendas" />
     <x-f_bread_crumbs />
 </div>
 @endsection

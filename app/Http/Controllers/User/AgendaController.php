@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class AgendaController extends Controller
 {
-    /**
-     * 共通：ユーザーが閲覧可能なカテゴリ一覧を取得
-     */
     private function getUserCategories($userId)
     {
         $userCourseIds = DB::table('course_users')
@@ -39,9 +36,6 @@ class AgendaController extends Controller
             ->get();
     }
 
-    /**
-     * 自分の講座アジェンダ一覧（ページネーション対応）
-     */
     public function myCourseAgendaList()
     {
         $userId = Auth::id();
@@ -58,15 +52,12 @@ class AgendaController extends Controller
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        // paginate に変更（10件ごと）
+        // paginate に変更
         $agendas = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
 
-    /**
-     * 個別アジェンダ詳細
-     */
     public function agendaDetail($id)
     {
         $agenda = Agenda::where('id', $id)
@@ -79,19 +70,17 @@ class AgendaController extends Controller
         return view('user.agenda.agendas_info', compact('agenda', 'categories'));
     }
 
-    /**
-     * カテゴリー別アジェンダ一覧（ページネーション対応）
-     */
     public function agendaByCategory($category_id)
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
 
+        // paginate に変更
         $agendas = Agenda::where('category_id', $category_id)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // paginate に変更
+            ->paginate(10);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
@@ -103,5 +92,17 @@ class AgendaController extends Controller
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    /**
+     * 新規追加：ページネーション対応
+     */
+    public function getAgendasDataByCategoryPaginate(int $category_id, int $perPage = 10)
+    {
+        return Agenda::where('category_id', $category_id)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 }
