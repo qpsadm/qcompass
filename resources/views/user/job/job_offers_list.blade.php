@@ -25,12 +25,13 @@
                 <table>
                     @foreach ($jobs as $job)
                     <tr>
-                        <td class="date">{{ \Carbon\Carbon::parse($job->created_at)->format('Y/m/d') }}</td>
+                        <td class="date">{{ $job->created_at->format('Y/m/d') }}</td>
                         <td class="title"><a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a></td>
                     </tr>
                     @endforeach
                 </table>
             </div>
+            <x-f_pagination :paginator="$jobs" />
         </div>
 
         <div x-show="tab === 'download'" class="content-box" x-cloak>
@@ -46,7 +47,9 @@
                     @endforeach
                 </table>
             </div>
+            <x-f_pagination :paginator="$agendas" />
         </div>
+
 
     </div>
 

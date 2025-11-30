@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer('includes.f_side_menu', function ($view) {
+        View::composer(['includes.f_side_menu', 'includes.header'], function ($view) {
             $user = Auth::user();
 
             $courses = $user ? $user->courses()->where('is_show', 1)->get() : collect();
@@ -32,12 +32,12 @@ class AppServiceProvider extends ServiceProvider
 
             // パーツモードで複数名言を混ぜる
             if ($quote_mode === 'mix') {
-                $quotes = Quote::where('is_show', 1)->inRandomOrder()->take(3)->get(); // A, B, C
+                $quotes = Quote::where('is_show', 1)->inRandomOrder()->take(3)->get();
                 $quoteParts = collect();
                 $authorParts = collect();
 
                 foreach ($quotes as $quote) {
-                    $quoteParts->push($quote->quoteParts()->inRandomOrder()->first()); // 各名言から1パーツずつ
+                    $quoteParts->push($quote->quoteParts()->inRandomOrder()->first());
                     $authorParts->push($quote->authorParts()->inRandomOrder()->first());
                 }
 
