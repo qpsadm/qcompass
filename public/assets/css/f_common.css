@@ -465,6 +465,10 @@ header::after {
     text-align: center;
 }
 
+.short-name.mix-mode {
+    color: #83BE85;
+}
+
 .side-menu-list {
     display: flex;
     flex-direction: column;
