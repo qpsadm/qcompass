@@ -111,6 +111,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
         var calendarEl = document.getElementById('calendar');
 
         var pendingEvents = [
@@ -138,15 +139,17 @@
             @endforeach
         ];
 
+        window.APP_URL = "{{ url('/') }}";
+        
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             events: pendingEvents.concat(submittedEvents),
             eventContent: function(arg) {
                 const img = document.createElement('img');
                 img.src = arg.event.extendedProps.isPending ?
-                    "/assets/images/icon/b_search.svg" // 未提出アイコン
+                    `${window.APP_URL}/assets/images/icon/b_search.svg` // 未提出アイコン
                     :
-                    "/assets/images/icon/f_icon_check2.svg"; // 提出済アイコン
+                    `${window.APP_URL}/assets/images/icon/f_icon_check2.svg`; // 提出済アイコン
                 img.alt = arg.event.extendedProps.isPending ? "未提出" : "提出済";
                 img.style.width = "16px"; // 必要に応じてサイズ調整
                 img.style.height = "16px";
