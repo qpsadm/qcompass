@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
-
 class CourseController extends Controller
 {
     public function index(Request $request)
@@ -35,7 +34,6 @@ class CourseController extends Controller
         return view('admin.courses.index', compact('courses'));
     }
 
-
     public function create()
     {
         return view('admin.courses.create', [
@@ -44,7 +42,6 @@ class CourseController extends Controller
             'courseTypes' => CourseType::all(),
         ]);
     }
-
 
     public function store(Request $request)
     {
@@ -80,7 +77,6 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
-        // ✅ ファイル保存
         if ($request->hasFile('plan_path')) {
             $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
         }
@@ -88,28 +84,36 @@ class CourseController extends Controller
             $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
         }
 
-        $validated['level_id'] = $validated['level_id'] ?? 2;  // level_idが送信されない場合、デフォルト値2をセット
-
-
-
+        $validated['level_id'] = $validated['level_id'] ?? 2;
         $validated['organizer_id'] = $validated['organizer_id'] ?? null;
-
         $validated['created_user_name'] = Auth::user()->name ?? 'system';
 
         $course = Course::create($validated);
 
-        // ✅ categories（中間テーブル）
+        // カテゴリ同期（論理削除対応）
         if ($request->filled('category_ids')) {
-            $course->categories()->sync(
-                collect($request->category_ids)->mapWithKeys(fn($id) => [
-                    $id => ['is_show' => 1, 'created_user_name' => Auth::user()->name]
-                ])
-            );
+            foreach ($request->category_ids as $categoryId) {
+                $existing = $course->categories()->withTrashed()->where('categories.id', $categoryId)->first();
+
+                if ($existing) {
+                    if ($existing->trashed()) {
+                        $existing->restore();
+                    }
+                    $existing->pivot->update([
+                        'is_show' => 1,
+                        'updated_user_name' => Auth::user()->name,
+                    ]);
+                } else {
+                    $course->categories()->attach($categoryId, [
+                        'is_show' => 1,
+                        'created_user_name' => Auth::user()->name,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('admin.courses.index')->with('success', '講座を登録しました');
     }
-
 
     public function edit($id)
     {
@@ -121,13 +125,11 @@ class CourseController extends Controller
         ]);
     }
 
-
     public function update(Request $request, $id)
     {
         $course = Course::findOrFail($id);
 
         $validated = $request->validate([
-
             'course_code' => [
                 'required',
                 'string',
@@ -164,7 +166,6 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
-        // ✅ ファイル更新
         if ($request->hasFile('plan_path')) {
             if ($course->plan_path) Storage::disk('public')->delete($course->plan_path);
             $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
@@ -175,22 +176,30 @@ class CourseController extends Controller
             $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
         }
 
-        $validated['level_id'] = $validated['level_id'] ?? 2;  // level_idが送信されない場合、デフォルト値2をセット
-
-
+        $validated['level_id'] = $validated['level_id'] ?? 2;
         $validated['updated_user_name'] = Auth::user()->name ?? 'system';
 
         $course->update($validated);
 
-        // ✅ 中間テーブル更新
-        if ($request->filled('category_ids')) {
-            $course->categories()->sync(
-                collect($request->category_ids)->mapWithKeys(fn($id) => [
-                    $id => ['is_show' => 1, 'updated_user_name' => Auth::user()->name]
-                ])
-            );
-        } else {
-            $course->categories()->detach();
+        // 中間テーブル更新（論理削除対応）
+        $categoryIds = $request->input('category_ids', []);
+        foreach ($categoryIds as $categoryId) {
+            $existing = $course->categories()->withTrashed()->where('categories.id', $categoryId)->first();
+
+            if ($existing) {
+                if ($existing->trashed()) {
+                    $existing->restore();
+                }
+                $existing->pivot->update([
+                    'is_show' => 1,
+                    'updated_user_name' => Auth::user()->name,
+                ]);
+            } else {
+                $course->categories()->attach($categoryId, [
+                    'is_show' => 1,
+                    'created_user_name' => Auth::user()->name,
+                ]);
+            }
         }
 
         return redirect()->route('admin.courses.index')->with('success', '講座を更新しました');
@@ -198,18 +207,13 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        // もしCourseが見つからない場合は、404エラーを表示
         $course = Course::findOrFail($id);
-
-        // 詳細画面に遷移するために、'Course'をビューに渡す
         return view('admin.courses.show', compact('course'));
     }
-
 
     public function destroy($id)
     {
         $course = Course::findOrFail($id);
-
         $course->deleted_user_name = Auth::user()->name ?? 'system';
         $course->save();
         $course->delete();
@@ -219,11 +223,8 @@ class CourseController extends Controller
 
     public function students(Course $course)
     {
-        // Course モデルに hasManyThrough などで students() が定義されている前提
         $students = $course->students()->paginate(10);
-
         $teachers = $course->teachers()->paginate(10);
-
         return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
 }

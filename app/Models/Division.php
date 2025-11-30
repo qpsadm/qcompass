@@ -9,6 +9,8 @@ class Division extends Model
 {
     use SoftDeletes;
 
+    public $timestamps = false;  // ←これ必須！
+
     protected $fillable = [
         'code',
         'name',

@@ -11,7 +11,34 @@ class Course extends Model
 {
     use HasFactory, SoftDeletes, Searchable;
 
-    protected $fillable = ['course_code', 'course_type_id', 'level_id', 'organizer_id', 'course_name', 'venue', 'application_date', 'certification_date', 'certification_number', 'start_date', 'end_date', 'total_hours', 'periods', 'start_time', 'finish_time', 'start_viewing', 'finish_viewing', 'plan_path', 'flier_path', 'capacity', 'entering', 'completed', 'description', 'status', 'created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name'];
+    protected $fillable = [
+        'course_code',
+        'course_type_id',
+        'level_id',
+        'organizer_id',
+        'course_name',
+        'venue',
+        'application_date',
+        'certification_date',
+        'certification_number',
+        'start_date',
+        'end_date',
+        'total_hours',
+        'periods',
+        'start_time',
+        'finish_time',
+        'start_viewing',
+        'finish_viewing',
+        'plan_path',
+        'flier_path',
+        'capacity',
+        'entering',
+        'completed',
+        'description',
+        'status',
+        'created_user_name',
+        'updated_user_name'
+    ];
 
     public function users()
     {
@@ -83,11 +110,14 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(
-            User::class,      // 関連モデル
-            'course_users',    // 中間テーブル名
-            'course_id',      // 中間テーブル内のこのモデルのキー
-            'user_id'         // 中間テーブル内の関連モデルのキー
-        );
+            User::class,
+            'course_users',
+            'course_id',
+            'user_id'
+        )
+            ->withPivot('created_user_name', 'updated_user_name', 'deleted_at', 'deleted_user_name')
+            ->withTimestamps()
+            ->wherePivotNull('deleted_at');
     }
 
     public function getRemainingDaysAttribute()
