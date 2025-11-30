@@ -22,7 +22,7 @@ class QuestionController extends Controller
         }
 
         // 作成日の新しい順で取得
-        $questions = $questions->orderBy('created_at', 'desc')->paginate(10);
+        $questions = $questions->orderBy('created_at', 'desc')->paginate(5);
 
         // タグ一覧を取得
         $tags = Tag::all();

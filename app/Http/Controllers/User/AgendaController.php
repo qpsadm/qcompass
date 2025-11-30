@@ -9,12 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class AgendaController extends Controller
 {
-    /**
-     * 共通：ユーザーが閲覧可能なカテゴリ一覧を取得
-     */
     private function getUserCategories($userId)
     {
-        // 所属講座ID
         $userCourseIds = DB::table('course_users')
             ->where('user_id', $userId)
             ->pluck('course_id')
@@ -24,7 +20,6 @@ class AgendaController extends Controller
             return collect();
         }
 
-        // カテゴリID
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
             ->where('is_show', 1)
@@ -35,42 +30,34 @@ class AgendaController extends Controller
             return collect();
         }
 
-        // カテゴリ一覧
         return DB::table('categories')
             ->whereIn('id', $categoryIds)
             ->orderBy('sort', 'asc')
             ->get();
     }
 
-    /**
-     * 自分の講座アジェンダ一覧
-     */
     public function myCourseAgendaList()
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
         $categoryIds = $categories->pluck('id')->toArray();
 
-        $search = request('search'); // search パラメータを取得
+        $search = request('search');
 
         $query = Agenda::whereIn('category_id', $categoryIds)
             ->where('status', 'yes')
             ->where('is_show', 1);
 
         if ($search) {
-            // ScoutやLIKE検索でもOK
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        $agendas = $query->orderBy('created_at', 'desc')->get();
+        // paginate に変更
+        $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
 
-
-    /**
-     * 個別アジェンダ詳細
-     */
     public function agendaDetail($id)
     {
         $agenda = Agenda::where('id', $id)
@@ -78,25 +65,22 @@ class AgendaController extends Controller
             ->where('status', 'yes')
             ->firstOrFail();
 
-        // アコーディオン用カテゴリ
         $categories = $this->getUserCategories(Auth::id());
 
         return view('user.agenda.agendas_info', compact('agenda', 'categories'));
     }
 
-    /**
-     * カテゴリー別アジェンダ一覧
-     */
     public function agendaByCategory($category_id)
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
 
+        // paginate に変更
         $agendas = Agenda::where('category_id', $category_id)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(5);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
@@ -108,5 +92,17 @@ class AgendaController extends Controller
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    /**
+     * 新規追加：ページネーション対応
+     */
+    public function getAgendasDataByCategoryPaginate(int $category_id, int $perPage = 5)
+    {
+        return Agenda::where('category_id', $category_id)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 }
