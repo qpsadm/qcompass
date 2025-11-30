@@ -11,7 +11,7 @@ class AnnouncementTypeController extends Controller
     // 一覧
     public function index()
     {
-        $types = AnnouncementType::orderBy('id', 'desc')->paginate(20);
+        $types = AnnouncementType::orderBy('id', 'desc')->paginate(5);
         return view('admin.announcement_types.index', compact('types'));
     }
 
