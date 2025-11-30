@@ -30,7 +30,7 @@
                 @endforeach
 
                 <div class="today-short">
-                    @if($todayQuote)
+                    @if(!empty($todayQuote))
                     <span class="short-text">{{ $todayQuote->quote_full }}</span>
                     <span class="short-name">（{{ $todayQuote->author_full ?? '作者不明' }}）</span>
                     @else

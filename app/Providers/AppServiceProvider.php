@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 use App\Models\Quote;
+use App\Services\QuoteService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,17 +28,13 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('includes.f_side_menu', function ($view) {
             $user = Auth::user();
-
-            // コース情報
             $courses = $user ? $user->courses()->where('is_show', 1)->get() : collect();
 
-            // 今日のひとこと（ランダム）
-            $todayQuote = Quote::where('is_show', true)
-                ->inRandomOrder()
-                ->first();
+            // 今日の名言（フル名言からランダム）
+            $todayQuote = Quote::where('is_show', 1)->inRandomOrder()->first();
 
             $view->with([
-                'courses'    => $courses,
+                'courses' => $courses,
                 'todayQuote' => $todayQuote,
             ]);
         });
