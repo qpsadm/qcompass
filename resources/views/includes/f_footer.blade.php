@@ -11,8 +11,8 @@
                 <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
             </div>
             <div class="footer-sns-icons">
-                <img src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン">
-                <img src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン">
+                <a href="https://www.facebook.com/qlipwebprogrammer" target="_blank"><img src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン"></a>
+                <a href="https://www.instagram.com/qlipdesign" target="_blank"><img src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン"></a>
             </div>
         </div>
         <div>
