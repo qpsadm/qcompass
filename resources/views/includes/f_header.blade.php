@@ -16,7 +16,7 @@
                         href="{{-- {{ route('user.mypage.mypage') }} --}}">マイページ</a></li>
             </ul>
         </nav>
-        
+
         <!-- responsive -->
         <div class="site-logo">
             <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
@@ -55,8 +55,13 @@
                     </div>
 
                     <div class="logout-btn">
-                        <button href="">ログアウト</button>
-                    </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">
+                        ログアウト
+                    </button>
+                </form>
+            </div>
                 </div>
 
                 <div class="hamburger-menu-right">
