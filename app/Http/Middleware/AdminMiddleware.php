@@ -14,18 +14,15 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // 未認証ならログインページへ
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        // 管理者判定（role_id == 8 を管理者と想定）
-        // 必要なら here を your own logic に置き換える
-        if (Auth::user()->role_id != 8) {
+        // 管理者(8)と講師(6)を許可
+        if (!in_array(Auth::user()->role_id, [6, 8])) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Forbidden.'], 403);
             }
-
             return redirect()->route('user.top');
         }
 

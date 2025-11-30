@@ -146,9 +146,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
 
 // =============================
-// 管理画面（role:8 のみアクセス）
+// 管理画面
 // =============================
-Route::middleware(['auth', 'role:8', 'redirect.nonuser.dashboard', 'no-cache'])
+Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache'])
     ->prefix('admin')->name('admin.')->group(function () {
 
         // ダッシュボード

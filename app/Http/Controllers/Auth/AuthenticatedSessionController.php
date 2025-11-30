@@ -63,13 +63,18 @@ class AuthenticatedSessionController extends Controller
         // ログイン成功
         Auth::login($user, $request->filled('remember'));
 
+
         // ロール別リダイレクト
-        if ($user->role_id == 8) {
-            // 管理者（role:8）なら管理画面トップへ
-            return redirect()->route('admin.dashboard');
-        } else {
-            // 一般ユーザーはダッシュボードへ
-            return redirect()->route('user.top');
+        switch ($user->role_id) {
+            case 3: // 生徒
+                return redirect()->route('user.top');
+
+            case 6: // 講師
+            case 8: // 管理者
+                return redirect()->route('admin.dashboard');
+
+            default:
+                return redirect()->route('user.top');
         }
     }
 
