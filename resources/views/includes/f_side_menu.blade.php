@@ -31,13 +31,51 @@
 
                 <div class="today-short">
                     <p class="short-title">今日のひとこと</p>
+
                     @if(!empty($todayQuote))
-                    <span class="short-text">{{ $todayQuote->quote_full }}</span>
-                    <span class="short-name">（{{ $todayQuote->author_full ?? '作者不明' }}）</span>
+                    <div class="short-text">
+                        @if($quote_mode === 'mix' && Session::has('quote_parts'))
+                        @foreach(Session::get('quote_parts') as $part)
+                        {{ $part->text }}
+                        @endforeach
+                        @else
+                        {{ $todayQuote->quote_full }}
+                        @endif
+                    </div>
+
+                    <div class="short-name">
+                        （
+                        @if($quote_mode === 'mix' && Session::has('author_parts'))
+                        @foreach(Session::get('author_parts') as $part)
+                        {{ $part->text }}
+                        @endforeach
+                        @else
+                        {{ $todayQuote->author_full ?? '作者不明' }}
+                        @endif
+                        ）
+                        <button class="inline-toggle" data-mode="{{ $quote_mode === 'full' ? 'mix' : 'full' }}" onclick="toggleQuoteMode(event)">?</button>
+                    </div>
+
+
                     @else
                     <span class="short-text">名言が登録されていません</span>
                     @endif
                 </div>
+
+                <form id="quote-mode-form" method="POST" action="{{ route('user.quote_mode') }}" style="display:none;">
+                    @csrf
+                    <input type="hidden" name="mode" value="">
+                </form>
+
+                <script>
+                    function toggleQuoteMode(event) {
+                        event.preventDefault();
+                        const mode = event.currentTarget.getAttribute('data-mode');
+                        document.querySelector('#quote-mode-form input[name="mode"]').value = mode;
+                        document.getElementById('quote-mode-form').submit();
+                    }
+                </script>
+
 
 
             </div>

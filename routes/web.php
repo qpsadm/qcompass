@@ -138,7 +138,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('reports/complete', [UserReportController::class, 'complete'])->name('reports_complete');
 
     //今日の一言
-    Route::get('quotes', [UserQuoteController::class, 'index'])->name('quotes.index');
+    Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');
 });
 
 
