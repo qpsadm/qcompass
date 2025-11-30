@@ -14,7 +14,7 @@ class QuestionController extends Controller
     // 一覧
     public function index()
     {
-        $questions = Question::with(['course', 'responder', 'tag'])->paginate(5);
+        $questions = Question::with(['course', 'responder', 'tag'])->paginate(20);
         return view('admin.questions.index', compact('questions'));
     }
 

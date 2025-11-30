@@ -13,7 +13,7 @@ class QuoteController extends Controller
     // 一覧表示
     public function index()
     {
-        $quotes = Quote::with(['quoteParts', 'authorParts'])->latest()->paginate(5);
+        $quotes = Quote::with(['quoteParts', 'authorParts'])->latest()->paginate(20);
         return view('admin.quotes.index', compact('quotes'));
     }
 

@@ -21,7 +21,7 @@ class AgendaController extends Controller
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        $agendas = $query->orderBy('id', 'desc')->paginate(5); // paginate に変更
+        $agendas = $query->orderBy('id', 'desc')->paginate(20); // paginate に変更
 
         return view('admin.agendas.index', compact('agendas'));
     }
@@ -152,7 +152,7 @@ class AgendaController extends Controller
      */
     public function trash()
     {
-        $agendas = Agenda::onlyTrashed()->paginate(5);
+        $agendas = Agenda::onlyTrashed()->paginate(20);
         return view('admin.agendas.trash', compact('agendas'));
     }
 

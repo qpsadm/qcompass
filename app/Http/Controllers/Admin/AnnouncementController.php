@@ -14,7 +14,7 @@ class AnnouncementController extends Controller
     {
         $announcements = Announcement::with(['type', 'course'])
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(20);
 
         return view('admin.announcements.index', compact('announcements'));
     }
