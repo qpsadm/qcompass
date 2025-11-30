@@ -31,9 +31,39 @@
 
                 <div class="today-short">
                     <p class="short-title">今日のひとこと</p>
+
                     @if(!empty($todayQuote))
-                    <span class="short-text">{{ $todayQuote->quote_full }}</span>
-                    <span class="short-name">（{{ $todayQuote->author_full ?? '作者不明' }}）</span>
+                    @if($quote_mode === 'mix' && Session::has('quote_parts'))
+                    <div class="short-text">
+                        @foreach(Session::get('quote_parts') as $part)
+                        {{ $part->text }}
+                        @endforeach
+                    </div>
+
+                    <form method="POST" action="{{ route('user.quote_mode') }}" class="inline-form">
+                        @csrf
+                        <input type="hidden" name="mode" value="full">
+                        <button type="submit" class="short-name">
+                            （
+                            @foreach(Session::get('author_parts') as $part)
+                            {{ $part->text }}
+                            @endforeach
+                            ）
+                        </button>
+                    </form>
+
+                    @else
+                    <div class="short-text">{{ $todayQuote->quote_full }}</div>
+
+                    <form method="POST" action="{{ route('user.quote_mode') }}" class="inline-form">
+                        @csrf
+                        <input type="hidden" name="mode" value="mix">
+                        <button type="submit" class="short-name">
+                            （{{ $todayQuote->author_full ?? '作者不明' }}）
+                        </button>
+                    </form>
+                    @endif
+
                     @else
                     <span class="short-text">名言が登録されていません</span>
                     @endif
@@ -42,31 +72,29 @@
 
             </div>
 
-        </div>
-
-        <div class="side-menu-bottom">
-            <ul class="side-menu-list">
-                @foreach($courses as $course)
-                @if($course->plan_path)
-                <li>
-                    <a class="calendar-list" href="{{ asset($course->plan_path) }}" target="_blank">
-                        日別計画表
-                    </a>
-                </li>
-                @endif
-                @endforeach
-                </li>
-                <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
-                <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
-            </ul>
-            <div class="logout-btn">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">
-                        ログアウト
-                    </button>
-                </form>
+            <div class="side-menu-bottom">
+                <ul class="side-menu-list">
+                    @foreach($courses as $course)
+                    @if($course->plan_path)
+                    <li>
+                        <a class="calendar-list" href="{{ asset($course->plan_path) }}" target="_blank">
+                            日別計画表
+                        </a>
+                    </li>
+                    @endif
+                    @endforeach
+                    </li>
+                    <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
+                    <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
+                </ul>
+                <div class="logout-btn">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">
+                            ログアウト
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
