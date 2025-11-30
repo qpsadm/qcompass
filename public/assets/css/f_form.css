@@ -9,11 +9,12 @@
     letter-spacing: 1px;
 }
 
-.form-content p {
+.form-content .description-text {
     margin-bottom: 50px;
 }
 
-.form-item {
+.form-item,
+.confirm-item {
     display: flex;
     gap: 15px;
     align-items: flex-start;
@@ -22,7 +23,8 @@
     border-bottom: 1px dashed #5e5e5e;
 }
 
-.form-item+.form-item {
+.form-item+.form-item,
+.confirm-item+.confirm-item {
     margin-top: 30px;
 }
 
@@ -126,27 +128,41 @@ textarea {
 
 
 /* confirm */
-.confirm {
+.confirm-item label {
+    padding: 5px 10px;
+    background-color: var(--sub-color-1);
+    border-radius: 7px;
+}
+
+.confirm-item p {
+    margin-top: 15px;
+    font-weight: 500;
+    flex: 1;
+}
+
+
+/* complete */
+.complete {
     text-align: center;
     line-height: 27px;
     letter-spacing: 1px;
 }
 
-.confirm h2 {
+.complete h2 {
     margin-bottom: 60px;
     font-size: 32px;
     color: var(--main-color);
     font-weight: bold;
 }
 
-.confirm p {
+.complete p {
     font-size: 18px;
 }
 
-.confirm p+p {
+.complete p+p {
     margin-top: 30px;
 }
 
-.confirm .form-btn {
+.complete .form-btn {
     display: inline-block;
 }

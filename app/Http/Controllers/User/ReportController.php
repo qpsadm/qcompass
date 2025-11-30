@@ -58,7 +58,7 @@ class ReportController extends Controller
             Mail::to($email)->send(new ReportSubmitted($report));
         }
 
-        return redirect()->route('user.reports_confirm')
+        return redirect()->route('user.reports_complete')
             ->with('success', '日報を送信しました');
     }
 
@@ -102,8 +102,32 @@ class ReportController extends Controller
             ->with('success', '日報を削除しました');
     }
 
-    public function confirm()
+    // public function confirm()
+    // {
+    //     return view('user.mypage.reports_confirm');
+    // }
+
+    // public function confirm(Request $request)
+    // {
+    //     // 入力データを取得
+    //     $inputs = $request->all();
+
+    //     return view('user.mypage.reports_confirm', compact('inputs'));
+    // }
+
+    public function confirm(Request $request)
     {
-        return view('user.mypage.reports_confirm');
+        $inputs = $request->all();
+
+        // ユーザーが所属する講座を取得
+        $user = Auth::user();
+        $courses = $user->courses()->get();
+
+        return view('user.mypage.reports_confirm', compact('inputs', 'courses'));
+    }
+
+    public function complete()
+    {
+        return view('user.mypage.reports_complete');
     }
 }

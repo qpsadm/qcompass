@@ -133,7 +133,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     // 日報保存
     Route::post('reports', [UserReportController::class, 'store'])->name('reports_store');
     // 日報確認
-    Route::get('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
+    Route::post('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
+
+    Route::get('reports/complete', [UserReportController::class, 'complete'])->name('reports_complete');
 
     //今日の一言
     Route::get('quotes', [UserQuoteController::class, 'index'])->name('quotes.index');
