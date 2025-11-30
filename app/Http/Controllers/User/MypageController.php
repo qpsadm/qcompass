@@ -34,28 +34,25 @@ class MypageController extends Controller
 
     private function getPendingDiaries($user)
     {
-        // ユーザーが受講している講座を取得（例: enrollments テーブルがある場合）
-        // ※ あなたの環境に合わせて書き換えてください
-        $courses = \App\Models\Course::where('organizer_id', $user->id)->get();
+        // ユーザーの受講講座を取得
+        $courses = $user->myCourses()->get(); // 表示フラグがある講座だけ
 
         $pending = [];
 
         foreach ($courses as $course) {
-
-            // 開催期間
             $start = \Carbon\Carbon::parse($course->start_date);
             $end   = \Carbon\Carbon::parse($course->end_date);
 
-            // コース期間の全日付を生成
             $period = new \DatePeriod(
                 $start,
                 new \DateInterval('P1D'),
-                $end->copy()->addDay()
+                $end->copy()->addDay() // 終了日も含める
             );
 
             foreach ($period as $date) {
-                // 日報が提出されているかチェック（Diary モデルは例）
-                $exists = \App\Models\Report::where('user_id', $user->id)
+                // 日報提出済みか確認
+                $exists = $user->reports()
+                    ->where('course_id', $course->id)
                     ->whereDate('date', $date)
                     ->exists();
 
