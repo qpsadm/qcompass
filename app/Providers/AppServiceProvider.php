@@ -15,14 +15,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer(['includes.f_side_menu', 'includes.header'], function ($view) {
+        View::composer(['includes.f_side_menu', 'includes.f_header'], function ($view) {
             $user = Auth::user();
 
+            // ログインユーザーのコース取得
             $courses = $user ? $user->courses()->where('is_show', 1)->get() : collect();
 
-            // 今日の一言（フルモード）
+            // 今日の一言
             if (!Session::has('today_quote_id')) {
-                $todayQuote = Quote::where('is_show', 1)->inRandomOrder()->first();
+                $todayQuote = Quote::where('is_show', 1)->where('is_show', 1)->inRandomOrder()->first();
                 Session::put('today_quote_id', $todayQuote?->id);
             } else {
                 $todayQuote = Quote::find(Session::get('today_quote_id'));
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
             $quote_mode = Session::get('quote_mode', 'full');
 
-            // パーツモードで複数名言を混ぜる
+            // パーツモード（mix）
             if ($quote_mode === 'mix') {
                 $quotes = Quote::where('is_show', 1)->inRandomOrder()->take(3)->get();
                 $quoteParts = collect();
@@ -45,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 Session::put('author_parts', $authorParts);
             }
 
+            // ビューに渡す
             $view->with([
                 'courses' => $courses,
                 'todayQuote' => $todayQuote,
