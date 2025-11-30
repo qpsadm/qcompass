@@ -30,6 +30,7 @@
                 @endforeach
 
                 <div class="today-short">
+                    <p class="short-title">今日のひとこと</p>
                     @if(!empty($todayQuote))
                     <span class="short-text">{{ $todayQuote->quote_full }}</span>
                     <span class="short-name">（{{ $todayQuote->author_full ?? '作者不明' }}）</span>
