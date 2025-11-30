@@ -139,6 +139,13 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     //今日の一言
     Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');
+
+    //本サイトについて
+    Route::get('/about', function () {return view('user.about'); });
+    //プライバシーポリシー
+    Route::get('/privacy', function () { return view('user.privacy'); });
+    //受講規則
+    Route::get('/rule', function () { return view('user.rule'); });
 });
 
 
