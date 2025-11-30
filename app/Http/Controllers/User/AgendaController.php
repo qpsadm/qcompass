@@ -53,7 +53,7 @@ class AgendaController extends Controller
         }
 
         // paginate に変更
-        $agendas = $query->orderBy('created_at', 'desc')->paginate(10);
+        $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
@@ -80,7 +80,7 @@ class AgendaController extends Controller
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         return view('user.agenda.agendas_list', compact('agendas', 'categories'));
     }
@@ -97,7 +97,7 @@ class AgendaController extends Controller
     /**
      * 新規追加：ページネーション対応
      */
-    public function getAgendasDataByCategoryPaginate(int $category_id, int $perPage = 10)
+    public function getAgendasDataByCategoryPaginate(int $category_id, int $perPage = 5)
     {
         return Agenda::where('category_id', $category_id)
             ->where('status', 'yes')

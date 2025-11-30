@@ -15,7 +15,7 @@ class JobOfferController extends Controller
 
         $agendaController = new UserAgendaController();
         // ページネーション対応（10件ごと）
-        $agendas = $agendaController->getAgendasDataByCategoryPaginate(35, 10);
+        $agendas = $agendaController->getAgendasDataByCategoryPaginate(35, 5);
 
         return view('user.job.job_offers_list', compact('jobs', 'agendas'));
     }
@@ -26,7 +26,7 @@ class JobOfferController extends Controller
         $job = JobOffer::findOrFail($id);
 
         $agendaController = new UserAgendaController();
-        $agendas = $agendaController->getAgendasDataByCategoryPaginate(35, 10);
+        $agendas = $agendaController->getAgendasDataByCategoryPaginate(35, 5);
 
         return view('user.job.job_offers_info', compact('job', 'agendas'));
     }
