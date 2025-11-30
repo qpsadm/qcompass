@@ -9,8 +9,6 @@ use App\Models\Announcement;
 use App\Models\JobOffer;
 use App\Models\Agenda;
 
-use App\Http\Controllers\User\QuoteController as UserQuoteController;
-
 class FrontTopController extends Controller
 {
     /**
@@ -71,19 +69,14 @@ class FrontTopController extends Controller
                 ->get();
         }
 
-        // 今日の一言
-        $todayQuote = UserQuoteController::todayQuote();
-
-        // 現在の表示モード
-        $quote_mode = session('quote_mode', 'full');
-
+        // ----------------------------
+        // Blade に渡す
+        // ----------------------------
         return view('user.top', compact(
             'globalAnnouncements',
             'courseAnnouncements',
             'jobs',
-            'agendas',
-            'todayQuote',
-            'quote_mode'
+            'agendas'
         ));
     }
 }

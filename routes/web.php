@@ -136,11 +136,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
 
     //今日の一言
-    //    Route::get('quotes', [UserQuoteController::class, 'index'])->name('quotes.index');
-
-    Route::post('quote-mode', [UserQuoteController::class, 'update'])
-        ->name('quote_mode')
-        ->middleware(['auth', 'web']);
+    Route::get('quotes', [UserQuoteController::class, 'index'])->name('quotes.index');
 });
 
 
