@@ -22,11 +22,14 @@ class ReportController extends Controller
     }
 
     // 日報作成フォーム
-    public function create()
+    public function create(Request $request)
     {
-        $user = Auth::user();
-        $courses = $user->courses()->get(); // ユーザーが所属する講座を取得
-        return view('user.mypage.reports_create', compact('courses'));
+        $user = auth()->user();
+        $course = $user->myCourses()->first(); // 講座は1件固定
+
+        // URL パラメータから日付取得
+        $date = $request->query('date', now()->format('Y-m-d'));
+        return view('user.mypage.reports_create', compact('course', 'date'));
     }
 
     // 日報保存

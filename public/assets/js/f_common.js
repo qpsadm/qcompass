@@ -64,9 +64,12 @@ window.onload = function () {
     weekText.text(week);
 
     // 日報入力の報告日をデフォルト入力する
-    const yyyy = today.getFullYear();
-    const mm = ('0' + (today.getMonth() + 1)).slice(-2);
-    const dd = ('0' + today.getDate()).slice(-2);
-
-    $("#date").val(`${yyyy}-${mm}-${dd}`);
+    const dateInput = $("#date");
+    // もしすでに value がセットされていなければ今日の日付を入れる
+    if (!dateInput.val()) {
+        const yyyy = today.getFullYear();
+        const mm = ('0' + (today.getMonth() + 1)).slice(-2);
+        const dd = ('0' + today.getDate()).slice(-2);
+        dateInput.val(`${yyyy}-${mm}-${dd}`);
+    }
 }

@@ -113,14 +113,26 @@
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
-        // イベントデータ
-        var events = [
+        var pendingEvents = [
+            @foreach($pending_diaries as $diary) {
+                title: '', // 赤丸だけ表示
+                start: '{{ $diary->date }}',
+                allDay: true,
+                extendedProps: {
+                    isPending: true,
+                    url: '{!! $diary->url !!}'
+                }
+            },
+            @endforeach
+        ];
+
+        var submittedEvents = [
             @foreach($submitted_reports as $report) {
-                title: '', // チェックマークだけ表示したいなら空文字
+                title: '',
                 start: '{{ \Carbon\Carbon::parse($report->date)->format("Y-m-d") }}',
                 allDay: true,
                 extendedProps: {
-                    isSubmitted: true
+                    isPending: false
                 }
             },
             @endforeach
@@ -128,25 +140,29 @@
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            locale: 'ja',
-            height: 600,
-            events: events,
-
-            // 日付セルのカスタム描画
+            events: pendingEvents.concat(submittedEvents),
             eventContent: function(arg) {
-                // 提出済みイベントのみチェックマーク画像
-                if (arg.event.extendedProps.isSubmitted) {
-                    return {
-                        html: '<img src="{{ asset("assets/images/f_icon_check2.svg") }}">'
-                    };
-                }
+                const img = document.createElement('img');
+                img.src = arg.event.extendedProps.isPending ?
+                    "/assets/images/icon/b_search.svg" // 未提出アイコン
+                    :
+                    "/assets/images/icon/f_icon_check2.svg"; // 提出済アイコン
+                img.alt = arg.event.extendedProps.isPending ? "未提出" : "提出済";
+                img.style.width = "16px"; // 必要に応じてサイズ調整
+                img.style.height = "16px";
                 return {
-                    html: arg.event.title
-                }; // それ以外はタイトルだけ
+                    domNodes: [img]
+                };
+            },
+            eventClick: function(info) {
+                if (info.event.extendedProps.url) {
+                    window.location.href = info.event.extendedProps.url;
+                }
             }
         });
 
         calendar.render();
     });
 </script>
+
 @endsection
