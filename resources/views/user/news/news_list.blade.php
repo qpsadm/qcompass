@@ -9,7 +9,7 @@
 
     <x-f_content_list :items="$announcements" :is-news="true" />
 
-    <x-f_pagination />
+    <x-f_pagination :paginator="$announcements" />
     <x-f_bread_crumbs />
 </div>
 @endsection

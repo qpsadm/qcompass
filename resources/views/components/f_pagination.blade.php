@@ -1,11 +1,34 @@
+@props(['paginator'])
+
+@if ($paginator->hasPages())
 <nav class="pagination">
     <ul>
-        <li class="prev"><a href="#"></a></li>
-        <li><a href="#">1</a></li>
-        <li class="active"><span>2</span></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li class="next"><a href="#"></a></li>
+        {{-- 前のページリンク --}}
+        <li class="prev {{ $paginator->onFirstPage() ? 'disabled' : '' }}">
+            @if ($paginator->onFirstPage())
+            <span></span>
+            @else
+            <a href="{{ $paginator->previousPageUrl() }}"></a>
+            @endif
+        </li>
+
+        {{-- ページ番号リンク --}}
+        @foreach ($paginator->links()->elements[0] as $page => $url)
+        @if ($page == $paginator->currentPage())
+        <li class="active"><span>{{ $page }}</span></li>
+        @else
+        <li><a href="{{ $url }}">{{ $page }}</a></li>
+        @endif
+        @endforeach
+
+        {{-- 次のページリンク --}}
+        <li class="next {{ $paginator->hasMorePages() ? '' : 'disabled' }}">
+            @if ($paginator->hasMorePages())
+            <a href="{{ $paginator->nextPageUrl() }}"></a>
+            @else
+            <span></span>
+            @endif
+        </li>
     </ul>
 </nav>
+@endif

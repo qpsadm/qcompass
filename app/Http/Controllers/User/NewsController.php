@@ -62,7 +62,7 @@ class NewsController extends Controller
      * @param string $scope 'all'|'main'|'my'
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function getUserAnnouncements($scope = 'all')
+    private function getUserAnnouncements($scope = 'all', $perPage = 5)
     {
         $userId = auth()->id();
 
@@ -89,7 +89,8 @@ class NewsController extends Controller
             });
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        // ページネーション対応
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**
