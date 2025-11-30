@@ -16,7 +16,7 @@ class ReportController extends Controller
     {
         $reports = Report::where('user_id', Auth::id())
             ->orderBy('date', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         return view('user.mypage.reports_info', compact('reports'));
     }

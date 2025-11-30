@@ -30,7 +30,7 @@ class CourseController extends Controller
             });
         }
 
-        $courses = $courses->paginate(10);
+        $courses = $courses->paginate(5);
         return view('admin.courses.index', compact('courses'));
     }
 
@@ -223,8 +223,8 @@ class CourseController extends Controller
 
     public function students(Course $course)
     {
-        $students = $course->students()->paginate(10);
-        $teachers = $course->teachers()->paginate(10);
+        $students = $course->students()->paginate(5);
+        $teachers = $course->teachers()->paginate(5);
         return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
 }

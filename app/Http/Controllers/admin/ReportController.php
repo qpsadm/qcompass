@@ -36,7 +36,7 @@ class ReportController extends Controller
 
         $reports = $query->with(['user', 'course'])
             ->orderBy('date', 'desc')
-            ->paginate(15);
+            ->paginate(5);
 
         return view('admin.reports.index', compact('reports'));
     }
