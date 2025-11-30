@@ -90,6 +90,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Division::class, 'division_id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
     /**
      * Scout 用に検索対象を定義
      */

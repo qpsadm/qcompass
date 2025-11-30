@@ -50,6 +50,7 @@ use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
 use App\Http\Controllers\User\ReportController  as UserReportController;
 use App\Http\Controllers\User\FrontTopController;
 use App\Http\Controllers\User\QuoteController as UserQuoteController;
+use App\Http\Controllers\User\MypageController;
 
 
 
@@ -140,12 +141,22 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     //今日の一言
     Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');
 
+    //マイページ
+    Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
+
+
     //本サイトについて
-    Route::get('/about', function () {return view('user.about'); });
+    Route::get('/about', function () {
+        return view('user.about');
+    });
     //プライバシーポリシー
-    Route::get('/privacy', function () { return view('user.privacy'); });
+    Route::get('/privacy', function () {
+        return view('user.privacy');
+    });
     //受講規則
-    Route::get('/rule', function () { return view('user.rule'); });
+    Route::get('/rule', function () {
+        return view('user.rule');
+    });
 });
 
 

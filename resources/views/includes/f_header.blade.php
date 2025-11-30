@@ -12,8 +12,11 @@
                         href="{{ route('user.question.questions_list') }}">学習支援</a></li>
                 <li class="{{ request()->routeIs('user.job.*') ? 'active' : '' }}"><a class="work"
                         href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
-                <li class="{{ request()->routeIs('user.mypage.*') ? 'active' : '' }}"><a class="mypage"
-                        href="{{-- {{ route('user.mypage.mypage') }} --}}">マイページ</a></li>
+
+                <li class="{{ request()->routeIs('user.mypage') ? 'active' : '' }}">
+                    <a class="mypage" href="{{ route('user.mypage') }}">マイページ</a>
+                </li>
+
             </ul>
         </nav>
 
