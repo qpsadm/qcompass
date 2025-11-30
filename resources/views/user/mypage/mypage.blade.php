@@ -119,6 +119,8 @@
                 title: '', // 赤丸だけ表示
                 start: '{{ $diary->date }}',
                 allDay: true,
+                backgroundColor: 'transparent', // 背景透明
+                borderColor: 'transparent', // 枠線透明
                 extendedProps: {
                     isPending: true,
                     url: '{!! $diary->url !!}'
@@ -132,6 +134,8 @@
                 title: '',
                 start: '{{ \Carbon\Carbon::parse($report->date)->format("Y-m-d") }}',
                 allDay: true,
+                backgroundColor: 'transparent', // 背景透明
+                borderColor: 'transparent', // 枠線透明
                 extendedProps: {
                     isPending: false
                 }
@@ -140,7 +144,7 @@
         ];
 
         window.APP_URL = "{{ url('/') }}";
-        
+
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             events: pendingEvents.concat(submittedEvents),
