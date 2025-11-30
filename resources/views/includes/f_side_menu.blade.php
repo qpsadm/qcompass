@@ -87,7 +87,7 @@
                 @foreach($courses as $course)
                 @if($course->plan_path)
                 <li>
-                    <a class="calendar-list" href="{{ asset($course->plan_path) }}" target="_blank">
+                    <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}" target="_blank">
                         日別計画表
                     </a>
                 </li>
