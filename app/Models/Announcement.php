@@ -38,6 +38,7 @@ class Announcement extends Model
 
     public function files()
     {
-        return $this->morphMany(AgendaFile::class, 'target');
+        return $this->morphMany(AgendaFile::class, 'target')
+            ->whereNull('deleted_at');
     }
 }
