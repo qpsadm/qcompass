@@ -5,23 +5,17 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
+use Illuminate\Support\Facades\Auth;
 
 class MypageController extends Controller
 {
     public function index()
     {
-        $user = auth()->user(); // ログインユーザー
-        $user_details = $user->details; // UserDetail取得
-        $reports = $user->reports()->pluck('date')->toArray(); // 日報提出日だけ取得
-        $announcements = Announcement::latest()->get();
-        // $memos = $user->memos()->latest()->get();
+        $user = Auth::user(); // ログイン中のユーザーを取得
 
-        return view('user.mypage.mypage', compact(
-            'user',
-            'user_details',
-            'reports',
-            'announcements',
-            // 'memos'
-        ));
+        // もしユーザー詳細も必要なら取得
+        $user_details = $user->details ?? null; // 例: hasOneリレーションで取得
+
+        return view('user.mypage.mypage', compact('user', 'user_details'));
     }
 }
