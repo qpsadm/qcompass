@@ -55,13 +55,13 @@
                     </div>
 
                     <div class="logout-btn">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">
-                        ログアウト
-                    </button>
-                </form>
-            </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">
+                                ログアウト
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="hamburger-menu-right">

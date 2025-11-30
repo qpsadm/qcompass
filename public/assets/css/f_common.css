@@ -249,6 +249,10 @@ header::after {
         margin-bottom: 30px;
     }
 
+    .hamburger-menu .logout-btn form {
+        width: 100%;
+    }
+
     .hamburger-menu .logout-btn button {
         width: 100%;
         padding: 13px 0;
