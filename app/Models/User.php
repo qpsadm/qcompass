@@ -107,4 +107,41 @@ class User extends Authenticatable
             'courses' => $this->courses->pluck('course_name')->implode(' '),
         ];
     }
+
+
+    /**
+     * 講座期間の未提出日報一覧を取得
+     */
+    public function getUnsubmittedReportsWithinCoursePeriod()
+    {
+        // 1) 講座情報がない場合
+        if (!$this->course) {
+            return [];
+        }
+
+        $start = \Carbon\Carbon::parse($this->course->start_date)->startOfDay();
+        $end   = \Carbon\Carbon::parse($this->course->end_date)->startOfDay();
+
+        // 2) 期間全ての日付を生成
+        $allDates = [];
+        $current = $start->copy();
+
+        while ($current <= $end) {
+            // ※ 土日除外したいならここで条件書ける
+            $allDates[] = $current->toDateString();
+            $current->addDay();
+        }
+
+        // 3) 期間内の提出済み日報の日付一覧
+        $submittedDates = $this->reports()
+            ->whereBetween('date', [$start, $end])
+            ->pluck('date')
+            ->map(fn($d) => \Carbon\Carbon::parse($d)->toDateString())
+            ->toArray();
+
+        // 4) 未提出日 = 全日付 - 提出済み
+        $unsubmitted = array_diff($allDates, $submittedDates);
+
+        return array_values($unsubmitted);
+    }
 }

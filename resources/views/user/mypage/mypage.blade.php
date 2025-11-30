@@ -17,13 +17,18 @@
             </div>
             <div class="box-content">
                 <div class="profile-icon">
-                    <img src="../../assets/images/f_profile-image.svg" alt="">
+                    <img src="{{ $user_details && $user_details->profile_image
+                ? asset('storage/' . $user_details->profile_image)
+                : asset('assets/images/f_profile-image.svg') }}"
+                        alt="プロフィール画像">
                 </div>
                 <div class="profile-data">
-                    <h4>{{ $users->name }}</h4>
-                    <p class="mail">{{ $users->email }}</p>
-                    <p class="tel">{{ $users->phone }}</p>
-                    <p class="birthday">{{ $user_details->birthday }}</p>
+                    <h4>{{ $user->name }}</h4>
+                    <p class="mail">{{ $user->email }}</p>
+                    <p class="tel">{{ $user->phone }}</p>
+                    <p class="birthday">
+                        {{ $user_details->birthday ?? '未登録' }}
+                    </p>
                 </div>
 
                 <div class="btn-area">
@@ -96,7 +101,3 @@
         </ol>
     </div>
 </div>
-
-
-
-@endsection
