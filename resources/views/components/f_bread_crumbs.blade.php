@@ -1,6 +1,6 @@
 <div class="bread-crumbs">
-    <ol>
-        <li><a href="">ホーム</a></li>
-        <li><a href="">お問い合わせ</a></li>
-    </ol>
+    {{ Breadcrumbs::render('under_layer', [
+        ['title' => 'ホーム', 'route' => route('user.top')],
+        ['title' => 'テスト', 'route' => route('user.top')],
+    ]) }}
 </div>
