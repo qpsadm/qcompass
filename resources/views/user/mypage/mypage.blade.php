@@ -8,6 +8,22 @@
 
 @section('main-content')
 <div class="container">
+
+    <div class="modal">
+        <div class="profile-data">
+            <h4>{{ $user->name }}</h4>
+            <p class="mail">{{ $user->email ?? '未登録'}}</p>
+            <p class="tel">{{ $user_details?->phone1 ?? '未登録' }}</p>
+            <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
+
+            <div class="btn-area">
+                <button href="">とじる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-background"></div>
+
     <x-f_page_title :search="false" title="マイページ" />
 
     <div class="section-flex">
@@ -35,7 +51,8 @@
                     </p>
 
                     <div class="btn-area">
-                        <a href="">テーマカラー変更</a>
+                        <button href="">プロフィールをみる</button>
+                        <button>カスタマイズ</button>
                     </div>
                 </div>
 
