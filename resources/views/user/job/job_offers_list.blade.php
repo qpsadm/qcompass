@@ -1,26 +1,30 @@
 @extends('layouts.f_layout')
 @section('main-content')
 <div class="container">
-    <x-f_page_title :search="true" title="就職支援" />
+    {{-- f_page_title の検索フォームを活用 --}}
+    <x-f_page_title
+        :search="true"
+        title="就職支援"
+        :searchName="'keyword'"
+        :searchPlaceholder="'キーワードで求人検索'" />
 
-    {{-- 現在のタブをリクエストから取得 --}}
     @php
-    $currentTab = request('tab', 'offers');
+        $currentTab = request('tab', 'offers');
     @endphp
 
     <div x-data="{ tab: '{{ $currentTab }}' }">
 
-        <div class="tab-container">
-            <div class="btn-tab">
+        {{-- タブボタン --}}
+        <div class="tab-container mb-4">
+            <div class="btn-tab flex gap-2">
                 <button class="tab-button"
-                    :class="{ 'active': tab === 'offers' }"
-                    @click="tab = 'offers'; changeTab('offers')">
+                        :class="{ 'active': tab === 'offers' }"
+                        @click="tab = 'offers'; changeTab('offers')">
                     ハローワークの求人票
                 </button>
-
                 <button class="tab-button"
-                    :class="{ 'active': tab === 'download' }"
-                    @click="tab = 'download'; changeTab('download')">
+                        :class="{ 'active': tab === 'download' }"
+                        @click="tab = 'download'; changeTab('download')">
                     履歴書・職務経歴書のダウンロード
                 </button>
             </div>
@@ -28,14 +32,23 @@
 
         {{-- 求人票タブ --}}
         <div x-show="tab === 'offers'" class="content-box" x-cloak>
+
             <div class="content-list">
                 <table>
-                    @foreach ($jobs as $job)
-                    <tr>
-                        <td class="date">{{ $job->created_at->format('Y/m/d') }}</td>
-                        <td class="title"><a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a></td>
-                    </tr>
-                    @endforeach
+                    @forelse ($jobs as $job)
+                        <tr>
+                            <td class="date">{{ $job->created_at->format('Y/m/d') }}</td>
+                            <td class="title">
+                                <a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="2" class="text-center text-gray-500 py-4">
+                                該当する求人はありません
+                            </td>
+                        </tr>
+                    @endforelse
                 </table>
             </div>
             <x-f_pagination :paginator="$jobs" />
@@ -45,14 +58,20 @@
         <div x-show="tab === 'download'" class="content-box" x-cloak>
             <div class="content-list">
                 <table>
-                    @foreach ($agendas as $agenda)
-                    <tr>
-                        <td class="date">{{ $agenda->created_at->format('Y/m/d') }}</td>
-                        <td class="title">
-                            <a href="{{ route('user.agenda.info', $agenda->id) }}">{{ $agenda->agenda_name }}</a>
-                        </td>
-                    </tr>
-                    @endforeach
+                    @forelse ($agendas as $agenda)
+                        <tr>
+                            <td class="date">{{ $agenda->created_at->format('Y/m/d') }}</td>
+                            <td class="title">
+                                <a href="{{ route('user.agenda.info', $agenda->id) }}">{{ $agenda->agenda_name }}</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="2" class="text-center text-gray-500 py-4">
+                                ダウンロード可能な資料はありません
+                            </td>
+                        </tr>
+                    @endforelse
                 </table>
             </div>
             <x-f_pagination :paginator="$agendas" />
@@ -71,7 +90,7 @@
         const url = new URL(window.location);
         url.searchParams.set('tab', tabName); // タブをURLにセット
         url.searchParams.delete('page'); // ページ番号をリセット
-        window.location.href = url; // ページリロードで1ページ目表示
+        window.location.href = url; // 1ページ目を表示
     }
 </script>
 @endsection
