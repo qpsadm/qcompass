@@ -11,30 +11,17 @@ class Quote extends Model
 
     protected $fillable = ['quote_full', 'author_full', 'is_show'];
 
+    // 名言パーツ
     public function quoteParts()
     {
-        return $this->hasMany(QuotePart::class);
+        return $this->hasMany(QuotePart::class, 'quote_id', 'id');
     }
 
-    // author_parts テーブルのリレーション
+    // 作者パーツ
     public function authorParts()
     {
         return $this->hasMany(AuthorPart::class, 'quote_id', 'id');
     }
 
-    public function getQuoteFullAttribute()
-    {
-        return $this->quoteParts->pluck('text')->implode('');
-    }
-
-    public function getAuthorFullAttribute()
-    {
-        return $this->authorParts->pluck('text')->implode('');
-    }
-
-    // quote_parts テーブルのリレーション
-    public function parts()
-    {
-        return $this->hasMany(QuotePart::class, 'quote_id', 'id');
-    }
+    // アクセサや parts() は削除
 }

@@ -1,20 +1,16 @@
 <?php
-// app/Http/Controllers/User/QuoteController.php
 
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use App\Models\Quote;
 
 class QuoteController extends Controller
 {
     public function index()
     {
-        // is_show = true のみ表示
         $quotes = Quote::where('is_show', true)->get();
-
         return view('user.quotes.index', compact('quotes'));
     }
 
@@ -23,23 +19,30 @@ class QuoteController extends Controller
         $mode = $request->input('mode', 'full');
 
         if ($mode === 'mix') {
-            // パーツモード用に今日の名言を分割
-            $todayQuote = Quote::find(Session::get('today_quote_id'));
-            if ($todayQuote) {
-                $parts = $todayQuote->parts()->get(); // quote_parts リレーション
-                $authorParts = $todayQuote->authorParts()->get(); // author_parts リレーション
 
-                // ランダムシャッフル
-                $parts = $parts->shuffle();
-                $authorParts = $authorParts->shuffle();
+            $quote_parts_text  = [];
+            $author_parts_text = [];
 
-                Session::put('quote_parts', $parts);
-                Session::put('author_parts', $authorParts);
+            foreach (['A', 'B', 'C'] as $part) {
+
+                // 各パーツ用にランダム名言を1件取得
+                $randomQuote = Quote::where('is_show', true)->inRandomOrder()->first();
+                if (!$randomQuote) continue;
+
+                $quotePart  = $randomQuote->quoteParts->firstWhere('part_type', $part);
+                $authorPart = $randomQuote->authorParts->firstWhere('part_type', $part);
+
+                $quote_parts_text[$part]  = $quotePart?->text  ?? '';
+                $author_parts_text[$part] = $authorPart?->text ?? '';
             }
+
+            session([
+                'mix_quote_parts'  => $quote_parts_text,
+                'mix_author_parts' => $author_parts_text,
+            ]);
         }
 
-        // モード更新
-        Session::put('quote_mode', $mode);
+        session(['quote_mode' => $mode]);
 
         return redirect()->back();
     }

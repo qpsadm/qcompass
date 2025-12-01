@@ -131,42 +131,36 @@ class QuoteController extends Controller
         return redirect()->route('admin.quotes.index')->with('success', '削除完了');
     }
 
-    public function show(Request $request, Quote $quote)
+    public function toggleMode(Request $request)
     {
-        $mode = $request->query('mode', 'normal'); // default: normal
+        $mode = $request->input('mode', 'full');
 
-        $quote_text = '';
-        $author_text = '';
+        if ($mode === 'mix') {
 
-        if ($mode === 'normal') {
-            // 原文モード
-            $quote_text = $quote->quote_full;
-            $author_text = $quote->author_full;
-        } else {
-            // ランダムモード
-            $parts = ['A', 'B', 'C'];
+            $quote_text = '';
+            $author_text = '';
 
-            foreach ($parts as $part) {
-                // ランダムに名言を取得
-                $randomQuote = Quote::inRandomOrder()->first();
+            // 1つのランダム名言を取得
+            $randomQuote = Quote::where('is_show', true)->inRandomOrder()->first();
 
-                // 本文パーツ
-                $partText = $randomQuote->quoteParts
-                    ->where('part_type', $part)
-                    ->first()
-                    ->text ?? '';
+            if ($randomQuote) {
+                foreach (['A', 'B', 'C'] as $part) {
+                    $quotePart = $randomQuote->quoteParts->firstWhere('part_type', $part);
+                    $authorPart = $randomQuote->authorParts->firstWhere('part_type', $part);
 
-                // 作者パーツ
-                $authorPartText = $randomQuote->authorParts
-                    ->where('part_type', $part)
-                    ->first()
-                    ->text ?? '';
-
-                $quote_text .= $partText;
-                $author_text .= $authorPartText;
+                    $quote_text .= $quotePart?->text ?? '';
+                    $author_text .= $authorPart?->text ?? '';
+                }
             }
+
+            session([
+                'mix_quote_text'  => $quote_text,
+                'mix_author_text' => $author_text,
+            ]);
         }
 
-        return view('admin.quotes.show', compact('quote', 'quote_text', 'author_text', 'mode'));
+        session(['quote_mode' => $mode]);
+
+        return redirect()->back();
     }
 }

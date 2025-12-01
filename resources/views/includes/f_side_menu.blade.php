@@ -2,8 +2,9 @@
     <div class="side-menu-container">
         <div class="side-menu-top">
             <div class="site-logo">
-                <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
-                        alt="コンパスロゴ"></a>
+                <a href="{{ route('user.top') }}">
+                    <img src="{{ asset('assets/images/f_site-logo.svg') }}" alt="コンパスロゴ">
+                </a>
             </div>
 
             <div class="contents-box">
@@ -36,9 +37,9 @@
 
                     @if (!empty($todayQuote))
                     <div class="short-text {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                        @if ($quote_mode === 'mix' && Session::has('quote_parts'))
-                        @foreach (Session::get('quote_parts') as $part)
-                        {{ $part->text }}
+                        @if ($quote_mode === 'mix' && session('mix_quote_parts'))
+                        @foreach (session('mix_quote_parts') as $text)
+                        {{ $text }}
                         @endforeach
                         @else
                         {{ $todayQuote->quote_full }}
@@ -47,9 +48,9 @@
 
                     <div class="short-name {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
                         -
-                        @if ($quote_mode === 'mix' && Session::has('author_parts'))
-                        @foreach (Session::get('author_parts') as $part)
-                        {{ $part->text }}
+                        @if ($quote_mode === 'mix' && session('mix_author_parts'))
+                        @foreach (session('mix_author_parts') as $text)
+                        {{ $text }}
                         @endforeach
                         @else
                         {{ $todayQuote->author_full ?? '作者不明' }}
@@ -77,8 +78,6 @@
                     }
                 </script>
 
-
-
             </div>
 
         </div>
@@ -89,22 +88,18 @@
                 @foreach ($courses as $course)
                 @if ($course->plan_path)
                 <li>
-                    <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}"
-                        target="_blank">
+                    <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}" target="_blank">
                         日別計画表
                     </a>
                 </li>
                 @endif
                 @endforeach
-                </li>
                 <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
             </ul>
             <div class="logout-btn">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">
-                        ログアウト
-                    </button>
+                    <button type="submit">ログアウト</button>
                 </form>
             </div>
         </div>
