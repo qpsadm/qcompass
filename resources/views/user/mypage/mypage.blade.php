@@ -149,6 +149,14 @@
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
+
+    locale: 'ja',
+    timeZone: "Asia/Tokyo",
+
+    dayCellContent: function(arg) {
+        return arg.date.getDate(); // ← 「日」を消して数字だけにする
+    },
+
     events: pendingEvents.concat(submittedEvents),
 
     eventContent: function(arg) {
