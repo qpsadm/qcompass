@@ -44,8 +44,8 @@ questionContainer.click(function () {
 window.onload = function () {
     var today = new Date();
 
-    const month = (today.getMonth() + 1);
-    const day = today.getDate();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
 
     const monthText = $(".month");
     const dayText = $(".day");
