@@ -12,7 +12,7 @@
             <p>本講座はシステムエンジニア、Javaプログラマー、Webクリエーターなどに就職することを目標とし、今後さまざまな企業で要求される基礎的なIT技術は勿論のこと、Javaプログラミング、Webサイトの制作などのより高度な技能を実践的なカリキュラムを通して習得できます。
             </p>
 
-            <form class="report-form" action="" method="POST">
+            <form class="report-form" action="{{ route('user.contact_confirm') }}" method="POST">
                 @csrf
                 <div class="form-item">
                     <div class="item-label">
@@ -31,10 +31,10 @@
 
                 <div class="form-item">
                     <div class="item-label">
-                        <label for="daily-report-input">お問い合わせ内容</label>
+                        <label for="daily-contact-input">お問い合わせ内容</label>
                         <span class="required">必須</span>
                     </div>
-                    <textarea name="contact" id="daily-report-input" rows="6" placeholder="お問い合わせ内容をご記入ください。" required></textarea>
+                    <textarea name="daily_contact" id="daily-contact-input" rows="6" placeholder="お問い合わせ内容をご記入ください。" required></textarea>
                 </div>
 
 
