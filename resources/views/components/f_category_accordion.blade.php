@@ -40,10 +40,3 @@
         });
     });
 </script>
-
-<style>
-    .menu-content a.active {
-        font-weight: bold;
-        color: #007BFF;
-    }
-</style>
