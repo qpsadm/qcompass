@@ -116,7 +116,8 @@
 
 
                 {{-- 表示フラグ --}}
-                <div class="mb-4" x-data="{ is_show: {{ old('is_show', $JobOffer->is_show ?? 0) }} }">
+                <div class="mb-4" x-data="{ is_show: {{ old('is_show', $learning->is_show ?? 0) }} }"
+>
                     <span class="font-medium mr-2">表示フラグ</span>
                     <div class="flex gap-2">
                         <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"

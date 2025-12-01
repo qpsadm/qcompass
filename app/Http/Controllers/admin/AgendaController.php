@@ -76,7 +76,7 @@ class AgendaController extends Controller
             'content' => 'nullable|string',
         ]);
 
-        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+        $validated['is_show'] = $request->input('is_show', 0);
         $validated['user_id'] = auth()->id();
         $validated['created_user_name'] = auth()->user()->name ?? 'system';
 
@@ -118,7 +118,7 @@ class AgendaController extends Controller
             'content' => 'nullable|string',
         ]);
 
-        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+        $validated['is_show'] = $request->input('is_show', 0);
         $validated['updated_user_name'] = auth()->user()->name;
 
         $agenda->update($validated);

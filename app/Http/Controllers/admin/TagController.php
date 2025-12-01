@@ -24,7 +24,13 @@ class TagController extends Controller
         $validated = $request->validate([
             'code' => 'nullable',
             'name' => 'nullable',
+            'is_show' => 'nullable|boolean',
+
         ]);
+
+        $validated['is_show'] = $validated['is_show'] ?? 0;
+
+
         Tag::create($validated);
         return redirect()->route('admin.tags.index')->with('success', 'Tag作成完了');
     }
@@ -47,7 +53,14 @@ class TagController extends Controller
         $validated = $request->validate([
             'code' => 'nullable',
             'name' => 'nullable',
+            'is_show' => 'nullable|boolean',
+
         ]);
+
+        $validated['is_show'] = $validated['is_show'] ?? 0;
+
+
+
         $Tag->update($validated);
         return redirect()->route('admin.tags.index')->with('success', 'Tag更新完了');
     }

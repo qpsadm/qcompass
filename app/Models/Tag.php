@@ -12,7 +12,13 @@ class Tag extends Model
     protected $fillable = [
         'code',
         'name',
+        'is_show',
     ];
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
+
     // タイムスタンプ無効化
     public $timestamps = false;
 

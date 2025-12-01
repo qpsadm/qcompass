@@ -46,22 +46,23 @@
             </div>
 
             {{-- 表示フラグ --}}
-            <div class="mb-4" x-data="{ is_show: {{ old('is_show', $JobOffer->is_show ?? 0) }} }">
-                <span class="font-medium mr-2">表示フラグ</span>
-                <div class="flex gap-2">
-                    <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
-                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                        <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
-                        公開
-                    </label>
+     <div class="mb-4" x-data="{ is_show: {{ old('is_show', $category->is_show ?? 0) }} }">
+    <span class="font-medium mr-2">表示フラグ</span>
+    <div class="flex gap-2">
+        <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+            <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
+            公開
+        </label>
 
-                    <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
-                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                        <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
-                        非公開
-                    </label>
-                </div>
-            </div>
+        <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+            <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
+            非公開
+        </label>
+    </div>
+</div>
+
             {{-- ボタン群 --}}
             <div class="flex items-center gap-4 pt-4">
                 <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded shadow-sm">

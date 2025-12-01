@@ -46,7 +46,8 @@ class LearningController extends Controller
         ]);
 
         // 公開状態の処理
-        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+        $validated['is_show'] = $request->boolean('is_show');
+
 
         // タグIDの設定（タグが選択されていない場合は null）
         $validated['tag_id'] = $validated['tag_id'] ?? null;
@@ -96,7 +97,8 @@ class LearningController extends Controller
         ]);
 
         // 公開状態の処理
-        $validated['is_show'] = $request->has('is_show') ? 1 : 0;
+        $validated['is_show'] = $request->boolean('is_show');
+
 
         // タグIDの設定（タグが選択されていない場合は null）
         $validated['tag_id'] = $validated['tag_id'] ?? null;
