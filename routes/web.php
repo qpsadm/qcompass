@@ -48,6 +48,7 @@ use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\QuestionController as UserQuestionController;
 use App\Http\Controllers\User\JobOfferController  as UserJobOfferController;
 use App\Http\Controllers\User\ReportController  as UserReportController;
+use App\Http\Controllers\User\ContactController  as UserContactController;
 use App\Http\Controllers\User\FrontTopController;
 use App\Http\Controllers\User\QuoteController as UserQuoteController;
 use App\Http\Controllers\User\MypageController;
@@ -135,6 +136,14 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('reports/complete', [UserReportController::class, 'complete'])->name('reports_complete');
     // 日報詳細
     Route::get('reports/{report}', [UserReportController::class, 'show'])->name('reports_info');
+
+    // 問い合わせ作成フォーム
+    Route::get('contact/create', [UserContactController::class, 'create'])->name('contact_create');
+
+    // 問い合わせ内容確認
+    Route::post('contact/confirm', [UserContactController::class, 'confirm'])->name('contact_confirm');
+    // 問い合わせ完了ページ
+    Route::get('contact/complete', [UserContactController::class, 'complete'])->name('contact_complete');
 
 
     //今日の一言
