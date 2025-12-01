@@ -28,6 +28,22 @@
                     <input type="file" name="pdf_file" class="border px-2 py-1 w-full rounded">
                 </div>
 
+                {{-- 表示開始日時 --}}
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">表示開始日時</label>
+                    <input type="date" name="start_datetime"
+                        value="{{ old('start_datetime', $job_offer->start_datetime?->format('Y-m-d')) }}"
+                        class="border px-2 py-1 w-full rounded">
+                </div>
+
+                {{-- 表示終了日時 --}}
+                <div class="mb-4">
+                    <label class="block font-medium mb-1">表示終了日時</label>
+                    <input type="date" name="end_datetime"
+                        value="{{ old('end_datetime', $job_offer->end_datetime?->format('Y-m-d')) }}"
+                        class="border px-2 py-1 w-full rounded">
+                </div>
+
                 <div class="mb-4" x-data="{ is_show: '{{ old('is_show', $job_offer->is_show ?? 0) }}'}">
                     <span class="font-medium mr-2">表示フラグ</span>
                     <div class="flex gap-2">

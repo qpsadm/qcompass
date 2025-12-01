@@ -85,12 +85,11 @@
                     </div>
                 </div>
 
-
-                {{-- 更新者ID --}}
+                {{-- 作成者名 --}}
                 <div class="mb-4">
-                    <label class="block font-medium mb-1">更新者名</label>
+                    <label class="block font-medium mb-1">作成者名</label>
                     <input type="text" name="created_user_name"
-                        value="{{ old('user_id', $JobOffer->created_user_name ?? auth()->id()) }}"
+                        value="{{ old('created_user_name', $JobOffer->created_user_name ?? auth()->user()->name) }}"
                         class="border px-2 py-1 w-full rounded" readonly>
                 </div>
 
