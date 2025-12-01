@@ -44,7 +44,7 @@
                     <p><a href="{{-- {{ routr('user.privacy') }} --}}" target="_blank">個人情報保護方針を確認する</a></p>
                 </div>
 
-                <button type="submit" class="privacy-policy-button">確認画面へ</button>
+                <button type="submit" class="form-btn">確認画面へ</button>
             </form>
         </div>
         <x-f_bread_crumbs />
