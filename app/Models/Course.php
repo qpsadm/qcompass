@@ -36,6 +36,7 @@ class Course extends Model
         'completed',
         'description',
         'status',
+        'is_show',
         'created_user_name',
         'updated_user_name'
     ];

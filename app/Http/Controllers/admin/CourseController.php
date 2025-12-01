@@ -87,6 +87,7 @@ class CourseController extends Controller
         $validated['level_id'] = $validated['level_id'] ?? 2;
         $validated['organizer_id'] = $validated['organizer_id'] ?? null;
         $validated['created_user_name'] = Auth::user()->name ?? 'system';
+        $validated['is_show'] = $request->has('is_show') ? (int) $request->is_show : 1;
 
         $course = Course::create($validated);
 
@@ -127,6 +128,7 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $course = Course::findOrFail($id);
 
         $validated = $request->validate([

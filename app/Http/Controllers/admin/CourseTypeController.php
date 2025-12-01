@@ -29,11 +29,13 @@ class CourseTypeController extends Controller
             'is_show' => 'nullable|in:0,1',
         ]);
 
-        $validated['is_show'] = $request->has('is_show');
+        $validated['is_show'] = (int) $request->input('is_show', 1);
+
         CourseType::create($validated);
 
         return redirect()->route('admin.course_type.index')->with('success', 'CourseType作成完了');
     }
+
 
     public function show($id)
     {
