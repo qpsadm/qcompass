@@ -50,7 +50,7 @@
                     {{-- 表示/非表示 --}}
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
-                        <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', $division->is_show ?? 1) }} }">
+                        <td class="px-4 py-2" x-data="{ is_show: '{{ old('is_show', $division->is_show ?? 1) }}' }">
                             <div class="flex gap-2">
                                 <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
                                     class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
