@@ -16,36 +16,6 @@
     {{-- 質疑応答一覧 --}}
     <div class="content-list">
 
-        {{-- <table class="table">
-                <thead>
-                    <tr>
-                        <th>質問タイトル</th>
-                        <th>質問内容</th>
-                        <th>回答</th>
-                        <th>アジェンダ</th>
-                        <th>講座</th>
-                        <th>タグ</th>
-                        <th>回答者</th>
-                        <th>作成日</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($questions as $q)
-                        <tr>
-                            <td>{{ $q->title }}</td>
-        <td>{{ $q->content }}</td>
-        <td>{{ $q->answer ?? '-' }}</td>
-        <td>{{ $q->agenda?->agenda_name ?? '-' }}</td>
-        <td>{{ $q->course?->course_name ?? '-' }}</td>
-        <td>{{ $q->tag?->name ?? '-' }}</td>
-        <td>{{ $q->responder?->name ?? '-' }}</td>
-        <td>{{ $q->created_at->format('Y/m/d') }}</td>
-        </tr>
-        @endforeach
-        </tbody>
-
-        </table> --}}
-
         {{-- ここから11/28 増井編集 --}}
         @foreach ($questions as $q)
         <div class="qa-accordion">
@@ -54,7 +24,7 @@
                     <span>Q</span>
                 </div>
                 <div class="question-text">
-                    <td>{{ $q->content }}</td>
+                    <span>{{ $q->content }}</span>
                 </div>
                 <div class="accordion-btn">
                     <span></span>
@@ -66,7 +36,7 @@
                         <span>A</span>
                     </div>
                     <div class="answer-text">
-                        <td>{{ $q->answer ?? '-' }}</td>
+                        <span>{{ $q->answer ?? '-' }}</span>
                     </div>
                 </div>
             </div>
@@ -84,41 +54,50 @@
     $nextPage = $currentPage < $lastPage ? $currentPage + 1 : null;
 @endphp
 
-@if ($lastPage >= 1)
 <nav class="pagination w-full flex justify-center mt-6 mb-6">
-    <ul class="flex flex-wrap justify-center gap-2">
+    <ul class="flex flex-wrap justify-center gap-2 items-center">
+
         {{-- 前へ --}}
-        <li class="prev">
+        <li>
             @if ($prevPage)
-                <a href="{{ $questions->url($prevPage) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">‹</a>
+
+                <a href="{{ $questions->url($prevPage) }}" class="px-3 py-1 rounded text-orange-500 hover:text-orange-600 text-[18px]">&#x25C0;</a>
             @else
-                <span class="px-3 py-1 border rounded text-gray-400 text-[18px]">‹</span>
+
+                <span class="px-3 py-1 rounded text-orange-300 text-[18px] cursor-not-allowed">&#x25C0;</span>
             @endif
         </li>
 
         {{-- ページ番号 --}}
         @for ($i = 1; $i <= $lastPage; $i++)
-            <li class="{{ $i == $currentPage ? 'active' : '' }}">
+            <li>
                 @if ($i == $currentPage)
-                    <span class="px-3 py-1 bg-blue-500 text-white rounded shadow text-[18px]">{{ $i }}</span>
+
+                    <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
                 @else
+
                     <a href="{{ $questions->url($i) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">{{ $i }}</a>
                 @endif
             </li>
         @endfor
 
         {{-- 次へ --}}
-        <li class="next">
+        <li>
             @if ($nextPage)
-                <a href="{{ $questions->url($nextPage) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">›</a>
+
+                <a href="{{ $questions->url($nextPage) }}" class="px-3 py-1 rounded text-orange-500 hover:text-orange-600 text-[18px]">
+                    &#x25B6;
+                </a>
             @else
-                <span class="px-3 py-1 border rounded text-gray-400 text-[18px]">›</span>
+
+                <span class="px-3 py-1 rounded text-orange-300 text-[18px] cursor-not-allowed">
+                    &#x25B6;
+                </span>
             @endif
         </li>
+
     </ul>
 </nav>
-@endif
 
 </div>
 @endsection
-
