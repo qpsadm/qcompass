@@ -47,8 +47,8 @@
             </div>
             <div class="box-content">
                 <div class="profile-icon">
-                    <img src="{{ $user_details && $user_details->profile_image
-                            ? asset('storage/' . $user_details->profile_image)
+                    <img src="{{ $user_details && $user_details->avatar_path
+                            ? asset('storage/' . $user_details->avatar_path)
                             : asset('assets/images/f_profile-image.svg') }}"
                         alt="プロフィール画像">
                 </div>
