@@ -85,4 +85,21 @@ class MypageController extends Controller
 
         return $pending;
     }
+
+    public function updateFontsize(Request $request)
+    {
+        $request->validate([
+            'fontsize' => 'required|integer|min:1|max:3', // 任意の範囲
+        ]);
+
+        $user = auth()->user();
+
+        // user_details が存在しない場合は作成
+        $user->detail()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['fontsize' => $request->fontsize]
+        );
+
+        return redirect()->back()->with('success', '文字サイズを更新しました');
+    }
 }

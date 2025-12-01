@@ -152,7 +152,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     //マイページ
     Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
-
+    Route::post('mypage/fontsize', [MypageController::class, 'updateFontsize'])->name('mypage.fontsize');
 
     //本サイトについて
     Route::get('/about', function () {
