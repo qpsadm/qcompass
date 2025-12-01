@@ -34,10 +34,10 @@ class UserController extends Controller
         // Scout 検索
         if ($search) {
             $users = User::search($search)
-                ->paginate(5)
+                ->paginate(25)
                 ->withQueryString();
         } else {
-            $users = User::with('role', 'courses')->paginate(5);
+            $users = User::with('role', 'courses')->paginate(25);
         }
 
         return view('admin.users.index', compact('users', 'divisions'));
@@ -177,7 +177,7 @@ class UserController extends Controller
     // ゴミ箱一覧
     public function trash()
     {
-        $trashedUsers = User::onlyTrashed()->paginate(5);
+        $trashedUsers = User::onlyTrashed()->paginate(25);
         return view('admin.users.trash', compact('trashedUsers'));
     }
 
