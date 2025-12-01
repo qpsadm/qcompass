@@ -457,12 +457,13 @@ header::after {
 
 .today-short .short-text {
     font-size: 20px;
+    text-align: left;
 }
 
 .today-short .short-name {
     display: block;
     width: 100%;
-    text-align: center;
+    text-align: right;
 }
 
 .short-text.mix-mode,

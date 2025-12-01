@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="short-name {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                        （
+                        -
                         @if ($quote_mode === 'mix' && Session::has('author_parts'))
                         @foreach (Session::get('author_parts') as $part)
                         {{ $part->text }}
@@ -54,7 +54,7 @@
                         @else
                         {{ $todayQuote->author_full ?? '作者不明' }}
                         @endif
-                        ）
+                        -
                         <button class="inline-toggle" data-mode="{{ $quote_mode === 'full' ? 'mix' : 'full' }}"
                             onclick="toggleQuoteMode(event);">?</button>
                     </div>
