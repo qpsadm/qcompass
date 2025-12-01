@@ -139,7 +139,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     // 問い合わせ作成フォーム
     Route::get('contact/create', [UserContactController::class, 'create'])->name('contact_create');
-
+    // 問い合わせ保存
+    Route::post('contact', [UserContactController::class, 'store'])->name('contact_store');
     // 問い合わせ内容確認
     Route::post('contact/confirm', [UserContactController::class, 'confirm'])->name('contact_confirm');
     // 問い合わせ完了ページ

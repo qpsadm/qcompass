@@ -29,13 +29,17 @@ class MypageController extends Controller
 
         // お知らせ
         $announcements = Announcement::latest()->take(5)->get();
+        $courses = $user->myCourses;
+        $divisions = $user->division;
 
         return view('user.mypage.mypage', compact(
             'user',
             'user_details',
             'pending_diaries',
             'submitted_reports',
-            'announcements'
+            'announcements',
+            'courses',       // 講座情報
+            'divisions'     // 部署情報
         ));
     }
 
