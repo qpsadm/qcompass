@@ -581,7 +581,7 @@ header::after {
 @media screen and (max-width: 1324px) {
     .container {
         margin: 75px 15px 0 15px;
-        padding: 35px 35px 0;
+        padding: 45px 35px 0;
     }
 
     .container::after {
@@ -591,7 +591,7 @@ header::after {
 
 @media screen and (max-width: 768px) {
     .container {
-        padding: 35px 35px 0;
+        padding: 45px 35px 0;
     }
 }
 

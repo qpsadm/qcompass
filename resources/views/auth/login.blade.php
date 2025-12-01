@@ -44,15 +44,19 @@
 
 
 
-        <!-- Name -->
+        <!-- Email -->
         <div class="login-item">
-            {{-- <x-input-label for="login_name" :value="__('Name')" /> --}}
             <div class="item-box">
-                <label for="name">お名前</label>
-                <x-text-input id="login_name" class="block mt-1 w-full" type="text" name="login_name"
-                    :value="old('login_name')" placeholder="yamada_taro" required autofocus />
+                <label for="email">E-mail</label>
+                <x-text-input id="email" class="block mt-1 w-full"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    placeholder="example@example.com"
+                    required
+                    autofocus />
             </div>
-            <x-input-error :messages="$errors->get('login_name')" class="error-msg" />
+            <x-input-error :messages="$errors->get('email')" class="error-msg" />
         </div>
 
         <!-- Password -->

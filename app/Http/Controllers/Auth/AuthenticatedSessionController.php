@@ -32,28 +32,28 @@ class AuthenticatedSessionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'login_name' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
             'course_id'  => 'required|integer',
         ]);
 
-        // 名前でユーザー検索
-        $user = User::where('name', $request->login_name)->first();
+        // ⭐ メールアドレスでユーザー検索
+        $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors([
-                'login_name' => 'ユーザー名かパスワードが正しくありません。',
-            ])->onlyInput('login_name');
+                'email' => 'メールアドレスかパスワードが正しくありません。',
+            ])->onlyInput('email');
         }
 
-        // 🔥 ログイン不可(role_id=1) を弾く
+        // 🔥 role_id=1（ログイン不可ユーザー）を弾く
         if ($user->role_id == 1) {
             return back()->withErrors([
-                'login_name' => 'このユーザーはログインできません。',
-            ])->onlyInput('login_name');
+                'email' => 'このユーザーはログインできません。',
+            ])->onlyInput('email');
         }
 
-        // 選択されたコースが所属コースか判定（管理者はスキップ）
+        // コース所属チェック（管理者 role_id=8 はスキップ）
         if ($user->role_id != 8 && !$user->courses->contains('id', $request->course_id)) {
             return back()->withErrors([
                 'course_id' => 'このユーザーは選択されたコースに所属していません。',
@@ -62,7 +62,6 @@ class AuthenticatedSessionController extends Controller
 
         // ログイン成功
         Auth::login($user, $request->filled('remember'));
-
 
         // ロール別リダイレクト
         switch ($user->role_id) {
