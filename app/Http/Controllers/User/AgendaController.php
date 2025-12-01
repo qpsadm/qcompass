@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Agenda;
 use Illuminate\Support\Facades\DB;
@@ -36,46 +37,48 @@ class AgendaController extends Controller
             ->get();
     }
 
-    public function myCourseAgendaList()
+    public function myCourseAgendaList(Request $request)
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-        $categoryIds = $categories->pluck('id')->toArray();
+        $categoryId = $request->input('category_id'); // nullの場合はAll
+        $search = $request->input('search');
 
-        $search = request('search');
-        $selectedCategoryId = request('category_id');
+        $query = Agenda::query()->where('status', 'yes')->where('is_show', 1);
 
-        $query = Agenda::whereIn('category_id', $categoryIds)
-            ->where('status', 'yes')
-            ->where('is_show', 1);
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
 
         if ($search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        if ($selectedCategoryId) {
-            $query->where('category_id', $selectedCategoryId);
+        $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
+
+        // 選択されたカテゴリー名を取得
+        $selectedCategoryName = null;
+        if ($categoryId) {
+            $selectedCategory = $categories->firstWhere('id', $categoryId);
+            if ($selectedCategory) {
+                $selectedCategoryName = $selectedCategory->name;
+            } else {
+                $selectedCategoryName = 'All'; // 存在しないIDならAll扱い
+            }
+        } else {
+            $selectedCategoryName = 'All';
         }
 
-        $agendas = $query->orderBy('created_at', 'desc')
-            ->paginate(5)
-            ->appends([
-                'search' => $search,
-                'category_id' => $selectedCategoryId,
-            ]); // ページネーションでパラメータ保持
-
-        $selectedCategoryName = $selectedCategoryId
-            ? $categories->firstWhere('id', $selectedCategoryId)->name ?? null
-            : null;
-
-        return view('user.agenda.agendas_list', compact(
-            'agendas',
-            'categories',
-            'selectedCategoryId',
-            'selectedCategoryName',
-            'search'
-        ));
+        return view('user.agenda.agendas_list', [
+            'agendas' => $agendas,
+            'categories' => $categories,
+            'selectedCategoryId' => $categoryId,
+            'selectedCategoryName' => $selectedCategoryName,
+            'search' => $search,
+        ]);
     }
+
+
 
     public function agendaDetail($id)
     {
