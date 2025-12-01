@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
+use App\Models\Theme;
 use Illuminate\Support\Facades\Auth;
 
 class MypageController extends Controller
@@ -31,6 +32,9 @@ class MypageController extends Controller
         $announcements = Announcement::latest()->take(5)->get();
         $courses = $user->myCourses;
         $divisions = $user->division;
+        // テーマを取得
+        $themes = Theme::where('is_show', 1)->get();
+
 
         return view('user.mypage.mypage', compact(
             'user',
@@ -39,7 +43,8 @@ class MypageController extends Controller
             'submitted_reports',
             'announcements',
             'courses',       // 講座情報
-            'divisions'     // 部署情報
+            'divisions',     // 部署情報
+            'themes'
         ));
     }
 

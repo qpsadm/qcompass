@@ -26,27 +26,29 @@
         <form action="{{ route('user.settings.update') }}" method="POST">
             @csrf
             <div class="theme-color-select">
-                <label for="">テーマカラー</label>
-                <div class="radio-container">
-                    <input type="radio" id="default" name="themecolor" value="1">
-                    <label for="default">デフォルト</label>
-
-                    <input type="radio" id="dark" name="themecolor" value="2">
-                    <label for="dark">ダーク</label>
-
-                </div>
+                <p>テーマを選択：</p>
+                @foreach($themes as $theme)
+                <label>
+                    <input type="radio" name="theme_id" value="{{ $theme->id }}"
+                        {{ ($user->detail->theme_id ?? '') == $theme->id ? 'checked' : '' }}>
+                    {{ $theme->name }}
+                </label>
+                @endforeach
             </div>
 
             <div class="font-size-select">
                 <label for="">フォントサイズ</label>
                 <div class="radio-container">
-                    <input type="radio" id="small" name="fontsize" value="1" {{ $user_details->fontsize == 1 ? 'selected' : '' }}>
+                    <input type="radio" id="small" name="fontsize" value="1"
+                        {{ ($user_details->fontsize ?? 2) == 1 ? 'checked' : '' }}>
                     <label for="small">小</label>
 
-                    <input type="radio" id="medium" name="fontsize" value="2" {{ $user_details->fontsize == 2 ? 'selected' : '' }}>
+                    <input type="radio" id="medium" name="fontsize" value="2"
+                        {{ ($user_details->fontsize ?? 2) == 2 ? 'checked' : '' }}>
                     <label for="medium">中</label>
 
-                    <input type="radio" id="large" name="fontsize" value="3" {{ $user_details->fontsize == 3 ? 'selected' : '' }}>
+                    <input type="radio" id="large" name="fontsize" value="3"
+                        {{ ($user_details->fontsize ?? 2) == 3 ? 'checked' : '' }}>
                     <label for="large">大</label>
                 </div>
             </div>
@@ -203,76 +205,80 @@
         window.APP_URL = "{{ url('/') }}";
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
+            initialView: 'dayGridMonth',
 
-    locale: 'ja',
-    timeZone: "Asia/Tokyo",
+            locale: 'ja',
+            timeZone: "Asia/Tokyo",
 
-    dayCellContent: function(arg) {
-        return arg.date.getDate(); // ← 「日」を消して数字だけにする
-    },
+            dayCellContent: function(arg) {
+                return arg.date.getDate(); // ← 「日」を消して数字だけにする
+            },
 
-    events: pendingEvents.concat(submittedEvents),
+            events: pendingEvents.concat(submittedEvents),
 
-    eventContent: function(arg) {
-        if (arg.event.extendedProps.isPending) {
-            return { domNodes: [] }; // 未提出はアイコン非表示
-        }
+            eventContent: function(arg) {
+                if (arg.event.extendedProps.isPending) {
+                    return {
+                        domNodes: []
+                    }; // 未提出はアイコン非表示
+                }
 
-        // 提出済みはアイコン表示
-        const img = document.createElement('img');
-        img.src = `${window.APP_URL}/assets/images/icon/f_icon_check_on.svg`;
-        img.alt = "提出済";
-        img.style.width = "40px";
-        img.style.height = "40px";
-        img.style.cursor = "pointer";
+                // 提出済みはアイコン表示
+                const img = document.createElement('img');
+                img.src = `${window.APP_URL}/assets/images/icon/f_icon_check_on.svg`;
+                img.alt = "提出済";
+                img.style.width = "40px";
+                img.style.height = "40px";
+                img.style.cursor = "pointer";
 
-        return { domNodes: [img] };
-    },
+                return {
+                    domNodes: [img]
+                };
+            },
 
-    // 画像クリック / 提出済みイベントクリック
-    eventClick: function(info) {
-        if (info.event.extendedProps.url) {
-            window.location.href = info.event.extendedProps.url;
-        }
-    },
+            // 画像クリック / 提出済みイベントクリック
+            eventClick: function(info) {
+                if (info.event.extendedProps.url) {
+                    window.location.href = info.event.extendedProps.url;
+                }
+            },
 
-    // 日付セルクリック
-    dateClick: function(info) {
-        // その日付のイベントをすべて検索
-        var event = calendar.getEvents().find(event => {
-            return event.startStr === info.dateStr && event.extendedProps.url;
-        });
-
-        if (event) {
-            window.location.href = event.extendedProps.url;
-        }
-    },
-
-    // 日付セルのカーソルとホバー色設定
-    datesSet: function() {
-        document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
-            const date = frame.parentElement.getAttribute('data-date');
-
-            var hasEvent = calendar.getEvents().some(event => {
-                return event.startStr === date && event.extendedProps.url;
-            });
-
-            // 未提出・提出済みのセルだけ pointer
-            frame.style.cursor = hasEvent ? 'pointer' : 'default';
-
-            // ホバー時に薄い黄色にする
-            if (hasEvent) {
-                frame.addEventListener('mouseenter', function() {
-                    frame.style.backgroundColor = '#fff9c4'; // 薄い黄色
+            // 日付セルクリック
+            dateClick: function(info) {
+                // その日付のイベントをすべて検索
+                var event = calendar.getEvents().find(event => {
+                    return event.startStr === info.dateStr && event.extendedProps.url;
                 });
-                frame.addEventListener('mouseleave', function() {
-                    frame.style.backgroundColor = '';
+
+                if (event) {
+                    window.location.href = event.extendedProps.url;
+                }
+            },
+
+            // 日付セルのカーソルとホバー色設定
+            datesSet: function() {
+                document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
+                    const date = frame.parentElement.getAttribute('data-date');
+
+                    var hasEvent = calendar.getEvents().some(event => {
+                        return event.startStr === date && event.extendedProps.url;
+                    });
+
+                    // 未提出・提出済みのセルだけ pointer
+                    frame.style.cursor = hasEvent ? 'pointer' : 'default';
+
+                    // ホバー時に薄い黄色にする
+                    if (hasEvent) {
+                        frame.addEventListener('mouseenter', function() {
+                            frame.style.backgroundColor = '#fff9c4'; // 薄い黄色
+                        });
+                        frame.addEventListener('mouseleave', function() {
+                            frame.style.backgroundColor = '';
+                        });
+                    }
                 });
             }
         });
-    }
-});
 
 
         calendar.render();
