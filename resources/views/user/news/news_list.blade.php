@@ -4,7 +4,15 @@
 
 @section('main-content')
 <div class="container">
-    <x-f_page_title :search="true" title="新着情報一覧" />
+    {{-- ページタイトル + 検索フォーム --}}
+    <x-f_page_title
+        title="新着情報一覧"
+        :search="true"
+        :searchAction="route('user.news.news_list')"
+        searchName="search"
+        searchPlaceholder="キーワード検索"
+    />
+
     <x-f_category_list type="news" :category="$category ?? 'all'" />
 
     <x-f_content_list :items="$announcements" :is-news="true" />
