@@ -91,6 +91,7 @@
 .profile-icon {
     width: 80%;
     margin: 0 auto 40px;
+    border: 50%;
 }
 
 .profile-icon img {
