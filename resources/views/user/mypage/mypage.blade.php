@@ -33,11 +33,12 @@
                     <p class="birthday">
                         {{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}
                     </p>
+
+                    <div class="btn-area">
+                        <a href="">テーマカラー変更</a>
+                    </div>
                 </div>
 
-                <div class="btn-area">
-                    <a href="">テーマカラー変更</a>
-                </div>
             </div>
         </div>
 
