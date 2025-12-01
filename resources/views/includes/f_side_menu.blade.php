@@ -85,6 +85,7 @@
 
         <div class="side-menu-bottom">
             <ul class="side-menu-list">
+                <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
                 @foreach ($courses as $course)
                 @if ($course->plan_path)
                 <li>
@@ -97,7 +98,6 @@
                 @endforeach
                 </li>
                 <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
-                <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
             </ul>
             <div class="logout-btn">
                 <form method="POST" action="{{ route('logout') }}">

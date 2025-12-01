@@ -133,6 +133,18 @@
     background: url(../images/icon/f_icon_mail.svg) no-repeat;
 }
 
+.profile-data p.course::before {
+    background: url(../images/icon/f_icon_textbook1.svg) no-repeat;
+}
+
+.profile-data p.division::before {
+    background: url(../images/icon/f_icon_hellowork.svg) no-repeat;
+}
+
+.profile-data p.division-tel::before {
+    background: url(../images/icon/f_icon_phone.svg) no-repeat;
+}
+
 .profile-data p.tel::before {
     background: url(../images/icon/f_icon_phone.svg) no-repeat;
 }

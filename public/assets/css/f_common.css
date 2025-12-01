@@ -435,6 +435,7 @@ header::after {
     position: absolute;
     bottom: -5px;
     right: 25px;
+    width: 65px;
     color: var(--accent-color);
     font-size: 40px;
 }

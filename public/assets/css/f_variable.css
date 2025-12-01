@@ -38,6 +38,9 @@
     /* font */
     --font-family: "Zen Maru Gothic", sans-serif;
 
+    /* font-size */
+    --font-size: 18px;
+
     /* text-color */
     --text-color-1: #000;
     --text-color-2: #5E5E5E;
@@ -53,14 +56,20 @@
     --sub-color-1: #B1DAF9;
     --sub-color-2: #E9EEFF;
     --sub-color-3: #7A92DF;
-    
+
     /* accent-color */
     --accent-color: #FFB71D;
 
-    /* category-color */
-    --category-news-color: ;
-    --category-agenda-color: ;
-
     /* footer-color */
     --footer-color: #414141;
+}
+
+.font-medium {
+    font-size: 20px;
+    letter-spacing: 30px;
+}
+
+.font-large {
+    font-size: 22px;
+    letter-spacing: 33px;
 }

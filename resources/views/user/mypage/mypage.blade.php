@@ -54,19 +54,10 @@
                 </div>
                 <div class="profile-data">
                     <h4>{{ $user->name }}</h4>
-                    <p class="mail">
-                        {{ $user->email ?? '未登録'}}
-                    </p>
-                    <p class="tel">
-                        {{ $user_details?->phone1 ?? '未登録' }}
-                    </p>
-                    <p class="birthday">
-                        {{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}
-                    </p>
-
-                    <p>所属講座：{{ $courses->pluck('course_name')->join(' / ') ?: '未設定' }}</p>
-
-                    <p>所属部署：{{ $divisions->name ?? '未設定' }}</p>
+                    <p class="mail">{{ $user->email ?? '未登録'}}</p>
+                    <p class="course">{{ $courses->pluck('course_name')->join(' / ') ?: '未設定' }}</p>
+                    <p class="division">{{ $divisions->name ?? '未設定' }}</p>
+                    <p class="division-tel">{{ $divisions->tel ?? '未設定' }}</p>
 
                     <div class="btn-area">
                         <button class="open-btn-profile" href="">プロフィールをみる</button>
