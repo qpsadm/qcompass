@@ -106,7 +106,7 @@
                             <li><a class="agenda" href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
                             <li><a class="study" href="{{ route('user.question.questions_list') }}">学習支援</a></li>
                             <li><a class="work" href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
-                            <li><a class="mypage" href="{{-- {{ route('user.mypage.mypage') }} --}}">マイページ</a></li>
+                            <li><a class="mypage" href="{{ route('user.mypage') }}">マイページ</a></li>
                         </ul>
                     </div>
                     <div class="side-menu-bottom">
