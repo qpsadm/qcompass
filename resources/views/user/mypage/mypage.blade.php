@@ -64,6 +64,8 @@
                         {{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}
                     </p>
 
+                    <p>所属講座：{{ $courses->pluck('course_name')->join(' / ') ?: '未設定' }}</p>
+
                     <p>所属部署：{{ $divisions->name ?? '未設定' }}</p>
 
                     <div class="btn-area">
