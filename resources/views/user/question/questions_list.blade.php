@@ -76,7 +76,28 @@
 
     </div>
 
-    <x-f_pagination :paginator="$questions" />
-    <x-f_bread_crumbs />
+{{-- ページネーション --}}
+@php
+    $lastPage = $questions->lastPage();
+    $currentPage = $questions->currentPage();
+@endphp
+
+@if ($lastPage >= 1)
+    <div class="flex justify-center mt-6">
+
+    <ul class="flex flex-wrap justify-center">
+        @for ($i = 1; $i <= $lastPage; $i++)
+                       <li>
+
+                @if ($i == $currentPage)
+                    <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+                @else
+                    <a href="{{ $questions->url($i) }}" class="px-3 py-1 border rounded hover:bg-gray-200">{{ $i }}</a>
+                @endif
+            </li>
+        @endfor
+    </ul>
+@endif
+
 </div>
 @endsection
