@@ -9,7 +9,7 @@
 @section('main-content')
 <div class="container">
 
-    <div class="modal">
+    <div class="modal-profile">
         <div class="profile-data">
             <h4>{{ $user->name }}</h4>
             <p class="mail">{{ $user->email ?? '未登録'}}</p>
@@ -17,12 +17,26 @@
             <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
 
             <div class="btn-area">
-                <button href="">とじる</button>
+                <button class="close-btn" href="">とじる</button>
             </div>
         </div>
     </div>
 
-    <div class="modal-background"></div>
+    <div class="modal-customize">
+        <div class="profile-data">
+            <h4>カスタマイズ</h4>
+            <p class="mail">{{ $user->email ?? '未登録'}}</p>
+            <p class="tel">{{ $user_details?->phone1 ?? '未登録' }}</p>
+            <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
+
+            <div class="btn-area">
+                <button class="close-btn" href="">とじる</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="overlay"></div>
 
     <x-f_page_title :search="false" title="マイページ" />
 
@@ -51,8 +65,8 @@
                     </p>
 
                     <div class="btn-area">
-                        <button href="">プロフィールをみる</button>
-                        <button>カスタマイズ</button>
+                        <button class="open-btn-profile" href="">プロフィールをみる</button>
+                        <button class="open-btn-customize">カスタマイズ</button>
                     </div>
                 </div>
 
@@ -126,6 +140,7 @@
 @endsection
 
 @section('code-page-js')
+<script src="{{ asset('assets/js/f_mypage.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

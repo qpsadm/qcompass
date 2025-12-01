@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
-.modal {
+.modal-profile {
+    display: none;
     position: fixed;
     top: 50%;
     left: calc((100% - 285px) / 2);
@@ -11,7 +12,20 @@
     background-color: var(--sub-color-2);
 }
 
-.modal-background {
+.modal-customize {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: calc((100% - 285px) / 2);
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 50px;
+    border-radius: 15px;
+    background-color: var(--sub-color-2);
+}
+
+.overlay {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
