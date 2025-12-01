@@ -43,6 +43,7 @@ class AgendaController extends Controller
         $categoryIds = $categories->pluck('id')->toArray();
 
         $search = request('search');
+        $selectedCategoryId = request('category_id');
 
         $query = Agenda::whereIn('category_id', $categoryIds)
             ->where('status', 'yes')
@@ -52,10 +53,28 @@ class AgendaController extends Controller
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        // paginate に変更
-        $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
+        if ($selectedCategoryId) {
+            $query->where('category_id', $selectedCategoryId);
+        }
 
-        return view('user.agenda.agendas_list', compact('agendas', 'categories'));
+        $agendas = $query->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->appends([
+                'search' => $search,
+                'category_id' => $selectedCategoryId,
+            ]); // ページネーションでパラメータ保持
+
+        $selectedCategoryName = $selectedCategoryId
+            ? $categories->firstWhere('id', $selectedCategoryId)->name ?? null
+            : null;
+
+        return view('user.agenda.agendas_list', compact(
+            'agendas',
+            'categories',
+            'selectedCategoryId',
+            'selectedCategoryName',
+            'search'
+        ));
     }
 
     public function agendaDetail($id)
@@ -75,15 +94,25 @@ class AgendaController extends Controller
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
 
-        // paginate に変更
+        // 選択したカテゴリ名とID
+        $selectedCategory = $categories->firstWhere('id', $category_id);
+        $selectedCategoryName = $selectedCategory ? $selectedCategory->name : null;
+        $selectedCategoryId   = $selectedCategory ? $selectedCategory->id : null;
+
         $agendas = Agenda::where('category_id', $category_id)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
-        return view('user.agenda.agendas_list', compact('agendas', 'categories'));
+        return view('user.agenda.agendas_list', compact(
+            'agendas',
+            'categories',
+            'selectedCategoryName',
+            'selectedCategoryId'
+        ));
     }
+
 
     public function getAgendasDataByCategory(int $category_id)
     {

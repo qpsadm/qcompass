@@ -5,13 +5,15 @@
 @section('main-content')
 <div class="container">
     <x-f_page_title
-        title="最新のアジェンダ一覧"
+        title="最新のアジェンダ一覧{{ $selectedCategoryName ? '：' . $selectedCategoryName : '' }}"
         :search="true"
         :searchAction="route('user.agenda.agendas_list')"
         searchName="search"
         searchPlaceholder="アジェンダを検索" />
 
-    <x-f_category_accordion :categories="$categories" />
+    <x-f_category_accordion
+        :categories="$categories"
+        :selectedCategoryId="$selectedCategoryId" />
 
     @empty($agendas)
     @else
