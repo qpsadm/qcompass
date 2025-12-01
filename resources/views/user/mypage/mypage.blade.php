@@ -27,13 +27,13 @@
             @csrf
             <div class="theme-color-select">
                 <p>テーマを選択：</p>
+                <div class="radio-container">
                 @foreach($themes as $theme)
-                <label>
-                    <input type="radio" name="theme_id" value="{{ $theme->id }}"
-                        {{ ($user->detail->theme_id ?? '') == $theme->id ? 'checked' : '' }}>
-                    {{ $theme->name }}
-                </label>
+                    <input type="radio" id="{{ $theme->id }}" name="theme_id" value="{{ $theme->id }}"
+                        {{ ($user->detail->theme_id ?? '1') == $theme->id ? 'checked' : '' }}>
+                    <label for="{{ $theme->id }}">{{ $theme->name }}</label>
                 @endforeach
+                </div>
             </div>
 
             <div class="font-size-select">
