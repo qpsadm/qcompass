@@ -24,12 +24,13 @@ class DivisionController extends Controller
         $request->validate([
             'code' => 'required|unique:divisions,code',
             'name' => 'required',
+            'is_show' => 'required|in:0,1',
         ]);
 
         Division::create([
             ...$request->all(),
             'created_user_name' => auth()->user()->name ?? 'system',
-            'is_show' => $request->has('is_show') ? 1 : 0,
+            'is_show' => $request->is_show,
         ]);
 
         return redirect()->route('admin.divisions.index')
@@ -48,11 +49,13 @@ class DivisionController extends Controller
         $request->validate([
             'code' => 'required|unique:divisions,code,' . $division->id,
             'name' => 'required',
+            'is_show' => 'required|in:0,1',
+
         ]);
 
         $division->update([
             ...$request->all(),
-            'is_show' => $request->has('is_show') ? 1 : 0,
+            'is_show' => $request->is_show,
         ]);
 
         return redirect()->route('admin.divisions.index')

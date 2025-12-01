@@ -118,7 +118,7 @@ class CourseController extends Controller
     public function edit($id)
     {
         return view('admin.courses.edit', [
-            'Course' => Course::findOrFail($id),
+            'course' => Course::findOrFail($id),
             'courseTypes' => CourseType::all(),
             'levels' => Level::all(),
             'organizers' => Organizer::all(),
