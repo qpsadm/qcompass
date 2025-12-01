@@ -64,6 +64,8 @@
                         {{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}
                     </p>
 
+                    <p>所属部署：{{ $divisions->name ?? '未設定' }}</p>
+
                     <div class="btn-area">
                         <button class="open-btn-profile" href="">プロフィールをみる</button>
                         <button class="open-btn-customize">カスタマイズ</button>
