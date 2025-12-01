@@ -51,4 +51,10 @@ class UserDetail extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // テーマリレーション
+    public function theme()
+    {
+        return $this->belongsTo(\App\Models\Theme::class, 'theme_id');
+    }
 }

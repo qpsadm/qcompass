@@ -102,4 +102,22 @@ class MypageController extends Controller
 
         return redirect()->back()->with('success', '文字サイズを更新しました');
     }
+
+    public function updateTheme(Request $request)
+    {
+        $request->validate([
+            'theme_id' => 'required|exists:themes,id',
+        ]);
+
+        $user = auth()->user();
+
+        // ユーザー詳細がない場合は作成
+        $details = $user->detail ?? $user->detail()->create([]);
+
+        // テーマIDを更新
+        $details->theme_id = $request->theme_id;
+        $details->save();
+
+        return redirect()->back()->with('success', 'テーマを変更しました。');
+    }
 }
