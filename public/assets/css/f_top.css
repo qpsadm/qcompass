@@ -122,9 +122,12 @@
         width: 100%;
     }
 
+    .facebook-container {
+        display: flex;
+        justify-content: center;
+    }
+
     .facebook iframe {
-        width: 100%;
         aspect-ratio: 33 / 50;
     }
 }
-
