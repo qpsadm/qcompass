@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('avatar_path', 255)->nullable()->comment('写真パス');
 
             $table->unsignedBigInteger('theme_id')->default(1)->comment('テーマID');
-
             $table->tinyInteger('status')->nullable()->comment('ユーザー状態');
             $table->text('bio')->nullable()->comment('自己紹介');
             $table->text('note')->nullable()->comment('メモ');
