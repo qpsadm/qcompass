@@ -80,24 +80,45 @@
 @php
     $lastPage = $questions->lastPage();
     $currentPage = $questions->currentPage();
+    $prevPage = $currentPage > 1 ? $currentPage - 1 : null;
+    $nextPage = $currentPage < $lastPage ? $currentPage + 1 : null;
 @endphp
 
 @if ($lastPage >= 1)
-    <div class="flex justify-center mt-6">
+<nav class="pagination w-full flex justify-center mt-6 mb-6">
+    <ul class="flex flex-wrap justify-center gap-2">
+        {{-- 前へ --}}
+        <li class="prev">
+            @if ($prevPage)
+                <a href="{{ $questions->url($prevPage) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">‹</a>
+            @else
+                <span class="px-3 py-1 border rounded text-gray-400 text-[18px]">‹</span>
+            @endif
+        </li>
 
-    <ul class="flex flex-wrap justify-center">
+        {{-- ページ番号 --}}
         @for ($i = 1; $i <= $lastPage; $i++)
-                       <li>
-
+            <li class="{{ $i == $currentPage ? 'active' : '' }}">
                 @if ($i == $currentPage)
-                    <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ $i }}</span>
+                    <span class="px-3 py-1 bg-blue-500 text-white rounded shadow text-[18px]">{{ $i }}</span>
                 @else
-                    <a href="{{ $questions->url($i) }}" class="px-3 py-1 border rounded hover:bg-gray-200">{{ $i }}</a>
+                    <a href="{{ $questions->url($i) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">{{ $i }}</a>
                 @endif
             </li>
         @endfor
+
+        {{-- 次へ --}}
+        <li class="next">
+            @if ($nextPage)
+                <a href="{{ $questions->url($nextPage) }}" class="px-3 py-1 border rounded hover:bg-gray-200 text-[18px]">›</a>
+            @else
+                <span class="px-3 py-1 border rounded text-gray-400 text-[18px]">›</span>
+            @endif
+        </li>
     </ul>
+</nav>
 @endif
 
 </div>
 @endsection
+
