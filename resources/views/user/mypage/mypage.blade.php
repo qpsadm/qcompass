@@ -23,15 +23,42 @@
     </div>
 
     <div class="modal-customize">
-        <div class="profile-data">
-            <h4>カスタマイズ</h4>
-            <p class="mail">{{ $user->email ?? '未登録'}}</p>
-            <p class="tel">{{ $user_details?->phone1 ?? '未登録' }}</p>
-            <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
+        <form action="{{ route('user.settings.update') }}" method="POST">
+            @csrf
+            <div class="theme-color-select">
+                <label for="">テーマカラー</label>
+                <div class="radio-container">
+                    <input type="radio" id="default" name="themecolor" value="1">
+                    <label for="default">デフォルト</label>
+
+                    <input type="radio" id="dark" name="themecolor" value="2">
+                    <label for="dark">ダーク</label>
+
+                </div>
+            </div>
+
+            <div class="font-size-select">
+                <label for="">フォントサイズ</label>
+                <div class="radio-container">
+                    <input type="radio" id="small" name="fontsize" value="1" {{ $user_details->fontsize == 1 ? 'selected' : '' }}>
+                    <label for="small">小</label>
+
+                    <input type="radio" id="medium" name="fontsize" value="2" {{ $user_details->fontsize == 2 ? 'selected' : '' }}>
+                    <label for="medium">中</label>
+
+                    <input type="radio" id="large" name="fontsize" value="3" {{ $user_details->fontsize == 3 ? 'selected' : '' }}>
+                    <label for="large">大</label>
+                </div>
+            </div>
 
             <div class="btn-area">
-                <button class="close-btn" href="">とじる</button>
+                <button class="close-btn" href="">送信する</button>
             </div>
+
+        </form>
+
+        <div class="btn-area">
+            <button class="close-btn" href="">とじる</button>
         </div>
     </div>
 

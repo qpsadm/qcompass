@@ -275,3 +275,34 @@
     }
 
 }
+
+.modal-customize {
+    font-size: 18px;
+}
+
+.modal-customize .theme-color-select {
+    margin-bottom: 30px;
+}
+
+.modal-customize .radio-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.modal-customize .radio-container input {
+    display: none;
+}
+
+.modal-customize .radio-container label {
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid var(--text-color-2);
+    border-radius: 11px;
+}
+
+.modal-customize .radio-container label:hover,
+.modal-customize .radio-container input[type="radio"]:checked+label {
+    background-color: var(--sub-color-1);
+}
