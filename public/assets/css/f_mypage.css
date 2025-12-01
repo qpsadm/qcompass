@@ -146,6 +146,15 @@
     background-color: var(--text-color-3);
 }
 
+.calendar .fc-h-event .fc-event-main {
+    text-align: center;
+}
+
+.calendar .fc-h-event .fc-event-main img {
+    cursor: pointer;
+    /* filter: brightness(0) saturate(100%) invert(75%) sepia(42%) saturate(915%) hue-rotate(343deg) brightness(100%) contrast(102%); */
+}
+
 .memo textarea {
     width: 100%;
     border: 1px solid #5e5e5e;

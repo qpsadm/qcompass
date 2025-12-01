@@ -148,27 +148,69 @@
         window.APP_URL = "{{ url('/') }}";
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events: pendingEvents.concat(submittedEvents),
-            eventContent: function(arg) {
-                const img = document.createElement('img');
-                img.src = arg.event.extendedProps.isPending ?
-                    `${window.APP_URL}/assets/images/icon/b_search.svg` // 未提出アイコン
-                    :
-                    `${window.APP_URL}/assets/images/icon/f_icon_check2.svg`; // 提出済アイコン
-                img.alt = arg.event.extendedProps.isPending ? "未提出" : "提出済";
-                img.style.width = "16px"; // 必要に応じてサイズ調整
-                img.style.height = "16px";
-                return {
-                    domNodes: [img]
-                };
-            },
-            eventClick: function(info) {
-                if (info.event.extendedProps.url) {
-                    window.location.href = info.event.extendedProps.url;
-                }
+    initialView: 'dayGridMonth',
+    events: pendingEvents.concat(submittedEvents),
+
+    eventContent: function(arg) {
+        if (arg.event.extendedProps.isPending) {
+            return { domNodes: [] }; // 未提出はアイコン非表示
+        }
+
+        // 提出済みはアイコン表示
+        const img = document.createElement('img');
+        img.src = `${window.APP_URL}/assets/images/icon/f_icon_check_on.svg`;
+        img.alt = "提出済";
+        img.style.width = "40px";
+        img.style.height = "40px";
+        img.style.cursor = "pointer";
+
+        return { domNodes: [img] };
+    },
+
+    // 画像クリック / 提出済みイベントクリック
+    eventClick: function(info) {
+        if (info.event.extendedProps.url) {
+            window.location.href = info.event.extendedProps.url;
+        }
+    },
+
+    // 日付セルクリック
+    dateClick: function(info) {
+        // その日付のイベントをすべて検索
+        var event = calendar.getEvents().find(event => {
+            return event.startStr === info.dateStr && event.extendedProps.url;
+        });
+
+        if (event) {
+            window.location.href = event.extendedProps.url;
+        }
+    },
+
+    // 日付セルのカーソルとホバー色設定
+    datesSet: function() {
+        document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
+            const date = frame.parentElement.getAttribute('data-date');
+
+            var hasEvent = calendar.getEvents().some(event => {
+                return event.startStr === date && event.extendedProps.url;
+            });
+
+            // 未提出・提出済みのセルだけ pointer
+            frame.style.cursor = hasEvent ? 'pointer' : 'default';
+
+            // ホバー時に薄い黄色にする
+            if (hasEvent) {
+                frame.addEventListener('mouseenter', function() {
+                    frame.style.backgroundColor = '#fff9c4'; // 薄い黄色
+                });
+                frame.addEventListener('mouseleave', function() {
+                    frame.style.backgroundColor = '';
+                });
             }
         });
+    }
+});
+
 
         calendar.render();
     });

@@ -465,8 +465,9 @@ header::after {
     text-align: center;
 }
 
+.short-text.mix-mode,
 .short-name.mix-mode {
-    color: #83BE85;
+    color: #ff7474;
 }
 
 .side-menu-list {
@@ -580,10 +581,17 @@ header::after {
 @media screen and (max-width: 1324px) {
     .container {
         margin: 75px 15px 0 15px;
+        padding: 35px 35px 0;
     }
 
     .container::after {
         right: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 35px 35px 0;
     }
 }
 
@@ -1064,7 +1072,12 @@ footer {
     margin: 0 20px;
 }
 
-
+@media screen and (max-width: 1324px) {
+    .bread-crumbs {
+        margin: 0 -35px;
+        padding: 15px 35px;
+    }
+}
 
 
 

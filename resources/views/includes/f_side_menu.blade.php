@@ -35,7 +35,7 @@
                     <p class="short-title">今日のひとこと</p>
 
                     @if (!empty($todayQuote))
-                    <div class="short-text">
+                    <div class="short-text {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
                         @if ($quote_mode === 'mix' && Session::has('quote_parts'))
                         @foreach (Session::get('quote_parts') as $part)
                         {{ $part->text }}
@@ -45,7 +45,7 @@
                         @endif
                     </div>
 
-                    <div class="short-name  {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
+                    <div class="short-name {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
                         （
                         @if ($quote_mode === 'mix' && Session::has('author_parts'))
                         @foreach (Session::get('author_parts') as $part)
