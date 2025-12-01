@@ -120,4 +120,30 @@ class MypageController extends Controller
 
         return redirect()->back()->with('success', 'テーマを変更しました。');
     }
+    public function updateSettings(Request $request)
+    {
+        // バリデーション
+        $request->validate([
+            'fontsize' => 'nullable|integer|min:1|max:3',   // 文字サイズは任意
+            'theme_id' => 'nullable|exists:themes,id',       // テーマIDも任意
+        ]);
+
+        $user = auth()->user();
+
+        // user_details が存在しない場合は作成
+        $details = $user->detail ?? $user->detail()->create([]);
+
+        // 入力値がある場合だけ更新
+        if ($request->has('fontsize')) {
+            $details->fontsize = $request->fontsize;
+        }
+
+        if ($request->has('theme_id')) {
+            $details->theme_id = $request->theme_id;
+        }
+
+        $details->save();
+
+        return redirect()->back()->with('success', '設定を更新しました。');
+    }
 }
