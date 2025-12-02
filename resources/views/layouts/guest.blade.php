@@ -20,7 +20,7 @@
 
         <div class="login-form-container">
             <div class="site-logo">
-                <img src="{{ asset('assets/images/f_site-logo.svg') }}" alt="ロゴ">
+                <img src="{{ asset('assets/images/logo_star.svg') }}" alt="ロゴ">
             </div>
 
             {{ $slot }}
