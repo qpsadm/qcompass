@@ -96,13 +96,13 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
 
-        // 記事そのものはステータスと表示設定だけで取得する
+        // 現在の記事を取得
         $agenda = Agenda::where('id', $id)
             ->where('is_show', 1)
             ->where('status', 'yes')
             ->firstOrFail();
 
-        // ユーザーが閲覧可能なカテゴリ
+        // ユーザーがアクセス可能なカテゴリを取得
         $userCategories = $this->getUserCategories($userId);
         $userCategoryIds = $userCategories->pluck('id')->toArray();
 
@@ -111,21 +111,18 @@ class AgendaController extends Controller
             $userCategoryIds = [$agenda->category_id];
         }
 
-        // prev/next 用ベースクエリ
+        // prev/next 用のベースクエリ
         $baseQuery = Agenda::where('is_show', 1)
             ->where('status', 'yes')
-            ->where('category_id', $agenda->category_id)
-            ->whereIn('category_id', $userCategoryIds)
-            ->where('category_id', '!=', 35);
+            ->whereIn('category_id', $userCategoryIds) // ユーザーが見れるカテゴリ
+            ->where('category_id', '!=', 35);         // 除外カテゴリ
 
         // prev/next を取得
         [$prevAgenda, $nextAgenda] = $this->getPrevNext($baseQuery, $agenda);
 
-        // prevUrl と nextUrl が null でない場合にのみURLを生成
+        // URL生成
         $prevUrl = $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null;
         $nextUrl = $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null;
-
-
 
         return view('user.agenda.agendas_info', [
             'agenda'     => $agenda,
@@ -138,6 +135,7 @@ class AgendaController extends Controller
             'nextBtn'    => (bool) $nextAgenda,
         ]);
     }
+
 
 
 
@@ -190,7 +188,6 @@ class AgendaController extends Controller
 
     private function getPrevNext($baseQuery, $current)
     {
-        // Prev（現在より古い記事を取得）
         $prev = (clone $baseQuery)
             ->where(function ($q) use ($current) {
                 $q->where('created_at', '<', $current->created_at)
@@ -199,12 +196,10 @@ class AgendaController extends Controller
                             ->where('id', '<', $current->id);
                     });
             })
-            // 🚨 修正: 最も近い「Prev」記事を取得するため、作成日時を降順、IDも降順にする
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->first(); // 1件目を取得
+            ->first();
 
-        // Next（現在より新しい記事を取得）
         $next = (clone $baseQuery)
             ->where(function ($q) use ($current) {
                 $q->where('created_at', '>', $current->created_at)
@@ -213,10 +208,9 @@ class AgendaController extends Controller
                             ->where('id', '>', $current->id);
                     });
             })
-            // 🚨 修正: 最も近い「Next」記事を取得するため、作成日時を昇順、IDも昇順にする
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
-            ->first(); // 1件目を取得
+            ->first();
 
         return [$prev, $next];
     }
