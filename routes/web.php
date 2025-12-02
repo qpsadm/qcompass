@@ -52,7 +52,7 @@ use App\Http\Controllers\User\ContactController  as UserContactController;
 use App\Http\Controllers\User\FrontTopController;
 use App\Http\Controllers\User\QuoteController as UserQuoteController;
 use App\Http\Controllers\User\MypageController;
-
+use App\Http\Controllers\User\MyCourseController;
 
 
 
@@ -159,6 +159,9 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
     Route::post('settings/update', [MypageController::class, 'updateSettings'])
         ->name('settings.update');
+    // 講座一覧（自分の講座へ自動的にリダイレクトする）
+    Route::get('/courses', [MyCourseController::class, 'index'])
+        ->name('course.courses_info');
 
     //本サイトについて
     Route::get('/about', function () {
