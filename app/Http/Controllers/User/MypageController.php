@@ -35,6 +35,11 @@ class MypageController extends Controller
         // テーマを取得
         $themes = Theme::where('is_show', 1)->get();
 
+        // テーマ・フォントサイズをセッションに保存
+        session(['settings' => [
+            'theme_id' => $user_details?->theme_id ?? 1,
+            'fontsize' => $user_details?->fontsize ?? 2,
+        ]]);
 
         return view('user.mypage.mypage', compact(
             'user',
@@ -42,8 +47,8 @@ class MypageController extends Controller
             'pending_diaries',
             'submitted_reports',
             'announcements',
-            'courses',       // 講座情報
-            'divisions',     // 部署情報
+            'courses',
+            'divisions',
             'themes'
         ));
     }
@@ -148,6 +153,11 @@ class MypageController extends Controller
         }
 
         $details->save();
+        // セッション更新
+        session(['settings' => [
+            'theme_id' => $details->theme_id,
+            'fontsize' => $details->fontsize,
+        ]]);
 
         return redirect()->back()->with('success', '設定を更新しました。');
     }
