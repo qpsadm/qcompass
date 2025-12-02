@@ -261,6 +261,21 @@ class CategoriesSeeder extends Seeder
                 'updated_user_name' => 'システム管理者',
             ],
 
+            [
+                'id' => 34,
+                'code' => 'cm17',
+                'name' => 'ダウンロード',
+                'parent_id' => NULL,
+                'top_id' => 34,
+                'level' => 1,
+                'child_count' => 0,
+                'is_show' => true,
+                'created_at' => now(),
+                'created_user_name' => 'システム管理者',
+                'updated_at' => now(),
+                'updated_user_name' => 'システム管理者',
+            ],
+
             // 子カテゴリ（parent_id ≠ 0）
             [
                 'id' => 5,
@@ -448,6 +463,21 @@ class CategoriesSeeder extends Seeder
                 'name' => 'HTML＆CSS演習',
                 'parent_id' => 19,
                 'top_id' => 19,
+                'level' => 1,
+                'child_count' => 0,
+                'is_show' => true,
+                'created_at' => now(),
+                'created_user_name' => 'システム管理者',
+                'updated_at' => now(),
+                'updated_user_name' => 'システム管理者',
+            ],
+
+            [
+                'id' => 35,
+                'code' => 'cm17-01',
+                'name' => '求人用',
+                'parent_id' => 34,
+                'top_id' => 34,
                 'level' => 1,
                 'child_count' => 0,
                 'is_show' => true,
