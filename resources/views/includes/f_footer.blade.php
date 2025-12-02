@@ -2,7 +2,7 @@
     <div class="footer-container">
         <div class="footer-info">
             <div class="footer-logo">
-                <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_footer-logo.svg') }}"
+                <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/logo_star_white.svg') }}"
                         alt="コンパスロゴホワイト"></a>
             </div>
             <div class="footer-company-info">
