@@ -11,9 +11,20 @@
         <x-f_page_title :search="false" title="{{ $agenda->agenda_name }}" />
 
         {{-- <p>カテゴリーID: {{ $agenda->category_id }}</p> --}}
-        <div class="page-content">
+
+            <div class="page-content
+@switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
+                <div>{!! $agenda->content !!}</div>
+            </div>
+
+
+        {{-- <div class="page-content">
             {!! $agenda->content !!}
-        </div>
+        </div> --}}
         {{-- <p>ステータス: {{ $agenda->status }}</p>
         <p>表示フラグ: {{ $agenda->is_show }}</p> --}}
         {{-- <p>{{ $agenda->created_at->format('Y/m/d') }}</p> --}}

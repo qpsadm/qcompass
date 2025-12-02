@@ -10,7 +10,12 @@
 <div class="container">
     <x-f_page_title :search="false" title="日報詳細" />
 
-    <div class="form-content">
+    <div class="form-content
+@switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
 
         {{-- 日報内容 --}}
         <div class="confirm-item">
