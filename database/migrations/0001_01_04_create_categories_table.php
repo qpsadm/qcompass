@@ -34,7 +34,7 @@ return new class extends Migration
             $table->comment('カテゴリー（課目）マスタ');
 
             // 親カテゴリーの外部キー（任意）
-            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('restrict');
+            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
 
