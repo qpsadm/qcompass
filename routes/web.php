@@ -159,6 +159,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
     Route::post('settings/update', [MypageController::class, 'updateSettings'])
         ->name('settings.update');
+    Route::post('memo/save', [MypageController::class, 'saveMemo'])
+        ->name('memo.save');
 
     // 講座一覧（自分の講座へ自動的にリダイレクトする）
     Route::get('/courses', [MyCourseController::class, 'index'])
