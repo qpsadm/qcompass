@@ -19,6 +19,7 @@
     left: calc((100% - 285px) / 2);
     transform: translate(-50%, -50%);
     z-index: 1000;
+    width: 535px;
     padding: 50px;
     border-radius: 15px;
     background-color: var(--sub-color-2);
@@ -286,7 +287,8 @@
 
 .modal-customize .radio-container {
     display: flex;
-    gap: 30px;
+    flex-wrap: wrap;
+    gap: 20px 30px;
     margin-top: 10px;
 }
 
@@ -305,4 +307,12 @@
 .modal-customize .radio-container label:hover,
 .modal-customize .radio-container input[type="radio"]:checked+label {
     background-color: var(--sub-color-1);
+}
+
+.font-size-select {
+    margin-bottom: 50px;
+}
+
+.modal-customize>.btn-area {
+    margin-top: 20px;
 }
