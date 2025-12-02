@@ -41,32 +41,43 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-        $categoryId = $request->input('category_id'); // nullの場合はAll
+
+        // 除外したいカテゴリーIDを指定
+        $excludeCategoryIds = [35];
+
+        // 除外リストに入っているカテゴリは categories から除外
+        $categories = $categories->reject(function ($category) use ($excludeCategoryIds) {
+            return in_array($category->id, $excludeCategoryIds);
+        });
+
+        $categoryId = $request->input('category_id'); // 選択されたカテゴリ
         $search = $request->input('search');
 
-        $query = Agenda::query()->where('status', 'yes')->where('is_show', 1);
+        $query = Agenda::query()
+            ->where('status', 'yes')
+            ->where('is_show', 1);
 
-        if ($categoryId) {
+        // 選択されたカテゴリーが除外リストなら無視
+        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
             $query->where('category_id', $categoryId);
         }
 
+        // 検索条件
         if ($search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
+        // 除外カテゴリーをクエリにも反映
+        if (!empty($excludeCategoryIds)) {
+            $query->whereNotIn('category_id', $excludeCategoryIds);
+        }
+
         $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
 
-        // 選択されたカテゴリー名を取得
-        $selectedCategoryName = null;
-        if ($categoryId) {
+        $selectedCategoryName = 'All';
+        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
             $selectedCategory = $categories->firstWhere('id', $categoryId);
-            if ($selectedCategory) {
-                $selectedCategoryName = $selectedCategory->name;
-            } else {
-                $selectedCategoryName = 'All'; // 存在しないIDならAll扱い
-            }
-        } else {
-            $selectedCategoryName = 'All';
+            $selectedCategoryName = $selectedCategory ? $selectedCategory->name : 'All';
         }
 
         return view('user.agenda.agendas_list', [
@@ -77,6 +88,7 @@ class AgendaController extends Controller
             'search' => $search,
         ]);
     }
+
 
 
 
