@@ -1,3 +1,3 @@
-{{-- <div class="bread-crumbs">
-    {{ Breadcrumbs::render('site.category', Category $category) }}
-</div> --}}
+<div class="bread-crumbs">
+    {{ Breadcrumbs::render('auto-breadcrumbs') }}
+</div>
