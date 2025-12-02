@@ -41,7 +41,7 @@
                 <div class="radio-container">
                     <input type="radio" id="small" name="fontsize" value="1"
                         {{ ($user_details->fontsize ?? 2) == 1 ? 'checked' : '' }}>
-                    <label for="small">小</label>
+                    <label for="small">標準</label>
 
                     <input type="radio" id="medium" name="fontsize" value="2"
                         {{ ($user_details->fontsize ?? 2) == 2 ? 'checked' : '' }}>
