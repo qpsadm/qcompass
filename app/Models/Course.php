@@ -129,4 +129,6 @@ class Course extends Model
         $diff = $today->diffInDays($endDate, false); // 過ぎていたらマイナス
         return $diff > 0 ? $diff : 0;
     }
+
+
 }
