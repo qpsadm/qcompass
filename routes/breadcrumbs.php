@@ -153,6 +153,7 @@ Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
         'reports_create'   => '日報作成',
         'contact_create'   => 'お問い合わせ',
         'mypage'    => 'マイページ',
+        'questions_list'    => '学習支援',
     ];
 
     $currentName = 'user';
