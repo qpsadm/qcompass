@@ -60,15 +60,15 @@ return new class extends Migration
             // 外部キー制約
             $table->foreign('course_type_id')
                 ->references('id')->on('course_types')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->foreign('level_id')
                 ->references('id')->on('levels')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->foreign('organizer_id')
                 ->references('id')->on('organizers')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->comment('講座マスタ');
         });
