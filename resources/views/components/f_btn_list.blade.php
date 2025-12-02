@@ -1,7 +1,7 @@
 <div class="btn-list">
     <ul>
         @if ($prevBtn)
-            <li class="short-btn"><a href="">前へ</a></li>
+            <li class="short-btn"><a href="{{}}">前へ</a></li>
         @endif
 
         @if ($listBtn)
