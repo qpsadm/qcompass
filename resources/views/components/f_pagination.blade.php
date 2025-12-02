@@ -1,6 +1,5 @@
 @props(['paginator'])
 
-@if ($paginator->hasPages())
 <nav class="pagination">
     <ul>
         {{-- 前のページリンク --}}
@@ -31,4 +30,4 @@
         </li>
     </ul>
 </nav>
-@endif
+
