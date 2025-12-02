@@ -48,6 +48,9 @@ class AgendaController extends Controller
      */
     public function myCourseAgendaList(Request $request)
     {
+        // セッションにカテゴリ保存（ALL の場合は null）
+        session(['agenda_category_id' => $request->input('category_id')]);
+
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
         $excludeCategoryIds = [35];
