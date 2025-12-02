@@ -106,14 +106,24 @@ class AgendaController extends Controller
         $userCategories = $this->getUserCategories($userId);
         $userCategoryIds = $userCategories->pluck('id')->toArray();
 
+        // 空の場合は記事のカテゴリを使う
+        if (empty($userCategoryIds)) {
+            $userCategoryIds = [$agenda->category_id];
+        }
+
         // prev/next 用ベースクエリ
         $baseQuery = Agenda::where('is_show', 1)
             ->where('status', 'yes')
+            ->where('category_id', $agenda->category_id)
             ->whereIn('category_id', $userCategoryIds)
             ->where('category_id', '!=', 35);
 
-        // prev/next を汎用メソッドで取得
+        // prev/next を取得
         [$prevAgenda, $nextAgenda] = $this->getPrevNext($baseQuery, $agenda);
+
+        // prevUrl と nextUrl が null でない場合にのみURLを生成
+        $prevUrl = $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null;
+        $nextUrl = $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null;
 
 
 
@@ -122,12 +132,13 @@ class AgendaController extends Controller
             'categories' => $userCategories,
             'prevAgenda' => $prevAgenda,
             'nextAgenda' => $nextAgenda,
-            'prevUrl'    => $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null,
-            'nextUrl'    => $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null,
+            'prevUrl'    => $prevUrl,
+            'nextUrl'    => $nextUrl,
             'prevBtn'    => (bool) $prevAgenda,
             'nextBtn'    => (bool) $nextAgenda,
         ]);
     }
+
 
 
     public function agendaByCategory($category_id)
@@ -188,9 +199,10 @@ class AgendaController extends Controller
                             ->where('id', '<', $current->id);
                     });
             })
+            // 🚨 修正: 最も近い「Prev」記事を取得するため、作成日時を降順、IDも降順にする
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->first();
+            ->first(); // 1件目を取得
 
         // Next（現在より新しい記事を取得）
         $next = (clone $baseQuery)
@@ -201,9 +213,10 @@ class AgendaController extends Controller
                             ->where('id', '>', $current->id);
                     });
             })
+            // 🚨 修正: 最も近い「Next」記事を取得するため、作成日時を昇順、IDも昇順にする
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
-            ->first();
+            ->first(); // 1件目を取得
 
         return [$prev, $next];
     }

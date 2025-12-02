@@ -31,7 +31,7 @@
     </div>
 
 
-    <x-f_btn_list :prevBtn="false" :listBtn="true" :nextBtn="false" listUrl="{{ url('user/job') }}"
+    <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/job') }}"
         listLabel="一覧画面へ" />
 
 
