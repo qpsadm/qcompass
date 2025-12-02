@@ -26,10 +26,16 @@
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
     {{-- 共通cssファイルを読み込む --}}
     @php
-        $themeClass = match(session('settings.theme_id', 1)) {
+        // ログインユーザーを取得
+        $user = auth()->user();
+
+        // ユーザー設定があればそれを使い、なければデフォルト1
+        $themeId = $user->detail->theme_id ?? 1;
+
+        $themeClass = match($themeId) {
             1 => '',
             2 => '_dark',
-            3 => '_other', // 必要なら
+            3 => '_other',
             default => ''
         };
     @endphp
