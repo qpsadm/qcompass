@@ -8,6 +8,13 @@
 
 @section('main-content')
     <div class="container">
+
+
+        @php
+
+            $prevUrl = $prevAgenda ? url('user/agendas/' . $prevAgenda->id) : null;
+            $nextUrl = $nextAgenda ? url('user/agendas/' . $nextAgenda->id) : null;
+        @endphp
         <x-f_page_title :search="false" title="{{ $agenda->agenda_name }}" />
 
         {{-- <p>カテゴリーID: {{ $agenda->category_id }}</p> --}}

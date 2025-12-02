@@ -80,6 +80,8 @@ class AgendaController extends Controller
             $selectedCategoryName = $selectedCategory ? $selectedCategory->name : 'All';
         }
 
+
+
         return view('user.agenda.agendas_list', [
             'agendas' => $agendas,
             'categories' => $categories,
@@ -94,15 +96,52 @@ class AgendaController extends Controller
 
     public function agendaDetail($id)
     {
+        $userId = Auth::id();
+
+        // 記事そのものはステータスと表示設定だけで取得
         $agenda = Agenda::where('id', $id)
             ->where('is_show', 1)
             ->where('status', 'yes')
             ->firstOrFail();
 
-        $categories = $this->getUserCategories(Auth::id());
+        // ユーザーが閲覧可能なカテゴリ
+        $userCategories = $this->getUserCategories($userId);
+        $userCategoryIds = $userCategories->pluck('id')->toArray();
 
-        return view('user.agenda.agendas_info', compact('agenda', 'categories'));
+        // ユーザーにカテゴリがなければ、記事のカテゴリだけを対象に
+        if (empty($userCategoryIds)) {
+            $userCategoryIds = [$agenda->category_id];
+        }
+
+        $test = Agenda::where('is_show', 1)
+            ->where('status', 'yes')
+            ->whereIn('category_id', $userCategoryIds)
+            ->where('id', '!=', $agenda->id) // 現在の記事を除外
+            ->get();
+
+        dd($test); // 前後候補の記事があるか確認
+
+        // 前後記事用のベースクエリ
+        $baseQuery = Agenda::where('is_show', 1)
+            ->where('status', 'yes')
+            ->whereIn('category_id', $userCategoryIds)
+            ->where('category_id', '!=', 35);
+
+        // 前後記事取得
+        [$prevAgenda, $nextAgenda] = $this->getPrevNext($baseQuery, $agenda);
+
+        return view('user.agenda.agendas_info', [
+            'agenda'     => $agenda,
+            'categories' => $userCategories,
+            'prevAgenda' => $prevAgenda,
+            'nextAgenda' => $nextAgenda,
+            'prevUrl'    => $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null,
+            'nextUrl'    => $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null,
+            'prevBtn'    => (bool) $prevAgenda,
+            'nextBtn'    => (bool) $nextAgenda,
+        ]);
     }
+
 
     public function agendaByCategory($category_id)
     {
@@ -148,5 +187,42 @@ class AgendaController extends Controller
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+    }
+
+
+    private function getPrevNext($query, $current)
+    {
+        $currentId = $current->id;
+        $currentCreatedAt = $current->created_at;
+
+        // Prev（古い記事）
+        $prev = (clone $query)
+            ->where('id', '!=', $currentId)
+            ->where(function ($q) use ($currentCreatedAt, $currentId) {
+                $q->where('created_at', '<', $currentCreatedAt)
+                    ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
+                        $sub->where('created_at', $currentCreatedAt)
+                            ->where('id', '<', $currentId);
+                    });
+            })
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        // Next（新しい記事）
+        $next = (clone $query)
+            ->where('id', '!=', $currentId)
+            ->where(function ($q) use ($currentCreatedAt, $currentId) {
+                $q->where('created_at', '>', $currentCreatedAt)
+                    ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
+                        $sub->where('created_at', $currentCreatedAt)
+                            ->where('id', '>', $currentId);
+                    });
+            })
+            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc')
+            ->first();
+
+        return [$prev, $next];
     }
 }
