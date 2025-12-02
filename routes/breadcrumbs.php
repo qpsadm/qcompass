@@ -37,6 +37,8 @@
 // });
 
 
+
+//ここから自動化用
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as Trail;
 use Illuminate\Support\Str;
@@ -128,24 +130,108 @@ use Illuminate\Support\Str;
 //     }
 // });
 
-Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
+// Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
+
+//     $route = request()->route();
+//     $routeName = $route->getName();
+//     $routeParams = $route->parameters();
+
+//     if (!$routeName) {
+//         return $trail->push('TOP', route('user.top'));
+//     }
+
+//     $parts = explode('.', $routeName);
+
+//     if ($routeName === 'user.top') {
+//         return $trail->push('TOP', route('user.top'));
+//     }
+
+//     $trail->push('TOP', route('user.top'));
+
+//     $labels = [
+//         'news_list'      => 'お知らせ',
+//         'agendas_list'    => 'アジェンダ',
+//         'job_offers_list'       => '就職支援',
+//         'reports_create'   => '日報作成',
+//         'contact_create'   => 'お問い合わせ',
+//         'mypage'    => 'マイページ',
+//         'questions_list'    => '学習支援',
+//     ];
+
+//     $currentName = 'user';
+
+//     foreach ($parts as $part) {
+
+//         if ($part === 'user') continue;
+
+//         $label = $labels[$part] ?? Str::headline($part);
+//         $currentName .= '.' . $part;
+
+//         if (!Route::has($currentName)) continue;
+
+//         // 🔽 モデルが渡されている場合の処理
+//         foreach ($routeParams as $key => $value) {
+
+//             if (is_object($value)) {
+
+//                 // Course モデルの場合：親階層を再帰で取得
+//                 if ($value instanceof \App\Models\Course) {
+
+//                     $ancestors = [];
+//                     $parent = $value->parent;
+
+//                     // 親がいれば上位から順に追加
+//                     while ($parent) {
+//                         array_unshift($ancestors, $parent); // 配列の先頭に追加
+//                         $parent = $parent->parent;
+//                     }
+
+//                     // 先祖（親コース）を順にパンくずに追加
+//                     foreach ($ancestors as $ancestor) {
+//                         $trail->push($ancestor->name, route($currentName, ['course' => $ancestor]));
+//                     }
+
+//                     // 最後に自分自身
+//                     $label = $value->name;
+//                 }
+
+//                 // title を持つ他モデルの場合
+//                 elseif (property_exists($value, 'title')) {
+//                     $label = $value->title;
+//                 } elseif (property_exists($value, 'name')) {
+//                     $label = $value->name;
+//                 }
+//             }
+//         }
+
+//         $trail->push($label, route($currentName, $routeParams));
+//     }
+// });
+
+
+/**
+ * 自動パンくず（TOP→親ページ→子ページ）
+ */
+Breadcrumbs::for('auto', function (Trail $trail, $entity = null) {
 
     $route = request()->route();
     $routeName = $route->getName();
     $routeParams = $route->parameters();
 
+    // ルート名が取得できなければ TOP だけ
     if (!$routeName) {
         return $trail->push('TOP', route('user.top'));
     }
 
-    $parts = explode('.', $routeName);
-
+    // TOP ページはそれだけで終了
     if ($routeName === 'user.top') {
         return $trail->push('TOP', route('user.top'));
     }
 
+    // 1階層目：TOP
     $trail->push('TOP', route('user.top'));
 
+    // ラベル変換マップ（ルート名 → 表示名）
     $labels = [
         'news_list'      => 'お知らせ',
         'agendas_list'    => 'アジェンダ',
@@ -156,7 +242,16 @@ Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
         'questions_list'    => '学習支援',
     ];
 
+    // 子ページから親ページルートへのマップ
+    $parentRoutes = [
+        'user.news.news_info'         => 'user.news.news_list',
+        'user.agenda.info'            => 'user.agenda.agendas_list',
+        'user.job.job_offers_info'    => 'user.job.job_offers_list',
+        'user.reports.reports_info'   => 'user.reports',
+    ];
+
     $currentName = 'user';
+    $parts = explode('.', $routeName);
 
     foreach ($parts as $part) {
 
@@ -167,7 +262,7 @@ Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
 
         if (!Route::has($currentName)) continue;
 
-        // 🔽 モデルが渡されている場合の処理
+        // 🔹 モデルが渡されている場合の処理
         foreach ($routeParams as $key => $value) {
 
             if (is_object($value)) {
@@ -178,22 +273,19 @@ Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
                     $ancestors = [];
                     $parent = $value->parent;
 
-                    // 親がいれば上位から順に追加
                     while ($parent) {
-                        array_unshift($ancestors, $parent); // 配列の先頭に追加
+                        array_unshift($ancestors, $parent); // 上位から順に
                         $parent = $parent->parent;
                     }
 
-                    // 先祖（親コース）を順にパンくずに追加
                     foreach ($ancestors as $ancestor) {
                         $trail->push($ancestor->name, route($currentName, ['course' => $ancestor]));
                     }
 
-                    // 最後に自分自身
                     $label = $value->name;
                 }
 
-                // title を持つ他モデルの場合
+                // title を持つ他モデル
                 elseif (property_exists($value, 'title')) {
                     $label = $value->title;
                 } elseif (property_exists($value, 'name')) {
@@ -202,6 +294,17 @@ Breadcrumbs::for('auto-breadcrumbs', function (Trail $trail, $entity = null) {
             }
         }
 
+        // 🔹 親ページルートマップにある場合は先に親を追加
+        if (isset($parentRoutes[$routeName])) {
+            $parentRoute = $parentRoutes[$routeName];
+
+            $parentParts = explode('.', $parentRoute);
+            $parentLabel = $labels[$parentParts[2]] ?? Str::headline($parentParts[2]);
+
+            $trail->push($parentLabel, route($parentRoute));
+        }
+
+        // 現在ページを追加
         $trail->push($label, route($currentName, $routeParams));
     }
 });
