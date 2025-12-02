@@ -154,12 +154,7 @@
         </div>
     </div>
 
-    <div class="bread-crumbs">
-        <ol>
-            <li><a href="">ホーム</a></li>
-            <li><a href="">マイページ</a></li>
-        </ol>
-    </div>
+    <x-f_bread_crumbs />
 </div>
 @endsection
 
