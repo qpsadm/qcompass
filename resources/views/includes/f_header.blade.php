@@ -22,7 +22,7 @@
 
         <!-- responsive -->
         <div class="site-logo">
-            <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/f_site-logo.svg') }}"
+            <a href="{{ route('user.top') }}"><img src="{{ asset('assets/images/logo_star.svg') }}"
                     alt="コンパスロゴ"></a>
         </div>
         <div class="hamburger-btn">

@@ -9,8 +9,19 @@
     letter-spacing: 1px;
 }
 
+.page-content blockquote+blockquote,
+.page-content blockquote+h2 {
+    margin-top: 50px;
+}
+
 .page-content p+p,
-.page-content div+div {
+.page-content p+h3,
+.page-content p+h4,
+.page-content p+table,
+.page-content div+div,
+.page-content h4+h3,
+.page-content p+center,
+.page-content center+h3 {
     margin-top: 30px;
 }
 
@@ -18,14 +29,14 @@
     margin-bottom: 30px;
     padding-bottom: 10px;
     border-bottom: 1px dashed var(--sub-color-3);
-    font-size: 22px;
+    font-size: 1.22em;
     font-weight: bold;
     color: var(--sub-color-3);
 }
 
 .page-content h3 {
     margin-bottom: 20px;
-    font-size: 20px;
+    font-size: 1.11em;
     font-weight: bold;
 }
 

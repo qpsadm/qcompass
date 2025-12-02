@@ -65,11 +65,11 @@
 }
 
 .font-medium {
-    font-size: 20px;
-    letter-spacing: 30px;
+    font-size: 20px !important;
+    line-height: 30px !important;
 }
 
 .font-large {
-    font-size: 22px;
-    letter-spacing: 33px;
+    font-size: 22px !important;
+    line-height: 33px !important;
 }
