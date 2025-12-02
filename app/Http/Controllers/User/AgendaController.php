@@ -113,14 +113,6 @@ class AgendaController extends Controller
             $userCategoryIds = [$agenda->category_id];
         }
 
-        $test = Agenda::where('is_show', 1)
-            ->where('status', 'yes')
-            ->whereIn('category_id', $userCategoryIds)
-            ->where('id', '!=', $agenda->id) // 現在の記事を除外
-            ->get();
-
-        dd($test); // 前後候補の記事があるか確認
-
         // 前後記事用のベースクエリ
         $baseQuery = Agenda::where('is_show', 1)
             ->where('status', 'yes')
@@ -197,7 +189,6 @@ class AgendaController extends Controller
 
         // Prev（古い記事）
         $prev = (clone $query)
-            ->where('id', '!=', $currentId)
             ->where(function ($q) use ($currentCreatedAt, $currentId) {
                 $q->where('created_at', '<', $currentCreatedAt)
                     ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
@@ -211,7 +202,6 @@ class AgendaController extends Controller
 
         // Next（新しい記事）
         $next = (clone $query)
-            ->where('id', '!=', $currentId)
             ->where(function ($q) use ($currentCreatedAt, $currentId) {
                 $q->where('created_at', '>', $currentCreatedAt)
                     ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
@@ -222,6 +212,10 @@ class AgendaController extends Controller
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
             ->first();
+
+        // もし Prev/Next が同じ記事を返す可能性があるなら null にする
+        if ($prev && $prev->id === $currentId) $prev = null;
+        if ($next && $next->id === $currentId) $next = null;
 
         return [$prev, $next];
     }
