@@ -66,7 +66,12 @@ use App\Http\Controllers\{
 // =============================
 // 公開ページ
 // =============================
-// Route::get('/', fn() => view('welcome'));
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('user.top'); // ログイン後のトップ
+    }
+    return redirect()->route('login'); // Breeze の login route
+});
 
 // =============================
 // ダッシュボード（ログイン必須）
