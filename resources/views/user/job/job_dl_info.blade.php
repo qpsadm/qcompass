@@ -8,7 +8,12 @@
     <div class="container">
         <x-f_page_title :search="false" title="{{ $announcement->title }}" />
 
-        <div class="page-content">
+            <div class="page-content
+@switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
             <div>{!! $announcement->content !!}</div>
         </div>
 

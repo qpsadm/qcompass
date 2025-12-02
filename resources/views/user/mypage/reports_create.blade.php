@@ -8,7 +8,12 @@
 <div class="container">
     <x-f_page_title :search="false" title="日報入力フォーム" />
 
-    <div class="form-content">
+    <div class="form-content
+@switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
         <div class="description-text">
             <p>本講座をスムーズに進めるために、日々の報告・連絡・相談が欠かせないと思います。<br>
                 日報は報告・連絡・相談に一番有効な手段の1つとして、ぜひ最初のうちから日報提出の良い習慣を身に付けられるように頑張ってください。</p>
