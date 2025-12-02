@@ -8,9 +8,9 @@
     <div class="container">
 
 @php
-            $prevUrl = $prevAnnouncement ? url('user/news/' . $prevAnnouncement->id) : null;
-
-            $nextUrl = $nextAnnouncement ? url('user/news/' . $nextAnnouncement->id) : null;
+         $prevUrl = $prevAnnouncement ? route('user.news.info', ['id' => $prevAnnouncement->id]) : null;
+            $nextUrl = $nextAnnouncement ? route('user.news.info', ['id' => $nextAnnouncement->id]) : null;
+        @endphp
         @endphp
 
         <x-f_page_title :search="false" title="{{ $announcement->title }}" />
@@ -25,12 +25,16 @@
             </div>
 
 
-        <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/news') }}"
+<x-f_btn_list
+            :prevBtn="true"
+            :listBtn="true"
+            :nextBtn="true"
+            listUrl="{{ url('user/news') }}"
             listLabel="新着情報一覧へ"
 
-            prevUrl="{{ $prevUrl }}"
-            nextUrl="{{ $nextUrl }}"
-/>
+            :prevUrl="$prevUrl"
+            :nextUrl="$nextUrl" 
+        />
 
         <x-f_bread_crumbs />
     </div>
