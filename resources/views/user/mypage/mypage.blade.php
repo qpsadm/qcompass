@@ -26,7 +26,7 @@
         <form action="{{ route('user.settings.update') }}" method="POST">
             @csrf
             <div class="theme-color-select">
-                <p>テーマを選択：</p>
+                <p>テーマカラー</p>
                 <div class="radio-container">
                 @foreach($themes as $theme)
                     <input type="radio" id="{{ $theme->id }}" name="theme_id" value="{{ $theme->id }}"
