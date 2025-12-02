@@ -12,24 +12,30 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         $tagId = $request->query('tag');
+        $keyword = $request->query('keyword');
 
-        // 公開されている質問だけ取得
         $questions = Question::query()->where('is_show', 1);
 
-        // タグで絞り込み
         if ($tagId) {
             $questions->where('tag_id', $tagId);
         }
 
-        // 作成日の新しい順で取得
-        $questions = $questions->orderBy('created_at', 'desc')->paginate(5);
+        if ($keyword) {
+            $questions->where(function ($q) use ($keyword) {
+                $q->where('content', 'like', "%{$keyword}%")
+                    ->orWhere('answer', 'like', "%{$keyword}%");
+            });
+        }
 
-        // タグ一覧を取得
+        $questions = $questions->orderBy('created_at', 'desc')
+            ->paginate(5)
+            ->appends(['tag' => $tagId, 'keyword' => $keyword]);
+
         $tags = Tag::all();
 
-        return view('user.question.questions_list', [
-            'questions' => $questions,
-            'tags' => $tags,
-        ]);
+        // 複数単語に分割してビューに渡す
+        $keywords = $keyword ? preg_split('/\s+/', $keyword) : [];
+
+        return view('user.question.questions_list', compact('questions', 'tags', 'keyword', 'keywords'));
     }
 }
