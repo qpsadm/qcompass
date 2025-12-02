@@ -26,7 +26,7 @@
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
     {{-- 共通cssファイルを読み込む --}}
     @php
-        $themeClass = match(session('settings.theme_id', 2)) {
+        $themeClass = match(session('settings.theme_id', 1)) {
             1 => '',
             2 => '_dark',
             3 => '_other', // 必要なら
