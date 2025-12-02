@@ -25,7 +25,16 @@
     {{-- reset.cssファイルを読み込む --}}
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
     {{-- 共通cssファイルを読み込む --}}
-    <link href="{{ asset('assets/css/f_variable.css') }}" rel="stylesheet">
+    @php
+        $themeClass = match(session('settings.theme_id', 2)) {
+            1 => '',
+            2 => '_dark',
+            3 => '_other', // 必要なら
+            default => ''
+        };
+    @endphp
+
+    <link href="{{ asset('assets/css/f_variable' . $themeClass . '.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/f_common.css') }}" rel="stylesheet">
 
     {{-- 独自のCSSファイルを読み込む --}}
