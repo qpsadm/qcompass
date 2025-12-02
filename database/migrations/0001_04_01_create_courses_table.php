@@ -15,16 +15,16 @@ return new class extends Migration
             $table->string('course_code', 50)->unique()->comment('講座コード');
 
             // 初期値：3：p_デジタル系（IT系）
-            $table->unsignedBigInteger('course_type_id')->default(3)->comment('講座分野');
+            $table->unsignedBigInteger('course_type_id')->nullable()->default(3)->comment('講座分野');
 
             // 初期値：2:実践
             $table->unsignedBigInteger('level_id')->nullable()->default(2)->comment('講座種類（レベル）');
 
             // 初期値：1:ポリテクセンター徳島
-            $table->unsignedBigInteger('organizer_id')->default(1)->comment('実施主体ID');
+            $table->unsignedBigInteger('organizer_id')->nullable()->default(1)->comment('実施主体ID');
 
-            $table->string('course_name', 255)->comment('講座名');
-            $table->string('venue', 255)->nullable()->comment('実施会場');
+            $table->string('course_name', 255)->nullable()->comment('講座名');
+            $table->string('venue', 255)->nullable()->nullable()->comment('実施会場');
             $table->date('application_date')->nullable()->comment('申請日');
             $table->date('certification_date')->nullable()->comment('認定日');
             $table->string('certification_number', 100)->nullable()->comment('認定番号');

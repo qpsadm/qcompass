@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id()->comment('主キー');
 
             $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+
             $table->date('birthday')->nullable()->comment('生年月日');
             $table->tinyInteger('gender')->nullable()->comment('性別');
             $table->string('phone1', 50)->nullable()->comment('電話番号1');
@@ -24,6 +25,9 @@ return new class extends Migration
             $table->string('avatar_path', 255)->nullable()->comment('写真パス');
 
             $table->unsignedBigInteger('theme_id')->default(1)->comment('テーマID');
+
+            $table->unsignedBigInteger('fontsize')->default(1)->comment('文字サイズ');
+
             $table->tinyInteger('status')->nullable()->comment('ユーザー状態');
             $table->text('bio')->nullable()->comment('自己紹介');
             $table->text('note')->nullable()->comment('メモ');
@@ -46,7 +50,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->foreign('theme_id')->references('id')->on('themes')->onDelete('restrict');
+            $table->foreign('theme_id')->references('id')->on('themes')->onDelete('set null');
         });
     }
 

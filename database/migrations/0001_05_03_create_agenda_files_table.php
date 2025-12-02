@@ -13,7 +13,9 @@ return new class extends Migration
             $table->id()->comment('主キー');
 
             // ポリモーフィック（お知らせ・アジェンダ共用）
-            $table->unsignedBigInteger('target_id')->comment('対象レコードID');
+            $table->unsignedBigInteger('target_id')->nullable()->comment('対象レコードID');
+
+            // アジェンダ、お知らせ
             $table->string('target_type')->comment('対象モデルクラス名');
 
             $table->string('file_path', 255)->comment('保存先パス');

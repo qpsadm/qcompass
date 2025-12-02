@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url')->nullable();
             $table->boolean('is_show')->default(true);
-            $table->softDeletes(); // deleted_at 用
             $table->timestamps();
+            $table->softDeletes(); // deleted_at 用
 
             // 作成者・更新者・削除者
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');

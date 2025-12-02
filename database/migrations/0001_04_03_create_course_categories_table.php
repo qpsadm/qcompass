@@ -12,8 +12,8 @@ return new class extends Migration
 
             $table->id()->comment('主キー');
 
-            $table->unsignedBigInteger('course_id')->comment('講座ID');
-            $table->unsignedBigInteger('category_id')->comment('カテゴリID');
+            $table->unsignedBigInteger('course_id')->nullable()->comment('講座ID');
+            $table->unsignedBigInteger('category_id')->nullable()->comment('カテゴリID');
 
             $table->string('note', 255)->nullable()->comment('備考');
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キーの制約
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('restrict');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('set null');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
 
             // 複合ユニーク制約
             $table->unique(['course_id', 'category_id']);

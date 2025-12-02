@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->id();
 
-            $table->unsignedBigInteger('quote_id')->comment('名言ID');
+            $table->unsignedBigInteger('quote_id')->nullable()->comment('名言ID');
 
             $table->string('part_type', 1)->comment('A/B/C パーツ分類');
             $table->string('text')->comment('名言パーツ本文');
@@ -46,13 +46,13 @@ return new class extends Migration
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
-            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('restrict');
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('set null');
         });
 
         Schema::create('author_parts', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('quote_id')->comment('名言ID');
+            $table->unsignedBigInteger('quote_id')->nullable()->comment('名言ID');
 
             $table->string('part_type', 1)->comment('A/B/C パーツ分類'); // B → ABC に変更
             $table->string('text')->comment('作者パーツ');
@@ -66,7 +66,7 @@ return new class extends Migration
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
-            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('restrict');
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('set null');
         });
     }
 

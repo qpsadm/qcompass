@@ -14,7 +14,7 @@ return new class extends Migration
 
             $table->string('agenda_name', 255)->comment('アジェンダ名');
 
-            $table->unsignedBigInteger('category_id')->comment('カテゴリID');
+            $table->unsignedBigInteger('category_id')->nullable()->comment('カテゴリID');
 
             // 講座ID：　null:共通、指定された場合は、その講座専用
             $table->unsignedBigInteger('course_id')->nullable()->comment('講座ID');
@@ -39,7 +39,7 @@ return new class extends Migration
             // 外部キー
             $table->foreign('category_id')
                 ->references('id')->on('categories')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
