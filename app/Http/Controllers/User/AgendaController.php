@@ -50,49 +50,50 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-
-        // 選択されたカテゴリ（GET/POSTどちらでもOK）
-        $categoryId = $request->input('category_id');
-
-        // セッションに保持
-        session(['agenda_category_id' => $categoryId]);
-
-        // 除外カテゴリリスト（必要なら）
         $excludeCategoryIds = [35];
 
-        // アジェンダ取得クエリ
-        $query = Agenda::where('status', 'yes')
-            ->where('is_show', 1)
-            ->whereNotIn('category_id', $excludeCategoryIds);
+        // カテゴリ除外
+        $categories = $categories->reject(fn($c) => in_array($c->id, $excludeCategoryIds));
 
-        if ($categoryId) {
-            // 選択カテゴリがある場合
+        $categoryId = $request->input('category_id');
+        $search = $request->input('search');
+
+        $query = Agenda::query()
+            ->where('status', 'yes')
+            ->where('is_show', 1);
+
+        // カテゴリ指定
+        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
             $query->where('category_id', $categoryId);
-        } else {
-            // ALLの場合、自分の講座全カテゴリ
-            $userCourseIds = DB::table('course_users')->where('user_id', $userId)->pluck('course_id');
-            $categoryIds = DB::table('course_categories')
-                ->whereIn('course_id', $userCourseIds)
-                ->pluck('category_id');
-            $query->whereIn('category_id', $categoryIds)
-                ->whereNotIn('category_id', $excludeCategoryIds);
+        }
+
+        // 🔹 検索条件を反映
+        if ($search) {
+            $query->where('agenda_name', 'like', "%{$search}%");
+        }
+
+        // 除外カテゴリを反映
+        if (!empty($excludeCategoryIds)) {
+            $query->whereNotIn('category_id', $excludeCategoryIds);
         }
 
         $agendas = $query->orderBy('created_at', 'desc')->paginate(5);
 
         $selectedCategoryName = 'All';
-        if ($categoryId) {
+        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
             $selectedCategory = $categories->firstWhere('id', $categoryId);
             $selectedCategoryName = $selectedCategory ? $selectedCategory->name : 'All';
         }
 
         return view('user.agenda.agendas_list', [
-            'agendas' => $agendas,
+            'agendas' => $agendas, // ここは paginate() なので単純ループでOK
             'categories' => $categories,
             'selectedCategoryId' => $categoryId,
             'selectedCategoryName' => $selectedCategoryName,
+            'search' => $search,
         ]);
     }
+
 
     /**
      * アジェンダ詳細ページ
