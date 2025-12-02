@@ -12,8 +12,8 @@
 
         @php
 
-            $prevUrl = $prevAgenda ? url('user/agendas/' . $prevAgenda->id) : null;
-            $nextUrl = $nextAgenda ? url('user/agendas/' . $nextAgenda->id) : null;
+    $prevUrl = $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null;
+    $nextUrl = $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null;
         @endphp
         <x-f_page_title :search="false" title="{{ $agenda->agenda_name }}" />
 
@@ -38,8 +38,15 @@
 
         {{-- <a href="{{ route('user.agendas.my') }}" class="text-blue-600 hover:underline">一覧に戻る</a> --}}
 
-        <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/agendas') }}"
-            listLabel="一覧へ" />
+     <x-f_btn_list
+            :prevBtn="true"
+            :nextBtn="true"
+            :prevUrl="$prevUrl"
+            :nextUrl="$nextUrl"
+            :listBtn="true"
+            listUrl="{{ url('user/agendas') }}"
+            listLabel="一覧へ"
+        />
 
         <x-f_bread_crumbs />
     </div>
