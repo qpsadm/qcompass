@@ -80,8 +80,6 @@ class AgendaController extends Controller
             $selectedCategoryName = $selectedCategory ? $selectedCategory->name : 'All';
         }
 
-
-
         return view('user.agenda.agendas_list', [
             'agendas' => $agendas,
             'categories' => $categories,
@@ -98,7 +96,7 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
 
-        // 記事そのものはステータスと表示設定だけで取得
+        // 記事そのものはステータスと表示設定だけで取得する
         $agenda = Agenda::where('id', $id)
             ->where('is_show', 1)
             ->where('status', 'yes')
@@ -108,19 +106,16 @@ class AgendaController extends Controller
         $userCategories = $this->getUserCategories($userId);
         $userCategoryIds = $userCategories->pluck('id')->toArray();
 
-        // ユーザーにカテゴリがなければ、記事のカテゴリだけを対象に
-        if (empty($userCategoryIds)) {
-            $userCategoryIds = [$agenda->category_id];
-        }
-
-        // 前後記事用のベースクエリ
+        // prev/next 用ベースクエリ
         $baseQuery = Agenda::where('is_show', 1)
             ->where('status', 'yes')
             ->whereIn('category_id', $userCategoryIds)
             ->where('category_id', '!=', 35);
 
-        // 前後記事取得
+        // prev/next を汎用メソッドで取得
         [$prevAgenda, $nextAgenda] = $this->getPrevNext($baseQuery, $agenda);
+
+
 
         return view('user.agenda.agendas_info', [
             'agenda'     => $agenda,
@@ -182,40 +177,33 @@ class AgendaController extends Controller
     }
 
 
-    private function getPrevNext($query, $current)
+    private function getPrevNext($baseQuery, $current)
     {
-        $currentId = $current->id;
-        $currentCreatedAt = $current->created_at;
-
-        // Prev（古い記事）
-        $prev = (clone $query)
-            ->where(function ($q) use ($currentCreatedAt, $currentId) {
-                $q->where('created_at', '<', $currentCreatedAt)
-                    ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
-                        $sub->where('created_at', $currentCreatedAt)
-                            ->where('id', '<', $currentId);
+        // Prev（現在より古い記事を取得）
+        $prev = (clone $baseQuery)
+            ->where(function ($q) use ($current) {
+                $q->where('created_at', '<', $current->created_at)
+                    ->orWhere(function ($sub) use ($current) {
+                        $sub->where('created_at', $current->created_at)
+                            ->where('id', '<', $current->id);
                     });
             })
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->first();
 
-        // Next（新しい記事）
-        $next = (clone $query)
-            ->where(function ($q) use ($currentCreatedAt, $currentId) {
-                $q->where('created_at', '>', $currentCreatedAt)
-                    ->orWhere(function ($sub) use ($currentCreatedAt, $currentId) {
-                        $sub->where('created_at', $currentCreatedAt)
-                            ->where('id', '>', $currentId);
+        // Next（現在より新しい記事を取得）
+        $next = (clone $baseQuery)
+            ->where(function ($q) use ($current) {
+                $q->where('created_at', '>', $current->created_at)
+                    ->orWhere(function ($sub) use ($current) {
+                        $sub->where('created_at', $current->created_at)
+                            ->where('id', '>', $current->id);
                     });
             })
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
             ->first();
-
-        // もし Prev/Next が同じ記事を返す可能性があるなら null にする
-        if ($prev && $prev->id === $currentId) $prev = null;
-        if ($next && $next->id === $currentId) $next = null;
 
         return [$prev, $next];
     }
