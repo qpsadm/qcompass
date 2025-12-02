@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* font-loading
+------------------------------------- */
+/* Regular */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Regular.ttf') format('truetype');
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 500;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Medium.ttf') format('truetype');
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Bold.ttf') format('truetype');
+}
+
+/* Black */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 900;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Black.ttf') format('truetype');
+}
+
+:root {
+    /* font */
+    --font-family: "Zen Maru Gothic", sans-serif;
+
+    /* font-size */
+    --font-size: 18px;
+
+    /* text-color */
+    --text-color-1: #000;
+    --text-color-2: #5E5E5E;
+    --text-color-3: #FFF;
+
+    /* placeholder-color */
+    --placeholder-color: #bababa;
+
+    /* main-color */
+    --main-color: #870019;
+
+    /* sub-color */
+    --sub-color-1: #f9b1b1;
+    --sub-color-2: #ffe9e9;
+    --sub-color-3: #df7a7a;
+
+    /* accent-color */
+    --accent-color: #1dcf32;
+
+    /* footer-color */
+    --footer-color: #414141;
+}
+
+.font-medium {
+    font-size: 20px !important;
+    line-height: 30px !important;
+}
+
+.font-large {
+    font-size: 22px !important;
+    line-height: 33px !important;
+}
