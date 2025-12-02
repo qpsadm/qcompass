@@ -8,7 +8,12 @@
 
 @section('main-content')
 <div class="container">
-    <x-f_page_title :search="true" title="質疑応答一覧" />
+    {{-- f_page_title の検索フォームを活用 --}}
+    <x-f_page_title
+        :search="true"
+        title="質疑応答一覧"
+        :searchName="'keyword'"
+        :searchPlaceholder="'キーワードで求人検索'" />
 
     {{-- カテゴリーやタグのリストがあればここで表示 --}}
     <x-f_category_list type="question" :tags="$tags" />
