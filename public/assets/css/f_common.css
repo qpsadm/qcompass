@@ -304,10 +304,11 @@ header::after {
 .side-menu::after {
     content: "";
     position: fixed;
-    width: 20px;
-    height: 20px;
-    background: url(../images/icon/frame-cut.svg) no-repeat;
+    width: 15px;
+    height: 15px;
+    mask: url(../images/icon/frame-cut.svg) no-repeat;
     background-size: 100%;
+    background-color: var(--sub-color-1);
 }
 
 .side-menu::before {
@@ -558,15 +559,16 @@ header::after {
 .container::after {
     content: "";
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     z-index: 999;
-    background: url(../images/icon/frame-cut.svg) no-repeat;
+    mask: url(../images/icon/frame-cut.svg) no-repeat;
     background-size: 100%;
+    background-color: var(--sub-color-1);
 }
 
 .container::before {
-    bottom: 15px;
+    bottom: 14px;
     left: 15px;
     transform: rotate(180deg);
 }
