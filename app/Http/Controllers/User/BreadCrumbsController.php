@@ -14,13 +14,17 @@ class BreadCrumbsController extends Controller
     {
         // ここで配列を生成（DBや設定ファイルから読み込むことも可能）
         $labels = [
-            'news_list' => 'お知らせ',
-            'agendas_list' => 'アジェンダ',
+            'news_list' => '新着情報一覧',
+            'news_info' => '新着情報詳細',
+            'main_news' => '訓練に関するお知らせ',
+            'my_news' => '講座に関するお知らせ',
+            'agendas_list' => 'アジェンダ一覧',
+            'info' => 'アジェンダ詳細',
             'job_offers_list' => '就職支援',
             'reports_create' => '日報作成',
             'contact_create' => 'お問い合わせ',
             'mypage' => 'マイページ',
-            'questions_list' => '学習支援',
+            'questions_list' => '質疑応答一覧',
         ];
 
         // 子ページから親ページルートへのマップ

@@ -181,3 +181,67 @@ Breadcrumbs::for('auto', function (Trail $trail, $entity = null) {
         $trail->push($label, route($currentName, $routeParams));
     }
 });
+
+// Breadcrumbs::for('auto', function (Trail $trail) {
+
+//     $route = request()->route();
+//     $routeName = $route->getName();
+//     $routeParams = $route->parameters();
+
+//     if (!$routeName) {
+//         return $trail->push('TOP', route('user.top'));
+//     }
+
+//     // 親ページマップ（そのまま）
+//     $parentRoutes = [
+//         'user.news.news_info'         => 'user.news.news_list',
+//         'user.agenda.info'            => 'user.agenda.agendas_list',
+//         'user.job.job_offers_info'    => 'user.job.job_offers_list',
+//         'user.reports.reports_info'   => 'user.reports',
+//     ];
+
+//     $trail->push('TOP', route('user.top'));
+
+//     // ラベル（DB + config）
+//     $labels = BreadCrumbsController::getRouteLabels();
+
+//     // ルートをドットで分割
+//     $parts = explode('.', $routeName);
+
+//     // パンくず用に段階的にルート名を組み立てる
+//     $accumulated = [];
+
+//     foreach ($parts as $part) {
+
+//         if ($part === 'user') continue;
+
+//         $accumulated[] = $part;
+
+//         $currentRouteName = 'user.' . implode('.', $accumulated);
+
+//         // ラベルを取得（なければ自動変換）
+//         $label = $labels[$part] ?? Str::headline($part);
+
+//         // ルートが存在する場合のみ追加
+//         if (Route::has($currentRouteName)) {
+
+//             // モデルパラメータがあれば上書き
+//             foreach ($routeParams as $key => $value) {
+//                 if (is_object($value)) {
+//                     $label = $value->title ?? $value->name ?? $label;
+//                 }
+//             }
+
+//             // 親ページ処理
+//             if (isset($parentRoutes[$routeName])) {
+//                 $parentRoute = $parentRoutes[$routeName];
+//                 $parentLabelPart = explode('.', $parentRoute)[1];
+//                 $parentLabel = $labels[$parentLabelPart] ?? Str::headline($parentLabelPart);
+
+//                 $trail->push($parentLabel, route($parentRoute));
+//             }
+
+//             $trail->push($label, route($currentRouteName, $routeParams));
+//         }
+//     }
+// });
