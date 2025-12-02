@@ -54,7 +54,7 @@
             </div>
 
             <div class="btn-area">
-                <button class="close-btn" href="">送信する</button>
+                <button class="close-btn" href="">変更する</button>
             </div>
 
         </form>
