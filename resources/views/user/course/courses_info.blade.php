@@ -15,27 +15,27 @@
         <table>
             <tr>
                 <td class="table-title"><p>講座名</p></td>
-                <td><h3>{{ $course->course_name }}</h3></td>
+                <td class="table-text"><h3>{{ $course->course_name }}</h3></td>
             </tr>
             <tr>
                 <td class="table-title"><p>概要</p></td>
-                <td><p>{{ $course->description }}</p></td>
+                <td class="table-text"><p>{{ $course->description }}</p></td>
             </tr>
             <tr>
                 <td class="table-title"><p>開始日</p></td>
-                <td><p>{{ $course->start_date ?? '---' }}</p></td>
+                <td class="table-text"><p>{{ $course->start_date ?? '---' }}</p></td>
             </tr>
             <tr>
                 <td class="table-title"><p>終了日</p></td>
-                <td><p>{{ $course->end_date ?? '---' }}</p></td>
+                <td class="table-text"><p>{{ $course->end_date ?? '---' }}</p></td>
             </tr>
             <tr>
                 <td class="table-title"><p>日別計画表</p></td>
-                <td><a href="{{ $course->plan_path }}">日別計画表を開く</a>
+                <td class="table-text"><a href="{{ $course->plan_path }}">日別計画表を開く</a>
             </tr>
             <tr>
                 <td class="table-title"><p>パンフレット</p></td>
-                <td><a href="{{ $course->flier_path }}">パンフレットを開く</a></td>
+                <td class="table-text"><a href="{{ $course->flier_path }}">パンフレットを開く</a></td>
             </tr>
         </table>
     </div>

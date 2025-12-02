@@ -5,12 +5,13 @@ table {
     border-radius: 15px;
 }
 
-table, th, td {
-    border: 1px solid #000;
+tr {
+    display: flex;
+    gap: 30px;
 }
 
 td {
-    padding: 15px 0 15px 15px;
+    padding: 15px 0;
 }
 
 .table-title {
@@ -22,6 +23,11 @@ td {
     background-color: var(--sub-color-1);
     border-radius: 7px;
     text-align: center;
+}
+
+.table-text {
+    flex: 1;
+    margin-top: 5px;
 }
 
 .page-content h3 {
