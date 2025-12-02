@@ -9,12 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('course_types', function (Blueprint $table) {
+
             $table->id()->comment('主キー');
 
-            $table->foreignId('organizer_id')
-                ->constrained('organizers')
-                ->onDelete('restrict')
-                ->comment('実施主体ID');
+            $table->unsignedBigInteger('organizer_id')->nullable()->default(1)->comment('実施主体ID');
+
+            // $table->foreignId('organizer_id')
+            //     ->constrained('organizers')
+            //     ->onDelete('set null')
+            //     ->comment('実施主体ID');
 
             $table->string('name', 255)->comment('名前');
             $table->boolean('is_show')->default(true)->comment('表示フラグ');
@@ -28,6 +31,8 @@ return new class extends Migration
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
             $table->comment('講座分野マスタ');
+
+            $table->foreign('organizer_id')->references('id')->on('organizers')->onDelete('set null');
         });
     }
 

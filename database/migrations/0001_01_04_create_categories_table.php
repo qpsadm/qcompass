@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('parent_id')->nullable()->comment('親ID');
 
-            $table->unsignedBigInteger('top_id')->comment('最上位ID');
+            $table->unsignedBigInteger('top_id')->nullable()->comment('最上位ID');
 
             $table->integer('level')->default(1)->comment('階層');
             $table->integer('child_count')->default(0)->comment('子数');

@@ -12,8 +12,8 @@ return new class extends Migration
 
             $table->id()->comment('主キー');
 
-            $table->unsignedBigInteger('course_id')->comment('講座ID');
-            $table->unsignedBigInteger('user_id')->comment('講師のユーザーID');
+            $table->unsignedBigInteger('course_id')->nullable()->comment('講座ID');
+            $table->unsignedBigInteger('user_id')->nullable()->comment('講師のユーザーID');
 
             $table->tinyInteger('role_in_course')->nullable()->comment('担当区分');
 
@@ -29,11 +29,11 @@ return new class extends Migration
             // 外部キーの制約
             $table->foreign('course_id')
                 ->references('id')->on('courses')
-                ->onDelete('cascade');
+                ->onDelete('set null');
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
-                ->onDelete('cascade');
+                ->onDelete('set null');
 
             // 複合ユニーク制約
             $table->unique(['course_id', 'user_id']);

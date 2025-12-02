@@ -15,12 +15,12 @@ return new class extends Migration
             // 外部キー
             $table->foreignId('course_id')
                 ->constrained('courses')
-                ->onDelete('cascade')
+                ->onDelete('set null')
                 ->comment('コースID');
 
             $table->foreignId('agenda_id')
                 ->constrained('agendas')
-                ->onDelete('cascade')
+                ->onDelete('set null')
                 ->comment('アジェンダID');
 
             $table->integer('order_no');

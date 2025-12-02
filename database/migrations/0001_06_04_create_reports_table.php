@@ -12,9 +12,9 @@ return new class extends Migration
 
             $table->id()->comment('主キー');
 
-            $table->unsignedBigInteger('user_id')->comment('提出者ID');
+            $table->unsignedBigInteger('user_id')->nullable()->comment('提出者ID');
 
-            $table->unsignedBigInteger('course_id')->comment('講座ID');
+            $table->unsignedBigInteger('course_id')->nullable()->comment('講座ID');
 
             $table->date('date')->comment('日報対象日');
             $table->string('title', 100)->comment('タイトル');
@@ -35,9 +35,9 @@ return new class extends Migration
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
 
             // 外部キー
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('restrict');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('set null');
 
             $table->comment('日報マスタ');
         });

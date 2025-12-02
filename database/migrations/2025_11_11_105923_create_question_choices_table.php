@@ -11,8 +11,10 @@ return new class extends Migration
         Schema::create('quiz_question_choices', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('quiz_question_id')
-                ->constrained('quiz_questions');
+            // $table->foreignId('quiz_question_id')
+            //     ->constrained('quiz_questions');
+
+            $table->unsignedBigInteger('quiz_question_id')->nullable()->default(null);
 
             $table->text('choice_text');
             $table->boolean('is_correct')->default(false);
@@ -25,6 +27,9 @@ return new class extends Migration
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+            // 外部キー
+            $table->foreign('quiz_question_id')->references('id')->on('quiz_questions')->onDelete('set null');
         });
     }
 

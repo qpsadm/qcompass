@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('roman_name', 255)->nullable()->comment('ローマ字');
             $table->string('password', 255)->comment('パスワード');
 
-            $table->unsignedBigInteger('role_id')->default(3)->comment('権限');
+            $table->unsignedBigInteger('role_id')->nullable()->default(3)->comment('権限');
 
             // 初期値：5：ハロワーク徳島
-            $table->unsignedBigInteger('division_id')->default(5)->comment('所属部署');
+            $table->unsignedBigInteger('division_id')->nullable()->default(5)->comment('所属部署');
 
             $table->string('remember_token', 100)->nullable()->comment('ログイン保持トークン');
 
@@ -41,9 +41,9 @@ return new class extends Migration
 
             $table->comment('ユーザーマスタ');
 
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
 
-            $table->foreign('division_id')->references('id')->on('divisions')->onDelete('restrict');
+            $table->foreign('division_id')->references('id')->on('divisions')->onDelete('set null');
         });
 
 
