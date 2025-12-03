@@ -60,8 +60,8 @@ window.onload = function () {
     $(".day").text(day);
 
     // 曜日表示
-    const weekDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-    $(".week").text(weekDayList[today.getDay()]);
+    //const weekDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    // $(".week").text(weekDayList[today.getDay()]);
 
     // 日報入力用日付（#date）
     const dateInput = $("#date");
