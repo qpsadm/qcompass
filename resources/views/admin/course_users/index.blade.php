@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="w-full px-4 pt-4 pb-6 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
-    <h1 class="text-2xl font-bold mb-4">ユーザー講座一覧</h1>
+    <h1 class="text-2xl font-bold mb-4">講座受講者一覧</h1>
 
     <div class="flex items-center justify-between mb-4">
         <!-- 新規作成 -->

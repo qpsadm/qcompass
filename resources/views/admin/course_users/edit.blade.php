@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-4">
         <div class="bg-white rounded-lg shadow-md p-6 max-w-lg mx-auto">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">ユーザー講座編集</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">講座受講者編集</h1>
 
             {{-- バリデーションエラー --}}
             @if ($errors->any())

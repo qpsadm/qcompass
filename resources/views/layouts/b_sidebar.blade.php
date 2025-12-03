@@ -204,7 +204,7 @@
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">学習参考コンテンツ</a>
                         </li>
                         <li><a href="{{ route('admin.job_offers.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">求人票</a>
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">就職支援</a>
                         </li>
                     </ul>
                 </div>

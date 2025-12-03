@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-6 max-w-5xl bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold mb-6">質問作成</h1>
+        <h1 class="text-3xl font-bold mb-6">質疑応答作成</h1>
 
         <form action="{{ route('admin.questions.store') }}" method="POST" x-data="questionForm()" x-init="init()">
             @csrf

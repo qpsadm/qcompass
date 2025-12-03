@@ -77,6 +77,12 @@ class JobOfferController extends Controller
         return redirect()->route('admin.job_offers.index')->with('success', '求人票を更新しました');
     }
 
+    public function show($id)
+    {
+        $job_offer = JobOffer::findOrFail($id);
+        return view('job_offers.show', compact('job_offer'));
+    }
+
     public function destroy($id)
     {
         $job_offer = JobOffer::findOrFail($id);

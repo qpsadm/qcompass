@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-4 max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold mb-6">質問編集</h1>
+            <h1 class="text-3xl font-bold mb-6">質疑応答編集</h1>
 
             <form action="{{ route('admin.questions.update', $question->id) }}" method="POST" x-data="questionForm()"
                 x-init="init()">

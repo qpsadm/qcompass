@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
     <div class="container mx-auto p-6">
@@ -55,4 +55,83 @@
             </tbody>
         </table>
     </div>
+@endsection --}}
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto p-6 max-w-4xl">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        {{-- タイトル --}}
+        <h1 class="text-2xl font-bold mb-4">資格詳細: {{ $certification->name }}</h1>
+
+        @php
+            // 資格一覧にあったレベルラベルの定義を移植
+            $levelLabels = [
+                1 => '初級',
+                2 => '上級',
+            ];
+            $levelName = $levelLabels[$certification->level] ?? $certification->level;
+        @endphp
+
+        {{-- メタ情報 (ID, レベル) --}}
+        <div class="text-gray-500 mb-4 text-sm">
+            <span>ID: {{ $certification->id }}</span> /
+            <span>資格レベル: {{ $levelName }}</span> /
+            <span>作成日: {{ $certification->created_at->format('Y-m-d') }}</span>
+        </div>
+
+        {{-- 詳細情報（テーブル形式で表示） --}}
+        <div class="bg-gray-100 p-4 rounded mb-4">
+            <table class="w-full text-left">
+                <tbody>
+                    <tr>
+                        <th class="py-2 pr-4 w-1/4 font-semibold border-b">資格名</th>
+                        <td class="py-2 border-b">{{ $certification->name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 pr-4 font-semibold border-b">資格レベル</th>
+                        <td class="py-2 border-b">{{ $levelName }}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 pr-4 font-semibold border-b">説明・備考</th>
+                        <td class="py-2 border-b">{!! nl2br(e($certification->description)) !!}</td>
+                    </tr>
+                    <tr>
+                        <th class="py-2 pr-4 font-semibold">参照URL</th>
+                        <td class="py-2">
+                            @if ($certification->url)
+                                <a href="{{ $certification->url }}" target="_blank"
+                                    class="text-blue-600 hover:underline break-all">{{ $certification->url }}</a>
+                            @else
+                                なし
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {{-- アクションボタン --}}
+        <div class="flex gap-3">
+            {{-- 一覧に戻るボタン (お知らせ詳細のルート名 admin.announcements.index を置き換え) --}}
+            <a href="{{ route('admin.certifications.index') }}"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
+
+            {{-- 編集ボタン (お知らせ詳細のルート名 admin.announcements.edit を置き換え) --}}
+            @if(isset($certification->id))
+            <a href="{{ route('admin.certifications.edit', $certification->id) }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">編集</a>
+            @endif
+
+            {{-- 削除ボタン (資格一覧のコードを移植) --}}
+            <form action="{{ route('admin.certifications.destroy', $certification->id) }}" method="POST"
+                class="inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded"
+                    onclick="return confirm('この資格情報を削除しますか？')">削除</button>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

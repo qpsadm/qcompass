@@ -6,7 +6,7 @@
             <h1 class="text-2xl font-bold mb-4">求人票詳細</h1>
             <div class="border p-4 rounded mb-4">
                 <p><strong>求人タイトル:</strong> {{ $job_offer->title }}</p>
-                <p><strong>説明・備考:</strong> {{ $job_offer->company }}</p>
+                <p><strong>説明・備考:</strong> {{ $job_offer->description }}</p>
                 <p><strong>PDFファイル保存パス:</strong> {{ $job_offer->file_path }}</p>
                 <p><strong>更新者名:</strong> {{ $job_offer->updated_user_name }}</p>
                 <p><strong>削除:</strong> {{ $job_offer->deleted_at }}</p>

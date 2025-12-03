@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h1 class="text-xl font-bold mb-4">お知らせ分類 作成</h1>
+    <h1 class="text-xl font-bold mb-4">お知らせカテゴリ 作成</h1>
 
     <form method="POST" action="{{ route('admin.announcement_types.store') }}">
         @csrf
