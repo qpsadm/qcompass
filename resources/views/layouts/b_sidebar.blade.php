@@ -99,15 +99,15 @@
                         </li>
 
                         <li><a href="{{ route('admin.course_category.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座カテゴリー</a>
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座・カテゴリー</a>
                         </li>
 
                         <li><a href="{{ route('admin.course_teachers.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座講師</a>
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座・講師</a>
                         </li>
 
                         <li><a href="{{ route('admin.course_users.index') }}"
-                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座受講者</a>
+                                class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座・受講者</a>
                         </li>
                         <li><a href="{{ route('admin.reports.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">日報管理</a>
@@ -136,7 +136,7 @@
 
                         <li> <a href="{{ route('admin.files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
-                                アジェンダファイル
+                                アジェンダ・ファイル
                             </a>
                         </li>
                         {{-- <li><a href="{{ route('course_agendas.index') }}"
@@ -182,7 +182,7 @@
                         </li>
                         <li> <a href="{{ route('admin.files.index', ['type' => 'announcement', 'targetId' => 0]) }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
-                                お知らせファイル一覧
+                                お知らせ・ファイル一覧
                             </a>
                         </li>
                     </ul>
