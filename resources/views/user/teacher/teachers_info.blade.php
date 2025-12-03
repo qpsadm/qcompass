@@ -9,23 +9,21 @@
 @section('main-content')
     <div class="container">
 
-        <div class="page-title">
-            <h2>講師紹介（{{ $teacher->name }}先生）</h2>
-        </div>
+        <x-f_page_title :search="false" title="講師紹介（{{ $teacher->name }}先生）" />
 
         <div class="teacher-detail">
 
             <div class="teacher-profile">
                 <div class="profile-left">
                     <div class="teacher-image">
-                        <img src="{{--  {{ $teacher_details->avatar_path }} --}}" alt="">
+                        <img src="{{ $teacher->avatar_path }}" alt="">
                     </div>
                     <div class="teacher-name">
                         <p>{{ $teacher->name }}（{{ $teacher->furigana }}）先生</p>
                     </div>
                 </div>
 
-                {{-- {{ $teacher_details->bio }} --}}
+                {{ $teacher->detail->bio }}
 
                 <div class="profile-right">
                     <div class="teacher-data">
