@@ -40,7 +40,7 @@ header::after {
 header::before {
     top: 0;
     left: 0;
-    width: 15px;
+    width: 20px;
     height: 100vh;
 }
 
@@ -48,7 +48,7 @@ header::after {
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 15px;
+    height: 20px;
 }
 
 .header-container {
@@ -298,9 +298,9 @@ header::after {
     top: 0;
     right: 0;
     z-index: 999;
-    width: 300px;
+    width: 310px;
     height: 100vh;
-    padding: 25px 15px 40px;
+    padding: 25px 20px 40px;
     background-color: var(--sub-color-1);
 }
 
@@ -317,13 +317,13 @@ header::after {
 
 .side-menu::before {
     top: 75px;
-    left: 15px;
+    left: 20px;
     transform: rotate(-90deg);
 }
 
 .side-menu::after {
     top: 75px;
-    right: 300px;
+    right: 310px;
 }
 
 .side-menu-container {
@@ -537,12 +537,12 @@ header::after {
 
 @media screen and (max-width: 1324px) {
     .side-menu {
-        width: 15px;
+        width: 20px;
         padding: 0;
     }
 
     .side-menu::after {
-        right: 15px;
+        right: 20px;
     }
 
     .side-menu-container {
@@ -555,7 +555,7 @@ header::after {
     main
 ========================================= */
 .container {
-    margin: 75px 300px 0 15px;
+    margin: 75px 310px 0 20px;
     padding: 75px 65px 0;
 }
 
@@ -572,14 +572,14 @@ header::after {
 }
 
 .container::before {
-    bottom: 14px;
-    left: 15px;
+    bottom: 20px;
+    left: 20px;
     transform: rotate(180deg);
 }
 
 .container::after {
-    bottom: 15px;
-    right: 300px;
+    bottom: 20px;
+    right: 310px;
     transform: rotate(90deg);
 }
 
@@ -589,12 +589,12 @@ header::after {
 
 @media screen and (max-width: 1324px) {
     .container {
-        margin: 75px 15px 0 15px;
+        margin: 75px 20px 0 20px;
         padding: 45px 35px 0;
     }
 
     .container::after {
-        right: 15px;
+        right: 20px;
     }
 }
 
@@ -608,7 +608,7 @@ header::after {
     footer
 ========================================= */
 footer {
-    margin: 0 300px 15px 15px;
+    margin: 0 310px 20px 20px;
     padding: 50px 65px;
     background-color: var(--footer-color);
     color: var(--text-color-3);
@@ -697,7 +697,7 @@ footer {
 
 @media screen and (max-width: 1324px) {
     footer {
-        margin: 0 15px 15px;
+        margin: 0 20px 20px;
     }
 }
 
