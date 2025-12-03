@@ -12,14 +12,6 @@ use App\Models\Tag;
 class QuestionController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->checkCrudPermission();
-            return $next($request);
-        });
-    }
-
     private function checkCrudPermission()
     {
         $roleId = auth()->user()->role_id;

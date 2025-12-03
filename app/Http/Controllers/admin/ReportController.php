@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/Admin/ReportController.php
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -12,14 +11,6 @@ use App\Mail\ReportSubmitted;
 
 class ReportController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->checkCrudPermission();
-            return $next($request);
-        });
-    }
 
     private function checkCrudPermission()
     {
@@ -48,12 +39,12 @@ class ReportController extends Controller
             }
             abort(403, 'アクセス権限がありません。');
         }
-
+    } // ← 閉じ波括弧を追加
 
     // 一覧
     public function index(Request $request)
     {
-        $query = \App\Models\Report::query();
+        $query = Report::query();
 
         // ユーザー名・講座名・タイトル検索
         if ($search = $request->input('search')) {
@@ -79,7 +70,6 @@ class ReportController extends Controller
         return view('admin.reports.index', compact('reports'));
     }
 
-
     // 作成フォーム
     public function create()
     {
@@ -92,7 +82,6 @@ class ReportController extends Controller
     // 保存＋メール送信
     public function store(Request $request)
     {
-        // ← ここにバリデーションを書く
         $validated = $request->validate([
             'course_id'  => 'required|exists:courses,id',
             'date'       => 'required|date',
@@ -102,33 +91,29 @@ class ReportController extends Controller
             'notice'     => 'nullable|string',
         ]);
 
-        // DB保存
         $report = Report::create(array_merge($validated, [
-            'user_id'         => Auth::id(),
+            'user_id' => Auth::id(),
             'created_user_name' => auth()->user()->name ?? 'system',
             'updated_user_name' => auth()->user()->name ?? 'system',
         ]));
 
-        // 送信先（提出者＋上司）
         $recipients = [
             Auth::user()->email,
             'manager@example.com',
         ];
 
         foreach ($recipients as $email) {
-            Mail::to($email)->queue(new ReportSubmitted($report)); // queueで非同期送信
+            Mail::to($email)->queue(new ReportSubmitted($report));
         }
 
-        return redirect()->route('admin.reports.index')->with('success', '日報を登録しました。通知メールを送信しました。');
+        return redirect()->route('admin.reports.index')
+            ->with('success', '日報を登録しました。通知メールを送信しました。');
     }
 
-    // POST送信を受ける
+    // プレビュー
     public function previewBlade(Request $request)
     {
-        // フォームから送られたデータを全部取得
         $reportData = $request->all();
-
-        // 講座IDがあれば講座名を取得
         $course = null;
         if (!empty($reportData['course_id'])) {
             $course = \App\Models\Course::find($reportData['course_id']);
@@ -142,15 +127,13 @@ class ReportController extends Controller
 
     public function show(Report $report)
     {
-        // 講座情報を取得
         $course = $report->course;
-
         return view('admin.reports.show', compact('report', 'course'));
     }
 
     public function destroy(Report $report)
     {
-        $report->delete(); // DBから削除
+        $report->delete();
         return redirect()->route('admin.reports.index')
             ->with('success', '日報を削除しました。');
     }
