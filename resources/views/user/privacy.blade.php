@@ -127,6 +127,12 @@
         <x-f_btn_list :prevBtn="false" :listBtn="true" :nextBtn="false" listUrl="{{ route('user.top') }}"
             listLabel="トップへもどる" />
 
-        <x-f_bread_crumbs />
+        {{-- <x-f_bread_crumbs /> --}}
+        <div class="bread-crumbs">
+            <ol>
+                <li><a href="top">TOP</a></li>
+                <li><a href="">利用規約・プライバシーポリシー</a></li>
+            </ol>
+        </div>
     </div>
 @endsection
