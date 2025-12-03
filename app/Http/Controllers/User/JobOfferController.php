@@ -28,9 +28,9 @@ class JobOfferController extends Controller
         }
 
         // ここで表示期間フィルタは任意
-        $now = now();
-        $jobsQuery->where('start_datetime', '<=', $now)
-                  ->where('end_datetime', '>=', $now);
+        // $now = now();
+        // $jobsQuery->where('start_datetime', '<=', $now)
+        //     ->where('end_datetime', '>=', $now);
 
         $jobs = $jobsQuery->orderBy('created_at', 'desc')
             ->paginate(10)   // ページネーション
