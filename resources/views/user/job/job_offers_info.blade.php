@@ -2,39 +2,40 @@
 
 
 @section('code-page-css')
-<link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
 @endsection
 
 
 @section('main-content')
-<div class="container">
-    <x-f_page_title :search="false" title="{{ $job->title }}" />
+    <div class="container">
+        <x-f_page_title :search="false" title="{{ $job->title }}" />
 
 
-            <div class="page-content
+        <div
+            class="page-content
 @switch(session('settings.fontsize', 2))
 @case(1)@break
 @case(2) font-medium @break
 @case(3) font-large @break
 @endswitch">
 
-        <div>{!! nl2br(e($job->description)) !!}</div>
+            <div>{!! $job->description !!}</div>
 
-
-        @if ($job->file_path)
-        <div class="mt-4">
-            <a href="{{ asset('storage/job_offers/' . basename($job->file_path)) }}" target="_blank" class="btn btn-primary">
-                PDF を開く
-            </a>
+            @if ($job->file_path)
+                <div class="mt-4">
+                    <a href="{{ asset('storage/job_offers/' . basename($job->file_path)) }}" target="_blank"
+                        class="btn btn-primary">
+                        PDF を開く
+                    </a>
+                </div>
+            @endif
         </div>
-        @endif
+
+
+        <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/job') }}"
+            listLabel="一覧画面へ" />
+
+
+        <x-f_bread_crumbs />
     </div>
-
-
-    <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/job') }}"
-        listLabel="一覧画面へ" />
-
-
-    <x-f_bread_crumbs />
-</div>
 @endsection

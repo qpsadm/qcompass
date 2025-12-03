@@ -25,7 +25,7 @@
                     @foreach ($job_offers as $jobOffer)
                         <tr>
                             <td class="border px-4 py-2">{{ $jobOffer->title }}</td>
-                            <td class="border px-4 py-2">{{ $jobOffer->description }}</td>
+                            <td class="border px-4 py-2">{!! $jobOffer->description !!}</td>
 
                             {{-- PDFアイコン --}}
                             <td class="border px-4 py-2 text-center">
