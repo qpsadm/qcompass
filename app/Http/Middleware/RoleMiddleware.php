@@ -10,18 +10,22 @@ class RoleMiddleware
 {
     /**
      * role_id をチェックするミドルウェア
-     * 例: ->middleware('role:2,3') なら role_id 2 または 3 だけアクセス可
+     * 例: ->middleware('role:4,5,6,7,8')
      */
     public function handle(Request $request, Closure $next, ...$allowedRoles)
     {
-        // 未ログインなら 403
-        if (!Auth::check()) {
+        $user = Auth::user();
+
+        if (!$user) {
             abort(403, 'ログインが必要です。');
         }
 
-        $roleId = Auth::user()->role_id;
+        $roleId = $user->role_id ?? null;
 
-        // role_id=1 はログイン不可 → その場でログアウトさせる
+        if (!$roleId) {
+            abort(403, 'アクセス権限がありません。');
+        }
+
         if ($roleId == 1) {
             Auth::logout();
             return redirect()->route('login')->withErrors([
@@ -29,8 +33,18 @@ class RoleMiddleware
             ]);
         }
 
-        // アクセス許可されていない role_id
-        if (!in_array($roleId, $allowedRoles)) {
+        if (in_array($roleId, [2, 3]) && $request->is('admin/*')) {
+            return redirect()->route('user.top')->with('error', 'この権限では管理画面にアクセスできません。');
+        }
+
+        // allowedRoles が文字列の場合に対応
+        $roles = [];
+        foreach ($allowedRoles as $r) {
+            $roles = array_merge($roles, explode(',', $r));
+        }
+        $roles = array_map('intval', $roles);
+
+        if (!empty($roles) && !in_array($roleId, $roles)) {
             abort(403, 'アクセス権限がありません。');
         }
 
