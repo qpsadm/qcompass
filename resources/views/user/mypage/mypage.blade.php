@@ -51,6 +51,7 @@
                         {{ ($user_details->fontsize ?? 2) == 3 ? 'checked' : '' }}>
                     <label for="large">大</label>
                 </div>
+                <p class="note">※フォントサイズの変更は、各ページの詳細画面および日報作成フォーム内にのみ適用されます。</p>
             </div>
 
             <div class="btn-area">
