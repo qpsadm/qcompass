@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>ログイン | QLIP-Compass</title>
+
+    {{-- faviconを読み込む --}}
+    <link href="{{ asset('assets/images/icon/favicon.png') }}" id="favicon" rel="icon">
 
     <link rel="stylesheet" href="{{ asset('assets/css/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/f_variable.css') }}">
