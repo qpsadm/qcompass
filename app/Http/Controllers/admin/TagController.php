@@ -41,9 +41,10 @@ class TagController extends Controller
         // role 7,8: フル CRUD → ここでは特にチェック不要
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::all();
+        $order = $request->get('order', 'desc');
+        $tags = Tag::orderBy('id', $order)->paginate(10); // 10件ずつ表示
         return view('admin.tags.index', compact('tags'));
     }
 

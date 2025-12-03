@@ -42,13 +42,14 @@ class CourseTypeController extends Controller
         // role 7,8: フル CRUD → ここでは特にチェック不要
     }
 
-    
+
     public function index()
     {
-        $course_type = CourseType::with('organizer')->get();
-        return view('admin.course_type.index', compact('course_type'));
-    }
+        // 1ページあたり10件でページネーション
+        $course_types = CourseType::with('organizer')->orderBy('name')->paginate(10);
 
+        return view('admin.course_type.index', compact('course_types'));
+    }
     public function create()
     {
         $organizers = Organizer::all();
