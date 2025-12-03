@@ -44,7 +44,7 @@ class QuoteController extends Controller
         // role 7,8: フル CRUD → ここでは特にチェック不要
     }
 
-    
+
     // 一覧表示
     public function index()
     {
@@ -199,5 +199,60 @@ class QuoteController extends Controller
         session(['quote_mode' => $mode]);
 
         return redirect()->back();
+    }
+
+    public function show($id)
+    {
+        $quote = Quote::with(['quoteParts', 'authorParts'])->findOrFail($id);
+
+        // URL クエリでモード取得、なければセッション、さらになければ normal
+        $mode = request()->query('mode', session('quote_mode', 'normal'));
+        session(['quote_mode' => $mode]); // 次回以降も保持
+
+        if ($mode === 'normal') {
+            // 通常モード → パーツ結合
+            $quote_text = '';
+            foreach (['A', 'B', 'C'] as $part) {
+                $quotePart = $quote->quoteParts->firstWhere('part_type', $part);
+                $quote_text .= $quotePart?->text ?? '';
+            }
+
+            $author_text = '';
+            foreach (['A', 'B'] as $part) {
+                $authorPart = $quote->authorParts->firstWhere('part_type', $part);
+                $author_text .= $authorPart?->text ?? '';
+            }
+        } else {
+            // 原文モード or ランダムモード → quote_full / author_full
+            $quote_text = $quote->quote_full;
+            $author_text = $quote->author_full;
+
+            // ランダムモードの場合、パーツをランダム結合したものを生成
+            if ($mode === 'mix') {
+                $quote_text = '';
+                $author_text = '';
+
+                // ランダムに3つの名言を取得
+                $randomQuotes = Quote::where('is_show', true)->inRandomOrder()->take(3)->get();
+
+                $parts = ['A', 'B', 'C'];
+                $author_parts = ['A', 'B']; // 作者パーツはA/Bのみ
+
+                foreach ($parts as $index => $part) {
+                    $quotePart  = $randomQuotes[$index]->quoteParts->firstWhere('part_type', $part) ?? null;
+                    $authorPart = $randomQuotes[$index]->authorParts->firstWhere('part_type', $author_parts[$index] ?? 'A') ?? null;
+
+                    $quote_text  .= $quotePart?->text ?? '';
+                    $author_text .= $authorPart?->text ?? '';
+                }
+            }
+        }
+
+        return view('admin.quotes.show', [
+            'quote' => $quote,
+            'quote_text' => $quote_text,
+            'author_text' => $author_text,
+            'mode' => $mode,
+        ]);
     }
 }

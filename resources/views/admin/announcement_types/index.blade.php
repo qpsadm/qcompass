@@ -4,9 +4,9 @@
 <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md"
     x-data="{ open: false, deleteUrl: '', deleteName: '' }">
 
-    <h1 class="text-2xl font-bold mb-4">お知らせカテゴリ一覧</h1>
+    <h1 class="text-2xl font-bold mb-4 text-gray-800">お知らせカテゴリ一覧</h1>
 
-    <!-- 左：新規作成のみ -->
+    <!-- 新規作成ボタン -->
     <div class="flex items-center mb-4">
         <a href="{{ route('admin.announcement_types.create') }}"
             class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
@@ -17,21 +17,23 @@
 
     <div class="overflow-x-auto">
         <table class="table-auto border-collapse border w-full text-sm">
-            <thead class="bg-gray-100">
+            <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="border px-4 py-2 w-16">ID</th>
+                    <th class="border px-4 py-2 text-center w-12">No.</th>
+                    <th class="border px-4 py-2 w-16 text-center">ID</th>
                     <th class="border px-4 py-2">種別名</th>
                     <th class="border px-4 py-2 text-center w-32">表示</th>
                     <th class="border px-4 py-2 text-center w-60">操作</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($types as $item)
-                <tr>
-                    <td class="border px-4 py-2">{{ $item->id }}</td>
+                @forelse($types as $item)
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($types->currentPage() - 1) * $types->perPage() + $loop->iteration }}
+                    </td>
+                    <td class="border px-4 py-2 text-center">{{ $item->id }}</td>
                     <td class="border px-4 py-2">{{ $item->type_name }}</td>
-
-                    {{-- 表示/非表示 --}}
                     <td class="border px-4 py-2 text-center">
                         @if($item->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -39,11 +41,8 @@
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                         @endif
                     </td>
-
-                    {{-- 操作 --}}
                     <td class="border px-4 py-2 text-center">
-                        <div class="flex items-center justify-center flex-nowrap space-x-2">
-
+                        <div class="flex items-center justify-center space-x-2">
                             <!-- 編集 -->
                             <a href="{{ route('admin.announcement_types.edit', $item->id) }}"
                                 class="flex items-center text-blue-600 hover:text-blue-700">
@@ -57,17 +56,23 @@
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
                             </button>
-
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="5" class="border px-4 py-2 text-center text-gray-500">
+                        データがありません
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
 
         {{-- ページネーション --}}
         <div class="mt-4">
             {{ $types->links() }}
+
         </div>
     </div>
 
@@ -95,11 +100,10 @@
         </div>
     </div>
 
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </div>
-
-<style>
-    [x-cloak] {
-        display: none !important;
-    }
-</style>
 @endsection

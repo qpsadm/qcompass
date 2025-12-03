@@ -285,6 +285,10 @@ Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache'])
             'achievements_release' => AchievementsReleaseController::class,
         ]);
 
+        // ★ toggleMode 用のルートを追加 ★
+        Route::get('quotes/toggle-mode/{quote}', [QuoteController::class, 'toggleMode'])
+            ->name('quotes.toggleMode');
+
         // 受講生一覧
         Route::get('courses/{course}/students', [CourseController::class, 'students'])
             ->name('courses.students');
