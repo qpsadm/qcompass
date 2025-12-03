@@ -726,7 +726,7 @@ footer {
     border-bottom: 1px solid var(--main-color);
 }
 
-.page-title h2 {
+.page-title h1 {
     position: relative;
     width: calc(100% - 330px);
     padding-left: 33px;
@@ -734,21 +734,21 @@ footer {
     font-weight: bold;
 }
 
-.page-title h2::before,
-.page-title h2::after {
+.page-title h1::before,
+.page-title h1::after {
     content: "";
     position: absolute;
     background-color: #74A0FF;
 }
 
-.page-title h2::before {
+.page-title h1::before {
     top: 5px;
     left: 0;
     width: 13px;
     height: 13px;
 }
 
-.page-title h2::after {
+.page-title h1::after {
     top: 18px;
     left: 13px;
     width: 10px;
@@ -756,7 +756,7 @@ footer {
 }
 
 @media screen and (max-width: 1324px) {
-    .page-title h2 {
+    .page-title h1 {
         width: 100%;
     }
 }
