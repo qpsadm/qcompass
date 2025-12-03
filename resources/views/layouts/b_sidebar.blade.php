@@ -18,7 +18,256 @@
         {{-- ダッシュボード --}}
         <x-nav-link route="admin.dashboard" label="ダッシュボード" />
 
-        {{-- ユーザー管理 --}}
+     {{-- システム管理 --}}
+
+   <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_user.svg') }}" class="w-4 h-4 mr-2">
+                <span>システム管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+
+
+                         <li><a href="{{ route('admin.divisions.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">部署</a>
+                </li>
+
+                     <li><a href="{{ route('admin.roles.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">権限</a>
+
+                                    <li><a href="{{ route('admin.organizers.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座開催者</a>
+                </li>
+                   <li><a href="{{ route('admin.levels.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座種類</a>
+                </li>
+                    <li><a href="{{ route('admin.course_type.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座分野</a>
+                </li>
+   <li><a href="{{ route('admin.course_type.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">技術分類タグ</a>
+                </li>
+                        <li><a href="{{ route('admin.announcement_types.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせカテゴリ</a>
+                </li>
+                    <li><a href="{{ route('admin.daily_quotes.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言</a>
+                </li>
+                <li><a href="{{ route('admin.quotes.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言(悪魔合体)</a>
+                </li>
+                
+              {{-- 表示テーマ --}}
+      {{-- <li><a href="{{ route('admin.quotes.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">表示テーマ</a>
+                </li>
+            </ul> --}}
+
+        </div>
+{{-- ユーザー管理 --}}
+
+
+   <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_user.svg') }}" class="w-4 h-4 mr-2">
+                <span>ユーザー管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.users.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">受講者一覧</a>
+                </li>
+                <li><a href="{{ route('admin.course_teachers.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">社員一覧</a>
+                </li>
+            </ul>
+        </div>
+
+
+{{-- 講座管理 --}}
+<div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white ">
+                <img src="{{ asset('assets/images/icon/b_course.svg') }}" class="w-4 h-4 mr-2">
+                <span>講座管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+
+                        <li><a href="{{ route('admin.courses.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座一覧</a>
+                </li>
+
+<li><a href="{{ route('admin.course_category.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座カテゴリー</a>
+                </li>
+
+<li><a href="{{ route('admin.course_teachers.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座講師</a>
+                </li>
+
+                <li><a href="{{ route('admin.course_users.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座受講者</a>
+                </li>
+<li><a href="{{ route('admin.reports.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">日報管理</a>
+                </li>
+
+                <li><a href="{{ route('admin.questions.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">質疑応答一覧</a>
+                </li>
+            </ul>
+        </div>
+
+{{-- アジェンダ管理 --}}
+
+  <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4 mr-2">
+                <span>アジェンダ管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.agendas.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ一覧</a>
+                </li>
+                       <li><a href="{{ route('admin.agendas.create') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ登録</a>
+                </li>
+
+                <li> <a href="{{ route('admin.files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                        アジェンダファイル
+                    </a>
+                </li>
+                {{-- <li><a href="{{ route('course_agendas.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座アジェンダ</a>
+                </li> --}}
+            </ul>
+        </div>
+{{-- メディア管理 --}}
+
+ {{-- <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_information.svg') }}" class="w-4 h-4 mr-2">
+                <span>メディア管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+
+                <li> <a href="{{ route('admin.files.index', ['type' => 'announcement', 'targetId' => 0]) }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                        メディア一覧
+                    </a>
+                </li>
+                      <li> <a href="{{ route('admin.files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                        メディア登録
+                    </a>
+                </li>
+            </ul>
+        </div> --}}
+
+{{-- お知らせ管理 --}}
+
+  <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_information.svg') }}" class="w-4 h-4 mr-2">
+                <span>お知らせ管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.announcements.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせ一覧</a>
+                </li>
+                              <li><a href="{{ route('admin.announcements.create') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせ投稿</a>
+                </li>
+                <li> <a href="{{ route('admin.files.index', ['type' => 'announcement', 'targetId' => 0]) }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
+                        お知らせファイル一覧
+                    </a>
+                </li>
+</ul>
+        </div>
+
+{{-- 学習サポート管理 --}}
+
+ <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_desk.svg') }}" class="w-4 h-4 mr-2">
+                <span>学習サポート</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+
+                <li><a href="{{ route('admin.certifications.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">資格情報管理</a>
+                </li>
+                <li><a href="{{ route('admin.learnings.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">学習参考コンテンツ</a>
+                </li>
+                            <li><a href="{{ route('admin.job_offers.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">求人票</a>
+                </li>
+            </ul>
+        </div>
+
+
+{{-- クイズ管理 --}}
+     <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4 mr-2">
+                <span>クイズ管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.quizzes.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">クイズ一覧</a>
+                </li>
+                <li><a href="{{ route('admin.quizzes.create') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">クイズ登録</a>
+                </li>
+            </ul>
+        </div>
+
+     {{-- その他 --}}
+
+<div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_system.svg') }}" class="w-4 h-4 mr-2">
+                <span>その他</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+
+                </li>
+
+
+                <li><a href="{{ route('admin.achievements.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">実績管理</a>
+                </li>
+                <li><a href="{{ route('admin.achievements_release.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">実績解除管理</a>
+                </li>
+</ul>
+        </div>
+
+
+
+{{--
+
+  <div class="accordion">
+            <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
+                <img src="{{ asset('assets/images/icon/b_desk.svg') }}" class="w-4 h-4 mr-2">
+                <span>事務管理</span>
+            </button>
+            <ul class="accordion-content hidden ml-4 mt-1 space-y-1">
+                <li><a href="{{ route('admin.job_offers.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">求人票管理</a>
+                </li>
+                <li><a href="{{ route('admin.certifications.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">資格管理</a>
+                </li>
+                <li><a href="{{ route('admin.learnings.index') }}"
+                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">学習コンテンツ管理</a>
+                </li>
+            </ul>
+        </div>
+
+
+        {{-- ユーザー管理
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_user.svg') }}" class="w-4 h-4 mr-2">
@@ -41,7 +290,7 @@
             </ul>
         </div>
 
-        {{-- 講座管理 --}}
+        {{-- 講座管理
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white ">
                 <img src="{{ asset('assets/images/icon/b_course.svg') }}" class="w-4 h-4 mr-2">
@@ -70,7 +319,7 @@
             </ul>
         </div>
 
-        {{-- アジェンダ管理 --}}
+        {{-- アジェンダ管理 -
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4 mr-2">
@@ -91,7 +340,7 @@
             </ul>
         </div>
 
-        {{-- お知らせ管理 --}}
+        {{-- お知らせ管理 --
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_information.svg') }}" class="w-4 h-4 mr-2">
@@ -115,7 +364,7 @@
             </ul>
         </div>
 
-        {{-- 事務管理 --}}
+        {{-- 事務管理 --
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_desk.svg') }}" class="w-4 h-4 mr-2">
@@ -134,7 +383,7 @@
             </ul>
         </div>
 
-        {{-- クイズ管理 --}}
+        {{-- クイズ管理 --
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_quiz.svg') }}" class="w-4 h-4 mr-2">
@@ -150,7 +399,7 @@
             </ul>
         </div>
 
-        {{-- 日報管理 --}}
+        {{-- 日報管理 --
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_diary.svg') }}" class="w-4 h-4 mr-2">
@@ -163,7 +412,7 @@
             </ul>
         </div>
 
-        {{-- システム管理 --}}
+        {{-- システム管理 --
         <div class="accordion">
             <button class="accordion-btn flex items-center w-full p-2 rounded hover:bg-blue-700 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_system.svg') }}" class="w-4 h-4 mr-2">
@@ -194,6 +443,7 @@
                 </li>
             </ul>
         </div>
+ --}}
 
     </nav>
 
