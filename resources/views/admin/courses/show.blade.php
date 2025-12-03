@@ -2,8 +2,12 @@
 
 @section('content')
     <div class="container mx-auto p-4 max-w-5xl">
-        <h1 class="text-3xl font-bold mb-6">講座詳細：{{ $course->course_name }}</h1>
-
+        <h1 class="text-3xl font-bold mb-6">
+            講座詳細：{{ $course->course_name }}
+            <span class="text-sm text-gray-500">
+                （全 {{ $total }} 件中 {{ $position }} 件目）
+            </span>
+        </h1>
         {{-- 講座詳細テーブル --}}
         <div class="bg-white shadow-md rounded-lg p-6 overflow-x-auto">
             <table class="w-full table-auto border-collapse">
