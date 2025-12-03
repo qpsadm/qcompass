@@ -53,7 +53,7 @@ class AgendaController extends Controller
 
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-        $excludeCategoryIds = [35];
+        $excludeCategoryIds = [52];
 
         // カテゴリ除外
         $categories = $categories->reject(fn($c) => in_array($c->id, $excludeCategoryIds));
@@ -119,7 +119,7 @@ class AgendaController extends Controller
         $categoryId = session('agenda_category_id');
 
         // 除外カテゴリリスト
-        $excludeCategoryIds = [35];
+        $excludeCategoryIds = [52];
 
         // 前後記事取得用クエリ
         $baseQuery = Agenda::where('status', 'yes')
@@ -216,5 +216,16 @@ class AgendaController extends Controller
             ->first();
 
         return [$prev, $next];
+    }
+    /**
+     * カテゴリ指定でアジェンダをページネート取得
+     */
+    public function getAgendasDataByCategoryPaginate($categoryId, $perPage = 5)
+    {
+        return Agenda::where('category_id', $categoryId)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 }

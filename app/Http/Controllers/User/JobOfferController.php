@@ -36,7 +36,7 @@ class JobOfferController extends Controller
             ->appends($request->query());
 
         // ここで agendas を取得
-        $agendas = Agenda::where('category_id', 35)
+        $agendas = Agenda::where('category_id', 52)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
@@ -57,7 +57,7 @@ class JobOfferController extends Controller
             ->firstOrFail();
 
         $agendaController = new UserAgendaController();
-        $agendas = $agendaController->getAgendasDataByCategoryPaginate(35, 5);
+        $agendas = $agendaController->getAgendasDataByCategoryPaginate(52, 5);
 
         return view('user.job.job_offers_info', compact('job', 'agendas'));
     }
