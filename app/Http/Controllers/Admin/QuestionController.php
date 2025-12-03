@@ -11,6 +11,42 @@ use App\Models\Tag;
 
 class QuestionController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->checkCrudPermission();
+            return $next($request);
+        });
+    }
+
+    private function checkCrudPermission()
+    {
+        $roleId = auth()->user()->role_id;
+
+        // role 4: 閲覧のみ
+        if ($roleId == 4) {
+            $editableRoutes = ['create', 'store', 'edit', 'update', 'destroy'];
+            foreach ($editableRoutes as $route) {
+                if (\Route::currentRouteAction() && str_contains(\Route::currentRouteAction(), $route)) {
+                    abort(403, 'アクセス権限がありません。');
+                }
+            }
+        }
+
+        // role 5: 制限付き編集可
+        if ($roleId == 5) {
+            $allowed = ['questions', 'reports', 'course_teacher', 'agenda'];
+            $path = request()->path();
+            foreach ($allowed as $a) {
+                if (str_contains($path, $a)) {
+                    return; // OK
+                }
+            }
+            abort(403, 'アクセス権限がありません。');
+        }
+    }
+
     // 一覧
     public function index()
     {

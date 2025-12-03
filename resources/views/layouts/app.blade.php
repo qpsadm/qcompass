@@ -7,6 +7,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
+
+    {{-- faviconを読み込む --}}
+    <link href="{{ asset('assets/images/icon/favicon.png') }}" id="favicon" rel="icon">
 </head>
 
 <body class="bg-gray-50 min-h-screen flex flex-col">

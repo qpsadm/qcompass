@@ -12,6 +12,44 @@ use App\Mail\ReportSubmitted;
 
 class ReportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->checkCrudPermission();
+            return $next($request);
+        });
+    }
+
+    private function checkCrudPermission()
+    {
+        $roleId = auth()->user()->role_id;
+
+        // role 1,2,3: 管理画面不可は middleware で弾かれる想定
+
+        // role 4: 閲覧のみ
+        if ($roleId == 4) {
+            $editableRoutes = ['create', 'store', 'edit', 'update', 'destroy'];
+            foreach ($editableRoutes as $route) {
+                if (\Route::currentRouteAction() && str_contains(\Route::currentRouteAction(), $route)) {
+                    abort(403, 'アクセス権限がありません。');
+                }
+            }
+        }
+
+        // role 5: 制限付き編集可
+        if ($roleId == 5) {
+            $allowed = ['reports', 'course_teacher', 'questions', 'agenda'];
+            $path = request()->path();
+            foreach ($allowed as $a) {
+                if (str_contains($path, $a)) {
+                    return; // OK
+                }
+            }
+            abort(403, 'アクセス権限がありません。');
+        }
+
+
     // 一覧
     public function index(Request $request)
     {
