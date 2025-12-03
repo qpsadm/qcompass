@@ -55,10 +55,14 @@
         <!-- Password -->
         <div class="login-item">
             {{-- <x-input-label for="password" :value="__('Password')" /> --}}
-            <div class="item-box">
+            <div class="item-box password">
                 <label for="name">パスワード</label>
                 <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
                     placeholder="パスワードを入力してください" required autocomplete="current-password" />
+                <button class="eye-btn" type="button" onclick="togglePass()">
+                    <img class="eye-open" src="{{ asset('assets/images/icon/f_icon_eye_open.svg') }}" alt="">
+                    <img class="eye-close" src="{{ asset('assets/images/icon\f_icon_eye_close.svg') }}" alt="">
+                </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="error-msg" />
         </div>

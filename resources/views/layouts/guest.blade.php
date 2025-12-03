@@ -56,6 +56,15 @@
 
 
     </div>
+
+    <script>
+        function togglePass() {
+            const pw = document.getElementById('password');
+            const eyeBtn = document.getElementsByClassName('eye-btn')[0];
+            pw.type = pw.type === 'password' ? 'text' : 'password';
+            eyeBtn.classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>

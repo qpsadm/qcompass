@@ -140,6 +140,37 @@ input[type="checkbox"] {
     color: var(--text-color-3);
 }
 
+.item-box.password {
+    position: relative;
+}
+
+.item-box.password #password {
+    padding-right: 50px;
+}
+
+.eye-btn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+}
+
+.eye-btn img {
+    width: 20px;
+}
+
+.eye-btn .eye-open {
+    display: none;
+}
+
+.eye-btn.active .eye-open {
+    display: block;
+}
+
+.eye-btn.active .eye-close {
+    display: none;
+}
+
 /* 背景のアイコンランダム表示 */
 .random_arrange.is-visible {
     opacity: 1;
