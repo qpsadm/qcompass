@@ -208,9 +208,9 @@ Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache'])
         Route::post('users/{id}/restore', [AdminUserController::class, 'restore'])->name('users.restore');
         Route::delete('users/{id}/forceDelete', [AdminUserController::class, 'forceDelete'])->name('users.forceDelete');
 
-        // 講座ID付き create
-        Route::get('course_category/create/{courseId}', [CourseCategoryController::class, 'create'])
-            ->name('course_category.create');
+        // 講座ID付き edit
+        Route::get('course_category/edit/{courseId}', [CourseCategoryController::class, 'edit'])
+            ->name('course_category.edit');
 
         // CKEditor
         Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
