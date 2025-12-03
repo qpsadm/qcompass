@@ -124,7 +124,7 @@
 
             {{-- ページネーション --}}
             <div class="mt-4">
-                {{ $questions->appends(request()->query())->links() }}
+                {{ $courses->appends(request()->query())->links() }}
             </div>
         </div>
 

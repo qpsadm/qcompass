@@ -210,7 +210,19 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::findOrFail($id);
-        return view('admin.courses.show', compact('course'));
+
+        // 一覧と同じ並び順（ID昇順）
+        $allCourses = Course::orderBy('id', 'asc')->get();
+
+        // 何件目か（0スタートなので +1）
+        $position = $allCourses->search(function ($item) use ($course) {
+            return $item->id === $course->id;
+        }) + 1;
+
+        // 合計件数
+        $total = $allCourses->count();
+
+        return view('admin.courses.show', compact('course', 'position', 'total'));
     }
 
     public function destroy($id)
