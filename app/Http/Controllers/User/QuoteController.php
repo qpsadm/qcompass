@@ -8,12 +8,43 @@ use App\Models\Quote;
 
 class QuoteController extends Controller
 {
+    /**
+     * 今日の名言一覧ページ
+     */
     public function index()
     {
-        $quotes = Quote::where('is_show', true)->get();
-        return view('user.quotes.index', compact('quotes'));
+        // 今日の名言をランダムで取得
+        $todayQuote = Quote::where('is_show', true)->inRandomOrder()->first();
+
+        // 現在の表示モード（full / mix）
+        $quote_mode = session('quote_mode', 'full');
+
+        $quote_parts = [];
+        $author_parts = [];
+
+        if ($quote_mode === 'mix' && $todayQuote) {
+            // ABCパーツが無い場合でも空文字で埋める
+            foreach (['A', 'B', 'C'] as $part) {
+                $q = $todayQuote->quoteParts->firstWhere('part_type', $part);
+                $a = $todayQuote->authorParts->firstWhere('part_type', $part);
+
+                $quote_parts[]  = (object)['text' => $q?->text ?? ''];
+                $author_parts[] = (object)['text' => $a?->text ?? ''];
+            }
+
+            // セッションに保存
+            session([
+                'mix_quote_parts'  => $quote_parts,
+                'mix_author_parts' => $author_parts,
+            ]);
+        }
+
+        return view('user.quotes.index', compact('todayQuote', 'quote_mode'));
     }
 
+    /**
+     * 表示モード切替 (full / mix)
+     */
     public function toggleMode(Request $request)
     {
         $mode = $request->input('mode', 'full');
@@ -23,17 +54,14 @@ class QuoteController extends Controller
             $quote_parts_text  = [];
             $author_parts_text = [];
 
-            foreach (['A', 'B', 'C'] as $part) {
+            // ランダム名言を取得
+            $randomQuote = Quote::where('is_show', true)->inRandomOrder()->first();
 
-                // 各パーツ用にランダム名言を1件取得
-                $randomQuote = Quote::where('is_show', true)->inRandomOrder()->first();
-                if (!$randomQuote) continue;
-
-                $quotePart  = $randomQuote->quoteParts->firstWhere('part_type', $part);
-                $authorPart = $randomQuote->authorParts->firstWhere('part_type', $part);
-
-                $quote_parts_text[$part]  = $quotePart?->text  ?? '';
-                $author_parts_text[$part] = $authorPart?->text ?? '';
+            if ($randomQuote) {
+                foreach (['A', 'B', 'C'] as $part) {
+                    $quote_parts_text[$part]  = $randomQuote->quoteParts->firstWhere('part_type', $part)?->text ?? '';
+                    $author_parts_text[$part] = $randomQuote->authorParts->firstWhere('part_type', $part)?->text ?? '';
+                }
             }
 
             session([

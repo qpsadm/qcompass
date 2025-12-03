@@ -9,19 +9,22 @@ class Quote extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['quote_full', 'author_full', 'is_show'];
+    protected $fillable = [
+        'quote_full',
+        'author_full',
+        'is_show',
+        'created_user_name',
+        'updated_user_name',
+        'deleted_user_name',
+    ];
 
-    // 名言パーツ
     public function quoteParts()
     {
-        return $this->hasMany(QuotePart::class, 'quote_id', 'id');
+        return $this->hasMany(QuotePart::class, 'quote_id');
     }
 
-    // 作者パーツ
     public function authorParts()
     {
-        return $this->hasMany(AuthorPart::class, 'quote_id', 'id');
+        return $this->hasMany(AuthorPart::class, 'quote_id');
     }
-
-    // アクセサや parts() は削除
 }

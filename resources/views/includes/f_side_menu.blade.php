@@ -37,9 +37,9 @@
 
                     @if (!empty($todayQuote))
                         <div class="short-text {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                            @if ($quote_mode === 'mix' && session('mix_quote_parts'))
-                                @foreach (session('mix_quote_parts') as $text)
-                                    {{ $text }}
+                            @if ($quote_mode === 'mix')
+                                @foreach (session('mix_quote_parts', []) as $text)
+                                    {{ $text ?? '' }}
                                 @endforeach
                             @else
                                 {{ $todayQuote->quote_full }}
@@ -48,9 +48,9 @@
 
                         <div class="short-name {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
                             -
-                            @if ($quote_mode === 'mix' && session('mix_author_parts'))
-                                @foreach (session('mix_author_parts') as $text)
-                                    {{ $text }}
+                            @if ($quote_mode === 'mix')
+                                @foreach (session('mix_author_parts', []) as $text)
+                                    {{ $text ?? '' }}
                                 @endforeach
                             @else
                                 {{ $todayQuote->author_full ?? '作者不明' }}
@@ -62,6 +62,7 @@
                     @else
                         <span class="short-text">名言が登録されていません</span>
                     @endif
+
                 </div>
 
                 <form id="quote-mode-form" method="POST" action="{{ route('user.quote_mode') }}"

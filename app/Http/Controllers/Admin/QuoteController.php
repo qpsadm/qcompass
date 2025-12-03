@@ -7,13 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\Quote;
 use App\Models\QuotePart;
 use App\Models\AuthorPart;
+use Illuminate\Support\Facades\DB;
 
 class QuoteController extends Controller
 {
     // 一覧表示
     public function index()
     {
-        $quotes = Quote::with(['quoteParts', 'authorParts'])->latest()->paginate(20);
+        // ABCパーツがなくても全件取得
+        $quotes = Quote::orderBy('id', 'desc')->paginate(20);
+
         return view('admin.quotes.index', compact('quotes'));
     }
 
