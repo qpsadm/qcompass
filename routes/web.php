@@ -67,10 +67,18 @@ use App\Http\Controllers\{
 // 公開ページ
 // =============================
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('user.top'); // ログイン後のトップ
+    if (!auth()->check()) {
+        return redirect()->route('login'); // 未ログインは login へ
     }
-    return redirect()->route('login'); // Breeze の login route
+
+    $user = auth()->user();
+
+    // 管理者権限かどうかで分岐
+    if ($user->role_id >= 4) {
+        return redirect()->route('admin.dashboard'); // 管理者トップ
+    } else {
+        return redirect()->route('user.top'); // 一般ユーザー
+    }
 });
 
 // =============================
