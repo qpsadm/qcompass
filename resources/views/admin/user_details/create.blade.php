@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-4 max-w-5xl">
-        <h1 class="text-3xl font-bold mb-6">詳細情報作成：{{ $user->name }}</h1>
+        <h1 class="text-3xl font-bold mb-6">ユーザー詳細情報作成：{{ $user->name }}</h1>
 
         <form action="{{ route('admin.user_details.store', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">お知らせ作成</h1>
+            <h1 class="text-2xl font-bold mb-4">お知らせ投稿</h1>
 
             @if ($errors->any())
                 <div class="bg-red-100 text-red-700 p-3 rounded mb-4">

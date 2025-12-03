@@ -78,7 +78,7 @@
                                 </td>
 
                                 <td class="border px-2 py-1 text-center">
-                                    <a href="{{ route('admin.learnings.edit', $learning->id) }}"
+                                    <a href="{{ route('admin.learnings.show', $learning->id) }}"
                                         class="text-blue-600 hover:underline">編集</a>
                                     <a href="#"
                                         @click.prevent="open = true; deleteUrl='{{ route('admin.learnings.destroy', $learning->id) }}'; deleteName='{{ $learning->title }}';"

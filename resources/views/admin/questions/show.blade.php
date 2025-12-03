@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto p-6 max-w-5xl">
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-3xl font-bold mb-6">質問詳細</h1>
+        <h1 class="text-3xl font-bold mb-6">質疑応答詳細</h1>
 
         <table class="table-auto w-full border-collapse">
             <tbody>

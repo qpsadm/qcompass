@@ -58,7 +58,7 @@
                                     @endif
                                 </td>
                                 <td class="border px-2 py-1 text-center">
-                                    <a href="{{ route('admin.certifications.edit', $certification->id) }}"
+                                    <a href="{{ route('admin.certifications.show', $certification->id) }}"
                                         class="text-blue-600 hover:underline">
                                         編集
                                     </a>

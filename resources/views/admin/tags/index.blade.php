@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-6 pb-24"> {{-- pb-24 でフッター分の余白 --}}
-        <h1 class="text-2xl font-bold mb-6">タグ一覧</h1>
+        <h1 class="text-2xl font-bold mb-6">技術分類タグ一覧</h1>
 
         {{-- 新規作成 --}}
         <a href="{{ route('admin.tags.create') }}"
