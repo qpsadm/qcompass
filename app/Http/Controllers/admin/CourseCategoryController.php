@@ -29,71 +29,9 @@ class CourseCategoryController extends Controller
     public function store(Request $request)
     {
         $courseId = $request->course_id;
-        $categoryIds = $request->category_ids ?? [];
+        $categoryIds = $request->input('category_ids', []);
 
         foreach ($categoryIds as $categoryId) {
-            // 論理削除を含めて既存レコードを確認
-            $existing = CourseCategory::withTrashed()
-                ->where('course_id', $courseId)
-                ->where('category_id', $categoryId)
-                ->first();
-
-            if ($existing) {
-                // 既存レコードが論理削除されていれば復活
-                $existing->restore();
-
-                // 更新情報を反映
-                $existing->update([
-                    'note' => $request->note,
-                    'is_show' => $request->is_show,
-                    'updated_user_name' => \Illuminate\Support\Facades\Auth::user()->name,
-                ]);
-            } else {
-                // 新規作成
-                CourseCategory::create([
-                    'course_id' => $courseId,
-                    'category_id' => $categoryId,
-                    'note' => $request->note,
-                    'is_show' => $request->is_show,
-                    'created_user_name' => \Illuminate\Support\Facades\Auth::user()->name,
-                ]);
-            }
-        }
-
-        // 既存の紐付けで、送信されなかったカテゴリは削除
-        CourseCategory::where('course_id', $courseId)
-            ->whereNotIn('category_id', $categoryIds)
-            ->get()
-            ->each(function ($category) {
-                $category->deleted_user_name = \Illuminate\Support\Facades\Auth::user()->name;
-                $category->save();
-                $category->delete();
-            });
-
-        return redirect()->route('admin.course_category.index')
-            ->with('success', 'カテゴリ設定を更新しました');
-    }
-
-
-
-    public function show($id)
-    {
-        $CourseCategory = CourseCategory::findOrFail($id);
-        return view('admin.course_category.show', compact('CourseCategory'));
-    }
-
-    public function edit($id)
-    {
-        $CourseCategory = CourseCategory::findOrFail($id);
-        return view('admin.course_category.edit', compact('CourseCategory'));
-    }
-
-    public function update(Request $request, $courseId)
-    {
-        $categoryIds = $request->category_ids ?? [];
-
-        foreach ($categoryIds as $categoryId) {
-            // 論理削除済みも含めて確認
             $existing = CourseCategory::withTrashed()
                 ->where('course_id', $courseId)
                 ->where('category_id', $categoryId)
@@ -104,10 +42,11 @@ class CourseCategoryController extends Controller
                 if ($existing->trashed()) {
                     $existing->restore();
                 }
+
                 $existing->update([
                     'note' => $request->note,
-                    'is_show' => $request->is_show,
-                    'updated_user_name' => \Illuminate\Support\Facades\Auth::user()->name,
+                    'is_show' => $request->has('is_show') ? 1 : 0, // チェックなしは0
+                    'updated_user_name' => auth()->user()->name,
                 ]);
             } else {
                 // 新規作成
@@ -115,17 +54,70 @@ class CourseCategoryController extends Controller
                     'course_id' => $courseId,
                     'category_id' => $categoryId,
                     'note' => $request->note,
-                    'is_show' => $request->is_show,
-                    'created_user_name' => \Illuminate\Support\Facades\Auth::user()->name,
+                    'is_show' => $request->has('is_show') ? 1 : 0,
+                    'created_user_name' => auth()->user()->name,
                 ]);
             }
         }
 
-        // **既存のカテゴリを消さない**ので論理削除処理は省略
+        // 選択されなかったカテゴリを削除（ソフトデリート）
+        CourseCategory::where('course_id', $courseId)
+            ->whereNotIn('category_id', $categoryIds)
+            ->get()
+            ->each(function ($cat) {
+                $cat->delete();
+            });
+
+        return redirect()->route('admin.course_category.edit', $courseId)
+            ->with('success', 'カテゴリ設定を保存しました。');
+    }
+
+
+
+    public function show($id)
+    {
+        // そのまま編集ページにリダイレクトする場合
+        return redirect()->route('admin.course_category.edit', $id);
+    }
+
+    public function edit($courseId)
+    {
+        $course = Course::with('categories')->findOrFail($courseId);
+        $categories = Category::all();
+        $selectedCategories = $course->categories->pluck('id')->toArray();
+
+        return view('admin.course_category.edit', compact('course', 'categories', 'selectedCategories'));
+    }
+
+    public function update(Request $request, $courseId)
+    {
+        $course = Course::findOrFail($courseId);
+
+        $categoryIds = $request->input('category_ids', []);
+        $note = $request->note;
+        $is_show = $request->has('is_show') ? 1 : 0;
+
+        $syncData = [];
+        foreach ($categoryIds as $categoryId) {
+            $syncData[$categoryId] = [
+                'note' => $note,
+                'is_show' => $is_show,
+                'updated_user_name' => auth()->user()->name,
+            ];
+        }
+
+        // syncで既存と新規をまとめて更新
+        $course->categories()->sync($syncData);
 
         return redirect()->route('admin.course_category.index')
-            ->with('success', 'カテゴリ設定を更新しました');
+            ->with('success', '講座カテゴリを更新しました。');
     }
+
+
+
+
+
+
 
 
     public function destroy($id)
