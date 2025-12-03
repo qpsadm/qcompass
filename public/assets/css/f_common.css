@@ -729,12 +729,23 @@ footer {
 .page-title h1 {
     position: relative;
     width: calc(100% - 330px);
-    padding-left: 33px;
+    padding-left: 35px;
     font-size: 26px;
     font-weight: bold;
 }
 
-.page-title h1::before,
+.page-title h1::before {
+    content: "";
+    position: absolute;
+    background: url(../images/icon/f_icon_h1.svg) no-repeat;
+    background-size: 100%;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+}
+
+/* .page-title h1::before,
 .page-title h1::after {
     content: "";
     position: absolute;
@@ -753,7 +764,7 @@ footer {
     left: 13px;
     width: 10px;
     height: 10px;
-}
+} */
 
 @media screen and (max-width: 1324px) {
     .page-title h1 {
