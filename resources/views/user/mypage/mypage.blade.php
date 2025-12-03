@@ -9,6 +9,7 @@
 @section('main-content')
     <div class="container">
 
+        {{-- プロフィールモーダル --}}
         <div class="modal-profile">
             <div class="profile-data">
                 <h4>{{ $user->name }}</h4>
@@ -17,18 +18,20 @@
                 <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
 
                 <div class="btn-area">
-                    <button class="close-btn" href="">とじる</button>
+                    <button class="close-btn">とじる</button>
                 </div>
             </div>
         </div>
 
+        {{-- カスタマイズモーダル --}}
         <div class="modal-customize">
             <form action="{{ route('user.settings.update') }}" method="POST">
                 @csrf
                 @php
-                    $initialTheme = $user->detail->theme_id ?? 1; // デフォルトは1
+                    $initialTheme = $user->detail->theme_id ?? 1;
                 @endphp
 
+                {{-- テーマカラー選択 --}}
                 <div class="theme-color-select">
                     <p>テーマカラー</p>
                     <div class="radio-container">
@@ -40,7 +43,7 @@
                     </div>
                 </div>
 
-
+                {{-- フォントサイズ選択 --}}
                 <div class="font-size-select">
                     <label for="">フォントサイズ</label>
                     <div class="radio-container">
@@ -59,21 +62,21 @@
                 </div>
 
                 <div class="btn-area">
-                    <button class="close-btn" href="">変更する</button>
+                    <button class="close-btn">変更する</button>
                 </div>
-
             </form>
 
             <div class="btn-area">
-                <button class="close-btn" href="">とじる</button>
+                <button class="close-btn">とじる</button>
             </div>
         </div>
 
-
         <div class="overlay"></div>
 
+        {{-- ページタイトル --}}
         <x-f_page_title :search="false" title="マイページ" />
 
+        {{-- プロフィール・カレンダー --}}
         <div class="section-flex">
             <div class="section-box profile">
                 <div class="box-title">
@@ -94,11 +97,10 @@
                         <p class="division-tel">{{ $divisions->tel ?? '未設定' }}</p>
 
                         <div class="btn-area">
-                            <button class="open-btn-profile" href="">プロフィールをみる</button>
+                            <button class="open-btn-profile">プロフィールをみる</button>
                             <button class="open-btn-customize">カスタマイズ</button>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -107,46 +109,23 @@
                     <h3>日報カレンダー</h3>
                 </div>
                 <div class="box-content">
-                    <div id='calendar'></div>
-                    <p>※日報を提出した日はチェックマークが表示されます。<br>
-                        提出し忘れていないかチェックしましょう。</p>
+                    <div id="calendar"></div>
+                    <p>※日報を提出した日はチェックマークが表示されます。<br>提出し忘れていないかチェックしましょう。</p>
                 </div>
-
             </div>
         </div>
 
+        {{-- 各種スケジュール --}}
         <div class="section-box">
             <div class="box-title">
                 <h3>各種スケジュール</h3>
             </div>
             <div class="box-content">
-                {{-- <div class="content-list">
-                    <table>
-                        <tr>
-                            <td class="category">
-                                <p class="course-all">日直</p>
-                            </td>
-                            <td class="title"><a href="">日直のスケジュール</a></td>
-                        </tr>
-                        <tr>
-                            <td class="category">
-                                <p class="course-all">日直</p>
-                            </td>
-                            <td class="title"><a href="">清掃・Facebook投稿のスケジュール</a></td>
-                        </tr>
-                        <tr>
-                            <td class="category">
-                                <p class="course-all">日直</p>
-                            </td>
-                            <td class="title"><a href="">第1回朝礼のテーマについて</a></td>
-                        </tr>
-                    </table>
-                </div> --}}
-
                 <x-f_content_list :items="$announcements" />
             </div>
         </div>
 
+        {{-- メモ --}}
         <div class="section-box memo">
             <div class="box-title">
                 <h3>メモ</h3>
@@ -157,7 +136,6 @@
                     <textarea name="memo" id="memo-textarea" rows="6">{{ $user_details->memo ?? '' }}</textarea>
                     <button type="submit">保存</button>
                 </form>
-                <!-- 保存完了メッセージ -->
                 <div id="memo-success" style="display:none; color: green; margin-top: 5px;">
                     メモを保存しました
                 </div>
@@ -165,30 +143,29 @@
         </div>
 
         <x-f_bread_crumbs />
+
     </div>
 @endsection
 
 @section('code-page-js')
     <script src="{{ asset('assets/js/f_mypage.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ページ読み込み時に localStorage のテーマがあれば反映
+            // -------------------------
+            // テーマカラー管理
+            // -------------------------
             let savedTheme = localStorage.getItem('theme_id') || '{{ $initialTheme }}';
-
-            // body にクラスを付ける（テーマ用CSSクラス）
             document.body.className = 'theme-' + savedTheme;
 
-            // ラジオボタンもチェック状態を更新
             const radios = document.querySelectorAll('input[name="theme_id"]');
             radios.forEach(radio => {
                 radio.checked = radio.value === savedTheme;
                 radio.addEventListener('change', function() {
-                    // 選択時に body クラス変更 & localStorage 保存
                     document.body.className = 'theme-' + this.value;
                     localStorage.setItem('theme_id', this.value);
 
-                    // 必要ならサーバー側にも Ajax で保存
                     fetch('/api/set-theme', {
                         method: 'POST',
                         headers: {
@@ -201,22 +178,20 @@
                     });
                 });
             });
-        });
-    </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
+            // -------------------------
+            // FullCalendar初期化
+            // -------------------------
             var calendarEl = document.getElementById('calendar');
 
             var pendingEvents = [
                 @foreach ($pending_diaries as $diary)
                     {
-                        title: '', // 赤丸だけ表示
+                        title: '',
                         start: '{{ $diary->date }}',
                         allDay: true,
-                        backgroundColor: 'transparent', // 背景透明
-                        borderColor: 'transparent', // 枠線透明
+                        backgroundColor: 'transparent',
+                        borderColor: 'transparent',
                         extendedProps: {
                             isPending: true,
                             url: '{!! $diary->url !!}'
@@ -241,76 +216,56 @@
                 @endforeach
             ];
 
-
             window.APP_URL = "{{ url('/') }}";
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-
                 locale: 'ja',
                 timeZone: "Asia/Tokyo",
 
                 dayCellContent: function(arg) {
-                    return arg.date.getDate(); // ← 「日」を消して数字だけにする
+                    return arg.date.getDate();
                 },
 
                 events: pendingEvents.concat(submittedEvents),
 
                 eventContent: function(arg) {
-                    if (arg.event.extendedProps.isPending) {
-                        return {
-                            domNodes: []
-                        }; // 未提出はアイコン非表示
-                    }
-
-                    // 提出済みはアイコン表示
+                    if (arg.event.extendedProps.isPending) return {
+                        domNodes: []
+                    };
                     const img = document.createElement('img');
                     img.src = `${window.APP_URL}/assets/images/icon/f_icon_check_on.svg`;
                     img.alt = "提出済";
                     img.style.width = "40px";
                     img.style.height = "40px";
                     img.style.cursor = "pointer";
-
                     return {
                         domNodes: [img]
                     };
                 },
 
-                // 画像クリック / 提出済みイベントクリック
                 eventClick: function(info) {
                     if (info.event.extendedProps.url) {
                         window.location.href = info.event.extendedProps.url;
                     }
                 },
 
-                // 日付セルクリック
                 dateClick: function(info) {
-                    // その日付のイベントをすべて検索
-                    var event = calendar.getEvents().find(event => {
-                        return event.startStr === info.dateStr && event.extendedProps.url;
-                    });
-
-                    if (event) {
-                        window.location.href = event.extendedProps.url;
-                    }
+                    var event = calendar.getEvents().find(event => event.startStr === info.dateStr &&
+                        event.extendedProps.url);
+                    if (event) window.location.href = event.extendedProps.url;
                 },
 
-                // 日付セルのカーソルとホバー色設定
                 datesSet: function() {
                     document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
                         const date = frame.parentElement.getAttribute('data-date');
+                        var hasEvent = calendar.getEvents().some(event => event.startStr ===
+                            date && event.extendedProps.url);
 
-                        var hasEvent = calendar.getEvents().some(event => {
-                            return event.startStr === date && event.extendedProps.url;
-                        });
-
-                        // 未提出・提出済みのセルだけ pointer
                         frame.style.cursor = hasEvent ? 'pointer' : 'default';
-
-                        // ホバー時に薄い黄色にする
                         if (hasEvent) {
                             frame.addEventListener('mouseenter', function() {
-                                frame.style.backgroundColor = '#fff9c4'; // 薄い黄色
+                                frame.style.backgroundColor = '#fff9c4';
                             });
                             frame.addEventListener('mouseleave', function() {
                                 frame.style.backgroundColor = '';
@@ -320,38 +275,31 @@
                 }
             });
 
-
             calendar.render();
-        });
 
-
-        //メモ用
-        $(document).ready(function() {
-
+            // -------------------------
+            // メモ保存
+            // -------------------------
             $('#memo-form').on('submit', function(e) {
-                e.preventDefault(); // ページ遷移を防ぐ
-
+                e.preventDefault();
                 const memo = $('#memo-textarea').val();
                 const token = $('input[name="_token"]').val();
 
                 $.ajax({
-                    url: "{{ route('user.memo.save') }}", // ルート
+                    url: "{{ route('user.memo.save') }}",
                     type: 'POST',
                     data: {
                         _token: token,
                         memo: memo
                     },
-                    success: function(response) {
-                        // 成功したらメッセージを表示
+                    success: function() {
                         $('#memo-success').fadeIn().delay(2000).fadeOut();
                     },
-                    error: function(xhr, status, error) {
+                    error: function() {
                         alert('保存に失敗しました');
                     }
                 });
             });
-
         });
     </script>
-
 @endsection
