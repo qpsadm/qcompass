@@ -50,6 +50,7 @@ td {
     display: flex;
     flex-wrap: wrap;
     gap: 50px;
+    max-width: 1000px;
 }
 
 .teacher-data-flex {
@@ -88,15 +89,17 @@ td {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: calc(40% - 25px);
+    width: calc(30% - 25px);
     padding: 50px 10px;
     background-color: var(--main-color);
     border-radius: 15px;
 }
 
 .profile-left .teacher-image {
-    width: 45%;
+    width: 80%;
     margin-bottom: 20px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .profile-left .teacher-image img {
@@ -112,9 +115,19 @@ td {
 }
 
 .profile-right {
-    width: calc(60% - 25px);
+    width: calc(70% - 25px);
 }
 
 .profile-right div+div {
     margin-top: 30px;
+}
+
+@media screen and (max-width: 959px) {
+    .profile-left,
+    .profile-right {
+        width: calc(100%);
+    }
+
+    
+
 }
