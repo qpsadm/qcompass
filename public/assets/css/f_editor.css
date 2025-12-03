@@ -15,10 +15,12 @@
 }
 
 .page-content p+p,
+.page-content p+h2,
 .page-content p+h3,
 .page-content p+h4,
 .page-content p+table,
 .page-content div+div,
+.page-content div+h4,
 .page-content h4+h3,
 .page-content p+center,
 .page-content center+h3 {

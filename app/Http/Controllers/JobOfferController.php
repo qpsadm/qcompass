@@ -22,7 +22,8 @@ class JobOfferController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:512',
+            // 長文になる可能性があるため、コメントアウトした　福島
+            // 'description' => 'nullable|string|max:512',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
@@ -56,7 +57,8 @@ class JobOfferController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:512',
+            // 長文になる可能性があるため、コメントアウトした　福島
+            // 'description' => 'nullable|string|max:512',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
