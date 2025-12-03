@@ -10,7 +10,9 @@ class DivisionController extends Controller
 {
     public function index()
     {
-        $divisions = Division::orderBy('id', 'desc')->get();
+        // 1ページあたり10件表示
+        $divisions = Division::orderBy('id')->paginate(10);
+
         return view('admin.divisions.index', compact('divisions'));
     }
 

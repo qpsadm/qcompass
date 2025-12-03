@@ -40,11 +40,13 @@ class OrganizerController extends Controller
 
         // role 7,8: フル CRUD → ここでは特にチェック不要
     }
- 
-    public function index()
+
+    public function index(Request $request)
     {
-        $organizer = Organizer::all();
-        return view('admin.organizers.index', compact('organizer'));
+        // 1ページあたり10件でページネーション
+        $organizers = Organizer::orderBy('name', 'asc')->paginate(10);
+
+        return view('admin.organizers.index', compact('organizers'));
     }
 
     public function create()

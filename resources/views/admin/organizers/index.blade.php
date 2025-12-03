@@ -18,25 +18,29 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
+                    <th class="border px-4 py-2 w-12 text-center">No.</th>
                     <th class="border px-4 py-2">開催者名</th>
                     <th class="border px-4 py-2 w-60 text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($organizer as $Organizer)
+                @forelse($organizers as $organizer)
                 <tr class="hover:bg-gray-50">
-                    <td class="border px-4 py-2">{{ $Organizer->name }}</td>
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($organizers->currentPage() - 1) * $organizers->perPage() + $loop->iteration }}
+                    </td>
+                    <td class="border px-4 py-2">{{ $organizer->name }}</td>
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center space-x-2">
                             {{-- 編集 --}}
-                            <a href="{{ route('admin.organizers.edit', $Organizer->id) }}"
+                            <a href="{{ route('admin.organizers.edit', $organizer->id) }}"
                                 class="flex items-center text-blue-600 hover:text-blue-700">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">編集</span>
                             </a>
 
                             {{-- 削除 --}}
-                            <button @click="open = true; deleteUrl='{{ route('admin.organizers.destroy', $Organizer->id) }}'; deleteName='{{ $Organizer->name }}';"
+                            <button @click="open = true; deleteUrl='{{ route('admin.organizers.destroy', $organizer->id) }}'; deleteName='{{ $organizer->name }}';"
                                 class="flex items-center text-red-600 hover:text-red-700">
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
@@ -46,13 +50,18 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="2" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="3" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    {{-- ページネーション --}}
+    <div class="mt-4">
+        {{ $organizers->links() }}
     </div>
 
     {{-- 共通削除モーダル --}}

@@ -11,7 +11,10 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $order = $request->get('order', 'desc'); // デフォルトは降順
-        $roles = Role::orderBy('role_id', $order)->get();
+
+        // 1ページあたり10件でページネーション
+        $roles = Role::orderBy('role_id', $order)->paginate(10);
+
         return view('admin.roles.index', compact('roles'));
     }
     public function create()

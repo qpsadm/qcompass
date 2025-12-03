@@ -17,6 +17,7 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
+                    <th class="border px-4 py-2 text-center w-12">No.</th>
                     <th class="border px-4 py-2">コード</th>
                     <th class="border px-4 py-2">部署名</th>
                     <th class="border px-4 py-2">表示</th>
@@ -27,9 +28,11 @@
             <tbody>
                 @forelse ($divisions as $division)
                 <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($divisions->currentPage() - 1) * $divisions->perPage() + $loop->iteration }}
+                    </td>
                     <td class="border px-4 py-2">{{ $division->code }}</td>
                     <td class="border px-4 py-2">{{ $division->name }}</td>
-                    {{-- 表示/非表示 --}}
                     <td class="border px-4 py-2 text-center">
                         @if($division->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -37,35 +40,23 @@
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                         @endif
                     </td>
-                    <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td> <!-- 追加 -->
+                    <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td>
                     <td class="border px-4 py-2 text-center">
-                        <div class="flex items-center justify-center flex-nowrap space-x-2">
-                            <!-- 編集 -->
-                            <a href="{{ route('admin.divisions.edit', $division->id) }}"
-                                class="flex items-center text-blue-600 hover:text-blue-700">
-                                <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">編集</span>
-                            </a>
-
-                            <!-- 削除 -->
-                            <button @click="open = true; deleteUrl='{{ route('admin.divisions.destroy', $division->id) }}'; deleteName='{{ $division->name ?? '削除対象' }}';"
-                                class="flex items-center text-red-600 hover:text-red-700">
-                                <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">削除</span>
-                            </button>
-                        </div>
+                        <!-- 操作ボタン -->
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="6" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
-
         </table>
+        <div class="mt-4">
+            {{ $divisions->links() }}
+        </div>
     </div>
 
     <!-- 共通削除モーダル -->
