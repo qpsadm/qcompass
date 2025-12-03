@@ -15,36 +15,38 @@ class JobOfferController extends Controller
      */
     public function index(Request $request)
     {
-        $query = JobOffer::query()->where('is_show', 1);
+        $keyword = trim($request->input('keyword', ''));
+
+        $jobsQuery = JobOffer::query()->where('is_show', 1);
 
         // キーワード検索
-        $keyword = trim($request->input('keyword', ''));
-        if (!empty($keyword)) {
-            $query->where(function ($q) use ($keyword) {
+        if ($keyword) {
+            $jobsQuery->where(function ($q) use ($keyword) {
                 $q->where('title', 'LIKE', "%{$keyword}%")
                     ->orWhere('description', 'LIKE', "%{$keyword}%");
             });
         }
 
-        // 表示期間フィルタ（検索中でも表示させたい場合はコメントアウト可）
-        $now = now();
-        $query->where('start_datetime', '<=', $now)
-            ->where('end_datetime', '>=', $now);
+        // ここで表示期間フィルタは任意
+        // $now = now();
+        // $jobsQuery->where('start_datetime', '<=', $now)
+        //     ->where('end_datetime', '>=', $now);
 
-        $jobs = $query->orderBy('created_at', 'desc')
-            ->paginate(5)
+        $jobs = $jobsQuery->orderBy('created_at', 'desc')
+            ->paginate(10)   // ページネーション
             ->appends($request->query());
 
-        // ここで agendas を取得
         $agendas = Agenda::where('category_id', 52)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->appends($request->query());
 
         return view('user.job.job_offers_list', compact('jobs', 'agendas'));
     }
+
+
 
 
     /**
