@@ -13,6 +13,7 @@ class BreadCrumbsController extends Controller
     public static function getRouteLabels(): array
     {
         // ここで配列を生成（DBや設定ファイルから読み込むことも可能）
+        // この配列が翻訳表になっている
         $labels = [
             'news_list' => '新着情報一覧',
             'news_info' => '新着情報詳細',
@@ -25,6 +26,7 @@ class BreadCrumbsController extends Controller
             'contact_create' => 'お問い合わせ',
             'mypage' => 'マイページ',
             'questions_list' => '質疑応答一覧',
+            'courses_info' => '講座情報',
         ];
 
         // 子ページから親ページルートへのマップ

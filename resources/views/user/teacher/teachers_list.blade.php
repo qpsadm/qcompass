@@ -1,10 +1,12 @@
 @extends('layouts.f_layout')
 
+@section('title', '講師一覧')
+
 @section('main-content')
 <div class="container">
 
     <div class="page-title">
-        <h2>担当の先生一覧</h2>
+        <h2>講師一覧</h2>
     </div>
 
     @if ($teachers->isEmpty())
