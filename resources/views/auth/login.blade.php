@@ -5,13 +5,6 @@
     <form class="login-form" method="POST" action="{{ route('login') }}">
         @csrf
 
-        <div class="login-item">
-            <div class="item-box">
-                <label for="name">会社名</label>
-                <p>株式会社 QLIP</p>
-            </div>
-        </div>
-
         <!-- Course 選択 / 表示 -->
         <div class="login-item">
 
