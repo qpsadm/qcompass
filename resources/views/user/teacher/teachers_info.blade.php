@@ -16,7 +16,7 @@
             <div class="teacher-profile">
                 <div class="profile-left">
                     <div class="teacher-image">
-                        <img src="{{-- {{ $teacher->detail->avatar_path }} --}}https://qlip-programming.com/jobtrain/wp-content/uploads/2025/07/fukushima-Masakiyo-Fukushima-402x400.jpg" alt="">
+                        <img src="{{ asset('storage/' . $teacher->detail->avatar_path) }}" alt="avatar">
                     </div>
                     <div class="teacher-name">
                         <p>{{ $teacher->name }}（{{ $teacher->furigana }}）先生</p>
