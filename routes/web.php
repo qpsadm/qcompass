@@ -196,7 +196,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 // =============================
 // 管理画面
 // =============================
-Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache'])
+Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache', 'check.crud.course_teacher'])
     ->prefix('admin')->name('admin.')->group(function () {
 
         // ダッシュボード

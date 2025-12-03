@@ -8,7 +8,7 @@
         <!-- 左：新規作成 + ゴミ箱 -->
         <div class="flex items-center space-x-2">
             <a href="{{ route('admin.users.create') }}"
-                class="bg-blue-500  px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
                 <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
                 <span class="hidden lg:inline ml-1">新規ユーザー登録</span>
             </a>
@@ -30,7 +30,6 @@
                     placeholder="ユーザー名・コードで検索"
                     @keydown.enter.prevent="submit()"
                     class="w-full border px-2 py-1 rounded pr-8">
-                <!-- ×ボタン -->
                 <button
                     type="button"
                     x-show="search"
@@ -65,19 +64,18 @@
                     },
                     clear() {
                         this.search = '';
-                        this.submit(); // クリアしたら即検索
+                        this.submit();
                     }
                 }
             }
         </script>
-
     </div>
-
 
     <div class="overflow-x-auto">
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
+                    <th class="border px-4 py-2 w-16 text-center">No.</th>
                     <th class="border px-4 py-2 w-32">ユーザーコード</th>
                     <th class="border px-4 py-2">氏名</th>
                     <th class="border px-4 py-2">所属講座</th>
@@ -86,59 +84,65 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $User)
-                <tr>
-                    <td class="border px-4 py-2">{{ $User->code }}</td>
-                    <td class="border px-4 py-2">{{ $User->name }}</td>
+                @forelse ($users as $user)
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}
+                    </td>
+                    <td class="border px-4 py-2">{{ $user->code }}</td>
+                    <td class="border px-4 py-2">{{ $user->name }}</td>
                     <td class="border px-4 py-2">
-                        @if($User->courses && $User->courses->count() > 0)
-                        {{ $User->courses->pluck('course_name')->join(', ') }}
+                        @if($user->courses && $user->courses->count() > 0)
+                        {{ $user->courses->pluck('course_name')->join(', ') }}
                         @else
                         未所属
                         @endif
                     </td>
-                    <td class="border px-4 py-2">{{ $User->role->role_name ?? 'なし' }}</td>
+                    <td class="border px-4 py-2">{{ $user->role->role_name ?? 'なし' }}</td>
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center flex-nowrap space-x-2">
-
                             <!-- 詳細 -->
-                            <a href="{{ route('admin.users.show', $User->id) }}"
+                            <a href="{{ route('admin.users.show', $user->id) }}"
                                 class="flex items-center text-green-600 hover:text-green-700">
                                 <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">詳細</span>
                             </a>
 
                             <!-- 編集 -->
-                            <a href="{{ route('admin.users.edit', $User->id) }}"
+                            <a href="{{ route('admin.users.edit', $user->id) }}"
                                 class="flex items-center text-blue-600 hover:text-blue-700">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">編集</span>
                             </a>
 
                             <!-- 削除 -->
-                            <button @click="open = true; deleteUrl='{{ route('admin.users.destroy', $User->id) }}'; deleteName='{{ $User->name }}';"
+                            <button @click="open = true; deleteUrl='{{ route('admin.users.destroy', $user->id) }}'; deleteName='{{ $user->name }}';"
                                 class="flex items-center text-red-600 hover:text-red-700">
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
                             </button>
-
                         </div>
                     </td>
-
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="6" class="border px-4 py-2 text-center text-gray-500">
+                        データがありません
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
         <!-- ページネーション -->
         <div class="mt-4">
             {{ $users->appends(request()->query())->links() }}
         </div>
     </div>
 
-    {{-- ✅ 共通削除モーダル --}}
+    <!-- 共通削除モーダル -->
     <div x-show="open" x-cloak x-transition.opacity.duration.200ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-
         <div x-show="open" x-transition.scale.duration.200ms
             class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
             <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
@@ -159,7 +163,7 @@
             </div>
         </div>
     </div>
-    {{-- /共通削除モーダル --}}
+    <!-- /共通削除モーダル -->
 </div>
 
 <style>

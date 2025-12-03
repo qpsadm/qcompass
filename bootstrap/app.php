@@ -6,6 +6,7 @@ use App\Http\Middleware\RedirectNonUserDashboard;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PreventBackHistory;
+use App\Http\Middleware\CheckCourseTeacherCrud;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'prev' => PreventBackHistory::class,
             'redirect.nonuser.dashboard' => RedirectNonUserDashboard::class,
             'no-cache' => NoCache::class,
+            'check.crud.course_teacher' => CheckCourseTeacherCrud::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
