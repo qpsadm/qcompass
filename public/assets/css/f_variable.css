@@ -62,6 +62,8 @@
 
     /* footer-color */
     --footer-color: #414141;
+
+    --filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
 }
 
 .font-medium {

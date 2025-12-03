@@ -71,6 +71,7 @@
     --footer-color: #5A1A1A;
     /* 暗めの赤茶で締める */
 
+    --filter: brightness(0) saturate(100%) invert(23%) sepia(56%) saturate(3160%) hue-rotate(347deg) brightness(92%) contrast(87%);
 }
 
 .font-medium {

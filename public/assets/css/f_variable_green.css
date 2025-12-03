@@ -61,13 +61,14 @@
     /* ホバー向けの少し濃い緑 */
 
     /* accent-color（強調色） */
-    --accent-color: #81C784;
+    --accent-color: #ffa536;
     /* 柔らかめの明るい黄緑 */
 
     /* footer-color */
     --footer-color: #1B4A1E;
     /* 深いグリーン */
 
+    --filter: brightness(0) saturate(100%) invert(39%) sepia(15%) saturate(1879%) hue-rotate(73deg) brightness(98%) contrast(91%);
 }
 
 .font-medium {

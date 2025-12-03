@@ -85,7 +85,7 @@ header::after {
     transform: translateY(-50%);
     width: 25px;
     height: 25px;
-    filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
+    filter: var(--filter);
 }
 
 .gnav li a.home::before,
@@ -236,6 +236,7 @@ header::after {
     .hamburger-container {
         display: flex;
         gap: 50px;
+        justify-content: center;
     }
 
     .hamburger-menu-left {
@@ -243,7 +244,7 @@ header::after {
     }
 
     .hamburger-menu-right {
-        flex: 1;
+        /* flex: 1; */
         display: flex;
         justify-content: space-around;
     }
@@ -507,7 +508,7 @@ header::after {
     transform: translateY(-50%);
     width: 25px;
     height: 25px;
-    filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
+    filter: var(--filter)
 }
 
 .side-menu-list li a.calendar-list::before {

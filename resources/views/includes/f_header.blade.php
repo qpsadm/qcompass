@@ -35,10 +35,10 @@
 
                         <div class="calendar">
                             <div class="calendar-data">
-                                <div class="month"></div>
-                                <div class="day"></div>
+                                <div class="month">{{ now()->format('m') }}</div>
+                                <div class="day">{{ now()->format('d') }}</div>
                                 <span class="border"></span>
-                                <div class="week"></div>
+                                <div class="week">{{ strtoupper(now()->format('D')) }}</div>
                             </div>
                         </div>
 
