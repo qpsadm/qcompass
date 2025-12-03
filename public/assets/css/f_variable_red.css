@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+/* font-loading
+------------------------------------- */
+/* Regular */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Regular.ttf') format('truetype');
+}
+
+/* Medium */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 500;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Medium.ttf') format('truetype');
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Bold.ttf') format('truetype');
+}
+
+/* Black */
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    font-weight: 900;
+    font-style: normal;
+    src: url('../fonts/ZenMaruGothic-Black.ttf') format('truetype');
+}
+
+:root {
+    /* font */
+    --font-family: "Zen Maru Gothic", sans-serif;
+
+    /* font-size */
+    --font-size: 18px;
+    /* text-color */
+    --text-color-1: #000;
+    /* メイン文字は黒で可読性重視 */
+    --text-color-2: #5E5E5E;
+    /* ほどよい中間グレー */
+    --text-color-3: #FFF;
+    /* 白文字（ボタンなど用） */
+
+    /* placeholder-color */
+    --placeholder-color: #BABABA;
+
+    /* main-color（テーマカラー） */
+    --main-color: #C62828;
+    /* 深みのある赤（落ち着き＋視認性） */
+
+    /* sub-color（補助カラー） */
+    --sub-color-1: #FFCDD2;
+    /* 明るいピンク寄りの薄赤 */
+    --sub-color-2: #FDECEC;
+    /* 背景向けの柔らかい薄赤 */
+    --sub-color-3: #D9777F;
+    /* 補助的な中間赤（ボタンホバーなど） */
+
+    /* accent-color（強調色） */
+    --accent-color: #FF7043;
+    /* オレンジ寄りのアクセントで調和 */
+
+    /* footer-color */
+    --footer-color: #5A1A1A;
+    /* 暗めの赤茶で締める */
+
+}
+
+.font-medium {
+    font-size: 20px !important;
+    line-height: 30px !important;
+}
+
+.font-large {
+    font-size: 22px !important;
+    line-height: 33px !important;
+}

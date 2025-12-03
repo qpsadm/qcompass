@@ -36,6 +36,9 @@
             1 => '',
             2 => '_dark',
             3 => '_other',
+            4 => '_red',
+            5 => '_green',
+            6 => '_yellow',
             default => ''
         };
     @endphp

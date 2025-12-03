@@ -18,7 +18,7 @@
         <div>
             <ul class="footer-menu-list">
                 <li><a href="{{ route('user.course.courses_info') }}">講座情報</a></li>
-                <li><a href="{{-- {{ route('user.teachers.teachers_list') }} --}}">講師紹介</a></li>
+                <li><a href="{{ route('user.teacher.teachers_list') }}">講師紹介</a></li>
                 <li><a href="{{-- {{ route('user.link_info') }} --}}">ダウンロード</a></li>
                 <li><a href="{{-- {{ route('user.contact_create') }} --}}">お問い合わせ</a></li>
                 <li><a href="{{ url('user/about') }}">本サイトについて</a></li>

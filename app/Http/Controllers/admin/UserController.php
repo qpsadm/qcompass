@@ -61,10 +61,10 @@ class UserController extends Controller
     {
         // バリデーション
         $validated = $request->validate([
-            'code' => 'required|string|max:10|unique:users,code', // ← 追加
-            'name' => 'required|string|max:50',
-            'furigana' => 'required|string|max:50',
-            'roman_name' => 'required|string|max:50',
+            'code' => 'required|string|max:250|unique:users,code', // ← 追加
+            'name' => 'required|string|max:250',
+            'furigana' => 'required|string|max:250',
+            'roman_name' => 'required|string|max:250',
             'password' => 'required|string|min:6',
             'role_id' => 'required|exists:roles,id',
             'division_id' => 'nullable|integer',
@@ -87,6 +87,7 @@ class UserController extends Controller
         if (!empty($request->courses_id)) {
             $user->courses()->sync(
                 collect($request->courses_id)->mapWithKeys(fn($id) => [$id => ['created_user_name' => auth()->user()->name]])->toArray()
+
             );
         }
 
@@ -115,10 +116,10 @@ class UserController extends Controller
     {
         // バリデーション
         $validated = $request->validate([
-            'code' => 'required|string|max:10|unique:users,code,' . $user->id, // ← 追加
-            'name' => 'required|string|max:50',
-            'furigana' => 'nullable|string|max:50',
-            'roman_name' => 'nullable|string|max:50',
+            'code' => 'required|string|max:250|unique:users,code,' . $user->id, // ← 追加
+            'name' => 'required|string|max:250',
+            'furigana' => 'nullable|string|max:250',
+            'roman_name' => 'nullable|string|max:250',
             'password' => 'nullable|string|min:6',
             'role_id' => 'required|exists:roles,id',
             'division_id' => 'nullable|integer',

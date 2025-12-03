@@ -113,4 +113,10 @@ class User extends Authenticatable
             'courses' => $this->courses->pluck('course_name')->implode(' '),
         ];
     }
+
+    public function coursesAsTeacher()
+    {
+        return $this->belongsToMany(Course::class, 'course_teachers', 'user_id', 'course_id')
+            ->withPivot('role_in_course');
+    }
 }

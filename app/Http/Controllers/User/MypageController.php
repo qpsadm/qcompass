@@ -161,4 +161,17 @@ class MypageController extends Controller
 
         return redirect()->back()->with('success', '設定を更新しました。');
     }
+
+    public function saveMemo(Request $request)
+    {
+        $user = auth()->user();
+
+        // ここでは簡易例として user_details に memo カラムを保存すると仮定
+        $userDetail = $user->detail;
+
+        $userDetail->memo = $request->input('memo'); // textarea の name が memo なら
+        $userDetail->save();
+
+        return back()->with('success', 'メモを保存しました');
+    }
 }

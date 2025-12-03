@@ -53,7 +53,7 @@ use App\Http\Controllers\User\FrontTopController;
 use App\Http\Controllers\User\QuoteController as UserQuoteController;
 use App\Http\Controllers\User\MypageController;
 use App\Http\Controllers\User\MyCourseController;
-
+use App\Http\Controllers\User\TeacherController;
 
 
 // 学習・資格・求人
@@ -159,9 +159,21 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
     Route::post('settings/update', [MypageController::class, 'updateSettings'])
         ->name('settings.update');
+    Route::post('memo/save', [MypageController::class, 'saveMemo'])
+        ->name('memo.save');
+
     // 講座一覧（自分の講座へ自動的にリダイレクトする）
     Route::get('/courses', [MyCourseController::class, 'index'])
         ->name('course.courses_info');
+
+    // 自分の講座の先生一覧
+    Route::get('/teachers', [TeacherController::class, 'index'])
+        ->name('teacher.teachers_list');
+    // 先生詳細
+    Route::get('/teachers/{teacher}', [TeacherController::class, 'show'])
+        ->whereNumber('teacher')
+        ->name('teacher.teachers_info');
+
 
     //本サイトについて
     Route::get('/about', function () {

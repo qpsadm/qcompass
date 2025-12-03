@@ -5,13 +5,17 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Agenda;
 use Illuminate\Support\Facades\DB;
+use App\Models\Agenda;
 
 class AgendaController extends Controller
 {
+    /**
+     * ユーザーがアクセス可能なカテゴリを取得
+     */
     private function getUserCategories($userId)
     {
+        // ユーザーの講座IDを取得
         $userCourseIds = DB::table('course_users')
             ->where('user_id', $userId)
             ->pluck('course_id')
@@ -21,6 +25,7 @@ class AgendaController extends Controller
             return collect();
         }
 
+        // 講座に紐づくカテゴリIDを取得
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
             ->where('is_show', 1)
@@ -31,43 +36,46 @@ class AgendaController extends Controller
             return collect();
         }
 
+        // カテゴリ情報を取得
         return DB::table('categories')
             ->whereIn('id', $categoryIds)
             ->orderBy('sort', 'asc')
             ->get();
     }
 
+    /**
+     * 自分の講座アジェンダ一覧
+     */
     public function myCourseAgendaList(Request $request)
     {
+        // セッションにカテゴリ保存（ALL の場合は null）
+        session(['agenda_category_id' => $request->input('category_id')]);
+
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-
-        // 除外したいカテゴリーIDを指定
         $excludeCategoryIds = [35];
 
-        // 除外リストに入っているカテゴリは categories から除外
-        $categories = $categories->reject(function ($category) use ($excludeCategoryIds) {
-            return in_array($category->id, $excludeCategoryIds);
-        });
+        // カテゴリ除外
+        $categories = $categories->reject(fn($c) => in_array($c->id, $excludeCategoryIds));
 
-        $categoryId = $request->input('category_id'); // 選択されたカテゴリ
+        $categoryId = $request->input('category_id');
         $search = $request->input('search');
 
         $query = Agenda::query()
             ->where('status', 'yes')
             ->where('is_show', 1);
 
-        // 選択されたカテゴリーが除外リストなら無視
+        // カテゴリ指定
         if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
             $query->where('category_id', $categoryId);
         }
 
-        // 検索条件
+        // 🔹 検索条件を反映
         if ($search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        // 除外カテゴリーをクエリにも反映
+        // 除外カテゴリを反映
         if (!empty($excludeCategoryIds)) {
             $query->whereNotIn('category_id', $excludeCategoryIds);
         }
@@ -81,7 +89,7 @@ class AgendaController extends Controller
         }
 
         return view('user.agenda.agendas_list', [
-            'agendas' => $agendas,
+            'agendas' => $agendas, // ここは paginate() なので単純ループでOK
             'categories' => $categories,
             'selectedCategoryId' => $categoryId,
             'selectedCategoryName' => $selectedCategoryName,
@@ -90,66 +98,79 @@ class AgendaController extends Controller
     }
 
 
-
-
+    /**
+     * アジェンダ詳細ページ
+     * セッションのカテゴリ選択をもとに前後移動
+     */
     public function agendaDetail($id)
     {
         $userId = Auth::id();
 
-        // 記事そのものはステータスと表示設定だけで取得する
+        // 現在の記事を取得
         $agenda = Agenda::where('id', $id)
-            ->where('is_show', 1)
             ->where('status', 'yes')
+            ->where('is_show', 1)
             ->firstOrFail();
 
-        // ユーザーが閲覧可能なカテゴリ
+        // ユーザーがアクセス可能なカテゴリを取得
         $userCategories = $this->getUserCategories($userId);
-        $userCategoryIds = $userCategories->pluck('id')->toArray();
 
-        // 空の場合は記事のカテゴリを使う
-        if (empty($userCategoryIds)) {
-            $userCategoryIds = [$agenda->category_id];
+        // セッションからカテゴリIDを取得
+        $categoryId = session('agenda_category_id');
+
+        // 除外カテゴリリスト
+        $excludeCategoryIds = [35];
+
+        // 前後記事取得用クエリ
+        $baseQuery = Agenda::where('status', 'yes')
+            ->where('is_show', 1)
+            ->whereNotIn('category_id', $excludeCategoryIds);
+
+        if ($categoryId) {
+            // 選択カテゴリがある場合はそのカテゴリ内
+            $baseQuery->where('category_id', $categoryId);
+        } else {
+            // ALLの場合、自分の講座全カテゴリ
+            $userCourseIds = DB::table('course_users')->where('user_id', $userId)->pluck('course_id');
+            $categoryIds = DB::table('course_categories')
+                ->whereIn('course_id', $userCourseIds)
+                ->pluck('category_id');
+            $categoryIds = $categoryIds->diff($excludeCategoryIds); // 除外
+            $baseQuery->whereIn('category_id', $categoryIds);
         }
 
-        // prev/next 用ベースクエリ
-        $baseQuery = Agenda::where('is_show', 1)
-            ->where('status', 'yes')
-            ->where('category_id', $agenda->category_id)
-            ->whereIn('category_id', $userCategoryIds)
-            ->where('category_id', '!=', 35);
-
-        // prev/next を取得
+        // 前後記事を取得
         [$prevAgenda, $nextAgenda] = $this->getPrevNext($baseQuery, $agenda);
 
-        // prevUrl と nextUrl が null でない場合にのみURLを生成
+        // URL生成
         $prevUrl = $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null;
         $nextUrl = $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null;
 
-
-
         return view('user.agenda.agendas_info', [
-            'agenda'     => $agenda,
+            'agenda' => $agenda,
             'categories' => $userCategories,
             'prevAgenda' => $prevAgenda,
             'nextAgenda' => $nextAgenda,
-            'prevUrl'    => $prevUrl,
-            'nextUrl'    => $nextUrl,
-            'prevBtn'    => (bool) $prevAgenda,
-            'nextBtn'    => (bool) $nextAgenda,
+            'prevUrl' => $prevUrl,
+            'nextUrl' => $nextUrl,
+            'prevBtn' => (bool) $prevAgenda,
+            'nextBtn' => (bool) $nextAgenda,
         ]);
     }
 
-
-
+    /**
+     * カテゴリでフィルターしたアジェンダ一覧
+     */
     public function agendaByCategory($category_id)
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
 
-        // 選択したカテゴリ名とID
+        // 選択カテゴリをセッションに保存
+        session(['agenda_category_id' => $category_id]);
+
         $selectedCategory = $categories->firstWhere('id', $category_id);
         $selectedCategoryName = $selectedCategory ? $selectedCategory->name : null;
-        $selectedCategoryId   = $selectedCategory ? $selectedCategory->id : null;
 
         $agendas = Agenda::where('category_id', $category_id)
             ->where('status', 'yes')
@@ -161,36 +182,15 @@ class AgendaController extends Controller
             'agendas',
             'categories',
             'selectedCategoryName',
-            'selectedCategoryId'
+            'category_id'
         ));
     }
 
-
-    public function getAgendasDataByCategory(int $category_id)
-    {
-        return Agenda::where('category_id', $category_id)
-            ->where('status', 'yes')
-            ->where('is_show', 1)
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
     /**
-     * 新規追加：ページネーション対応
+     * 前後記事取得ヘルパー
      */
-    public function getAgendasDataByCategoryPaginate(int $category_id, int $perPage = 5)
-    {
-        return Agenda::where('category_id', $category_id)
-            ->where('status', 'yes')
-            ->where('is_show', 1)
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
-    }
-
-
     private function getPrevNext($baseQuery, $current)
     {
-        // Prev（現在より古い記事を取得）
         $prev = (clone $baseQuery)
             ->where(function ($q) use ($current) {
                 $q->where('created_at', '<', $current->created_at)
@@ -199,12 +199,10 @@ class AgendaController extends Controller
                             ->where('id', '<', $current->id);
                     });
             })
-            // 🚨 修正: 最も近い「Prev」記事を取得するため、作成日時を降順、IDも降順にする
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->first(); // 1件目を取得
+            ->first();
 
-        // Next（現在より新しい記事を取得）
         $next = (clone $baseQuery)
             ->where(function ($q) use ($current) {
                 $q->where('created_at', '>', $current->created_at)
@@ -213,10 +211,9 @@ class AgendaController extends Controller
                             ->where('id', '>', $current->id);
                     });
             })
-            // 🚨 修正: 最も近い「Next」記事を取得するため、作成日時を昇順、IDも昇順にする
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
-            ->first(); // 1件目を取得
+            ->first();
 
         return [$prev, $next];
     }

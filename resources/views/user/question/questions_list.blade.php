@@ -4,56 +4,70 @@
 
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
+<style>
+    .highlight {
+        background-color: #ffff66;
+        font-weight: bold;
+        border-radius: 2px;
+        padding: 0 2px;
+    }
+</style>
 @endsection
 
 @section('main-content')
 <div class="container">
+
     {{-- f_page_title の検索フォームを活用 --}}
     <x-f_page_title
         :search="true"
         title="質疑応答一覧"
         :searchName="'keyword'"
-        :searchPlaceholder="'キーワードで求人検索'" />
+        :searchPlaceholder="'キーワードで質疑応答検索'" />
 
-    {{-- カテゴリーやタグのリストがあればここで表示 --}}
+    {{-- カテゴリーやタグのリスト --}}
     <x-f_category_list type="question" :tags="$tags" />
+
+    {{-- ハイライト用関数 --}}
+    @php
+    $highlight = function($text) use ($keywords) {
+    $text = e($text);
+    foreach ($keywords as $word) {
+    if (!$word) continue;
+    $text = preg_replace(
+    '/(' . preg_quote($word, '/') . ')/iu',
+    '<span class="highlight">$1</span>',
+    $text
+    );
+    }
+    return $text;
+    };
+    @endphp
 
     {{-- 質疑応答一覧 --}}
     <div class="content-list">
-
-        {{-- ここから11/28 増井編集 --}}
         @foreach ($questions as $q)
         <div class="qa-accordion">
             <div class="question-container">
-                <div class="question-icon">
-                    <span>Q</span>
-                </div>
+                <div class="question-icon"><span>Q</span></div>
                 <div class="question-text">
-                    <span>{{ $q->content }}</span>
+                    <span>{!! $highlight($q->content) !!}</span>
                 </div>
-                <div class="accordion-btn">
-                    <span></span>
-                </div>
+                <div class="accordion-btn"><span></span></div>
             </div>
             <div class="answer-container">
                 <div class="answer-content">
-                    <div class="answer-icon">
-                        <span>A</span>
-                    </div>
+                    <div class="answer-icon"><span>A</span></div>
                     <div class="answer-text">
-                        <span>{{ $q->answer ?? '-' }}</span>
+                        <span>{!! $highlight($q->answer ?? '-') !!}</span>
                     </div>
                 </div>
             </div>
         </div>
         @endforeach
-        {{-- ここまで11/28 増井編集 --}}
-
     </div>
 
-{{-- ページネーション --}}
+    {{-- ページネーション --}}
     <x-f_pagination :paginator="$questions" />
     <x-f_bread_crumbs />
-
 </div>
 @endsection

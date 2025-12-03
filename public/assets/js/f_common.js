@@ -1,16 +1,19 @@
-"use-strict";
+"use strict";
 
-// hamburger-menu open/close
+// ------------------------------
+// ハンバーガーメニュー open/close
+// ------------------------------
 const hamburgerBtn = $(".hamburger-btn");
 
 hamburgerBtn.click(function () {
     $(this).next().slideToggle(300);
     $(this).toggleClass("active");
-    $('body').toggleClass("no-scroll")
+    $("body").toggleClass("no-scroll");
 });
 
-
-// accordion-menu open/close
+// ------------------------------
+// アコーディオンメニュー open/close
+// ------------------------------
 const accordionMenu = $(".accordion-menu");
 const menuTitle = $(".menu-title");
 
@@ -19,8 +22,9 @@ menuTitle.click(function () {
     accordionMenu.toggleClass("active");
 });
 
-
-// qa-accordion
+// ------------------------------
+// QAアコーディオン
+// ------------------------------
 const qaAccordion = $(".qa-accordion");
 const questionContainer = $(".question-container");
 
@@ -28,7 +32,7 @@ questionContainer.click(function () {
     const parentAccordion = $(this).closest(".qa-accordion");
     const answer = $(this).next(".answer-container");
 
-    // 他のアコーディオンを閉じる & active を外す
+    // 他のアコーディオンを閉じる & activeを外す
     qaAccordion.not(parentAccordion).removeClass("active")
         .find(".answer-container").slideUp(300);
 
@@ -39,37 +43,29 @@ questionContainer.click(function () {
     parentAccordion.toggleClass("active");
 });
 
-
-// calendar
+// ------------------------------
+// カレンダー・日報日付入力
+// ------------------------------
 window.onload = function () {
-    var today = new Date();
 
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    // ★★ 今日の日付を1回だけ取得 ★★
+    const today = new Date();
 
-    const monthText = $(".month");
-    const dayText = $(".day");
-    const weekText = $(".week");
+    const yyyy = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-    monthText.text(month);
-    dayText.text(day);
+    // カレンダー表示
+    $(".month").text(month);
+    $(".day").text(day);
 
-    function getWeekDay(date) {
-        var weekDay = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        return weekDay[date.getDay()];
-    }
+    // 曜日表示
+    const weekDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    $(".week").text(weekDayList[today.getDay()]);
 
-    var dt = new Date(2020, 5 - 1, 5);
-    week = getWeekDay(dt);
-    weekText.text(week);
-
-    // 日報入力の報告日をデフォルト入力する
+    // 日報入力用日付（#date）
     const dateInput = $("#date");
-    // もしすでに value がセットされていなければ今日の日付を入れる
     if (!dateInput.val()) {
-        const yyyy = today.getFullYear();
-        const mm = ('0' + (today.getMonth() + 1)).slice(-2);
-        const dd = ('0' + today.getDate()).slice(-2);
-        dateInput.val(`${yyyy}-${mm}-${dd}`);
+        dateInput.val(`${yyyy}-${month}-${day}`);
     }
-}
+};

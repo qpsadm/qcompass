@@ -28,11 +28,11 @@
             <div class="theme-color-select">
                 <p>テーマカラー</p>
                 <div class="radio-container">
-                @foreach($themes as $theme)
+                    @foreach($themes as $theme)
                     <input type="radio" id="{{ $theme->id }}" name="theme_id" value="{{ $theme->id }}"
                         {{ ($user->detail->theme_id ?? '1') == $theme->id ? 'checked' : '' }}>
                     <label for="{{ $theme->id }}">{{ $theme->name }}</label>
-                @endforeach
+                    @endforeach
                 </div>
             </div>
 
@@ -147,19 +147,19 @@
             <h3>メモ</h3>
         </div>
         <div class="box-content">
-            <form class="memo-form" action="">
-                <textarea name="" id="" rows="6"></textarea>
-                <button>保存</button>
+            <form id="memo-form" class="memo-form" method="POST">
+                @csrf
+                <textarea name="memo" id="memo-textarea" rows="6">{{ $user_details->memo ?? '' }}</textarea>
+                <button type="submit">保存</button>
             </form>
+            <!-- 保存完了メッセージ -->
+            <div id="memo-success" style="display:none; color: green; margin-top: 5px;">
+                メモを保存しました
+            </div>
         </div>
     </div>
 
-    <div class="bread-crumbs">
-        <ol>
-            <li><a href="">ホーム</a></li>
-            <li><a href="">マイページ</a></li>
-        </ol>
-    </div>
+    <x-f_bread_crumbs />
 </div>
 @endsection
 
@@ -282,6 +282,35 @@
 
 
         calendar.render();
+    });
+
+
+    //メモ用
+    $(document).ready(function() {
+
+        $('#memo-form').on('submit', function(e) {
+            e.preventDefault(); // ページ遷移を防ぐ
+
+            const memo = $('#memo-textarea').val();
+            const token = $('input[name="_token"]').val();
+
+            $.ajax({
+                url: "{{ route('user.memo.save') }}", // ルート
+                type: 'POST',
+                data: {
+                    _token: token,
+                    memo: memo
+                },
+                success: function(response) {
+                    // 成功したらメッセージを表示
+                    $('#memo-success').fadeIn().delay(2000).fadeOut();
+                },
+                error: function(xhr, status, error) {
+                    alert('保存に失敗しました');
+                }
+            });
+        });
+
     });
 </script>
 
