@@ -20,11 +20,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request)
     {
-        // 終了日が未設定または未来の講座だけ取得
         $courses = Course::where(function ($q) {
             $q->whereNull('end_date')           // 終了日未設定の講座は含める
                 ->orWhere('end_date', '>=', now()); // 終了日が未来の講座のみ
-        })->get();
+        })
+            ->orderBy('created_at', 'desc') // 新しい順に並べる
+            ->get();
 
         $selected_course = $request->query('course_id'); // URLパラメータ取得
 
