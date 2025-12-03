@@ -9,7 +9,7 @@
 @section('main-content')
     <div class="container">
 
-        <x-f_page_title :search="false" title="講師紹介（{{ $teacher->name }}先生）" />
+        <x-f_page_title :search="false" title="講師紹介（{{ $teacher->name }}）" />
 
         <div class="teacher-detail">
 
@@ -19,7 +19,7 @@
                         <img src="{{ asset('storage/' . $teacher->detail->avatar_path) }}" alt="avatar">
                     </div>
                     <div class="teacher-name">
-                        <p>{{ $teacher->name }}（{{ $teacher->furigana }}）先生</p>
+                        <p>{{ $teacher->name }}<br>（{{ $teacher->furigana }}）</p>
                     </div>
                 </div>
 
