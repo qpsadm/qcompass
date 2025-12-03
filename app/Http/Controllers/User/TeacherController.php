@@ -17,13 +17,13 @@ class TeacherController extends Controller
         $user = auth()->user();
 
         // ユーザーが受講中の講座一覧
-        $courses = $user->courses; // すでにリレーションがある前提
+        $courses = $user->courses;
 
-        // 担当の講師を集める
         $teachers = collect();
 
         foreach ($courses as $course) {
             $courseTeachers = $course->teachers()
+                ->with(['role', 'detail']) // ← ★ユーザー詳細をロード
                 ->whereHas('role', function ($q) {
                     $q->where('id', '>=', 4); // role_id >= 4 が講師
                 })
@@ -32,11 +32,12 @@ class TeacherController extends Controller
             $teachers = $teachers->merge($courseTeachers);
         }
 
-        // 重複を削除（同じ講師が複数講座担当の可能性）
+        // 重複を削除
         $teachers = $teachers->unique('id');
 
         return view('user.teacher.teachers_list', compact('teachers'));
     }
+
 
 
     /**
@@ -44,7 +45,7 @@ class TeacherController extends Controller
      */
     public function show($teacherId)
     {
-        $teacher = User::with('role')
+        $teacher = User::with(['role', 'detail']) // ← ★ここも detail 追加
             ->whereHas('role', function ($q) {
                 $q->where('id', '>=', 4);
             })
