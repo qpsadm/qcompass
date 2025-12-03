@@ -206,22 +206,29 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 // =============================
 
 // 管理画面ダッシュボード（全権限アクセス）
-Route::middleware(['auth', 'role:4,5,6,7,8', 'no-cache'])
-    ->prefix('admin')->name('admin.')->group(function () {
-        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    });
-
-// admin 内のユーザー管理など
 Route::middleware(['auth', 'no-cache'])
     ->prefix('admin')->name('admin.')->group(function () {
 
-        // role:5 閲覧のみ
-        Route::middleware('role:5')->group(function () {
-            Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
-            Route::get('users/{id}', [AdminUserController::class, 'show'])->name('users.show');
-        });
+        // ------------------------
+        // ダッシュボード（全権限アクセス）
+        // ------------------------
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // role:4,6,7,8 操作可
+        // ------------------------
+        // CKEditor アップロード
+        // ------------------------
+        Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])
+            ->middleware('role:4,5,6,7,8')
+            ->name('ckeditor.upload');
+
+        // ------------------------
+        // ユーザー管理
+        // ------------------------
+        // index / show は全権限閲覧可能
+        Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('users/{id}', [AdminUserController::class, 'show'])->name('users.show');
+
+        // role 4,6,7,8 の操作系
         Route::middleware('role:4,6,7,8')->group(function () {
             Route::get('users/trash', [AdminUserController::class, 'trash'])->name('users.trash');
             Route::post('users/{id}/restore', [AdminUserController::class, 'restore'])->name('users.restore');
@@ -230,50 +237,90 @@ Route::middleware(['auth', 'no-cache'])
             Route::resource('users', AdminUserController::class)->except(['index', 'show']);
             Route::resource('courses', CourseController::class);
             Route::resource('roles', RoleController::class);
-            // ... 他の resource もここにまとめる
+            Route::resource('levels', LevelController::class);
+            Route::resource('daily_quotes', DailyQuoteController::class);
+            Route::resource('organizers', OrganizerController::class);
+            Route::resource('questions', QuestionController::class);
+            Route::resource('course_type', CourseTypeController::class);
+            Route::resource('quotes', QuoteController::class);
+            Route::resource('course_teachers', CourseTeacherController::class);
+            Route::resource('announcements', AnnouncementController::class);
+            Route::resource('announcement_types', AnnouncementTypeController::class);
+            Route::resource('divisions', DivisionController::class);
+            Route::resource('course_category', CourseCategoryController::class);
+            Route::resource('course_users', CourseUserController::class);
+            Route::resource('categories', CategoryController::class);
+            Route::resource('tags', TagController::class);
+            Route::resource('agendas', AgendaController::class);
+            Route::resource('quizzes', QuizController::class);
+            Route::resource('learnings', LearningController::class);
+            Route::resource('certifications', CertificationController::class);
+            Route::resource('job_offers', JobOfferController::class);
+            Route::resource('achievements', AchievementController::class);
+            Route::resource('achievements_release', AchievementsReleaseController::class);
+
+            // カスタムルート（例: ユーザー詳細）
+            Route::prefix('users/{user}')->name('user_details.')->group(function () {
+                Route::get('details/create', [UserDetailController::class, 'create'])->name('create');
+                Route::post('details', [UserDetailController::class, 'store'])->name('store');
+                Route::get('details/{detail}/edit', [UserDetailController::class, 'edit'])->name('edit');
+                Route::put('details/{detail}', [UserDetailController::class, 'update'])->name('update');
+                Route::delete('details/{detail}', [UserDetailController::class, 'destroy'])->name('destroy');
+            });
+
+            // カテゴリ・アジェンダのゴミ箱や復元も role 4,6,7,8 のみに
+            Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');
+            Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+            Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
+
+            Route::post('agendas/upload', [AgendaController::class, 'upload'])->name('agendas.upload');
+            Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
+            Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
+            Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
         });
 
-        // CKEditor アップロード
-        Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])
-            ->middleware('role:4,5,6,7,8')
-            ->name('ckeditor.upload');
+        // ------------------------
+        // 受講生・講師一覧、クイズ、レポートなども role:4,6,7,8 のみに
+        // ------------------------
+        Route::middleware('role:4,6,7,8')->group(function () {
+            Route::get('courses/{course}/students', [CourseController::class, 'students'])->name('courses.students');
+            Route::get('courses/{course}/teachers', [CourseController::class, 'getTeachers'])->name('courses.teachers');
+            Route::get('courses/{course}/results', [App\Http\Controllers\admin\QuizResultController::class, 'courseResults'])
+                ->name('courses.results');
+
+            // クイズ関連
+            Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
+            Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
+            Route::get('quizzes/result/{attempt}', [QuizController::class, 'result'])->name('quizzes.result');
+
+            Route::prefix('quizzes/{quiz}')->name('quizzes.')->group(function () {
+                Route::resource('quiz_questions', QuizQuestionController::class);
+            });
+
+            // レポート
+            Route::get('reports/preview', [ReportController::class, 'previewBlade'])->name('reports.previewBlade');
+            Route::post('reports/preview', [ReportController::class, 'previewBlade'])->name('reports.previewBlade');
+            Route::resource('reports', ReportController::class)->where(['report' => '[0-9]+']);
+        });
     });
 
 
 // =============================
 // アジェンダ・お知らせ共通ファイル管理
 // =============================
-Route::prefix('files')->name('files.')->group(function () {
-    // type = agenda / announcement
+Route::middleware(['auth', 'role:4,5,6,7,8', 'no-cache'])
+    ->prefix('admin/files')->name('files.')->group(function () {
+        Route::get('{type}/{targetId}', [AgendaFileController::class, 'files'])->name('index');
+        Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])->name('create');
+        Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])->name('store');
+        Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])->name('preview');
+        Route::get('{type}/{id}/edit', [AgendaFileController::class, 'edit'])->name('edit');
+        Route::put('{type}/{id}', [AgendaFileController::class, 'update'])->name('update');
+        Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])->name('destroy');
+    });
 
-    // 一覧表示
-    Route::get('{type}/{targetId}', [AgendaFileController::class, 'files'])
-        ->name('index');
 
-    // 新規作成フォーム
-    Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])
-        ->name('create');
 
-    // 保存
-    Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])
-        ->name('store');
-
-    // プレビュー
-    Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])
-        ->name('preview');
-
-    // 編集フォーム
-    Route::get('{type}/{id}/edit', [AgendaFileController::class, 'edit'])
-        ->name('edit');
-
-    // 更新
-    Route::put('{type}/{id}', [AgendaFileController::class, 'update'])
-        ->name('update');
-
-    // 削除
-    Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])
-        ->name('destroy');
-});
 //講座ごとのアジェンダ一覧
 Route::get('courses/{course}/agendas', [AgendaController::class, 'indexByCourse'])
     ->name('courses.agendas');
