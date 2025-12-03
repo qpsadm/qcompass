@@ -131,7 +131,7 @@
         <div class="bread-crumbs">
             <ol>
                 <li><a href="top">TOP</a></li>
-                <li><a href="">利用規約・プライバシーポリシー</a></li>
+                <li>利用規約・プライバシーポリシー</a></li>
             </ol>
         </div>
     </div>

@@ -18,7 +18,7 @@
         <div class="bread-crumbs">
             <ol>
                 <li><a href="top">TOP</a></li>
-                <li><a href="">本サイトについて</a></li>
+                <li>本サイトについて</a></li>
             </ol>
         </div>
     </div>

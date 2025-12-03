@@ -386,7 +386,7 @@
         <div class="bread-crumbs">
             <ol>
                 <li><a href="top">TOP</a></li>
-                <li><a href="">受講規則</a></li>
+                <li>受講規則</a></li>
             </ol>
         </div>
     </div>
