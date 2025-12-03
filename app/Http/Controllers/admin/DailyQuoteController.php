@@ -8,6 +8,40 @@ use App\Models\DailyQuote;
 
 class DailyQuoteController extends Controller
 {
+    private function checkCrudPermission()
+    {
+        $roleId = auth()->user()->role_id;
+
+        // role 1～3: 管理画面不可は middleware で弾かれる想定
+
+        // role 4: 閲覧のみ
+        if ($roleId == 4) {
+            $editableRoutes = ['create', 'store', 'edit', 'update', 'destroy'];
+            foreach ($editableRoutes as $route) {
+                if (\Route::currentRouteAction() && str_contains(\Route::currentRouteAction(), $route)) {
+                    abort(403, 'アクセス権限がありません。');
+                }
+            }
+        }
+
+        // role 5: 制限付き編集可
+        if ($roleId == 5) {
+            $allowed = ['questions', 'reports', 'course_teacher', 'agenda'];
+            $path = request()->path();
+            foreach ($allowed as $a) {
+                if (str_contains($path, $a)) {
+                    return; // OK
+                }
+            }
+            abort(403, 'アクセス権限がありません。');
+        }
+
+        // role 6: 一部制限あり（必要ならここで制御）
+
+        // role 7,8: フル CRUD → ここでは特にチェック不要
+    }
+
+    
     public function index()
     {
         $daily_quotes = DailyQuote::all();
