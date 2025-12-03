@@ -3,6 +3,7 @@
 table {
     border-collapse: collapse;
     border-radius: 15px;
+    width: 100%;
 }
 
 tr {
@@ -86,10 +87,22 @@ td {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     width: calc(40% - 25px);
     padding: 50px 10px;
     background-color: var(--main-color);
     border-radius: 15px;
+}
+
+.profile-left .teacher-image {
+    width: 45%;
+    margin-bottom: 20px;
+}
+
+.profile-left .teacher-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-left .teacher-name {

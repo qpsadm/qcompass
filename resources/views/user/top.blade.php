@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+@section('title', 'トップページ')
+
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_top.css') }}">
 @endsection
