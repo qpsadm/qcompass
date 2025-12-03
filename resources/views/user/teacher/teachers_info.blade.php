@@ -23,7 +23,7 @@
                     </div>
                 </div>
 
-                {{ $teacher->bio }}
+                {{ $teacher->detail->bio }}
 
                 <div class="profile-right">
                     <div class="teacher-data">
