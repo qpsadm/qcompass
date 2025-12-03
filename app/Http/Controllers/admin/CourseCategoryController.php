@@ -114,12 +114,6 @@ class CourseCategoryController extends Controller
     }
 
 
-
-
-
-
-
-
     public function destroy($id)
     {
         $CourseCategory::findOrFail($id)->delete();

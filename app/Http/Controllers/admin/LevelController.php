@@ -8,12 +8,13 @@ use App\Models\Level;
 
 class LevelController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $levels = Level::all();
+        // 1ページあたり10件でページネーション
+        $levels = Level::orderBy('code', 'asc')->paginate(10);
+
         return view('admin.levels.index', compact('levels'));
     }
-
     public function create()
     {
         return view('admin.levels.create');

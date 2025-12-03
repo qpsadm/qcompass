@@ -18,18 +18,21 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
+                    <th class="border px-4 py-2 text-center w-12">No.</th>
                     <th class="border px-4 py-2 text-center w-1/6">レベルコード</th>
                     <th class="border px-4 py-2">種類</th>
-                    <th class="border px-4 py-2 text-center w-1/6">表示</th> {{-- 追加 --}}
+                    <th class="border px-4 py-2 text-center w-1/6">表示</th>
                     <th class="border px-4 py-2 w-60 text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($levels as $level)
                 <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($levels->currentPage() - 1) * $levels->perPage() + $loop->iteration }}
+                    </td>
                     <td class="border px-4 py-2 text-center">{{ $level->code }}</td>
                     <td class="border px-4 py-2">{{ $level->name }}</td>
-                    {{-- 表示/非表示 --}}
                     <td class="border px-4 py-2 text-center">
                         @if($level->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -57,13 +60,18 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="5" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    {{-- ページネーション --}}
+    <div class="mt-4">
+        {{ $levels->links() }}
     </div>
 
     {{-- 共通削除モーダル --}}

@@ -8,6 +8,7 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
+                    <th class="border px-4 py-2 text-center w-1/6">No.</th> <!-- 連番 -->
                     <th class="border px-4 py-2 text-center w-1/6">管理ID</th>
                     <th class="border px-4 py-2">役割名</th>
                 </tr>
@@ -15,18 +16,27 @@
             <tbody>
                 @forelse($roles as $role)
                 <tr class="hover:bg-gray-50">
+                    <!-- ページをまたいでも連番 -->
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}
+                    </td>
                     <td class="border px-4 py-2 text-center">{{ $role->id }}</td>
                     <td class="border px-4 py-2">{{ $role->role_name }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="2" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="3" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+
+        <!-- ページネーション -->
+        <div class="mt-4">
+            {{ $roles->links('pagination::tailwind') }}
+        </div>
     </div>
 </div>
 @endsection
