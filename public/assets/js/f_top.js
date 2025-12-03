@@ -6,8 +6,8 @@ $(function () {
     const today = new Date();
     const month = today.getMonth() + 1;
 
-    const videoPath = `../assets/images/kv/kv_movie_${month}.mp4`;
-    const posterPath = `../assets/images/kv/kv_poster_${month}.jpeg`;
+    const videoPath = `${baseVideoPath}/kv_movie_${month}.mp4`;
+    const posterPath = `${baseVideoPath}/kv_poster_${month}.jpeg`;
 
     const $video = $("#kv-video");
 

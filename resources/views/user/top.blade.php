@@ -90,4 +90,7 @@
 
 @section('code-page-js')
 <script src="../assets/js/f_top.js"></script>
+<script>
+    const baseVideoPath = "{{ asset('assets/images/kv') }}";
+</script>
 @endsection
