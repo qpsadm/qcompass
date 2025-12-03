@@ -35,10 +35,9 @@
         $themeClass = match($themeId) {
             1 => '',
             2 => '_dark',
-            3 => '_other',
-            4 => '_red',
-            5 => '_green',
-            6 => '_yellow',
+            3 => '_red',
+            4 => '_green',
+            5 => '_yellow',
             default => ''
         };
     @endphp

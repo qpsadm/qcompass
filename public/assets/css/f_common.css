@@ -118,7 +118,7 @@ header::after {
     background: url(../images/icon/f_icon_mypage.svg) no-repeat;
 }
 
-.gnav li a:hover,
+.gnav li:hover,
 .gnav li.active {
     border-radius: 20px 20px 0 0;
     background-color: var(--accent-color);

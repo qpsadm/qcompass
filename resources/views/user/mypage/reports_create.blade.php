@@ -81,7 +81,7 @@
             <div class="privacy-policy">
                 <p>【個人情報保護方針】</p>
                 <p>下記のリンクから【個人情報保護方針】を確認してください。</p>
-                <p><a href="#" target="_blank">個人情報保護方針を確認する</a></p>
+                <p><a href="{{ url('/user/privacy') }}" target="_blank">個人情報保護方針を確認する</a></p>
             </div>
 
             <button type="submit" class="form-btn">個人情報保護方針に同意して送信</button>
