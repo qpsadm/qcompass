@@ -309,7 +309,7 @@ Route::middleware(['auth', 'no-cache'])
 // アジェンダ・お知らせ共通ファイル管理
 // =============================
 Route::middleware(['auth', 'role:4,5,6,7,8', 'no-cache'])
-    ->prefix('admin/files')->name('files.')->group(function () {
+    ->prefix('admin/files')->name('admin.files.')->group(function () {
         Route::get('{type}/{targetId}', [AgendaFileController::class, 'files'])->name('index');
         Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])->name('create');
         Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])->name('store');

@@ -134,13 +134,10 @@
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">アジェンダ登録</a>
                         </li>
 
-                        <li>
-                            <a href="{{ route('files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
+                        <li> <a href="{{ route('admin.files.index', ['type' => 'agenda', 'targetId' => 0]) }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">
                                 アジェンダ・ファイル
                             </a>
-                        </li>
-
                         </li>
                         {{-- <li><a href="{{ route('course_agendas.index') }}"
                         class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">講座アジェンダ</a>
