@@ -70,12 +70,12 @@
         <p class="considerations">※パスワード等をお忘れの場合は、管理者までお問い合わせください。</p>
 
         <!-- Remember Me -->
-        <div class="remember-me">
+        {{-- <div class="remember-me">
             <label for="remember_me">
                 <input id="remember_me" type="checkbox" name="remember">
                 <span>{{ __('Remember me') }}</span>
             </label>
-        </div>
+        </div> --}}
 
         <div class="login-btn-container">
             <x-primary-button class="ms-3">
