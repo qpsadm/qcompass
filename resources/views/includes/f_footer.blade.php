@@ -28,6 +28,6 @@
         </div>
     </div>
     <div class="copyright">
-        <p>© 2025 qlip-compass. All rights reserved.</p>
+        <p>Copyright© QLIPプログラミングスクール All Rights Reserved.</p>
     </div>
 </footer>
