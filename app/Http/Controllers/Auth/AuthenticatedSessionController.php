@@ -43,7 +43,6 @@ class AuthenticatedSessionController extends Controller
             'course_id'  => 'required|integer',
         ]);
 
-        // ⭐ メールアドレスでユーザー検索
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -52,36 +51,44 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('email');
         }
 
-        // 🔥 role_id=1（ログイン不可ユーザー）を弾く
         if ($user->role_id == 1) {
             return back()->withErrors([
                 'email' => 'このユーザーはログインできません。',
             ])->onlyInput('email');
         }
 
-        // コース所属チェック（管理者 role_id=8 はスキップ）
         if ($user->role_id != 8 && !$user->courses->contains('id', $request->course_id)) {
             return back()->withErrors([
                 'course_id' => 'このユーザーは選択されたコースに所属していません。',
             ])->onlyInput('course_id');
         }
 
-        // ログイン成功
+        // ▼ ログイン成功
         Auth::login($user, $request->filled('remember'));
+        // ★ セッションID再生成（419対策）
+        $request->session()->regenerate();
+        // ▼ テーマ・フォントサイズをセッションに保存
+        $user_details = $user->detail;
 
-        // ロール別リダイレクト
+        session([
+            'settings' => [
+                'theme_id' => $user_details?->theme_id ?? 1,
+                'fontsize' => $user_details?->fontsize ?? 1,
+            ]
+        ]);
+
+        // ▼ ロール別リダイレクト
         switch ($user->role_id) {
             case 3: // 生徒
                 return redirect()->route('user.top');
-
             case 6: // 講師
             case 8: // 管理者
                 return redirect()->route('admin.dashboard');
-
             default:
                 return redirect()->route('user.top');
         }
     }
+
 
 
 
