@@ -18,10 +18,15 @@ class CourseController extends Controller
     {
         $query = $request->input('search');
 
+        // ★ ソート情報
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
+
         $courses = Course::query();
 
+        // --- 検索 ---
         if ($query) {
-            $courses = $courses->where(function ($q) use ($query) {
+            $courses->where(function ($q) use ($query) {
                 $q->where('course_code', 'like', "%{$query}%")
                     ->orWhere('course_name', 'like', "%{$query}%")
                     ->orWhereHas('organizer', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
@@ -30,9 +35,19 @@ class CourseController extends Controller
             });
         }
 
-        $courses = $courses->paginate(20);
+        // --- ソート適用（★重要★） ---
+        if (in_array($sort, ['id', 'course_code', 'course_name'])) {
+            $courses->orderBy($sort, $order);
+        } else {
+            $courses->orderBy('id', 'asc');
+        }
+
+        // --- ページネーション（検索・ソート保持） ---
+        $courses = $courses->paginate(20)->appends($request->query());
+
         return view('admin.courses.index', compact('courses'));
     }
+
 
     public function create()
     {

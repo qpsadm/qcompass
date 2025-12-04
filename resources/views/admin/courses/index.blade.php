@@ -1,3 +1,9 @@
+@php
+    $sort = request('sort', 'id');
+    $order = request('order', 'asc');
+    $nextOrder = $order === 'asc' ? 'desc' : 'asc';
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -62,9 +68,39 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="border px-4 py-2 w-16 text-center">No.</th>
-                        <th class="border px-4 py-2 w-16 text-center">ID</th>
-                        <th class="border px-4 py-2 w-24">講座コード</th>
-                        <th class="border px-4 py-2">講座名</th>
+                        <th class="border px-4 py-2 w-16 text-center">
+                            <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $nextOrder])) }}"
+                                class="flex items-center justify-center">
+
+                                <span>ID</span>
+
+                                @if ($sort === 'id')
+                                    <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border px-4 py-2 w-24">
+                            <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_code', 'order' => $nextOrder])) }}"
+                                class="flex items-center">
+
+                                <span>講座コード</span>
+
+                                @if ($sort === 'course_code')
+                                    <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border px-4 py-2">
+                            <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_name', 'order' => $nextOrder])) }}"
+                                class="flex items-center">
+
+                                <span>講座名</span>
+
+                                @if ($sort === 'course_name')
+                                    <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
                         <th class="border px-4 py-2">分野</th>
                         <th class="border px-4 py-2 w-32">期間</th>
                         <th class="border px-4 py-2">状態</th>
