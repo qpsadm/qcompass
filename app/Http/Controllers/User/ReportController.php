@@ -7,7 +7,9 @@ use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Mail\ReportSubmitted;
+use App\Models\Course;
 
 class ReportController extends Controller
 {
@@ -32,7 +34,7 @@ class ReportController extends Controller
         return view('user.mypage.reports_create', compact('course', 'date'));
     }
 
-    // 日報保存
+    // 日報保存&送信処理
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -41,25 +43,64 @@ class ReportController extends Controller
             'daily_report' => 'required|string',
             'impression'   => 'required|string',
             'message'      => 'nullable|string',
+            'email'      => 'required|email',
         ]);
+
+        $course_id = $validated['course_id'];
+        $course = Course::find($course_id);
 
         $report = Report::create([
             'user_id'            => Auth::id(),
             'course_id'          => $validated['course_id'],      // hidden input
             'date'               => $validated['date'],           // フォーム入力を優先
-            'title'              => '日報',
-            'content'            => $validated['daily_report'],
+            'title'              => '【日報】 - ' .
+                $course->course_name,
+            'content'            => $validated['daily_report'] . $course->mail_address . $course->cc_address,
             'impression'         => $validated['impression'],
             'notice'             => $validated['message'] ?? null,
             'created_user_name'  => Auth::user()->name ?? 'system',
             'updated_user_name'  => Auth::user()->name ?? 'system',
         ]);
 
+        // $report->load('user'); // ★ replyTo のために必須
+
         // メール送信（任意）
-        $recipients = [Auth::user()->email, 'weishangli878@gmail.com'];
-        foreach ($recipients as $email) {
-            Mail::to($email)->send(new ReportSubmitted($report));
+        // $recipients = [Auth::user()->email, 'weishangli878@gmail.com'];
+        // foreach ($recipients as $email) {
+        //     Mail::to($email)->send(new ReportSubmitted($report));
+        // }
+
+        // 日報送信処理　 start
+
+        // 送信宛先
+        $send_address = $course->mail_address;
+
+        // CC
+        $cc_adress = $course->cc_address;
+
+        // 入力から学生のメールアドレスを取得
+        $studentEmail = $request->email;
+
+        $addresses = [$send_address, $cc_adress, $studentEmail];
+
+        // Mail::to($companyEmail)
+        //     ->cc($studentEmail)
+        //     ->queue(new ReportSubmitted($report));
+
+        foreach ($addresses as $address) {
+            try {
+                Mail::to($address)->send(new ReportSubmitted($report));
+            } catch (\Exception $e) {
+                // ログに残したり通知したり
+                Log::error("送信失敗: {$address} " . $e->getMessage());
+            }
         }
+
+        // Mail::to($send_address)
+        //     ->cc($cc_list)
+        //     ->send(new ReportSubmitted($report));
+
+        // 日報送信処理　 end
 
         return redirect()->route('user.reports_complete')
             ->with('success', '日報を送信しました');
