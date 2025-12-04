@@ -45,9 +45,31 @@ class TeacherController extends Controller
      */
     public function show($teacherId)
     {
-        $teacher = User::with(['role', 'detail']) // ← ★ここも detail 追加
+        $teacher = User::with(['role', 'detail'])
             ->whereHas('role', function ($q) {
                 $q->where('id', '>=', 4);
+            })
+            ->findOrFail($teacherId);
+
+        return view('user.teacher.teachers_info', compact('teacher'));
+    }
+
+    public function allTeachers()
+    {
+        $teachers = User::with(['role', 'detail'])
+            ->whereHas('role', function ($q) {
+                $q->whereIn('id', [5, 6, 8]);
+            })
+            ->get();
+
+        return view('user.teacher.all_teachers_list', compact('teachers'));
+    }
+
+    public function frontShow($teacherId)
+    {
+        $teacher = User::with(['role', 'detail'])
+            ->whereHas('role', function ($q) {
+                $q->whereIn('id', [ 5, 6, 8]);
             })
             ->findOrFail($teacherId);
 
