@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+@section('title', '日報入力フォーム')
+
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_form.css') }}">
 @endsection

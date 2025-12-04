@@ -1,10 +1,10 @@
 @extends('layouts.f_layout')
 
+@section('title', $job->title)
 
 @section('code-page-css')
     <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
 @endsection
-
 
 @section('main-content')
     <div class="container">

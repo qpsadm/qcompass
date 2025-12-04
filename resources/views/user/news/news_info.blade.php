@@ -1,5 +1,7 @@
 @extends('layouts.f_layout')
 
+@section('title', $announcement->title)
+
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
 @endsection
