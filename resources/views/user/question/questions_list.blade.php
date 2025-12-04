@@ -17,7 +17,7 @@
 @section('main-content')
 <div class="container">
 
-    {{-- f_page_title の検索フォームを活用 --}}
+    {{-- f_page_title の検索フォーム --}}
     <x-f_page_title
         :search="true"
         title="質疑応答一覧"
@@ -30,7 +30,6 @@
     {{-- ハイライト用関数 --}}
     @php
     $highlight = function($text) use ($keywords) {
-    // $text = e($text);
     foreach ($keywords as $word) {
     if (!$word) continue;
     $text = preg_replace(
@@ -45,7 +44,7 @@
 
     {{-- 質疑応答一覧 --}}
     <div class="content-list">
-        @foreach ($questions as $q)
+        @forelse ($questions as $q)
         <div class="qa-accordion">
             <div class="question-container">
                 <div class="question-icon"><span>Q</span></div>
@@ -63,7 +62,11 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="text-center text-gray-500 py-4">
+            該当する質疑応答はありません
+        </div>
+        @endforelse
     </div>
 
     {{-- ページネーション --}}
