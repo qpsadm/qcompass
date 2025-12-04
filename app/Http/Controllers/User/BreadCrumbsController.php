@@ -28,6 +28,7 @@ class BreadCrumbsController extends Controller
             'questions_list' => '質疑応答一覧',
             'courses_info' => '講座情報',
             'reports_confirm' => '日報確認',
+            'reports_info' => '日報詳細',
         ];
 
         // 子ページから親ページルートへのマップ
