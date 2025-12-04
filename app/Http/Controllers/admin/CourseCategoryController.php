@@ -11,11 +11,31 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('categories')->get();
+        // ソート情報
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
+
+        // 検索キーワード
+        $keyword = trim($request->input('keyword', ''));
+
+        // ベースクエリ
+        $query = Course::with('categories')
+            ->orderBy($sort, $order);
+
+        // キーワード検索（講座名）
+        if ($keyword !== '') {
+            $query->where('course_name', 'like', "%{$keyword}%");
+        }
+
+        // ページネーション（1ページ 10件）
+        $courses = $query->paginate(10)->appends($request->query());
+
         return view('admin.course_category.index', compact('courses'));
     }
+
+
 
     public function create($courseId)
     {
