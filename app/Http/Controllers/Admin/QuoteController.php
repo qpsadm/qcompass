@@ -46,13 +46,30 @@ class QuoteController extends Controller
 
 
     // 一覧表示
-    public function index()
+    public function index(Request $request)
     {
-        // ABCパーツがなくても全件取得
-        $quotes = Quote::orderBy('id', 'desc')->paginate(20);
+        $query = Quote::query();
+
+        // 検索
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('quote_full', 'like', "%{$search}%")
+                    ->orWhere('author_full', 'like', "%{$search}%");
+            });
+        }
+
+        // ソート
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'desc');
+        if (in_array($sort, ['id', 'quote_full', 'author_full']) && in_array($direction, ['asc', 'desc'])) {
+            $query->orderBy($sort, $direction);
+        }
+
+        $quotes = $query->paginate(10)->withQueryString();
 
         return view('admin.quotes.index', compact('quotes'));
     }
+
 
     // 作成フォーム
     public function create()
