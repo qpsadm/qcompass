@@ -60,6 +60,7 @@ class AgendaController extends Controller
             ->whereNotIn('category_id', $excludeCategoryIds);
 
         if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
+            // 選択カテゴリあり
             $query->where('category_id', $categoryId)
                 ->orderBy('created_at', 'desc')
                 ->orderBy('id', 'desc');
@@ -113,19 +114,13 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
 
-        // 現在の記事
         $agenda = Agenda::where('id', $id)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->firstOrFail();
 
-        // ユーザーがアクセス可能なカテゴリ
         $userCategories = $this->getUserCategories($userId);
-
-        // セッションからカテゴリID
         $categoryId = session('agenda_category_id');
-
-        // 除外カテゴリ
         $excludeCategoryIds = [52];
 
         // 基本クエリ
@@ -136,8 +131,9 @@ class AgendaController extends Controller
         if ($categoryId) {
             // 選択カテゴリがある場合
             $baseQuery->where('category_id', $categoryId);
+            $categoryIds = null; // ALLじゃないので不要
         } else {
-            // ALLの場合はユーザーの講座カテゴリに絞る
+            // ALL の場合、ユーザーの講座カテゴリ順
             $userCourseIds = DB::table('course_users')
                 ->where('user_id', $userId)
                 ->pluck('course_id');
@@ -150,18 +146,14 @@ class AgendaController extends Controller
                 ->toArray();
         }
 
-        // 前後リンク用に全件取得
+        // 全件取得して一覧順に並び替え
         $allAgendas = $baseQuery->get()->sortBy([
-            // ALLの場合はカテゴリ順（sort順）
-            fn($a, $b) => $categoryId ? 0 : array_search($a->category_id, $categoryIds) <=> array_search($b->category_id, $categoryIds),
-            // 作成日降順
+            fn($a, $b) => $categoryIds ? array_search($a->category_id, $categoryIds) <=> array_search($b->category_id, $categoryIds) : 0,
             fn($a, $b) => $b->created_at <=> $a->created_at,
-            // ID降順
             fn($a, $b) => $b->id <=> $a->id,
         ])->values();
 
         $currentIndex = $allAgendas->search(fn($a) => $a->id === $agenda->id);
-
         $prevAgenda = $currentIndex > 0 ? $allAgendas[$currentIndex - 1] : null;
         $nextAgenda = $currentIndex < $allAgendas->count() - 1 ? $allAgendas[$currentIndex + 1] : null;
 
@@ -175,40 +167,5 @@ class AgendaController extends Controller
             'prevBtn' => (bool)$prevAgenda,
             'nextBtn' => (bool)$nextAgenda,
         ]);
-    }
-
-
-
-
-    /**
-     * 前後記事取得ヘルパー
-     */
-    private function getPrevNext($baseQuery, $current)
-    {
-        $prev = (clone $baseQuery)
-            ->where(function ($q) use ($current) {
-                $q->where('created_at', '<', $current->created_at)
-                    ->orWhere(function ($sub) use ($current) {
-                        $sub->where('created_at', $current->created_at)
-                            ->where('id', '<', $current->id);
-                    });
-            })
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $next = (clone $baseQuery)
-            ->where(function ($q) use ($current) {
-                $q->where('created_at', '>', $current->created_at)
-                    ->orWhere(function ($sub) use ($current) {
-                        $sub->where('created_at', $current->created_at)
-                            ->where('id', '>', $current->id);
-                    });
-            })
-            ->orderBy('created_at', 'asc')
-            ->orderBy('id', 'asc')
-            ->first();
-
-        return [$prev, $next];
     }
 }

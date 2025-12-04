@@ -4,9 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Announcement;
-use App\Models\Category;
 use Illuminate\Support\Facades\DB;
+use App\Models\Announcement;
 
 class NewsController extends Controller
 {
@@ -21,32 +20,52 @@ class NewsController extends Controller
             ->pluck('course_id')
             ->toArray();
 
-        // セッションから現在のカテゴリ範囲を取得（デフォルト: 'all'）
         $categoryScope = session('news_category', 'all');
 
-        $baseQuery = Announcement::where('status', 2)
+        // 一覧順に全件取得（作成日降順）
+        $allAnnouncements = $this->getAnnouncementsForPrevNext($categoryScope, $userCourseIds);
+
+        // 現在記事のキー
+        $currentIndex = $allAnnouncements->search(fn($a) => $a->id === $announcement->id);
+
+        // 前後記事
+        $prevAnnouncement = $currentIndex > 0 ? $allAnnouncements[$currentIndex - 1] : null;
+        $nextAnnouncement = $currentIndex < $allAnnouncements->count() - 1 ? $allAnnouncements[$currentIndex + 1] : null;
+
+        return view('user.news.news_info', compact(
+            'announcement',
+            'prevAnnouncement',
+            'nextAnnouncement'
+        ));
+    }
+
+    /**
+     * 一覧順に全件取得（前後リンク用）
+     */
+    private function getAnnouncementsForPrevNext($scope, $userCourseIds)
+    {
+        $query = Announcement::where('status', 2)
             ->where('is_show', 1);
 
-        // カテゴリ範囲で絞る
-        if ($categoryScope === 'main') {
-            $baseQuery->whereNull('course_id');
-        } elseif ($categoryScope === 'my') {
-            $baseQuery->whereIn('course_id', $userCourseIds);
+        if ($scope === 'main') {
+            $query->whereNull('course_id');
+        } elseif ($scope === 'my') {
+            $query->whereIn('course_id', $userCourseIds);
         } else { // all
-            $baseQuery->where(function ($q) use ($userCourseIds) {
+            $query->where(function ($q) use ($userCourseIds) {
                 $q->whereNull('course_id')
                     ->orWhereIn('course_id', $userCourseIds);
             });
         }
 
-        // 前後の記事取得
-        [$prevAnnouncement, $nextAnnouncement] = $this->getPrevNext($baseQuery, $announcement);
-
-        return view('user.news.news_info', compact('announcement', 'prevAnnouncement', 'nextAnnouncement'));
+        // 作成日が新しい順（降順）
+        return $query->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
     /**
-     * ニュース一覧（ALL）
+     * News一覧（ALL）
      */
     public function newsListAll(Request $request)
     {
@@ -78,23 +97,6 @@ class NewsController extends Controller
     private function newsList($scope, Request $request)
     {
         $search = $request->input('search');
-
-        $announcements = $this->getUserAnnouncements($scope, 5, $search);
-        $categories = Category::all();
-
-        return view('user.news.news_list', [
-            'announcements' => $announcements,
-            'category' => $scope,
-            'categories' => $categories,
-            'search' => $search,
-        ]);
-    }
-
-    /**
-     * ニュース取得共通処理
-     */
-    private function getUserAnnouncements($scope = 'all', $perPage = 5, $search = null)
-    {
         $userId = auth()->id();
         $userCourseIds = DB::table('course_users')->where('user_id', $userId)->pluck('course_id')->toArray();
 
@@ -119,38 +121,17 @@ class NewsController extends Controller
             });
         }
 
-        return $query->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
-    }
-
-    /**
-     * 前後取得
-     */
-    private function getPrevNext($baseQuery, $current)
-    {
-        $prev = (clone $baseQuery)
-            ->where(function ($q) use ($current) {
-                $q->where('created_at', '<', $current->created_at)
-                    ->orWhere(function ($sub) use ($current) {
-                        $sub->where('created_at', $current->created_at)
-                            ->where('id', '<', $current->id);
-                    });
-            })
-            ->orderBy('created_at', 'desc')
+        // 作成日降順でページネート
+        $announcements = $query->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->first();
+            ->paginate(5)
+            ->withQueryString();
 
-        $next = (clone $baseQuery)
-            ->where(function ($q) use ($current) {
-                $q->where('created_at', '>', $current->created_at)
-                    ->orWhere(function ($sub) use ($current) {
-                        $sub->where('created_at', $current->created_at)
-                            ->where('id', '>', $current->id);
-                    });
-            })
-            ->orderBy('created_at', 'asc')
-            ->orderBy('id', 'asc')
-            ->first();
-
-        return [$prev, $next];
+        return view('user.news.news_list', [
+            'announcements' => $announcements,
+            'category' => $scope,
+            'categories' => \App\Models\Category::all(),
+            'search' => $search,
+        ]);
     }
 }
