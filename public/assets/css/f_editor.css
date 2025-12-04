@@ -10,7 +10,8 @@
 }
 
 .page-content blockquote+blockquote,
-.page-content blockquote+h2 {
+.page-content blockquote+h2,
+.page-content .file+h3 {
     margin-top: 50px;
 }
 
@@ -23,8 +24,13 @@
 .page-content div+h4,
 .page-content h4+h3,
 .page-content p+center,
-.page-content center+h3 {
+.page-content center+h3,
+.page-content p+.attachment {
     margin-top: 30px;
+}
+
+.page-content p+.file {
+    margin-top: 20px;
 }
 
 .page-content h2 {
@@ -69,11 +75,7 @@
     color: var(--accent-color);
 }
 
-.page-content p+.attachment {
-    margin-top: 30px;
-}
-
-.page-content .attachment .file {
+.page-content .file {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,11 +83,11 @@
     border-bottom: 1px dashed var(--main-color);
 }
 
-.page-content .attachment .file p {
+.page-content .file p {
     color: var(--main-color);
 }
 
-.page-content .attachment .file .btn {
+.page-content .file .btn {
     text-decoration: none;
     padding: 7px 50px;
     border-radius: 50px;

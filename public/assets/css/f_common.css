@@ -41,7 +41,7 @@ header::before {
     top: 0;
     left: 0;
     width: 20px;
-    height: 100vh;
+    height: 100dvh;
 }
 
 header::after {
