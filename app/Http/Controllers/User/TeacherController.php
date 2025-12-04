@@ -14,10 +14,37 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        // $user = auth()->user();
+        $user = auth()->user();
 
-        // // ユーザーが受講中の講座一覧
-        // $courses = $user->courses;
+        // ユーザーが受講中の講座一覧
+        $courses = $user->courses->pluck('id')->toArray();
+
+        if (empty($courseIds)) {
+            $teachers = collect();
+        } else {
+            $teachers = User::with(['role', 'detail'])
+                ->whereIn('id', function ($query) use ($courseIds) {
+                    $query->select('user_id')
+                          ->from('course_teachers')
+                          ->whereIn('course_id', $courseIds);
+                })
+                ->get();
+        }
+
+        return view('user.teacher.teachers_list', compact('teachers'));
+    {
+
+
+        // その講座に紐づく CourseTeacher を取得 → 講師一覧
+        $teachers = User::with(['role', 'detail'])
+            // ->whereIn('id', function ($query) use ($courseIds) {
+            //     $query->select('user_id')
+            //         ->from('course_teachers')
+            //         ->whereIn('course_id', $courseIds);
+            // })
+            ->findOrFail($teacherId);
+
+        return view('user.teacher.teachers_list', compact('teachers'));
 
         // $teachers = collect();
 
@@ -36,14 +63,6 @@ class TeacherController extends Controller
         // $teachers = $teachers->unique('id');
 
         // return view('user.teacher.teachers_list', compact('teachers'));
-
-        $teachers = User::with(['role', 'detail'])
-            ->whereHas('role', function ($q) {
-                $q->whereIn('id', [5, 6, 8]);
-            })
-            ->get();
-
-        return view('user.teacher.teachers_list', compact('teachers'));
     }
 
 
@@ -53,6 +72,15 @@ class TeacherController extends Controller
      */
     public function show($teacherId)
     {
+
+        $teacher = User::with(['role', 'detail'])
+            ->whereIn('id', function ($query) {
+                $query->select('user_id')->from('course_teachers');
+            })
+            ->findOrFail($teacherId);
+
+        return view('user.teacher.teachers_info', compact('teacher'));
+
         // $teacher = User::with(['role', 'detail'])
         //     ->whereHas('role', function ($q) {
         //         $q->where('id', '>=', 4);
@@ -60,13 +88,4 @@ class TeacherController extends Controller
         //     ->findOrFail($teacherId);
 
         // return view('user.teacher.teachers_info', compact('teacher'));
-
-        $teacher = User::with(['role', 'detail'])
-            ->whereHas('role', function ($q) {
-                $q->whereIn('id', [5, 6, 8]);
-            })
-            ->findOrFail($teacherId);
-
-        return view('user.teacher.teachers_info', compact('teacher'));
     }
-}

@@ -33,7 +33,7 @@ class JobOfferController extends Controller
         //     ->where('end_datetime', '>=', $now);
 
         $jobs = $jobsQuery->orderBy('created_at', 'desc')
-            ->paginate(10)   // ページネーション
+            ->paginate(5)   // ページネーション
             ->appends($request->query());
 
         $agendas = Agenda::where('category_id', 52)
