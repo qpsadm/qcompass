@@ -20,6 +20,7 @@
                     <tr>
                         <th class="border px-4 py-2 w-12 text-center">No.</th>
                         <th class="border px-4 py-2">講座</th>
+                        <th class="border px-4 py-2">タグ</th>
                         <th class="border px-4 py-2">質問タイトル</th>
                         <th class="border px-4 py-2">回答講師</th>
                         <th class="border px-4 py-2 text-center">公開/非公開</th>
@@ -29,13 +30,18 @@
                 <tbody>
                     @forelse ($questions as $index => $question)
                         <tr class="hover:bg-gray-50">
-
                             {{-- 連番 --}}
                             <td class="border px-4 py-2 text-center">
                                 {{ ($questions->currentPage() - 1) * $questions->perPage() + $index + 1 }}
                             </td>
 
                             <td class="border px-4 py-2">{{ $question->course->course_name ?? '-' }}</td>
+
+                            {{-- タグ --}}
+                            <td class="border px-4 py-2">
+                                {{ $question->tag->name ?? '-' }}
+                            </td>
+
                             <td class="border px-4 py-2">{{ $question->title }}</td>
                             <td class="border px-4 py-2">{{ $question->responder->name ?? '-' }}</td>
 
@@ -72,7 +78,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="border px-4 py-2 text-center text-gray-500">
+                            <td colspan="7" class="border px-4 py-2 text-center text-gray-500">
                                 データがありません
                             </td>
                         </tr>
