@@ -168,4 +168,16 @@ class AgendaController extends Controller
             'nextBtn' => (bool)$nextAgenda,
         ]);
     }
+
+    /**
+     * カテゴリ指定でアジェンダをページネート取得
+     */
+    public function getAgendasDataByCategoryPaginate($categoryId, $perPage = 5)
+    {
+        return Agenda::where('category_id', $categoryId)
+            ->where('status', 'yes')
+            ->where('is_show', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
 }
