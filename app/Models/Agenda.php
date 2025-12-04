@@ -60,7 +60,7 @@ class Agenda extends Model
     }
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_agendas', 'target_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'course_agendas', 'agenda_id', 'course_id');
     }
 
     // 必要に応じて検索対象カラムを指定
