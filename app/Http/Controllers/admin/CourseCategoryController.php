@@ -13,28 +13,28 @@ class CourseCategoryController extends Controller
 {
     public function index(Request $request)
     {
-        // ソート対象カラム（id or course_name）
-        $sortColumn = $request->get('sort', 'id');
+        // ソート情報
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
 
-        // 昇順 or 降順
-        $order = $request->get('order', 'desc');
+        // 検索キーワード
+        $keyword = trim($request->input('keyword', ''));
 
-        // 不正な値を防ぐ
-        if (!in_array($sortColumn, ['id', 'course_name'])) {
-            $sortColumn = 'id';
+        // ベースクエリ
+        $query = Course::with('categories')
+            ->orderBy($sort, $order);
+
+        // キーワード検索（講座名）
+        if ($keyword !== '') {
+            $query->where('course_name', 'like', "%{$keyword}%");
         }
 
-        if (!in_array($order, ['asc', 'desc'])) {
-            $order = 'desc';
-        }
+        // ページネーション（1ページ 10件）
+        $courses = $query->paginate(10)->appends($request->query());
 
-        // agenda が消える → with('categories') を付けて N+1 防止
-        $courses = Course::with('categories')
-            ->orderBy($sortColumn, $order)
-            ->get();
-
-        return view('admin.course_category.index', compact('courses', 'sortColumn', 'order'));
+        return view('admin.course_category.index', compact('courses'));
     }
+
 
 
     public function create($courseId)
