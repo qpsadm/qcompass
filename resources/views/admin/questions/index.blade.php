@@ -18,6 +18,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
+                        <th class="border px-4 py-2 w-12 text-center">No.</th>
                         <th class="border px-4 py-2">講座</th>
                         <th class="border px-4 py-2">質問タイトル</th>
                         <th class="border px-4 py-2">回答講師</th>
@@ -26,8 +27,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($questions as $question)
+                    @forelse ($questions as $index => $question)
                         <tr class="hover:bg-gray-50">
+
+                            {{-- 連番 --}}
+                            <td class="border px-4 py-2 text-center">
+                                {{ ($questions->currentPage() - 1) * $questions->perPage() + $index + 1 }}
+                            </td>
+
                             <td class="border px-4 py-2">{{ $question->course->course_name ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $question->title }}</td>
                             <td class="border px-4 py-2">{{ $question->responder->name ?? '-' }}</td>
@@ -72,6 +79,7 @@
                     @endforelse
                 </tbody>
             </table>
+
             {{-- ページネーション --}}
             <div class="mt-4">
                 {{ $questions->appends(request()->query())->links() }}
