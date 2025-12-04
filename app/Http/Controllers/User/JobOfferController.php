@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\JobOffer;
 use App\Models\Agenda;
+use Carbon\Carbon;
 use App\Http\Controllers\User\AgendaController as UserAgendaController;
 
 class JobOfferController extends Controller
@@ -16,8 +17,14 @@ class JobOfferController extends Controller
     public function index(Request $request)
     {
         $keyword = trim($request->input('keyword', ''));
+        $now = now(); // Carbonインスタンスのまま比較
 
-        $jobsQuery = JobOffer::query()->where('is_show', 1);
+        $jobsQuery = JobOffer::query()
+            ->where('is_show', 1)
+            ->whereNotNull('start_datetime')  // 開始日が設定されている
+            ->whereNotNull('end_datetime')    // 終了日が設定されている
+            ->where('start_datetime', '<=', $now)  // 公開開始済み
+            ->where('end_datetime', '>=', $now);   // 公開終了前
 
         // キーワード検索
         if ($keyword) {
@@ -27,15 +34,12 @@ class JobOfferController extends Controller
             });
         }
 
-        // ここで表示期間フィルタは任意
-        // $now = now();
-        // $jobsQuery->where('start_datetime', '<=', $now)
-        //     ->where('end_datetime', '>=', $now);
-
+        // ページネーション
         $jobs = $jobsQuery->orderBy('created_at', 'desc')
-            ->paginate(5)   // ページネーション
+            ->paginate(5)
             ->appends($request->query());
 
+        // おまけで Agenda も取得
         $agendas = Agenda::where('category_id', 52)
             ->where('status', 'yes')
             ->where('is_show', 1)
@@ -46,16 +50,19 @@ class JobOfferController extends Controller
         return view('user.job.job_offers_list', compact('jobs', 'agendas'));
     }
 
-
-
-
     /**
      * 求人詳細
      */
     public function show($id)
     {
+        $now = now();
+
         $job = JobOffer::where('id', $id)
             ->where('is_show', 1)
+            ->whereNotNull('start_datetime')
+            ->whereNotNull('end_datetime')
+            ->where('start_datetime', '<=', $now)
+            ->where('end_datetime', '>=', $now)
             ->firstOrFail();
 
         $agendaController = new UserAgendaController();
