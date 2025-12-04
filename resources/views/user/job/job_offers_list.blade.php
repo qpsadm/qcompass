@@ -1,4 +1,7 @@
 @extends('layouts.f_layout')
+
+@section('title', '就職支援')
+
 @section('main-content')
 <div class="container">
     {{-- f_page_title の検索フォームを活用 --}}

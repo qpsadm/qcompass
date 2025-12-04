@@ -15,16 +15,37 @@ class AgendaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Agenda::query();
+        $query = Agenda::with('category'); // ← categoryをロード
 
-        if ($search = $request->input('search')) {
+        // 検索
+        if ($search = $request->search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        $agendas = $query->orderBy('id', 'desc')->paginate(20); // paginate に変更
+        // カテゴリー絞り込み
+        if ($categoryId = $request->category_id) {
+            $query->where('category_id', $categoryId);
+        }
 
-        return view('admin.agendas.index', compact('agendas'));
+        // ステータス絞り込み
+        if ($status = $request->status) {
+            if ($status === 'yes') $query->where('status', 'yes');
+            else $query->where('status', 'draft');
+        }
+
+        // 並び替え
+        $sort = $request->sort ?? 'agenda_name';
+        $direction = $request->direction ?? 'asc';
+        $query->orderBy($sort, $direction);
+
+        $agendas = $query->paginate(10);
+
+        $categories = Category::all(); // プルダウン用
+
+        return view('admin.agendas.index', compact('agendas', 'categories'));
     }
+
+
 
     /**
      * 講座ごとのアジェンダ一覧

@@ -17,31 +17,48 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth()->user();
-        $search = $request->input('search');
+        $search     = $request->input('search');
+        $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        $unassigned = $request->input('unassigned');  // 未所属フラグ
+        $sort       = $request->input('sort', 'id');
+        $order      = $request->input('order', 'asc');
 
-        // 表示可能な部署を取得
-        $divisions = Division::where('is_show', true)->get();
+        $users = User::query()
+            ->with(['role', 'courses']);
 
-        // 担当講師の場合は担当コースのユーザーだけ対象
-        if ($user->role_id == 2) {
-            $query = User::with('detail')->where('courses_id', $user->courses_id);
-        } else {
-            $query = User::with('detail');
-        }
-
-
-        // Scout 検索
+        // 🔍 検索
         if ($search) {
-            $users = User::search($search)
-                ->paginate(25)
-                ->withQueryString();
-        } else {
-            $users = User::with('role', 'courses')->paginate(25);
+            $users->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
         }
 
-        return view('admin.users.index', compact('users', 'divisions'));
+        // 🎓 講座絞り込み
+        if ($courseId) {
+            $users->whereHas('courses', function ($q) use ($courseId) {
+                $q->where('courses.id', $courseId);
+            });
+        }
+
+        // ❌ 未所属のみ
+        if ($unassigned === '1') {
+            $users->doesntHave('courses');
+        }
+
+        // 🔽 並び替え
+        if (in_array($sort, ['id', 'code', 'name'])) {
+            $users->orderBy($sort, $order);
+        }
+
+        $users = $users->paginate(20)->appends($request->query());
+
+        // プルダウン用講座一覧
+        $courses = Course::orderBy('course_name')->get();
+
+        return view('admin.users.index', compact('users', 'courses'));
     }
+
 
     /**
      * ユーザー作成画面
