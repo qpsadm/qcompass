@@ -61,6 +61,8 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
+                        <th class="border px-4 py-2 w-16 text-center">No.</th>
+                        <th class="border px-4 py-2 w-16 text-center">ID</th>
                         <th class="border px-4 py-2 w-24">講座コード</th>
                         <th class="border px-4 py-2">講座名</th>
                         <th class="border px-4 py-2">分野</th>
@@ -74,6 +76,14 @@
                 <tbody>
                     @forelse($courses as $course)
                         <tr>
+                            {{-- ★ 連番（ページネーション対応） --}}
+                            <td class="border px-4 py-2 text-center">
+                                {{ ($courses->currentPage() - 1) * $courses->perPage() + $loop->iteration }}
+                            </td>
+                            <td class="border px-4 py-2 text-center">
+                                {{ $course->id }}
+                            </td>
+
                             <td class="border px-4 py-2">{{ $course->course_code }}</td>
                             <td class="border px-4 py-2">{{ $course->course_name }}</td>
                             <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td>
@@ -116,7 +126,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-gray-500 py-4">データがありません</td>
+                            <td colspan="9" class="text-center text-gray-500 py-4">データがありません</td>
                         </tr>
                     @endforelse
                 </tbody>
