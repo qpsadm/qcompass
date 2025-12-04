@@ -180,4 +180,26 @@ class AgendaController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
+
+    public function jobDlInfo($id)
+    {
+        $agenda = Agenda::findOrFail($id);
+
+        // カテゴリ52以外は通常ページにリダイレクト
+        if ($agenda->category_id != 52) {
+            return redirect()->route('user.agenda.info', $agenda->id);
+        }
+
+        // 前後のアジェンダ取得（任意）
+        $prevAgenda = Agenda::where('id', '<', $agenda->id)
+            ->where('category_id', 52)
+            ->orderBy('id', 'desc')
+            ->first();
+        $nextAgenda = Agenda::where('id', '>', $agenda->id)
+            ->where('category_id', 52)
+            ->orderBy('id')
+            ->first();
+
+        return view('user.job.job_dl_info', compact('agenda', 'prevAgenda', 'nextAgenda'));
+    }
 }

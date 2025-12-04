@@ -151,6 +151,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     // 問い合わせ完了ページ
     Route::get('contact/complete', [UserContactController::class, 'complete'])->name('contact_complete');
 
+    Route::get('job_dl_info/{id}', [UserAgendaController::class, 'jobDlInfo'])->name('job.job_dl_info');
+
 
     //今日の一言
     Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');
