@@ -3,47 +3,70 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\AnnouncementType;
 use App\Models\Course;
-use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $announcements = Announcement::with(['type', 'course'])
-            ->orderBy('id', 'desc')
-            ->paginate(20);
+        $query = Announcement::with(['type', 'course']);
 
-        return view('admin.announcements.index', compact('announcements'));
+        // 検索
+        if ($search = $request->input('search')) {
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        // カテゴリー絞り込み
+        if ($categoryId = $request->input('category_id')) {
+            $query->where('type_id', $categoryId);
+        }
+
+        // 状態絞り込み
+        if (!is_null($status = $request->input('status'))) {
+            $query->where('status', $status);
+        }
+
+        // ソート
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'desc');
+        if (!in_array($sort, ['id', 'title', 'status'])) $sort = 'id';
+        if (!in_array($direction, ['asc', 'desc'])) $direction = 'desc';
+
+        $query->orderBy($sort, $direction);
+
+        $announcements = $query->paginate(10)->withQueryString();
+        $categories = AnnouncementType::all();
+        $courses = Course::all();
+
+        return view('admin.announcements.index', compact('announcements', 'categories', 'courses'));
     }
 
     public function create()
     {
-        $courses = Course::all();
-        $types = AnnouncementType::all();
-
-        // 新規作成用に空の Announcement オブジェクトを渡す
         $announcement = new Announcement();
+        $types = AnnouncementType::all();
+        $courses = Course::all();
 
-        return view('admin.announcements.create', compact('announcement', 'courses', 'types'));
+        return view('admin.announcements.create', compact('announcement', 'types', 'courses'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'     => 'required|string|max:255',
-            'type_id'   => 'required|integer|exists:announcement_types,id',
+            'title' => 'required|string|max:255',
+            'type_id' => 'required|integer|exists:announcement_types,id',
             'course_id' => 'nullable|integer|exists:courses,id',
-            'content'   => 'nullable|string',
-            'is_show'   => 'required|boolean',
-            'status'    => 'required|integer',
+            'content' => 'nullable|string',
+            'is_show' => 'required|boolean',
+            'status' => 'required|integer',
         ]);
 
         $data['created_user_name'] = auth()->user()->name ?? 'system';
 
-        // 選択された分類が非表示なら、お知らせも非表示に
+        // 分類が非表示ならお知らせも非表示
         $type = AnnouncementType::find($data['type_id']);
         if ($type && $type->is_show == 0) {
             $data['is_show'] = 0;
@@ -55,34 +78,27 @@ class AnnouncementController extends Controller
             ->with('success', 'お知らせを作成しました。');
     }
 
-
-    public function edit($id)
+    public function edit(Announcement $announcement)
     {
-        $announcement = Announcement::findOrFail($id);
-
         $types = AnnouncementType::all();
         $courses = Course::all();
 
         return view('admin.announcements.edit', compact('announcement', 'types', 'courses'));
     }
+
     public function update(Request $request, Announcement $announcement)
     {
-        if ($request->input('course_id') == 0) {
-            $request->merge(['course_id' => null]);
-        }
-
         $data = $request->validate([
-            'title'     => 'required|string|max:255',
-            'type_id'   => 'required|integer|exists:announcement_types,id',
+            'title' => 'required|string|max:255',
+            'type_id' => 'required|integer|exists:announcement_types,id',
             'course_id' => 'nullable|integer|exists:courses,id',
-            'content'   => 'nullable|string',
-            'is_show'   => 'required|boolean',
-            'status'    => 'required|integer',
+            'content' => 'nullable|string',
+            'is_show' => 'required|boolean',
+            'status' => 'required|integer',
         ]);
 
-        $data['updated_user_name'] = auth()->user()->name ?? 'システム管理者';
+        $data['updated_user_name'] = auth()->user()->name ?? 'system';
 
-        // 選択された分類が非表示なら、お知らせも非表示に
         $type = AnnouncementType::find($data['type_id']);
         if ($type && $type->is_show == 0) {
             $data['is_show'] = 0;
@@ -94,16 +110,8 @@ class AnnouncementController extends Controller
             ->with('success', 'お知らせを更新しました。');
     }
 
-    public function files()
+    public function destroy(Announcement $announcement)
     {
-        // Announcement モデルが複数のファイルを持つ場合、
-        return $this->hasMany(\App\Models\File::class);
-    }
-
-    public function destroy($id)
-    {
-        $announcement = Announcement::findOrFail($id);
-
         $announcement->deleted_user_name = auth()->user()->name ?? 'system';
         $announcement->save();
         $announcement->delete();
@@ -111,9 +119,9 @@ class AnnouncementController extends Controller
         return redirect()->route('admin.announcements.index')
             ->with('success', 'お知らせを削除しました。');
     }
-    public function show($id)
+
+    public function show(Announcement $announcement)
     {
-        $announcement = Announcement::with(['type', 'course'])->findOrFail($id);
         return view('admin.announcements.show', compact('announcement'));
     }
 }
