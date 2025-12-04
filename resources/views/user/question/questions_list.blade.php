@@ -30,7 +30,7 @@
     {{-- ハイライト用関数 --}}
     @php
     $highlight = function($text) use ($keywords) {
-    $text = e($text);
+    // $text = e($text);
     foreach ($keywords as $word) {
     if (!$word) continue;
     $text = preg_replace(

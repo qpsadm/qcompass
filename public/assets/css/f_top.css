@@ -28,7 +28,7 @@
 
 .section-box .box-title h2 {
     position: relative;
-    width: calc(100% - 330px);
+    width: 100%;
     padding-left: 33px;
     font-size: 26px;
     font-weight: bold;
