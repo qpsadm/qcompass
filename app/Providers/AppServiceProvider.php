@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Course;
 use App\Models\Quote;
+use App\Models\UserDetail; // ← 追加
+use Carbon\Carbon;           // ← 追加
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
 
             // 今日の一言
             if (!Session::has('today_quote_id')) {
-                $todayQuote = Quote::where('is_show', 1)->where('is_show', 1)->inRandomOrder()->first();
+                $todayQuote = Quote::where('is_show', 1)->inRandomOrder()->first();
                 Session::put('today_quote_id', $todayQuote?->id);
             } else {
                 $todayQuote = Quote::find(Session::get('today_quote_id'));
@@ -46,11 +48,26 @@ class AppServiceProvider extends ServiceProvider
                 Session::put('author_parts', $authorParts);
             }
 
+            // ----------------------------
+            // 誕生日判定
+            // ----------------------------
+            $isBirthday = false;
+            if ($user) {
+                $userDetail = UserDetail::where('user_id', $user->id)->first();
+                if ($userDetail && $userDetail->birthday) {
+                    $birthday = Carbon::parse($userDetail->birthday);
+                    if ($birthday->format('m-d') === Carbon::now()->format('m-d')) {
+                        $isBirthday = true;
+                    }
+                }
+            }
+
             // ビューに渡す
             $view->with([
                 'courses' => $courses,
                 'todayQuote' => $todayQuote,
                 'quote_mode' => $quote_mode,
+                'isBirthday' => $isBirthday, // ← 追加
             ]);
         });
     }
