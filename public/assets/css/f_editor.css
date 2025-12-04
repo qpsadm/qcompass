@@ -64,3 +64,28 @@
 .page-content a:hover {
     color: var(--accent-color);
 }
+
+.page-content p+.attachment {
+    margin-top: 30px;
+}
+
+.page-content .attachment .file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--main-color);
+}
+
+.page-content .attachment .file p {
+    color: var(--main-color);
+}
+
+.page-content .attachment .file .btn {
+    text-decoration: none;
+    padding: 7px 50px;
+    border-radius: 50px;
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    font-size: 16px;
+}

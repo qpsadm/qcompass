@@ -18,7 +18,7 @@
         </div>
 
         <x-f_btn_list :prevBtn="true" :listBtn="true" :nextBtn="true" listUrl="{{ url('user/job') }}"
-            listLabel="一覧画面へ" />
+            listLabel="一覧へ" />
 
         <x-f_bread_crumbs />
     </div>
