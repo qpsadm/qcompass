@@ -20,18 +20,26 @@ class MypageController extends Controller
 
         // 提出済み日報（日付ごとに最新1件のみ）
         $submitted_reports = $user->reports
-            ->sortByDesc('date')     // 日付順にソート
-            ->unique('date')         // 日付ごとにユニーク
-            ->values()               // インデックスを詰める
+            ->sortByDesc('date')
+            ->unique('date')
+            ->values()
             ->map(function ($report) {
                 $report->url = route('user.reports_info', ['report' => $report->id]);
                 return $report;
             });
 
-        // お知らせ
+        // お知らせ（全体）
         $announcements = Announcement::latest()->take(5)->get();
+
+        // 各種スケジュール（type_id=7, is_show=1）
+        $schedule_announcements = Announcement::where('type_id', 7)
+            ->where('is_show', 1)
+            ->latest()
+            ->get();
+
         $courses = $user->myCourses;
         $divisions = $user->division;
+
         // テーマを取得
         $themes = Theme::where('is_show', 1)->get();
 
@@ -47,11 +55,13 @@ class MypageController extends Controller
             'pending_diaries',
             'submitted_reports',
             'announcements',
+            'schedule_announcements', // 追加
             'courses',
             'divisions',
             'themes'
         ));
     }
+
 
     private function getPendingDiaries($user)
     {
