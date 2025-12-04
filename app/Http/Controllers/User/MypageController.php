@@ -38,7 +38,7 @@ class MypageController extends Controller
         // テーマ・フォントサイズをセッションに保存
         session(['settings' => [
             'theme_id' => $user_details?->theme_id ?? 1,
-            'fontsize' => $user_details?->fontsize ?? 2,
+            'fontsize' => $user_details?->fontsize ?? 1,
         ]]);
 
         return view('user.mypage.mypage', compact(
