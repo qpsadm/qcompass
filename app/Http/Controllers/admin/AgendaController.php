@@ -15,16 +15,45 @@ class AgendaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Agenda::query();
+        // 基本クエリ
+        $query = Agenda::with('category'); // カテゴリーをロード
 
+        // 検索：アジェンダ名
         if ($search = $request->input('search')) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        $agendas = $query->orderBy('id', 'desc')->paginate(20); // paginate に変更
+        // 絞り込み：カテゴリー
+        if ($categoryId = $request->input('category_id')) {
+            $query->where('category_id', $categoryId);
+        }
 
-        return view('admin.agendas.index', compact('agendas'));
+        // 絞り込み：日付範囲
+        if ($start = $request->input('start_date')) {
+            $query->whereDate('start_date', '>=', $start);
+        }
+        if ($end = $request->input('end_date')) {
+            $query->whereDate('end_date', '<=', $end);
+        }
+
+        // 絞り込み：ステータス
+        if ($status = $request->input('status')) {
+            if ($status === 'yes') {
+                $query->where('status', 'yes');
+            } elseif ($status === 'draft') {
+                $query->where('status', '<>', 'yes');
+            }
+        }
+
+        // 並び替え：日付順
+        $agendas = $query->orderBy('start_date', 'desc')->paginate(15);
+
+        // カテゴリー取得（絞り込みプルダウン用）
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.agendas.index', compact('agendas', 'categories'));
     }
+
 
     /**
      * 講座ごとのアジェンダ一覧
