@@ -9,7 +9,7 @@
 
             <div class="contents-box">
 
-                <div class="calendar">
+                <div class="calendar @if ($isBirthday) test @endif">
                     <div class="calendar-data">
                         <div class="month">{{ now()->format('m') }}</div>
                         <div class="day">{{ now()->format('d') }}</div>
