@@ -122,7 +122,7 @@
             <h3>各種スケジュール</h3>
         </div>
         <div class="box-content">
-            <x-f_content_list :items="$schedule_announcements" />
+            <x-f_content_list :items="$scheduledAnnouncements" />
         </div>
     </div>
 

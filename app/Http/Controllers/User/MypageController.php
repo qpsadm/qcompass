@@ -28,14 +28,14 @@ class MypageController extends Controller
                 return $report;
             });
 
-        // お知らせ（全体）
+        // お知らせ
         $announcements = Announcement::latest()->take(5)->get();
 
-        // 各種スケジュール（type_id=7, is_show=1）
-        $schedule_announcements = Announcement::where('type_id', 7)
+        // type_id = 7 のスケジュールのみ取得してページネーション
+        $scheduledAnnouncements = Announcement::where('type_id', 7)
             ->where('is_show', 1)
             ->latest()
-            ->get();
+            ->paginate(5); // ページネーション件数は任意
 
         $courses = $user->myCourses;
         $divisions = $user->division;
@@ -55,7 +55,7 @@ class MypageController extends Controller
             'pending_diaries',
             'submitted_reports',
             'announcements',
-            'schedule_announcements', // 追加
+            'scheduledAnnouncements', // Blade 側と名前を揃える
             'courses',
             'divisions',
             'themes'
