@@ -55,7 +55,7 @@ class ReportController extends Controller
             'date'               => $validated['date'],           // フォーム入力を優先
             'title'              => '【日報】 - ' .
                 $course->course_name,
-            'content'            => $validated['daily_report'] . $course->mail_address . $course->cc_address,
+            'content'            => $validated['daily_report'],
             'impression'         => $validated['impression'],
             'notice'             => $validated['message'] ?? null,
             'created_user_name'  => Auth::user()->name ?? 'system',
