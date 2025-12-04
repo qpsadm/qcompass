@@ -35,11 +35,14 @@ class Course extends Model
         'entering',
         'completed',
         'description',
+        'mail_address',   // ← 追加
+        'cc_address',     // ← 追加
         'status',
         'is_show',
         'created_user_name',
         'updated_user_name'
     ];
+
 
     public function users()
     {
@@ -129,6 +132,4 @@ class Course extends Model
         $diff = $today->diffInDays($endDate, false); // 過ぎていたらマイナス
         return $diff > 0 ? $diff : 0;
     }
-
-
 }
