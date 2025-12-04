@@ -13,14 +13,6 @@ use App\Mail\ReportSubmitted;
 class ReportController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->checkCrudPermission();
-            return $next($request);
-        });
-    }
-
     private function checkCrudPermission()
     {
         $roleId = auth()->user()->role_id;
@@ -48,7 +40,7 @@ class ReportController extends Controller
             }
             abort(403, 'アクセス権限がありません。');
         }
-
+    }
 
     // 一覧
     public function index(Request $request)
