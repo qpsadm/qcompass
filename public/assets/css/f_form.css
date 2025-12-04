@@ -100,10 +100,7 @@ textarea {
 }
 
 .form-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px auto;
+    margin: 50px 0;
     padding: 13px 70px;
     border-radius: 25px;
     background-color: #FFB71D;
@@ -112,8 +109,8 @@ textarea {
     font-size: 1em;
 }
 
-.form-btn {
-    margin: 50px auto;
+.back-btn {
+    padding: 13px 38px;
 }
 
 .form-btn:hover {
@@ -146,6 +143,13 @@ textarea {
     margin-top: 15px;
     font-weight: 500;
     flex: 1;
+}
+
+.form-btn-container {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
 }
 
 
