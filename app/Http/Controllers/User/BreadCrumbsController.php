@@ -20,15 +20,21 @@ class BreadCrumbsController extends Controller
             'main_news' => '訓練に関するお知らせ',
             'my_news' => '講座に関するお知らせ',
             'agendas_list' => 'アジェンダ一覧',
-            'info' => 'アジェンダ詳細',
+            'info' => 'アジェンダ詳細', //agendas_infoのこと
             'job_offers_list' => '就職支援',
-            'reports_create' => '日報作成',
+            'job_offers_info' => '求人情報',
+            'job_dl_info' => '履歴書等ダウンロード一覧',
+            'job_dl_list' => '履歴書等ダウンロード詳細',
             'contact_create' => 'お問い合わせ',
             'mypage' => 'マイページ',
-            'questions_list' => '質疑応答一覧',
-            'courses_info' => '講座情報',
+            'reports_create' => '日報作成',
             'reports_confirm' => '日報確認',
             'reports_info' => '日報詳細',
+            'reports_complete' => '日報送信完了',
+            'questions_list' => '質疑応答一覧',
+            'questions_info' => '質疑応答詳細',
+            'courses_info' => '講座情報',
+
         ];
 
         // 子ページから親ページルートへのマップ
