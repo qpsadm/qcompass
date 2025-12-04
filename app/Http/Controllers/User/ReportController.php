@@ -96,10 +96,6 @@ class ReportController extends Controller
             }
         }
 
-        // Mail::to($send_address)
-        //     ->cc($cc_list)
-        //     ->send(new ReportSubmitted($report));
-
         // 日報送信処理　 end
 
         return redirect()->route('user.reports_complete')
