@@ -21,18 +21,6 @@ class FrontTopController extends Controller
         $now = Carbon::now();
 
         // ----------------------------
-        // 誕生日判定
-        // ----------------------------
-        $userDetail = DB::table('user_details')
-            ->where('user_id', $userId)
-            ->first();
-
-        $isBirthday = false;
-        if ($userDetail && $userDetail->birthday) {
-            $isBirthday = Carbon::parse($userDetail->birthday)->format('m-d') === $now->format('m-d');
-        }
-
-        // ----------------------------
         // 全体のお知らせ（訓練校）
         // ----------------------------
         $globalAnnouncements = Announcement::where('status', 2)
@@ -95,8 +83,7 @@ class FrontTopController extends Controller
             'globalAnnouncements',
             'courseAnnouncements',
             'jobs',
-            'agendas',
-            'isBirthday'
+            'agendas'
         ));
     }
 }
