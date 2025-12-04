@@ -28,7 +28,7 @@
             </div>
 
             <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true"
-                listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へ" />
+                listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へもどる" />
 
             <x-f_bread_crumbs />
 

@@ -40,36 +40,36 @@
 
     /* font-size */
     --font-size: 18px;
-        /* text-color */
-        --text-color-1: #F5F5F5;
-        /* メイン文字：白に近い */
-        --text-color-2: #BFC4C9;
-        /* サブ文字：やや淡いグレー */
-        --text-color-3: #000;
-        /* 反転用（ライト背景要素向け） */
+    /* text-color */
+    --text-color-1: #F5F5F5;
+    /* メイン文字：白に近い */
+    --text-color-2: #BFC4C9;
+    /* サブ文字：やや淡いグレー */
+    --text-color-3: #F5F5F5;
+    /* 反転用（ライト背景要素向け） */
 
-        /* placeholder-color */
-        --placeholder-color: #7A7A7A;
+    /* placeholder-color */
+    --placeholder-color: #7A7A7A;
 
-        /* main-color */
-        --main-color: #3BA3D0;
-        /* #005A87 を明るいブルーに調整 */
+    /* main-color */
+    --main-color: #3BA3D0;
+    /* #005A87 を明るいブルーに調整 */
 
-        /* sub-color */
-        --sub-color-1: #4B7DA1;
-        /* ライトモードの水色を深めに */
-        --sub-color-2: #1E2A3A;
-        /* 背景向けに暗いブルーグレー */
-        --sub-color-3: #6179C7;
-        /* 紫寄りに落ち着かせる */
+    /* sub-color */
+    --sub-color-1: #4B7DA1;
+    /* ライトモードの水色を深めに */
+    --sub-color-2: #1E2A3A;
+    /* 背景向けに暗いブルーグレー */
+    --sub-color-3: #6179C7;
+    /* 紫寄りに落ち着かせる */
 
-        /* accent-color */
-        --accent-color: #FFB84A;
-        /* #FFB71D を少し柔らかく */
+    /* accent-color */
+    --accent-color: #FFB84A;
+    /* #FFB71D を少し柔らかく */
 
-        /* footer-color */
-        --footer-color: #1B1B1B;
-        /* ダークグレー */
+    /* footer-color */
+    --footer-color: #1B1B1B;
+    /* ダークグレー */
 
 }
 

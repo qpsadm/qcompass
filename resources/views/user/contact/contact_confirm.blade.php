@@ -6,7 +6,7 @@
 
 @section('main-content')
     <div class="container">
-        <x-f_page_title :search=A"false" title="日報入力フォーム（確認画面）" />
+        <x-f_page_title :search="false" title="日報入力フォーム（確認画面）" />
 
         <div class="form-content">
             <div class="description-text">

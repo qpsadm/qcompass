@@ -56,7 +56,7 @@
 
             {{-- 戻るボタン --}}
             <div class="btn-area">
-                <a type="button" href="{{ route('user.mypage') }}" class="form-btn">マイページに戻る</a>
+                <a type="button" href="{{ route('user.mypage') }}" class="form-btn">マイページへもどる</a>
             </div>
 
         </div>

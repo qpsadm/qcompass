@@ -45,7 +45,7 @@
         :nextUrl="$nextUrl"
         :listBtn="true"
         listUrl="{{ url('user/agendas') }}"
-        listLabel="一覧へ" />
+        listLabel="一覧へもどる" />
 
     <x-f_bread_crumbs />
 </div>

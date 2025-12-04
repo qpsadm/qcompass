@@ -38,7 +38,7 @@
         :nextBtn="$nextAnnouncement !== null"
         :listBtn="true"
         listUrl="{{ route('user.news.news_list') }}"
-        listLabel="一覧へ"
+        listLabel="一覧へもどる"
         :prevUrl="$prevUrl"
         :nextUrl="$nextUrl" />
 
