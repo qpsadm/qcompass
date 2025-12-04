@@ -65,9 +65,29 @@ class JobOfferController extends Controller
             ->where('end_datetime', '>=', $now)
             ->firstOrFail();
 
+        // 前後の求人取得
+        $prevJob = JobOffer::where('id', '<', $job->id)
+            ->where('is_show', 1)
+            ->whereNotNull('start_datetime')
+            ->whereNotNull('end_datetime')
+            ->where('start_datetime', '<=', $now)
+            ->where('end_datetime', '>=', $now)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $nextJob = JobOffer::where('id', '>', $job->id)
+            ->where('is_show', 1)
+            ->whereNotNull('start_datetime')
+            ->whereNotNull('end_datetime')
+            ->where('start_datetime', '<=', $now)
+            ->where('end_datetime', '>=', $now)
+            ->orderBy('id')
+            ->first();
+
+        // カテゴリ52のアジェンダ取得
         $agendaController = new UserAgendaController();
         $agendas = $agendaController->getAgendasDataByCategoryPaginate(52, 5);
 
-        return view('user.job.job_offers_info', compact('job', 'agendas'));
+        return view('user.job.job_offers_info', compact('job', 'agendas', 'prevJob', 'nextJob'));
     }
 }

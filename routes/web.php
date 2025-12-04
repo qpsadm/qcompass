@@ -153,7 +153,6 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     Route::get('job_dl_info/{id}', [UserAgendaController::class, 'jobDlInfo'])->name('job.job_dl_info');
 
-
     //今日の一言
     Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');
 
