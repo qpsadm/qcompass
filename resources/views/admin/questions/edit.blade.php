@@ -19,7 +19,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <select name="course_id" x-model="selectedCourse" @change="filterTeachers()"
-                                    class="border rounded px-3 py-2 w-full" required>
+                                    class="border rounded px-3 py-2 w-full" >
                                     <option value="">選択してください</option>
                                     @foreach ($courses as $course)
                                         <option value="{{ $course->id }}"
@@ -56,7 +56,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <select name="responder_id" x-model="selectedResponder"
-                                    class="border rounded px-3 py-2 w-full" required>
+                                    class="border rounded px-3 py-2 w-full" >
                                     <option value="">選択してください</option>
                                     <template x-for="teacher in teachers" :key="teacher.id">
                                         <option :value="teacher.id" x-text="teacher.name"
@@ -108,8 +108,7 @@
                                     <template x-for="tag in tags" :key="tag.id">
                                         <label
                                             class="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded border hover:bg-gray-200 cursor-pointer">
-                                            <input type="radio" name="tag_id" :value="tag.id"
-                                                :checked="tag.id == selectedTag" required>
+                                         <input type="radio" name="tag_id" :value="tag.id" x-model="selectedTag" required>
                                             <span x-text="tag.name"></span>
                                         </label>
                                     </template>
