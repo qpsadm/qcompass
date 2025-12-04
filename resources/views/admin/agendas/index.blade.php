@@ -6,7 +6,6 @@
 
         {{-- 上部操作・検索・絞り込み --}}
         <div class="flex items-center justify-between mb-4 space-x-2">
-
             {{-- 新規作成 --}}
             <div class="flex items-center space-x-2">
                 <a href="{{ route('admin.agendas.create') }}"
@@ -16,10 +15,8 @@
                 </a>
             </div>
 
-            {{-- 検索 + カテゴリー + ステータス --}}
+            {{-- 絞り込みフォーム --}}
             <div class="flex items-center space-x-2 flex-1">
-
-                {{-- 絞り込みフォーム --}}
                 <form method="GET" action="{{ route('admin.agendas.index') }}" class="flex items-center space-x-2 flex-1">
                     {{-- カテゴリー --}}
                     <select name="category_id" class="border px-2 py-1 rounded">
@@ -39,67 +36,30 @@
                         <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>下書き</option>
                     </select>
 
-                    {{-- 検索 --}}
-                    <div x-data="searchBox()" class="relative flex-1">
-                        <input type="text" name="search" x-model="search" placeholder="アジェンダ名で検索"
-                            @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
-                        <button type="button" x-show="search" @click="clear()"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
-                        </button>
+                    {{-- キーワード検索 --}}
+                    <div class="relative flex-1">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="アジェンダ名で検索"
+                            id="searchInput" class="w-full border px-2 py-1 rounded pr-8"
+                            onkeydown="if(event.key==='Enter'){this.form.submit(); return false;}">
+                        @if (request('search'))
+                            <button type="button" onclick="clearSearch()"
+                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;</button>
+                        @endif
                     </div>
 
-                    <button type="button" @click="submit()"
+                    <button type="submit"
                         class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition">
                         絞り込み
                     </button>
                 </form>
             </div>
-
         </div>
 
         <script>
-            function searchBox() {
-                return {
-                    search: "{{ request('search') }}",
-                    url: "{{ route('admin.agendas.index') }}",
-                    submit() {
-                        const form = document.createElement('form');
-                        form.method = 'GET';
-                        form.action = this.url;
-
-                        const inputSearch = document.createElement('input');
-                        inputSearch.type = 'hidden';
-                        inputSearch.name = 'search';
-                        inputSearch.value = this.search;
-                        form.appendChild(inputSearch);
-
-                        // category + statusも追加
-                        const category = document.querySelector('select[name="category_id"]');
-                        if (category) {
-                            const inputCat = document.createElement('input');
-                            inputCat.type = 'hidden';
-                            inputCat.name = 'category_id';
-                            inputCat.value = category.value;
-                            form.appendChild(inputCat);
-                        }
-
-                        const status = document.querySelector('select[name="status"]');
-                        if (status) {
-                            const inputStatus = document.createElement('input');
-                            inputStatus.type = 'hidden';
-                            inputStatus.name = 'status';
-                            inputStatus.value = status.value;
-                            form.appendChild(inputStatus);
-                        }
-
-                        document.body.appendChild(form);
-                        form.submit();
-                    },
-                    clear() {
-                        this.search = '';
-                        this.submit();
-                    }
-                }
+            function clearSearch() {
+                const input = document.getElementById('searchInput');
+                input.value = '';
+                input.form.submit();
             }
         </script>
 
@@ -110,7 +70,7 @@
                     <tr>
                         <th class="border px-4 py-2 w-16 text-center">No.</th>
                         <th class="border px-4 py-2 cursor-pointer"
-                            @click="window.location='{{ request()->fullUrlWithQuery(['sort' => 'agenda_name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}'">
+                            onclick="window.location='{{ request()->fullUrlWithQuery(['sort' => 'agenda_name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}'">
                             アジェンダ名
                             @if (request('sort') === 'agenda_name')
                                 <span>{{ request('direction') === 'asc' ? '▲' : '▼' }}</span>
@@ -127,10 +87,9 @@
                     @forelse($agendas as $agenda)
                         <tr class="hover:bg-gray-50">
                             <td class="border px-4 py-2 text-center">
-                                {{ ($agendas->currentPage() - 1) * $agendas->perPage() + $loop->iteration }}
-                            </td>
+                                {{ ($agendas->currentPage() - 1) * $agendas->perPage() + $loop->iteration }}</td>
                             <td class="border px-4 py-2">{{ $agenda->agenda_name }}</td>
-                            <td class="border px-4 py-2">{{ $agenda->category->category_name ?? '未分類' }}</td>
+                            <td class="border px-4 py-2">{{ $agenda->category->name ?? '未分類' }}</td>
                             <td class="border px-4 py-2 text-center">
                                 @if ($agenda->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -142,7 +101,6 @@
                             <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '不明' }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <div class="flex items-center justify-center space-x-2">
-                                    {{-- プレビュー --}}
                                     <button type="button"
                                         class="flex items-center text-green-600 hover:text-green-700 preview-button"
                                         data-content='@json($agenda->content)'
@@ -150,8 +108,6 @@
                                         <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-4 h-4">
                                         <span class="hidden lg:inline ml-1">プレビュー</span>
                                     </button>
-
-                                    {{-- 詳細・編集 --}}
                                     <a href="{{ route('admin.agendas.show', $agenda->id) }}"
                                         class="flex items-center text-blue-600 hover:text-blue-700">
                                         <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
@@ -162,8 +118,6 @@
                                         <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                         <span class="hidden lg:inline ml-1">編集</span>
                                     </a>
-
-                                    {{-- 削除 --}}
                                     <button
                                         @click="open=true; deleteUrl='{{ route('admin.agendas.destroy', $agenda->id) }}'; deleteName='{{ $agenda->agenda_name }}';"
                                         class="flex items-center text-red-600 hover:text-red-700">
@@ -210,7 +164,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     {{-- プレビュー用スクリプト --}}
