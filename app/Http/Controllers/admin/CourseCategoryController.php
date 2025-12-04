@@ -11,11 +11,31 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('categories')->get();
-        return view('admin.course_category.index', compact('courses'));
+        // ソート対象カラム（id or course_name）
+        $sortColumn = $request->get('sort', 'id');
+
+        // 昇順 or 降順
+        $order = $request->get('order', 'desc');
+
+        // 不正な値を防ぐ
+        if (!in_array($sortColumn, ['id', 'course_name'])) {
+            $sortColumn = 'id';
+        }
+
+        if (!in_array($order, ['asc', 'desc'])) {
+            $order = 'desc';
+        }
+
+        // agenda が消える → with('categories') を付けて N+1 防止
+        $courses = Course::with('categories')
+            ->orderBy($sortColumn, $order)
+            ->get();
+
+        return view('admin.course_category.index', compact('courses', 'sortColumn', 'order'));
     }
+
 
     public function create($courseId)
     {
