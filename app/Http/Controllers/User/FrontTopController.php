@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Announcement;
 use App\Models\JobOffer;
 use App\Models\Agenda;
+use Carbon\Carbon;
 
 class FrontTopController extends Controller
 {
@@ -17,6 +18,7 @@ class FrontTopController extends Controller
     public function index()
     {
         $userId = Auth::id();
+        $now = Carbon::now();
 
         // ----------------------------
         // 全体のお知らせ（訓練校）
@@ -45,8 +47,14 @@ class FrontTopController extends Controller
 
         // ----------------------------
         // 求人情報（最新5件）
+        // 非表示・期間外は除外
         // ----------------------------
-        $jobs = JobOffer::latest()
+        $jobs = JobOffer::where('is_show', 1)              // 表示フラグON
+            ->whereNotNull('start_datetime')              // 開始日時あり
+            ->whereNotNull('end_datetime')                // 終了日時あり
+            ->where('start_datetime', '<=', $now)        // 公開開始済み
+            ->where('end_datetime', '>=', $now)          // 公開終了前
+            ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
