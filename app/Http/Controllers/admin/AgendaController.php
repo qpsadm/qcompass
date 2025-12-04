@@ -15,44 +15,36 @@ class AgendaController extends Controller
      */
     public function index(Request $request)
     {
-        // 基本クエリ
-        $query = Agenda::with('category'); // カテゴリーをロード
+        $query = Agenda::with('category'); // ← categoryをロード
 
-        // 検索：アジェンダ名
-        if ($search = $request->input('search')) {
+        // 検索
+        if ($search = $request->search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        // 絞り込み：カテゴリー
-        if ($categoryId = $request->input('category_id')) {
+        // カテゴリー絞り込み
+        if ($categoryId = $request->category_id) {
             $query->where('category_id', $categoryId);
         }
 
-        // 絞り込み：日付範囲
-        if ($start = $request->input('start_date')) {
-            $query->whereDate('start_date', '>=', $start);
-        }
-        if ($end = $request->input('end_date')) {
-            $query->whereDate('end_date', '<=', $end);
+        // ステータス絞り込み
+        if ($status = $request->status) {
+            if ($status === 'yes') $query->where('status', 'yes');
+            else $query->where('status', 'draft');
         }
 
-        // 絞り込み：ステータス
-        if ($status = $request->input('status')) {
-            if ($status === 'yes') {
-                $query->where('status', 'yes');
-            } elseif ($status === 'draft') {
-                $query->where('status', '<>', 'yes');
-            }
-        }
+        // 並び替え
+        $sort = $request->sort ?? 'agenda_name';
+        $direction = $request->direction ?? 'asc';
+        $query->orderBy($sort, $direction);
 
-        // 並び替え：日付順
-        $agendas = $query->orderBy('start_date', 'desc')->paginate(15);
+        $agendas = $query->paginate(10);
 
-        // カテゴリー取得（絞り込みプルダウン用）
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::all(); // プルダウン用
 
         return view('admin.agendas.index', compact('agendas', 'categories'));
     }
+
 
 
     /**
