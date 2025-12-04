@@ -21,11 +21,23 @@ class FrontTopController extends Controller
         $now = Carbon::now();
 
         // ----------------------------
+        // 誕生日判定
+        // ----------------------------
+        $userDetail = DB::table('user_details')
+            ->where('user_id', $userId)
+            ->first();
+
+        $isBirthday = false;
+        if ($userDetail && $userDetail->birthday) {
+            $isBirthday = Carbon::parse($userDetail->birthday)->format('m-d') === $now->format('m-d');
+        }
+
+        // ----------------------------
         // 全体のお知らせ（訓練校）
         // ----------------------------
-        $globalAnnouncements = Announcement::where('status', 2)   // 承認済み
-            ->where('is_show', 1)                                  // 表示対象
-            ->whereNull('course_id')                                // 訓練校のみ
+        $globalAnnouncements = Announcement::where('status', 2)
+            ->where('is_show', 1)
+            ->whereNull('course_id')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
@@ -47,19 +59,18 @@ class FrontTopController extends Controller
 
         // ----------------------------
         // 求人情報（最新5件）
-        // 非表示・期間外は除外
         // ----------------------------
-        $jobs = JobOffer::where('is_show', 1)              // 表示フラグON
-            ->whereNotNull('start_datetime')              // 開始日時あり
-            ->whereNotNull('end_datetime')                // 終了日時あり
-            ->where('start_datetime', '<=', $now)        // 公開開始済み
-            ->where('end_datetime', '>=', $now)          // 公開終了前
+        $jobs = JobOffer::where('is_show', 1)
+            ->whereNotNull('start_datetime')
+            ->whereNotNull('end_datetime')
+            ->where('start_datetime', '<=', $now)
+            ->where('end_datetime', '>=', $now)
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
         // ----------------------------
-        // 最新アジェンダ（ユーザーが見れる講座カテゴリのみ）
+        // 最新アジェンダ
         // ----------------------------
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
@@ -84,7 +95,8 @@ class FrontTopController extends Controller
             'globalAnnouncements',
             'courseAnnouncements',
             'jobs',
-            'agendas'
+            'agendas',
+            'isBirthday'
         ));
     }
 }
