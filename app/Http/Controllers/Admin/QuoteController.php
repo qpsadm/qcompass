@@ -244,20 +244,32 @@ class QuoteController extends Controller
             $quote_text = $quote->quote_full;
             $author_text = $quote->author_full;
 
-            // ランダムモードの場合、パーツをランダム結合したものを生成
+            // mix モード（ランダムパーツ結合）
             if ($mode === 'mix') {
                 $quote_text = '';
                 $author_text = '';
 
-                // ランダムに3つの名言を取得
-                $randomQuotes = Quote::where('is_show', true)->inRandomOrder()->take(3)->get();
+                // ランダムに3つの名言を取得（3件未満でもOK）
+                $randomQuotes = Quote::where('is_show', true)
+                    ->inRandomOrder()
+                    ->take(3)
+                    ->get();
 
                 $parts = ['A', 'B', 'C'];
                 $author_parts = ['A', 'B']; // 作者パーツはA/Bのみ
 
                 foreach ($parts as $index => $part) {
-                    $quotePart  = $randomQuotes[$index]->quoteParts->firstWhere('part_type', $part) ?? null;
-                    $authorPart = $randomQuotes[$index]->authorParts->firstWhere('part_type', $author_parts[$index] ?? 'A') ?? null;
+
+                    // ランダム名言が不足している場合の安全ガード
+                    $currentQuote = $randomQuotes[$index] ?? null;
+                    if (!$currentQuote) {
+                        continue;
+                    }
+
+                    $quotePart = $currentQuote->quoteParts->firstWhere('part_type', $part) ?? null;
+
+                    $authorType = $author_parts[$index] ?? 'A';
+                    $authorPart = $currentQuote->authorParts->firstWhere('part_type', $authorType) ?? null;
 
                     $quote_text  .= $quotePart?->text ?? '';
                     $author_text .= $authorPart?->text ?? '';
