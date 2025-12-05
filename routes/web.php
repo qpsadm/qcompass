@@ -121,6 +121,7 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
         ->name('agenda.agenda_by_category');
     // アジェンダ詳細（必要なら）
     Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])->name('agenda.info');
+
     //質疑応答
     Route::get('questions/{category?}', [UserQuestionController::class, 'index'])
         ->name('question.questions_list');
@@ -130,6 +131,12 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     Route::get('/job', [UserJobOfferController::class, 'index'])->name('job.job_offers_list');
     // 詳細ページ
     Route::get('/job/{id}', [UserJobOfferController::class, 'show'])->name('job.job_offers_info');
+    //ダウンロード詳細
+    Route::get('job_dl_info/{id}', [UserAgendaController::class, 'jobDlInfo'])->name('job.job_dl_info');
+
+    //ダウンロード
+    Route::get('/download/{id}', [UserAgendaController::class, 'download'])
+        ->name('download');
 
     // 日報作成フォーム
     Route::get('reports/create', [UserReportController::class, 'create'])->name('reports_create');
@@ -151,7 +158,6 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
     // 問い合わせ完了ページ
     Route::get('contact/complete', [UserContactController::class, 'complete'])->name('contact_complete');
 
-    Route::get('job_dl_info/{id}', [UserAgendaController::class, 'jobDlInfo'])->name('job.job_dl_info');
 
     //今日の一言
     Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])->name('quote_mode')->middleware('auth');

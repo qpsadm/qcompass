@@ -66,15 +66,19 @@ class FrontTopController extends Controller
             ->pluck('category_id')
             ->toArray();
 
+        $excludeCategoryIds = [52, 53]; // ← 追加
+
         $agendas = collect();
         if (!empty($categoryIds)) {
             $agendas = Agenda::whereIn('category_id', $categoryIds)
+                ->whereNotIn('category_id', $excludeCategoryIds) // ← これで除外！
                 ->where('status', 'yes')
                 ->where('is_show', 1)
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
         }
+
 
         // ----------------------------
         // Blade に渡す

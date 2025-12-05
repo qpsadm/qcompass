@@ -19,7 +19,16 @@
             <ul class="footer-menu-list">
                 <li><a href="{{ route('user.course.courses_info') }}">講座情報</a></li>
                 <li><a href="{{ route('user.teacher.teachers_list') }}">講師紹介</a></li>
-                <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>
+                <!-- <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>-->
+
+                {{-- ダウンロード専用ページへ --}}
+                @php
+                $downloadAgenda = \App\Models\Agenda::where('category_id', 53)->first();
+                @endphp
+
+                @if($downloadAgenda)
+                <a href="{{ route('user.download', $downloadAgenda->id) }}">ダウンロード</a>
+                @endif
                 <li><a href="{{-- {{ route('user.contact_create') }} --}}">お問い合わせ</a></li>
                 <li><a href="{{ url('user/about') }}">本サイトについて</a></li>
                 <li><a href="{{ url('user/rule') }}">受講規則</a></li>

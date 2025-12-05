@@ -47,7 +47,7 @@ class AgendaController extends Controller
     {
         $userId = Auth::id();
         $categories = $this->getUserCategories($userId);
-        $excludeCategoryIds = [52];
+        $excludeCategoryIds = [52, 53];
 
         // セッションにカテゴリ保存
         $categoryId = $request->input('category_id');
@@ -121,7 +121,7 @@ class AgendaController extends Controller
 
         $userCategories = $this->getUserCategories($userId);
         $categoryId = session('agenda_category_id');
-        $excludeCategoryIds = [52];
+        $excludeCategoryIds = [52, 53];
 
         // 基本クエリ
         $baseQuery = Agenda::where('status', 'yes')
@@ -201,5 +201,18 @@ class AgendaController extends Controller
             ->first();
 
         return view('user.job.job_dl_info', compact('agenda', 'prevAgenda', 'nextAgenda'));
+    }
+
+
+    public function download($id)
+    {
+        $agenda = Agenda::findOrFail($id);
+
+        // セキュリティ：カテゴリ53以外は弾く
+        if ($agenda->category_id != 53) {
+            abort(404);
+        }
+
+        return view('user.download', compact('agenda'));
     }
 }
