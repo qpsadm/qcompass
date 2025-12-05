@@ -39,6 +39,22 @@ td {
 }
 
 
+/* teacher-list */
+.teacher-list {
+    margin-bottom: 50px;
+    font-size: 18px;
+}
+
+.teacher-list ul li {
+    padding: 25px 0;
+    border-bottom: 1px dashed var(--main-color);
+}
+
+.teacher-list a:hover {
+    color: var(--accent-color);
+}
+
+
 
 .teacher-detail {
     font-size: 18px;
