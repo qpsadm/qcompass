@@ -68,6 +68,9 @@
     --footer-color: #8C6C00;
     /* 落ち着いたダークゴールド */
 
+    /* background-color */
+    --background-color: #FCFCFC;
+
 }
 
 .font-medium {

@@ -11,8 +11,10 @@
                 <p>TEL : 088-676-3151   FAX : 088-676-3152</p>
             </div>
             <div class="footer-sns-icons">
-                <a href="https://www.facebook.com/qlipwebprogrammer" target="_blank"><img src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン"></a>
-                <a href="https://www.instagram.com/qlipdesign" target="_blank"><img src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン"></a>
+                <a href="https://www.facebook.com/qlipwebprogrammer" target="_blank"><img
+                        src="{{ asset('assets/images/icon/f_icon_facebook.png') }}" alt="facebookアイコン"></a>
+                <a href="https://www.instagram.com/qlipdesign" target="_blank"><img
+                        src="{{ asset('assets/images/icon/f_icon_instagram.svg') }}" alt="instagramアイコン"></a>
             </div>
         </div>
         <div>
@@ -20,16 +22,17 @@
                 <li><a href="{{ route('user.course.courses_info') }}">講座情報</a></li>
                 <li><a href="{{ route('user.teacher.teachers_list') }}">講師紹介</a></li>
                 <!-- <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>-->
+                <li>
+                    {{-- ダウンロード専用ページへ --}}
+                    @php
+                        $downloadAgenda = \App\Models\Agenda::where('category_id', 53)->first();
+                    @endphp
 
-                {{-- ダウンロード専用ページへ --}}
-                @php
-                $downloadAgenda = \App\Models\Agenda::where('category_id', 53)->first();
-                @endphp
-
-                @if($downloadAgenda)
-                <a href="{{ route('user.download', $downloadAgenda->id) }}">ダウンロード</a>
-                @endif
-                <li><a href="{{-- {{ route('user.contact_create') }} --}}">お問い合わせ</a></li>
+                    @if ($downloadAgenda)
+                        <a href="{{ route('user.download', $downloadAgenda->id) }}">ダウンロード</a>
+                    @endif
+                </li>
+                {{-- <li><a href="{{ route('user.contact_create') }}">お問い合わせ</a></li> --}}
                 <li><a href="{{ url('user/about') }}">本サイトについて</a></li>
                 <li><a href="{{ url('user/rule') }}">受講規則</a></li>
                 <li><a href="{{ url('user/privacy') }}">利用規約</a></li>

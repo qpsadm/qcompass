@@ -2,6 +2,7 @@
 
 html {
     color: var(--text-color-2);
+    background-color: var(--background-color);
     font-family: var(--font-family);
     font-weight: 500;
 }
@@ -345,9 +346,24 @@ header::after {
 
 .side-menu .contents-box,
 .hamburger-menu .contents-box {
+    position: relative;
     padding: 15px;
     background-color: var(--main-color);
     border-radius: 15px;
+}
+
+.side-menu .contents-box::after,
+.hamburger-menu .contents-box::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 20px;
+    width: 60px;
+    height: 40px;
+    background: url(../images/icon/f_tag.svg) no-repeat;
+    background-size: 100%;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);
+    ;
 }
 
 .side-menu .calendar,
@@ -703,6 +719,10 @@ footer {
 .footer-menu-list li:nth-child(7) {
     grid-column: 2;
     grid-row: 3;
+}
+
+.footer-menu-list li:hover {
+    color: var(--accent-color);
 }
 
 .copyright {

@@ -83,7 +83,7 @@
     width: 370px;
 }
 
-.agenda {
+.job-offer {
     flex: 1;
 }
 
@@ -117,11 +117,11 @@
         width: calc(100%);
     }
 
-    .agenda .content-list tr {
+    .job-offer .content-list tr {
         align-items: flex-end;
     }
 
-    .agenda .content-list .title {
+    .job-offer .content-list .title {
         flex: unset;
         width: 100%;
     }

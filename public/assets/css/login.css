@@ -58,7 +58,8 @@
 }
 
 .login-item label {
-    width: 80px;
+    width: 90px;
+    font-size: 18px;
 }
 
 .login-item input,
@@ -67,12 +68,14 @@
     border: 1px solid var(--text-color-2);
     border-radius: 6px;
     background-color: var(--text-color-3);
+    font-size: 18px;
     font-weight: 500;
+    line-height: normal;
     flex: 1;
 }
 
 .considerations {
-    margin: 10px 0 0 110px;
+    margin: 10px 0 0 120px;
 }
 
 .remember-me {

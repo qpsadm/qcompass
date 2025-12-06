@@ -71,6 +71,9 @@
     --footer-color: #1B1B1B;
     /* ダークグレー */
 
+    /* background-color */
+    --background-color: #FCFCFC;
+
 }
 
 .font-medium {

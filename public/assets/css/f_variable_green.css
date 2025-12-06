@@ -68,6 +68,9 @@
     --footer-color: #1B4A1E;
     /* 深いグリーン */
 
+    /* background-color */
+    --background-color: #FCFCFC;
+
     --filter: brightness(0) saturate(100%) invert(39%) sepia(15%) saturate(1879%) hue-rotate(73deg) brightness(98%) contrast(91%);
 }
 
