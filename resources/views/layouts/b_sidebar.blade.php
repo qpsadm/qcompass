@@ -53,12 +53,12 @@
                         <li><a href="{{ route('admin.announcement_types.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">お知らせカテゴリ</a>
                         </li>
-                        <li><a href="{{ route('admin.daily_quotes.index') }}"
+                        <li><a href="{{ route('admin.quotes.index') }}"
                                 class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言</a>
                         </li>
-                        <!--<li><a href="{{ route('admin.quotes.index') }}"
-                            class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言合体</a>
-                    </li> -->
+                        <!--<li><a href="{{ route('admin.daily_quotes.index') }}"
+                                            class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-200">今日の一言合体</a>
+                                    </li> -->
 
                         {{-- 表示テーマ --}}
                         {{-- <li><a href="{{ route('admin.quotes.index') }}"
