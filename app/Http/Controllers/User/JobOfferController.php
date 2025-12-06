@@ -35,7 +35,7 @@ class JobOfferController extends Controller
         }
 
         // ページネーション
-        $jobs = $jobsQuery->orderBy('created_at', 'desc')
+        $jobs = $jobsQuery->orderBy('updated_at', 'desc')
             ->paginate(5)
             ->appends($request->query());
 
@@ -43,7 +43,7 @@ class JobOfferController extends Controller
         $agendas = Agenda::where('category_id', 52)
             ->where('status', 'yes')
             ->where('is_show', 1)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
 

@@ -8,12 +8,10 @@
     <title>@yield('title') | QLIP-Compass</title>
 
     {{-- デスクリプション --}}
-    <meta content="@yield('description')" name="description">
-    {{-- <meta name="description" content="description"> --}}
+    <meta content="QLIPプログラミングスクールの職業訓練生と講師をつなぐ、学習支援から就職支援、終了後のキャリア形成まで幅広くサポートする求職者支援管理システムです。" name="description">
+
     {{-- キーワード --}}
-    <meta content="プログラミング,タイピング,単語,HTML,CSS,JavaScript,WordPress,ワードプレス,PHP,Python,英単語,Typing,Webプログラマー" name="keywords">
-    {{-- <meta name="keywords" content="@yield('keywords')"> --}}
-    {{-- <meta name="keywords" content="keywords"> --}}
+    <meta content="" name="keywords">
 
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -24,7 +22,7 @@
 
     {{-- reset.cssファイルを読み込む --}}
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
-    {{-- 共通cssファイルを読み込む --}}
+    {{-- variable.cssファイルを読み込む --}}
     @php
         // ログインユーザーを取得
         $user = auth()->user();
@@ -42,6 +40,7 @@
         };
     @endphp
 
+    {{-- 共通cssファイルを読み込む --}}
     <link href="{{ asset('assets/css/f_variable' . $themeClass . '.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/f_common.css') }}" rel="stylesheet">
 

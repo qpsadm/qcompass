@@ -59,7 +59,7 @@ class NewsController extends Controller
         }
 
         // 作成日が新しい順（降順）
-        return $query->orderBy('created_at', 'desc')
+        return $query->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
             ->get();
     }
@@ -122,7 +122,7 @@ class NewsController extends Controller
         }
 
         // 作成日降順でページネート
-        $announcements = $query->orderBy('created_at', 'desc')
+        $announcements = $query->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(5)
             ->withQueryString();

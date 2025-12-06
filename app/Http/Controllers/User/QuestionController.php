@@ -27,7 +27,7 @@ class QuestionController extends Controller
             });
         }
 
-        $questions = $questions->orderBy('created_at', 'desc')
+        $questions = $questions->orderBy('updated_at', 'desc')
             ->paginate(5)
             ->appends(['tag' => $tagId, 'keyword' => $keyword]);
 
