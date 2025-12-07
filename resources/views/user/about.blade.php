@@ -31,9 +31,9 @@
                     学習意欲の継続やキャリア形成の参考にもつながります。</p>
             </div>
 
-            <div class="content">
+            <div class="content" style="margin-top: 80px">
                 <h2>制作チーム「道（タオ）」について</h2>
-                <img src="{{ asset('assets/images/f_about.png') }}" alt="">
+                <img src="{{ asset('assets/images/f_about.png') }}" alt="チームの集合写真のイラスト" style="width: 70%">
             </div>
 
             <div class="content">

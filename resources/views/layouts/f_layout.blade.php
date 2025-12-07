@@ -11,7 +11,7 @@
     <meta content="QLIPプログラミングスクールの職業訓練生と講師をつなぐ、学習支援から就職支援、終了後のキャリア形成まで幅広くサポートする求職者支援管理システムです。" name="description">
 
     {{-- キーワード --}}
-    <meta content="" name="keywords">
+    <meta content="プログラミング,Webデザイン,システム開発,スキルアップ,キャリア形成,職業訓練,求職者支援管理" name="keywords">
 
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
