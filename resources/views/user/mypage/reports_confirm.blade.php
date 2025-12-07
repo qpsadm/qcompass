@@ -84,7 +84,7 @@
                 </div>
                 <div class="form-btn-container">
                     <button type="button" class="form-btn back-btn" onclick="history.back();">入力画面へもどる</button>
-                    <button type="submit" class="form-btn">送信する</button>
+                    <button type="submit" class="form-btn sending-btn">送信する</button>
                 </div>
             </form>
 

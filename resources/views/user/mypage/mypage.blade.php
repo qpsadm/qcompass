@@ -63,7 +63,7 @@
             </div>
 
             <div class="btn-area">
-                <button class="close-btn">変更する</button>
+                <button class="change-btn">変更する</button>
             </div>
         </form>
 

@@ -54,11 +54,11 @@
                 <p>{!! nl2br(e($report->notice)) !!}</p>
             </div>
 
-            {{-- 戻るボタン --}}
-            <div class="btn-area">
-                <a type="button" href="{{ route('user.mypage') }}" class="form-btn">マイページへもどる</a>
-            </div>
+        </div>
 
+        {{-- 戻るボタン --}}
+        <div class="btn-area">
+            <a type="button" href="{{ route('user.mypage') }}" class="form-btn">マイページへもどる</a>
         </div>
 
         <x-f_bread_crumbs />

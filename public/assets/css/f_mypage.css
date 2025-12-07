@@ -25,6 +25,16 @@
     background-color: var(--sub-color-2);
 }
 
+@media screen and (max-width: 1324px) {
+    .modal-profile {
+        left: calc(50%);
+    }
+
+    .modal-customize {
+        left: calc(50%);
+    }
+}
+
 .overlay {
     display: none;
     position: fixed;
@@ -177,6 +187,9 @@
     text-align: center;
 }
 
+.btn-area .change-btn {
+    background-color: var(--accent-color);
+}
 
 .fc .fc-daygrid-day-number {
     padding: 10px;
@@ -214,6 +227,8 @@
 
 .calendar .fc-h-event .fc-event-main img {
     cursor: pointer;
+    width: 40% !important;
+    height: 40% !important;
     /* filter: brightness(0) saturate(100%) invert(75%) sepia(42%) saturate(915%) hue-rotate(343deg) brightness(100%) contrast(102%); */
 }
 
@@ -276,6 +291,7 @@
 
     .profile-icon {
         width: calc(40%);
+        height: calc(40%);
         margin: 0;
     }
 
