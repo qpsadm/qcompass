@@ -39,10 +39,10 @@
     position: absolute;
     background: url(../images/icon/f_icon_book.svg) no-repeat;
     background-size: 100%;
-    top: 0;
-    left: 0;
-    width: 30px;
-    height: 30px;
+    top: -12px;
+    left: -12px;
+    width: 45px;
+    height: 45px;
 }
 
 .section-box.facebook .box-title h2::before {
