@@ -810,7 +810,7 @@ footer {
 
 @media screen and (max-width: 1324px) {
     .page-title h1 {
-        width: 100%;
+        /* width: 100%; */
     }
 }
 
