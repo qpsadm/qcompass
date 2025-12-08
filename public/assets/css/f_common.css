@@ -362,7 +362,7 @@ header::after {
     height: 40px;
     background: url(../images/icon/f_tag.svg) no-repeat;
     background-size: 100%;
-    filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);
+    filter: var(--tag-filter);
     ;
 }
 

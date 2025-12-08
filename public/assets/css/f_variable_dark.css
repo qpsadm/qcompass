@@ -74,6 +74,9 @@
     /* background-color */
     --background-color: #FCFCFC;
 
+    --filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(26%) hue-rotate(308deg) brightness(104%) contrast(100%);
+
+    --tag-filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);
 }
 
 .font-medium {

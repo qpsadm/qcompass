@@ -68,7 +68,7 @@
 .section-box .box-title h3::before {
     content: "";
     position: absolute;
-    background-color: #74A0FF;
+    background-color: var(--sub-color-3);
 }
 
 .section-box .box-title h3::before {

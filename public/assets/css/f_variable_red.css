@@ -64,7 +64,7 @@
     /* 補助的な中間赤（ボタンホバーなど） */
 
     /* accent-color（強調色） */
-    --accent-color: #FF7043;
+    --accent-color: #FFB71D;
     /* オレンジ寄りのアクセントで調和 */
 
     /* footer-color */
@@ -75,6 +75,8 @@
     --background-color: #FCFCFC;
 
     --filter: brightness(0) saturate(100%) invert(23%) sepia(56%) saturate(3160%) hue-rotate(347deg) brightness(92%) contrast(87%);
+
+    --tag-filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);
 }
 
 .font-medium {
