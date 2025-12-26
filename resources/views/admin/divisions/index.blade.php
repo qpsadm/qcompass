@@ -13,7 +13,12 @@
         </a>
     </div>
 
+    <div class="mb-4">
+        {{ $divisions->links() }}
+    </div>
+
     <div class="overflow-x-auto">
+
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
@@ -21,8 +26,7 @@
                     <th class="border px-4 py-2">コード</th>
                     <th class="border px-4 py-2">部署名</th>
                     <th class="border px-4 py-2">表示</th>
-                    <th class="border px-4 py-2">住所</th> <!-- 追加 -->
-                    <th class="border px-4 py-2 w-60 text-center">操作</th>
+                    <th class="border px-4 py-2">住所</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +36,12 @@
                         {{ ($divisions->currentPage() - 1) * $divisions->perPage() + $loop->iteration }}
                     </td>
                     <td class="border px-4 py-2">{{ $division->code }}</td>
-                    <td class="border px-4 py-2">{{ $division->name }}</td>
+                    <td class="border px-4 py-2">
+                        <a href="{{ route('admin.divisions.edit', $division->id) }}"
+                            class="text-blue-600 hover:text-blue-800 hover:underline transition">
+                            {{ $division->name }}
+                        </a>
+                    </td>
                     <td class="border px-4 py-2 text-center">
                         @if($division->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -41,9 +50,6 @@
                         @endif
                     </td>
                     <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td>
-                    <td class="border px-4 py-2 text-center">
-                        <!-- 操作ボタン -->
-                    </td>
                 </tr>
                 @empty
                 <tr>
