@@ -13,22 +13,22 @@
                 <label for="name">講座名</label>
 
                 @if ($selected_course)
-                    {{-- URLで指定された場合はラベル表示 --}}
-                    <span class="block mt-1 w-full border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
-                        {{ $courses->find($selected_course)->course_name ?? '不明なコース' }}
-                    </span>
-                    <input type="hidden" name="course_id" value="{{ $selected_course }}">
+                {{-- URLで指定された場合はラベル表示 --}}
+                <span class="block mt-1 w-full border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
+                    {{ $courses->find($selected_course)->course_name ?? '不明なコース' }}
+                </span>
+                <input type="hidden" name="course_id" value="{{ $selected_course }}">
                 @else
-                    {{-- URL指定なしならセレクトボックス --}}
-                    <select id="course_id" name="course_id" required
-                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">選択してください</option>
-                        @foreach ($courses as $course)
-                            <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                                {{ $course->course_name }}
-                            </option>
-                        @endforeach
-                    </select>
+                {{-- URL指定なしならセレクトボックス --}}
+                <select id="course_id" name="course_id" required
+                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">選択してください</option>
+                    @foreach ($courses as $course)
+                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                        {{ $course->course_name }}
+                    </option>
+                    @endforeach
+                </select>
                 @endif
             </div>
 
@@ -74,7 +74,7 @@
             <label for="remember_me">
                 <input id="remember_me" type="checkbox" name="remember">
                 <span>{{ __('Remember me') }}</span>
-            </label>
+        </label>
         </div> --}}
 
         <div class="login-btn-container">

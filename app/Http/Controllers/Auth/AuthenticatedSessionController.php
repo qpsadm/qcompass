@@ -15,26 +15,23 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(Request $request)
     {
-        $courses = Course::where(function ($q) {
-            $q->whereNull('end_date')           // 終了日未設定の講座は含める
-                ->orWhere('end_date', '>=', now()); // 終了日が未来の講座のみ
-        })
-            ->orderBy('created_at', 'desc') // 新しい順に並べる
+        $courses = Course::loginVisible()
+            ->orderBy('start_date', 'desc')
             ->get();
 
-        $selected_course = $request->query('course_id'); // URLパラメータ取得
+        $selected_course = $request->query('course_id');
 
         return view('auth.login', compact('courses', 'selected_course'));
     }
 
+
+
     /**
      * Handle an incoming authentication request.
      */
+    // ---------------- ログイン処理 ----------------
     public function store(Request $request)
     {
         $request->validate([
@@ -63,13 +60,26 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('course_id');
         }
 
-        // ▼ ログイン成功
-        Auth::login($user, $request->filled('remember'));
-        // ★ セッションID再生成（419対策）
-        $request->session()->regenerate();
-        // ▼ テーマ・フォントサイズをセッションに保存
-        $user_details = $user->detail;
+        $course = Course::find($request->course_id);
 
+        if (!$course) {
+            return back()->withErrors([
+                'course_id' => '講座が存在しません。',
+            ]);
+        }
+
+        // 管理者以外は isLoginable() をチェック
+        if ($user->role_id !== 8 && !$course->isLoginable()) {
+            return back()->withErrors([
+                'course_id' => 'この講座は現在ログインできません。',
+            ]);
+        }
+
+        Auth::login($user, $request->filled('remember'));
+        $request->session()->regenerate();
+
+        // セッションにテーマ・フォントサイズ保存
+        $user_details = $user->detail;
         session([
             'settings' => [
                 'theme_id' => $user_details?->theme_id ?? 1,
@@ -77,16 +87,11 @@ class AuthenticatedSessionController extends Controller
             ]
         ]);
 
-        // ▼ ロール別リダイレクト
-        switch ($user->role_id) {
-            case 3: // 生徒
-                return redirect()->route('user.top');
-            case 6: // 講師
-            case 8: // 管理者
-                return redirect()->route('admin.dashboard');
-            default:
-                return redirect()->route('user.top');
-        }
+        return match ($user->role_id) {
+            3 => redirect()->route('user.top'),
+            6, 8 => redirect()->route('admin.dashboard'),
+            default => redirect()->route('user.top'),
+        };
     }
 
 

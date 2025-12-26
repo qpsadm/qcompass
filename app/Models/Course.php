@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -52,17 +53,17 @@ class Course extends Model
             ->wherePivotNull('deleted_at'); // ← ここで削除済み除外
     }
 
-    // 状態の定数定義
-    const STATUS_DRAFT = 0;
-    const STATUS_PUBLISHED = 1;
-    const STATUS_ARCHIVED = 2;
+    // 状態定義
+    const STATUS_DRAFT     = 0; // 開校準備
+    const STATUS_ARCHIVED  = 1; // 終了
+    const STATUS_PUBLISHED = 2; // 実地中
 
-    // ステータス定義
     const STATUS = [
-        0 => '開校準備',
-        1 => '終了',
-        2 => '実地中',
+        self::STATUS_DRAFT     => '開校準備',
+        self::STATUS_ARCHIVED  => '終了',
+        self::STATUS_PUBLISHED => '実地中',
     ];
+
     public function agendas()
     {
         return $this->belongsToMany(
@@ -131,5 +132,92 @@ class Course extends Model
 
         $diff = $today->diffInDays($endDate, false); // 過ぎていたらマイナス
         return $diff > 0 ? $diff : 0;
+    }
+
+
+    // ---------------- ログイン判定 ----------------
+    public function isLoginable(): bool
+    {
+        if (!$this->is_show || $this->deleted_at !== null) {
+            return false;
+        }
+
+        // 終了・不明の状態は不可
+        if ($this->status === self::STATUS_ARCHIVED) {
+            return false;
+        }
+
+        // 終了日なし → OK
+        if ($this->end_date === null) {
+            return true;
+        }
+
+        // 終了後1か月以内
+        return now()->lte(Carbon::parse($this->end_date)->addMonth()->endOfDay());
+    }
+
+
+
+    public function scopeLoginVisible($query)
+    {
+        return $query
+            ->where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->whereIn('status', [self::STATUS_DRAFT, self::STATUS_PUBLISHED]);
+    }
+
+    public function loginRemainingDays(): ?int
+    {
+        // 終了日なし → 制限なし
+        if ($this->end_date === null) {
+            return null;
+        }
+
+        $limitDate = Carbon::parse($this->end_date)
+            ->addMonth()
+            ->endOfDay();
+
+        // すでに期限切れ
+        if (now()->gt($limitDate)) {
+            return 0;
+        }
+
+        return now()->diffInDays($limitDate);
+    }
+
+    public function loginStatusLabel(): array
+    {
+        if (!$this->isLoginable()) {
+            return [
+                'icon' => '🔒',
+                'text' => 'ログイン不可',
+            ];
+        }
+
+        $days = $this->loginRemainingDays();
+
+        if ($days === null) {
+            return [
+                'icon' => '🔓',
+                'text' => '常にログイン可',
+            ];
+        }
+
+        return [
+            'icon' => '🔓',
+            'text' => "ログイン可（残り{$days}日）",
+        ];
+    }
+
+    public function getLoginRemainingDaysAttribute(): ?int
+    {
+        if ($this->end_date === null) {
+            return null;
+        }
+
+        $endLimit = \Carbon\Carbon::parse($this->end_date)->addMonth()->endOfDay();
+        $remaining = now()->diffInDays($endLimit, false); // 過ぎていたらマイナス
+
+        return $remaining > 0 ? $remaining : 0;
     }
 }
