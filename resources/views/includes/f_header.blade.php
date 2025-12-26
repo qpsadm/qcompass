@@ -113,6 +113,7 @@
                                     target="_blank">日別計画表</a></li>
                             <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
                             <li><a class="report" href="mypage/report.html">日報作成</a></li> --}}
+                            <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
                             @foreach ($courses as $course)
                                 @if ($course->plan_path)
                                     <li>
@@ -124,7 +125,7 @@
                                 @endif
                             @endforeach
                             <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
-                            <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
+
 
                         </ul>
                     </div>

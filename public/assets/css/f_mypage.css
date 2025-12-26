@@ -251,6 +251,7 @@
     padding: 15px;
     border-radius: 15px;
     background-color: var(--text-color-3);
+    resize: none;
 }
 
 .memo-form button {

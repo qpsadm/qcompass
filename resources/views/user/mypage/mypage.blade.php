@@ -87,7 +87,7 @@
                 <div class="profile-icon">
                     <img src="{{ $user_details && $user_details->avatar_path
                             ? asset('storage/' . $user_details->avatar_path)
-                            : asset('assets/images/f_profile-image.svg') }}"
+                            : asset('assets/images/f_profile_image.svg') }}"
                         alt="プロフィール画像">
                 </div>
                 <div class="profile-data">
@@ -235,11 +235,12 @@
                     domNodes: []
                 };
                 const img = document.createElement('img');
-                img.src = `${window.APP_URL}/assets/images/icon/f_icon_check_on.svg`;
+                img.src = `${window.APP_URL}/assets/images/icon/f_icon_check.svg`;
                 img.alt = "提出済";
                 img.style.width = "40px";
                 img.style.height = "40px";
                 img.style.cursor = "pointer";
+                img.style.filter = "var(--tag-filter)";
                 return {
                     domNodes: [img]
                 };

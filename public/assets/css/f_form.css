@@ -3,11 +3,18 @@
 /* 日報フォーム */
 
 .form-content {
-    max-width: 1000px;
+    /* max-width: 1000px; */
     font-weight: 400;
     line-height: 27px;
     letter-spacing: 1px;
 }
+
+.form-content .description-text,
+.form-content .report-form div:not(.form-btn-container),
+.form-content .form-confirm div:not(.form-btn-container) {
+    max-width: 1000px;
+}
+
 
 .form-content .description-text {
     margin-bottom: 50px;
