@@ -1,33 +1,37 @@
-@extends('layouts.app')
+@extends('layouts.f_layout')
 
 @section('content')
-    <div class="min-h-screen flex items-start justify-center bg-gray-100 pt-10">
-        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 w-full max-w-xl">
-            <h1 class="text-2xl font-bold mb-4">{{ $quiz->title }} - 結果</h1>
-            <p class="mb-4 font-bold">合計得点: {{ $score }}</p>
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">{{ $quiz->title }} - 結果</h1>
 
-            @foreach ($results as $res)
-                <div class="mb-4 p-4 border rounded">
-                    <p class="font-bold">{{ $res['question']->question_text }} ({{ $res['question']->score }}点)</p>
+    <p class="mb-4">合計得点: {{ $score }} / {{ $quiz->total_score }}</p>
+    <p class="mb-4">
+        合格: {{ $quiz->passing_score }} 点以上
+        @if($score >= $quiz->passing_score)
+        <span class="text-green-600 font-semibold">合格！</span>
+        @else
+        <span class="text-red-600 font-semibold">不合格</span>
+        @endif
+    </p>
 
-                    @if ($res['question']->question_type === 'text')
-                        <p>あなたの回答: {{ $res['userAnswer'] }}</p>
-                    @else
-                        <p>あなたの回答:
-                            @foreach ((array) $res['userAnswer'] as $ans)
-                                {{ $res['question']->choices->firstWhere('id', $ans)?->choice_text }},
-                            @endforeach
-                        </p>
-                        <p>正解:
-                            @foreach ($res['question']->choices->where('is_correct', 1) as $c)
-                                {{ $c->choice_text }},
-                            @endforeach
-                        </p>
-                        <p>判定: <span class="{{ $res['isCorrect'] ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $res['isCorrect'] ? '正解' : '不正解' }}
-                            </span></p>
-                    @endif
-                </div>
-            @endforeach
-        </div>
-    @endsection
+    @foreach($results as $res)
+    <div class="mb-4 p-4 border rounded">
+        <p class="font-semibold">{{ $loop->iteration }}. {{ $res['question']->question_text }}</p>
+        <p>あなたの回答:
+            @if(is_array($res['userAnswer']))
+            {{ implode(', ', $res['userAnswer']) }}
+            @else
+            {{ $res['userAnswer'] }}
+            @endif
+        </p>
+        @if($res['isCorrect'] === null)
+        <p>記述式のため採点なし</p>
+        @elseif($res['isCorrect'])
+        <p class="text-green-600">正解</p>
+        @else
+        <p class="text-red-600">不正解</p>
+        @endif
+    </div>
+    @endforeach
+</div>
+@endsection
