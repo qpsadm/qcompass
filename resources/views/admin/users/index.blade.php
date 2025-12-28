@@ -152,6 +152,13 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
                             </button>
+
+                            <form action="{{ route('admin.users.impersonate', $user->id) }}" method="POST">
+                                @csrf
+                                <button class="text-purple-600 hover:text-purple-800">
+                                    なりすまし
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

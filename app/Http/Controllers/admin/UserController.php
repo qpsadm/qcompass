@@ -10,6 +10,9 @@ use App\Models\Division;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 class UserController extends Controller
 {
     /**
@@ -224,5 +227,35 @@ class UserController extends Controller
             // 詳細がなければ新規作成
             return redirect()->route('admin.users.detail.create', $user->id);
         }
+    }
+
+    /**
+     * なりすまし開始
+     */
+    public function impersonate(User $user)
+    {
+        // 管理者IDを保存
+        Session::put('impersonator_id', Auth::id());
+
+        // 対象ユーザーでログイン
+        Auth::login($user);
+
+        // ユーザー画面へ
+        return redirect()->route('user.mypage');
+    }
+
+    /**
+     * なりすまし解除
+     */
+    public function leaveImpersonate()
+    {
+        $adminId = session('impersonator_id');
+
+        if ($adminId) {
+            Auth::loginUsingId($adminId);
+            session()->forget('impersonator_id');
+        }
+
+        return redirect()->route('admin.users.index');
     }
 }

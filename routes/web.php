@@ -63,6 +63,8 @@ use App\Http\Controllers\{
     JobOfferController
 };
 
+use Illuminate\Support\Facades\Auth;
+
 // =============================
 // 公開ページ
 // =============================
@@ -93,6 +95,20 @@ Route::get('/', function () {
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
+
+
+// なりすまし開始
+Route::post(
+    '/admin/users/{user}/impersonate',
+    [AdminUserController::class, 'impersonate']
+)->name('admin.users.impersonate');
+
+// なりすまし解除
+Route::post(
+    '/admin/impersonate/leave',
+    [AdminUserController::class, 'leaveImpersonate']
+)->name('admin.users.impersonate.leave');
+
 
 // =============================
 // ユーザー用

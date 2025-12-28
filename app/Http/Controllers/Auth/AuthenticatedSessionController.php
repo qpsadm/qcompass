@@ -102,10 +102,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // ★ なりすまし中なら「ログアウト＝解除」
+        if (session()->has('impersonator_id')) {
+
+            $adminId = session('impersonator_id');
+
+            // 管理者に戻す
+            Auth::loginUsingId($adminId);
+
+            // なりすまし情報を削除
+            session()->forget('impersonator_id');
+
+            return redirect()
+                ->route('admin.dashboard')
+                ->with('status', 'なりすましを解除しました');
+        }
+
+        // ===== 通常ログアウト =====
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
