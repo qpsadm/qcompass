@@ -215,13 +215,13 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
 
     // クイズ一覧
-    Route::get('quizzes', [UserQuizController::class, 'index'])->name('quizzes.index');
+    Route::get('/quizzes', [UserQuizController::class, 'index'])->name('quizzes.index');
 
     // クイズ詳細・開始画面
-    Route::get('quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quizzes.show');
+    Route::get('/quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quizzes.show');
 
     // クイズ回答送信
-    Route::post('quizzes/{quiz}/submit', [UserQuizController::class, 'submit'])->name('quizzes.submit');
+    Route::post('/quizzes/{quiz}/submit', [UserQuizController::class, 'submit'])->name('quizzes.submit');
 });
 
 

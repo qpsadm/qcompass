@@ -52,7 +52,7 @@ class QuizController extends Controller
     public function edit(Quiz $quiz)
     {
         $courses = Course::all();
-        $questions = $quiz->quizQuestions()->with('choices')->get();
+        $questions = $quiz->questions()->with('choices')->get();
         return view('admin.quizzes.edit', compact('quiz', 'courses', 'questions'));
     }
 
@@ -116,7 +116,7 @@ class QuizController extends Controller
         // ============================
         $totalCorrect = 0;
 
-        $questions = $quiz->quizQuestions()->with('choices')->get();
+        $questions = $quiz->questions()->with('choices')->get();
 
         foreach ($questions as $question) {
             $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);

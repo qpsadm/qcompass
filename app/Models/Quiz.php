@@ -25,6 +25,7 @@ class Quiz extends Model
         'active_to',
         'created_by',
     ];
+
     protected $casts = [
         'type' => 'integer',
         'time_limit' => 'integer',
@@ -34,18 +35,23 @@ class Quiz extends Model
         'active_to' => 'datetime',
     ];
 
+    /**
+     * クイズに紐づく問題
+     */
     public function questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(
+            QuizQuestion::class,
+            'quiz_id',
+            'id'
+        );
     }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    public function quizQuestions()
-    {
-        return $this->hasMany(QuizQuestion::class);
-    }
+
     protected static function booted()
     {
         static::creating(function ($quiz) {

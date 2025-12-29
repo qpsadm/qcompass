@@ -13,7 +13,7 @@ class QuizQuestionController extends Controller
     public function index(Quiz $quiz)
     {
         // クイズに紐づく問題を取得（選択肢も一緒に）
-        $quizQuestions = $quiz->quizQuestions()->with('choices')->get();
+        $quizQuestions = $quiz->questions()->with('choices')->get();
 
         return view('admin.quizzes.quiz_questions.index', compact('quiz', 'quizQuestions'));
     }
@@ -49,7 +49,7 @@ class QuizQuestionController extends Controller
         // ============================
         // 問題作成
         // ============================
-        $question = $quiz->quizQuestions()->create([
+        $question = $quiz->questions()->create([
             'question_text' => $request->question_text,
             'score' => $request->score,
             'type' => $request->type,
