@@ -7,8 +7,10 @@
     <div class="mb-4">
         <p><strong>ユーザー:</strong> {{ $attempt->user->name }}</p>
         <p><strong>クイズ:</strong> {{ $attempt->quiz->title }}</p>
-        <p><strong>総問題数:</strong> {{ $totalQuestions }}</p>
-        <p><strong>正解数:</strong> {{ $totalCorrect }}</p>
+        <p><strong>総問題数:</strong> {{ $totalQuestions ?? $attempt->quiz->questions->count() }}</p>
+        <p><strong>正解数:</strong> {{ $totalCorrect ?? 0 }}</p>
+        <p><strong>総得点:</strong> {{ $totalScore ?? $attempt->quiz->questions->sum('score') }}</p>
+        <p><strong>合格判定:</strong> {{ $passFail ?? ($totalCorrect >= ($passingScore ?? 70) ? '合格' : '不合格') }}</p>
     </div>
 
     <div class="overflow-x-auto">
@@ -24,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($attempt->quiz->quizQuestions as $index => $question)
+                @foreach($attempt->quiz->questions as $index => $question)
                 @php
                 $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
                 $correctChoice = $question->choices->firstWhere('is_correct', 1);
@@ -41,7 +43,7 @@
                         </ul>
                     </td>
                     <td class="px-4 py-2 border">
-                        {{ $userAnswer ? $userAnswer->choice->choice_text : '未回答' }}
+                        {{ $userAnswer && $userAnswer->choice ? $userAnswer->choice->choice_text : '未回答' }}
                     </td>
                     <td class="px-4 py-2 border">
                         {{ $correctChoice ? $correctChoice->choice_text : '未設定' }}
@@ -55,8 +57,9 @@
         </table>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 flex gap-2">
         <a href="{{ route('admin.quizzes.index') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">戻る</a>
+        <a href="{{ route('admin.quizzes.play', $attempt->quiz->id) }}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">もう一度プレイ</a>
     </div>
 </div>
 @endsection

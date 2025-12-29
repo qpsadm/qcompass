@@ -11,8 +11,7 @@ class QuizController extends Controller
     // クイズ一覧
     public function index()
     {
-        $courseId = session('course_id');
-
+        $courseId = (int) session('course_id'); // 型を int に揃える
         $quizzes = Quiz::where('course_id', $courseId)
             ->withCount('questions')
             ->get();
@@ -23,8 +22,8 @@ class QuizController extends Controller
     // クイズ詳細・問題表示
     public function show(Quiz $quiz)
     {
-        $courseId = session('course_id');
-        if ($quiz->course_id != $courseId) abort(404);
+        $courseId = (int) session('course_id');
+        if ($quiz->course_id !== $courseId) abort(404);
 
         $questions = $quiz->questions()
             ->with('choices')
@@ -38,52 +37,73 @@ class QuizController extends Controller
     // 回答送信
     public function submit(Request $request, Quiz $quiz)
     {
-        $courseId = session('course_id');
-        if ($quiz->course_id !== $courseId) {
-            abort(404);
-        }
+        // ユーザーの回答を取得 [question_id => choice_id]
+        $userAnswers = $request->input('answers', []);
 
-        $answers = $request->input('answers', []);
+        $questions = $quiz->questions()->with('choices')->get();
 
-        // 仮で採点（ラジオ問題のみ）
         $results = [];
-        $score = 0;
-        foreach ($quiz->questions as $question) {
-            $userAnswer = $answers[$question->id] ?? null;
-            $isCorrect = null;
+        $totalScore = 0;
 
-            if ($question->type === 'radio' && $userAnswer) {
-                $isCorrect = $userAnswer == $question->correct_choice_id;
-                if ($isCorrect) $score += $question->score ?? 1;
+        foreach ($questions as $question) {
+            $selectedChoiceId = $userAnswers[$question->id] ?? null;
+
+            // 正解選択肢
+            $correctChoice = $question->choices->firstWhere('is_correct', 1);
+
+            // 正誤判定
+            if ($correctChoice) {
+                $isCorrect = $selectedChoiceId && ((int)$selectedChoiceId === (int)$correctChoice->id);
+            } else {
+                // 記述式など正解設定がない場合
+                $isCorrect = null;
+            }
+
+            if ($isCorrect) {
+                $totalScore += $question->score ?? 1;
+            }
+
+            // ユーザー回答をテキストに変換して保持
+            if ($selectedChoiceId) {
+                $userAnswerText = optional($question->choices->firstWhere('id', $selectedChoiceId))->choice_text ?? $selectedChoiceId;
+            } else {
+                $userAnswerText = '未回答';
             }
 
             $results[] = [
                 'question' => $question,
-                'userAnswer' => $userAnswer,
-                'isCorrect' => $isCorrect
+                'userAnswer' => $userAnswerText,
+                'correctChoice' => $correctChoice ? $correctChoice->choice_text : null,
+                'isCorrect' => $isCorrect,
             ];
         }
 
-        // 合計スコアをセッションに保存して結果ページへリダイレクト
-        session([
-            "quiz_{$quiz->id}_results" => $results,
-            "quiz_{$quiz->id}_score" => $score
-        ]);
+        $totalQuestions = $questions->count();
+        $passingScore = $quiz->passing_score ?? 70;
+        $passFail = ($totalScore >= $passingScore) ? '合格' : '不合格';
 
-        return redirect()->route('user.quizzes.result', $quiz);
+        return view('user.quizzes.result', compact(
+            'quiz',
+            'results',
+            'totalScore',
+            'totalQuestions',
+            'passingScore',
+            'passFail'
+        ));
     }
 
 
 
+
+    // 結果表示
     public function result(Quiz $quiz)
     {
         $results = session("quiz_{$quiz->id}_results");
         $score = session("quiz_{$quiz->id}_score");
+        $totalScore = session("quiz_{$quiz->id}_total_score");
 
-        if (!$results || $score === null) {
-            abort(404);
-        }
+        if (!$results) abort(404);
 
-        return view('user.quizzes.result', compact('quiz', 'score', 'results'));
+        return view('user.quizzes.result', compact('quiz', 'results', 'score', 'totalScore'));
     }
 }

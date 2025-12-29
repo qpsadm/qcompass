@@ -88,79 +88,96 @@ class QuizController extends Controller
 
     public function submitPlay(Request $request, Quiz $quiz)
     {
-        $user = auth()->user();
-
-        // ============================
-        // 1. 回答保存
-        // ============================
-        $attempt = QuizAttempt::create([
-            'quiz_id' => $quiz->id,
-            'user_id' => $user->id,
-            'started_at' => now(),
-            'status' => 1,
-            'attempt_no' => QuizAttempt::where('quiz_id', $quiz->id)->where('user_id', $user->id)->count() + 1,
-            'ip_address' => $request->ip(),
-        ]);
-
-        foreach ($request->answers as $questionId => $choiceId) {
-            QuizAnswer::create([
-                'attempt_id' => $attempt->id,
-                'question_id' => $questionId,
-                'choice_id' => $choiceId,
-                'user_id' => $user->id,
-            ]);
-        }
-
-        // ============================
-        // 2. 正解判定
-        // ============================
-        $totalCorrect = 0;
+        $userAnswers = $request->input('answers', []); // [question_id => choice_id]
 
         $questions = $quiz->questions()->with('choices')->get();
 
-        foreach ($questions as $question) {
-            $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
-            $correctChoice = $question->choices->firstWhere('is_correct', 1); // SQLite では 1 が true
+        $results = [];
+        $totalScore = 0;
 
-            if ($userAnswer && $correctChoice && (int)$userAnswer->choice_id === (int)$correctChoice->id) {
-                $totalCorrect++;
+        foreach ($questions as $question) {
+            $selectedChoiceId = $userAnswers[$question->id] ?? null;
+            $correctChoice = $question->choices->firstWhere('is_correct', 1);
+
+            $isCorrect = $correctChoice && $selectedChoiceId && ((int)$selectedChoiceId === (int)$correctChoice->id);
+
+            if ($isCorrect) {
+                $totalScore += $question->score ?? 1;
             }
+
+            $results[] = [
+                'question' => $question,
+                'selectedChoiceId' => $selectedChoiceId,
+                'correctChoice' => $correctChoice,
+                'isCorrect' => $isCorrect
+            ];
         }
 
-        $attempt->total_correct = $totalCorrect;
-        $attempt->status = 2; // 完了
-        $attempt->save();
+        $totalQuestions = $questions->count();
+        $passingScore = $quiz->passing_score ?? 70;
+        $passFail = ($totalScore >= $passingScore) ? '合格' : '不合格';
 
-        // ============================
-        // 3. 結果画面へリダイレクト
-        // ============================
-        return redirect()
-            ->route('admin.quizzes.result', ['attempt' => $attempt->id])
-            ->with('success', '回答を送信しました！');
+        // 保存しないので attempt は null のままでもOK
+        return view('admin.quizzes.result', compact(
+            'quiz',
+            'results',
+            'totalScore',
+            'totalQuestions',
+            'passingScore',
+            'passFail'
+        ));
     }
 
     public function result($attemptId)
     {
-        $attempt = QuizAttempt::with(['quiz.quizQuestions.choices', 'answers', 'user'])->findOrFail($attemptId);
+        $attempt = QuizAttempt::with(['quiz.questions.choices', 'answers', 'user'])->findOrFail($attemptId);
 
-        $totalQuestions = $attempt->quiz->quizQuestions->count();
-        $totalCorrect = $attempt->total_correct ?? 0;
+        $quiz = $attempt->quiz;
+        $questions = $quiz->questions;
 
-        // パーセンテージ計算
-        $percentage = $totalQuestions > 0 ? round(($totalCorrect / $totalQuestions) * 100, 1) : 0;
+        $results = [];
+        $totalCorrect = 0;
 
-        // 合否判定（クイズに passing_score カラムがある場合）
-        $passingScore = $attempt->quiz->passing_score ?? 70; // デフォルト70点
-        $passFail = $percentage >= $passingScore ? '合格' : '不合格';
+        foreach ($questions as $question) {
+            $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
+            $selectedChoiceId = $userAnswer ? $userAnswer->choice_id : null;
+
+            $correctChoice = $question->choices->firstWhere('is_correct', 1);
+            $isCorrect = false;
+
+            if ($correctChoice && $selectedChoiceId !== null) {
+                $isCorrect = ((int)$correctChoice->id === (int)$selectedChoiceId);
+                if ($isCorrect) {
+                    $totalCorrect += $question->score ?? 1;
+                }
+            }
+
+            $results[] = [
+                'question' => $question,
+                'userAnswer' => $selectedChoiceId,
+                'isCorrect' => $isCorrect
+            ];
+        }
+
+        $totalScore = $questions->sum('score');
+        $passingScore = $quiz->passing_score ?? 70;
+        $passFail = ($totalCorrect >= $passingScore) ? '合格' : '不合格';
+
+        // ← ここで totalQuestions を追加
+        $totalQuestions = $questions->count();
 
         return view('admin.quizzes.result', compact(
             'attempt',
-            'totalQuestions',
+            'results',
             'totalCorrect',
-            'percentage',
-            'passFail'
+            'totalScore',
+            'passingScore',
+            'passFail',
+            'totalQuestions' // 追加
         ));
     }
+
+
 
     public function show($id)
     {
