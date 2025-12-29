@@ -78,6 +78,11 @@ class AuthenticatedSessionController extends Controller
         Auth::login($user, $request->filled('remember'));
         $request->session()->regenerate();
 
+        // ★ 講座IDをセッションに保存（これが無いと全部壊れる）
+        session([
+            'course_id' => $request->course_id,
+        ]);
+
         // セッションにテーマ・フォントサイズ保存
         $user_details = $user->detail;
         session([

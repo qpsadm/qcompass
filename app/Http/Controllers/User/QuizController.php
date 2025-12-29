@@ -11,26 +11,42 @@ class QuizController extends Controller
     // クイズ一覧
     public function index()
     {
-        $quizzes = Quiz::withCount([
-            'questions' => function ($q) {
-                $q->where('is_show', 1);
-            }
-        ])->get();
+        $courseId = session('course_id');
+
+        // 🔴 ここが null なら何も出さない
+        if (!$courseId) {
+            return redirect()->route('login');
+        }
+
+        $quizzes = Quiz::where('course_id', $courseId)
+            ->withCount([
+                'questions' => fn($q) => $q->where('is_show', 1)
+            ])
+            ->get();
 
         return view('user.quizzes.index', compact('quizzes'));
     }
 
+
+
     // クイズ詳細・問題表示
     public function show(Quiz $quiz)
     {
+        $courseId = session('course_id');
+
+        if ($quiz->course_id !== $courseId) {
+            abort(404);
+        }
+
         $questions = $quiz->questions()
-            ->with('choices')     // ← 選択肢を出すために必須
+            ->with('choices')
             ->where('is_show', 1)
             ->orderBy('order')
             ->get();
 
         return view('user.quizzes.show', compact('quiz', 'questions'));
     }
+
 
     // 回答送信
     public function submit(Request $request, Quiz $quiz)
