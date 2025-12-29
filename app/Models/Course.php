@@ -56,12 +56,12 @@ class Course extends Model
     // 状態定義
     const STATUS_DRAFT     = 0; // 開校準備
     const STATUS_ARCHIVED  = 1; // 終了
-    const STATUS_PUBLISHED = 2; // 実地中
+    const STATUS_PUBLISHED = 2; // 実施中
 
     const STATUS = [
         self::STATUS_DRAFT     => '開校準備',
         self::STATUS_ARCHIVED  => '終了',
-        self::STATUS_PUBLISHED => '実地中',
+        self::STATUS_PUBLISHED => '実施中',
     ];
 
     public function agendas()
