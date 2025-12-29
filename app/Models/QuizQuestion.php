@@ -34,7 +34,6 @@ class QuizQuestion extends Model
         static::deleting(function ($question) {
             if ($question->isForceDeleting()) {
                 $question->choices()->forceDelete();
-                $question->answers()->forceDelete();
             } else {
                 $question->choices()->delete();
                 // $question->answers()->delete();

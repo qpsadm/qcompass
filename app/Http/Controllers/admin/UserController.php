@@ -234,13 +234,15 @@ class UserController extends Controller
      */
     public function impersonate(User $user)
     {
-        // 管理者IDを保存
         Session::put('impersonator_id', Auth::id());
 
-        // 対象ユーザーでログイン
         Auth::login($user);
 
-        // ユーザー画面へ
+        // ★ なりすまし用に course_id を明示セット
+        session([
+            'course_id' => $user->courses()->first()?->id,
+        ]);
+
         return redirect()->route('user.mypage');
     }
 

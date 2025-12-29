@@ -222,6 +222,8 @@ Route::middleware(['auth', 'no-cache'])->prefix('user')->name('user.')->group(fu
 
     // クイズ回答送信
     Route::post('/quizzes/{quiz}/submit', [UserQuizController::class, 'submit'])->name('quizzes.submit');
+
+    Route::get('quizzes/{quiz}/result', [UserQuizController::class, 'result'])->name('quizzes.result');
 });
 
 
