@@ -9,7 +9,7 @@
         :search="true"
         :searchAction="route('user.agenda.agendas_list')"
         searchName="search"
-        searchPlaceholder="アジェンダを検索" />
+        searchPlaceholder="キーワード検索" />
 
     <x-f_category_accordion
         :categories="$categories"

@@ -9,7 +9,7 @@
         :search="true"
         title="就職支援"
         :searchName="'keyword'"
-        :searchPlaceholder="'キーワードで求人検索'" />
+        :searchPlaceholder="'キーワード検索'" />
 
     @php
     $currentTab = request('tab', 'offers');

@@ -22,7 +22,7 @@
         :search="true"
         title="質疑応答一覧"
         :searchName="'keyword'"
-        :searchPlaceholder="'キーワードで質疑応答検索'" />
+        :searchPlaceholder="'キーワード検索'" />
 
     {{-- カテゴリーやタグのリスト --}}
     <x-f_category_list type="question" :tags="$tags" />

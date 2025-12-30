@@ -1,35 +1,4 @@
 @charset "UTF-8";
-/* ==============================
-   impersonate banner
-============================== */
-.impersonate-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: #dc2626;
-    color: #fff;
-    z-index: 10000;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    font-weight: bold;
-}
-
-.impersonate-exit button {
-    background: #fff;
-    color: #dc2626;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
 
 html {
     color: var(--text-color-2);
@@ -93,7 +62,7 @@ header::after {
 .gnav ul {
     display: flex;
     justify-content: space-around;
-    width: calc(100vw - 315px);
+    width: calc(100vw - 330px);
 }
 
 .gnav li {
@@ -1174,5 +1143,69 @@ footer {
     .bread-crumbs {
         margin: 0 -35px;
         padding: 15px 35px;
+    }
+}
+
+
+/* ==============================
+   impersonate banner
+============================== */
+.impersonate-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #dc2626;
+    color: #fff;
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-weight: bold;
+}
+
+.impersonate-exit button {
+    background: #fff;
+    color: #dc2626;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+body.impersonating header {
+    margin-top: 40px;
+}
+
+body.impersonating .container {
+    margin: 115px 310px 0 20px;
+}
+
+body.impersonating .side-menu {
+    padding: 65px 20px 40px;
+}
+
+body.impersonating .side-menu::before,
+body.impersonating .side-menu::after {
+    top: 115px;
+}
+
+
+@media screen and (max-width: 1324px) {
+
+    body.impersonating .container {
+        margin: 115px 20px 0 20px;
+    }
+
+    body.impersonating .side-menu {
+        padding: 0;
+    }
+
+    body.impersonating .hamburger-menu {
+        padding: 130px 30px 30px;
     }
 }
