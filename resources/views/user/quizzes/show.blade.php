@@ -16,8 +16,8 @@
             </h2>
             <p class="mb-4">{{ $question->question_text }}</p>
 
-            {{-- 単一選択 --}}
-            @if ($question->type === 'single' || $question->type === 'single_2')
+            {{-- 単一選択（2択・4択） --}}
+            @if (in_array($question->type, ['single_2', 'single_4']))
             @foreach ($question->choices as $choice)
             <div class="flex items-center mb-2">
                 <input
@@ -25,13 +25,11 @@
                     id="choice_{{ $choice->id }}"
                     name="answers[{{ $question->id }}]"
                     value="{{ $choice->id }}"
-                    class="cursor-pointer w-4 h-4 text-blue-600 border-gray-400"
-                    style="appearance:auto; display:inline-block;">
-                <label for="choice_{{ $choice->id }}" class="ml-2 cursor-pointer">
+                    style="appearance:auto;">
+                <label for="choice_{{ $choice->id }}" class="ml-2">
                     {{ $choice->choice_text }}
                 </label>
             </div>
-
             @endforeach
 
             {{-- 複数選択 --}}
@@ -39,13 +37,12 @@
             @foreach ($question->choices as $choice)
             <div class="flex items-center mb-2">
                 <input
-                    type="radio"
+                    type="checkbox"
                     id="choice_{{ $choice->id }}"
-                    name="answers[{{ $question->id }}]"
+                    name="answers[{{ $question->id }}][]"
                     value="{{ $choice->id }}"
-                    class="cursor-pointer w-4 h-4 text-blue-600 border-gray-400"
-                    style="appearance:auto; display:inline-block;">
-                <label for="choice_{{ $choice->id }}" class="ml-2 cursor-pointer">
+                    style="appearance:auto;">
+                <label for="choice_{{ $choice->id }}" class="ml-2">
                     {{ $choice->choice_text }}
                 </label>
             </div>
@@ -59,6 +56,7 @@
                 class="w-full border rounded p-2"
                 placeholder="回答を入力してください"></textarea>
             @endif
+
         </div>
         @endforeach
 

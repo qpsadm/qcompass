@@ -12,16 +12,39 @@
 
     @foreach($results as $res)
     <div class="mb-4 p-4 border rounded">
-        <p class="font-semibold">{{ $loop->iteration }}. {{ $res['question']->question_text }}</p>
-        <p>選択肢:</p>
+        {{-- 問題文 --}}
+        <p class="font-semibold mb-2">
+            {{ $loop->iteration }}. {{ $res['question']->question_text }}
+        </p>
+
+        {{-- 選択肢一覧 --}}
+        <p class="font-medium">選択肢:</p>
         <ul class="list-disc pl-5 mb-2">
             @foreach($res['question']->choices as $choice)
             <li>{{ $choice->choice_text }}</li>
             @endforeach
         </ul>
-        <p>あなたの回答: {{ is_array($res['userAnswer']) ? implode(', ', $res['userAnswer']) : $res['userAnswer'] }}</p>
+
+        {{-- あなたの回答（★ここが今回の修正ポイント） --}}
+        <p>
+            あなたの回答:
+            @php
+            // [choice_id => choice_text] の対応表を作る
+            $choiceMap = $res['question']->choices->pluck('choice_text', 'id');
+            @endphp
+
+            @if (is_array($res['userAnswer']))
+            {{ collect($res['userAnswer'])
+                    ->map(fn($id) => $choiceMap[$id] ?? '不明')
+                    ->implode(', ') }}
+            @else
+            {{ $choiceMap[$res['userAnswer']] ?? $res['userAnswer'] }}
+            @endif
+        </p>
+
+        {{-- 正解・不正解表示 --}}
         @if($res['isCorrect'] === null)
-        <p>記述式のため採点なし</p>
+        <p class="text-gray-500">記述式のため採点なし</p>
         @elseif($res['isCorrect'])
         <p class="text-green-600 font-bold">正解</p>
         @else
@@ -30,7 +53,8 @@
     </div>
     @endforeach
 
-    <a href="{{ route('user.quizzes.index') }}" class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+    <a href="{{ route('user.quizzes.index') }}"
+        class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
         ← クイズ一覧に戻る
     </a>
 </div>
