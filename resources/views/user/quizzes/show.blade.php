@@ -1,10 +1,17 @@
 @extends('layouts.f_layout')
 
-@section('main-content')
-<div class="container mx-auto p-4 max-w-3xl">
+@section('title', $quiz->title)
 
-    <h1 class="text-2xl font-bold mb-4">{{ $quiz->title }}</h1>
-    <p class="text-gray-600 mb-6">{{ $quiz->description }}</p>
+@section('code-page-css')
+    <link rel="stylesheet" href="{{ asset('assets/css/f_quiz.css') }}">
+@endsection
+
+@section('main-content')
+<div class="container">
+
+    <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}]" />
+
+    <p class="">{{ $quiz->description }}</p>
 
     <form method="POST" action="{{ route('user.quizzes.submit', $quiz) }}">
         @csrf
@@ -62,14 +69,14 @@
 
         <div class="text-center mt-8">
             <button type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                回答を送信
+                class="submit-btn">
+                回答する
             </button>
         </div>
 
         <a href="{{ route('user.quizzes.index') }}"
-            class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-            ← クイズ一覧に戻る
+            class="back-btn">
+            一覧へもどる
         </a>
     </form>
 </div>

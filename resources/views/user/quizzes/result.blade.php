@@ -1,8 +1,15 @@
 @extends('layouts.f_layout')
 
+@section('title', 'クイズ結果')
+
+@section('code-page-css')
+    <link rel="stylesheet" href="{{ asset('assets/css/f_quiz.css') }}">
+@endsection
+
 @section('main-content')
-<div class="container mx-auto p-4 max-w-3xl">
-    <h1 class="text-2xl font-bold mb-4">{{ $quiz->title }} - 結果</h1>
+<div class="container">
+
+    <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}] 結果" />
 
     <p class="mb-4">
         合計得点: {{ $totalScore }}<br>
