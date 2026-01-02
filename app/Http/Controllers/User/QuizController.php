@@ -37,44 +37,61 @@ class QuizController extends Controller
     // 回答送信
     public function submit(Request $request, Quiz $quiz)
     {
-        // ユーザーの回答を取得 [question_id => choice_id]
         $userAnswers = $request->input('answers', []);
-
         $questions = $quiz->questions()->with('choices')->get();
 
         $results = [];
         $totalScore = 0;
 
         foreach ($questions as $question) {
-            $selectedChoiceId = $userAnswers[$question->id] ?? null;
 
-            // 正解選択肢
-            $correctChoice = $question->choices->firstWhere('is_correct', 1);
+            $userAnswer = $userAnswers[$question->id] ?? null;
+            $isCorrect = null;
 
-            // 正誤判定
-            if ($correctChoice) {
-                $isCorrect = $selectedChoiceId && ((int)$selectedChoiceId === (int)$correctChoice->id);
-            } else {
-                // 記述式など正解設定がない場合
+            // 記述式
+            if ($question->type === 'text') {
                 $isCorrect = null;
+
+                // 単一選択（2択・4択）
+            } elseif (in_array($question->type, ['single_2', 'single_4'])) {
+
+                $correctId = $question->choices
+                    ->where('is_correct', 1)
+                    ->pluck('id')
+                    ->first();
+
+                $isCorrect = ($userAnswer !== null && (int)$userAnswer === (int)$correctId);
+
+                // 複数選択（チェックボックス）
+            } elseif ($question->type === 'multi') {
+
+                // 正解ID配列
+                $correctIds = $question->choices
+                    ->where('is_correct', 1)
+                    ->pluck('id')
+                    ->map(fn($v) => (int)$v)
+                    ->sort()
+                    ->values()
+                    ->toArray();
+
+                // ユーザー回答ID配列
+                $userIds = collect($userAnswer ?? [])
+                    ->map(fn($v) => (int)$v)
+                    ->sort()
+                    ->values()
+                    ->toArray();
+
+                $isCorrect = ($userIds === $correctIds);
             }
 
             if ($isCorrect) {
                 $totalScore += $question->score ?? 1;
             }
 
-            // ユーザー回答をテキストに変換して保持
-            if ($selectedChoiceId) {
-                $userAnswerText = optional($question->choices->firstWhere('id', $selectedChoiceId))->choice_text ?? $selectedChoiceId;
-            } else {
-                $userAnswerText = '未回答';
-            }
-
             $results[] = [
-                'question' => $question,
-                'userAnswer' => $userAnswerText,
-                'correctChoice' => $correctChoice ? $correctChoice->choice_text : null,
-                'isCorrect' => $isCorrect,
+                'question'   => $question,
+                'userAnswer' => $userAnswer,
+                'isCorrect'  => $isCorrect,
             ];
         }
 
@@ -91,6 +108,8 @@ class QuizController extends Controller
             'passFail'
         ));
     }
+
+
 
 
 
