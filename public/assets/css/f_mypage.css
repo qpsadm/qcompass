@@ -138,7 +138,7 @@
 }
 
 .profile-data p.course::before {
-    background: url(../images/icon/f_icon_textbook1.svg) no-repeat;
+    background: url(../images/icon/f_icon_textbook.svg) no-repeat;
 }
 
 .profile-data p.division::before {
