@@ -27,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'redirect.nonuser.dashboard' => RedirectNonUserDashboard::class,
             'no-cache' => NoCache::class,
             'check.crud.course_teacher' => CheckCourseTeacherCrud::class,
+            'admin.strict' => \App\Http\Middleware\AdminStrictMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

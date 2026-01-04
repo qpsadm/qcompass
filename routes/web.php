@@ -298,17 +298,17 @@ Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache', 'c
         Route::resources([
             'courses' => CourseController::class,
             'users' => AdminUserController::class,
-            'roles' => RoleController::class,
-            'levels' => LevelController::class,
+            // 'roles' => RoleController::class,
+            // 'levels' => LevelController::class,
             'daily_quotes' => DailyQuoteController::class,
             'organizers' => OrganizerController::class,
             'questions' => QuestionController::class,
-            'course_type' => CourseTypeController::class,
+            // 'course_type' => CourseTypeController::class,
             'quotes' => QuoteController::class,
             'course_teachers' => CourseTeacherController::class,
             'announcements' => AnnouncementController::class,
             'announcement_types' => AnnouncementTypeController::class,
-            'divisions' => DivisionController::class,
+            // 'divisions' => DivisionController::class,
             'course_category' => CourseCategoryController::class,
             'course_users' => CourseUserController::class,
             'categories' => CategoryController::class,
@@ -321,6 +321,18 @@ Route::middleware(['auth', 'admin', 'redirect.nonuser.dashboard', 'no-cache', 'c
             'achievements' => AchievementController::class,
             'achievements_release' => AchievementsReleaseController::class,
         ]);
+
+        //権限・ユーザー管理
+        Route::middleware('admin.strict')->group(function () {
+            Route::resource('roles', RoleController::class);
+            Route::resource('levels', LevelController::class);
+        });
+
+        //システム系
+        Route::middleware('admin.strict')->group(function () {
+            Route::resource('divisions', DivisionController::class);
+            Route::resource('course_type', CourseTypeController::class);
+        });
 
         // ★ toggleMode 用のルートを追加 ★
         Route::get('quotes/toggle-mode/{quote}', [QuoteController::class, 'toggleMode'])
