@@ -1,88 +1,209 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\UserController as UserUserController;
-use App\Http\Controllers\User\NewsController;
-use App\Http\Controllers\User\QuizController as UserQuizController;
-use App\Http\Controllers\User\AgendaController as UserAgendaController;
-use App\Http\Controllers\User\CategoryController as UserCategoryController;
-use App\Http\Controllers\User\QuestionController as UserQuestionController;
-use App\Http\Controllers\User\JobOfferController as UserJobOfferController;
-use App\Http\Controllers\User\ReportController as UserReportController;
-use App\Http\Controllers\User\ContactController as UserContactController;
-use App\Http\Controllers\User\FrontTopController;
-use App\Http\Controllers\User\QuoteController as UserQuoteController;
-use App\Http\Controllers\User\MypageController;
-use App\Http\Controllers\User\MyCourseController;
-use App\Http\Controllers\User\TeacherController;
+
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+| 認証後ユーザー向け画面
+| URL prefix: /user
+| Route name: user.*
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\User\{
+    FrontTopController,
+    NewsController,
+    AgendaController as UserAgendaController,
+    QuizController as UserQuizController,
+    QuestionController as UserQuestionController,
+    JobOfferController as UserJobOfferController,
+    ReportController as UserReportController,
+    ContactController as UserContactController,
+    QuoteController as UserQuoteController,
+    MypageController,
+    MyCourseController,
+    TeacherController,
+};
 
 Route::middleware(['auth', 'no-cache'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
 
+        /*
+        |--------------------------------------------------------------------------
+        | Top
+        |--------------------------------------------------------------------------
+        */
         Route::get('/', fn() => redirect()->route('user.top'));
+        Route::get('/top', [FrontTopController::class, 'index'])->name('top');
 
-        Route::get('top', [FrontTopController::class, 'index'])->name('top');
+        /*
+        |--------------------------------------------------------------------------
+        | News
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('news')->name('news.')->group(function () {
+            Route::get('/', [NewsController::class, 'newsListAll'])->name('news_list');
+            Route::get('/main', [NewsController::class, 'mainNews'])->name('main_news');
+            Route::get('/my', [NewsController::class, 'myNews'])->name('my_news');
+            Route::get('/info/{announcement}', [NewsController::class, 'news_info'])
+                ->name('news_info');
+        });
 
-        // ニュース
-        Route::get('news', [NewsController::class, 'newsListAll'])->name('news.news_list');
-        Route::get('news/main', [NewsController::class, 'mainNews'])->name('news.main_news');
-        Route::get('news/my', [NewsController::class, 'myNews'])->name('news.my_news');
-        Route::get('news/info/{announcement}', [NewsController::class, 'news_info'])
-            ->name('news.news_info');
+        /*
+        |--------------------------------------------------------------------------
+        | Agenda
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('agendas')->name('agenda.')->group(function () {
+            Route::get('/', [UserAgendaController::class, 'myCourseAgendaList'])
+                ->name('agendas_list');
 
-        // アジェンダ
-        Route::get('agendas', [UserAgendaController::class, 'myCourseAgendaList'])
-            ->name('agenda.agendas_list');
+            Route::get('/category/{category_id}', [UserAgendaController::class, 'agendaByCategory'])
+                ->name('agenda_by_category');
 
-        Route::get('agendas/category/{category_id}', [UserAgendaController::class, 'agendaByCategory'])
-            ->name('agenda.agenda_by_category');
+            Route::get('/{id}', [UserAgendaController::class, 'agendaDetail'])
+                ->name('info');
+        });
 
-        Route::get('agenda/{id}', [UserAgendaController::class, 'agendaDetail'])
-            ->name('agenda.info');
-
-        // 質疑
+        /*
+        |--------------------------------------------------------------------------
+        | Questions
+        |--------------------------------------------------------------------------
+        */
         Route::get('questions/{category?}', [UserQuestionController::class, 'index'])
             ->name('question.questions_list');
 
-        // 求人
-        Route::get('job', [UserJobOfferController::class, 'index'])->name('job.job_offers_list');
-        Route::get('job/{id}', [UserJobOfferController::class, 'show'])->name('job.job_offers_info');
+        /*
+        |--------------------------------------------------------------------------
+        | Job Offers
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('job')->name('job.')->group(function () {
+            Route::get('/', [UserJobOfferController::class, 'index'])
+                ->name('job_offers_list');
 
-        // ダウンロード
-        Route::get('download/{id}', [UserAgendaController::class, 'download'])->name('download');
+            Route::get('/{id}', [UserJobOfferController::class, 'show'])
+                ->name('job_offers_info');
 
-        // 日報
-        Route::get('reports/create', [UserReportController::class, 'create'])->name('reports_create');
-        Route::post('reports', [UserReportController::class, 'store'])->name('reports_store');
-        Route::post('reports/confirm', [UserReportController::class, 'confirm'])->name('reports_confirm');
-        Route::get('reports/complete', [UserReportController::class, 'complete'])->name('reports_complete');
-        Route::get('reports/{report}', [UserReportController::class, 'show'])->name('reports_info');
+            Route::get('/dl/{id}', [UserAgendaController::class, 'jobDlInfo'])
+                ->name('job_dl_info');
+        });
 
-        // 問い合わせ
-        Route::get('contact/create', [UserContactController::class, 'create'])->name('contact_create');
-        Route::post('contact', [UserContactController::class, 'store'])->name('contact_store');
-        Route::post('contact/confirm', [UserContactController::class, 'confirm'])->name('contact_confirm');
-        Route::get('contact/complete', [UserContactController::class, 'complete'])->name('contact_complete');
+        Route::get('/download/{id}', [UserAgendaController::class, 'download'])
+            ->name('download');
 
-        // マイページ
-        Route::get('mypage', [MypageController::class, 'index'])->name('mypage');
+        /*
+        |--------------------------------------------------------------------------
+        | Reports（日報）
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('reports')->name('reports.')->group(function () {
 
-        // 講座・講師
-        Route::get('courses', [MyCourseController::class, 'index'])->name('course.courses_info');
-        Route::get('teachers', [TeacherController::class, 'index'])->name('teacher.teachers_list');
-        Route::get('teachers/{teacher}', [TeacherController::class, 'show'])
-            ->name('teacher.teachers_info');
+            // 正規ルート
+            Route::get('/create', [UserReportController::class, 'create'])
+                ->name('create');
 
-        // クイズ
-        Route::get('quizzes', [UserQuizController::class, 'index'])->name('quizzes.index');
-        Route::get('quizzes/{quiz}', [UserQuizController::class, 'show'])->name('quizzes.show');
-        Route::post('quizzes/{quiz}/submit', [UserQuizController::class, 'submit'])->name('quizzes.submit');
-        Route::get('quizzes/{quiz}/result', [UserQuizController::class, 'result'])->name('quizzes.result');
+            Route::post('/', [UserReportController::class, 'store'])
+                ->name('store');
 
-        // 今日の一言（表示切り替え）
-        Route::post('quote_mode', [UserQuoteController::class, 'toggleMode'])
+            Route::post('/confirm', [UserReportController::class, 'confirm'])
+                ->name('confirm');
+
+            Route::get('/complete', [UserReportController::class, 'complete'])
+                ->name('complete');
+
+            Route::get('/{report}', [UserReportController::class, 'show'])
+                ->name('info');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | ★ 互換用エイリアス（超重要）
+        |--------------------------------------------------------------------------
+        | 既存 Blade の route('user.reports_create') を壊さない
+        */
+        Route::get('reports/create', [UserReportController::class, 'create'])
+            ->name('reports_create');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Contact
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('contact')->name('contact.')->group(function () {
+            Route::get('/create', [UserContactController::class, 'create'])
+                ->name('create');
+
+            Route::post('/', [UserContactController::class, 'store'])
+                ->name('store');
+
+            Route::post('/confirm', [UserContactController::class, 'confirm'])
+                ->name('confirm');
+
+            Route::get('/complete', [UserContactController::class, 'complete'])
+                ->name('complete');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Quote
+        |--------------------------------------------------------------------------
+        */
+        Route::post('/quote_mode', [UserQuoteController::class, 'toggleMode'])
             ->name('quote_mode');
+
+        /*
+        |--------------------------------------------------------------------------
+        | MyPage
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('mypage')->group(function () {
+            Route::get('/', [MypageController::class, 'index'])->name('mypage');
+            Route::post('/settings/update', [MypageController::class, 'updateSettings'])
+                ->name('settings.update');
+            Route::post('/memo/save', [MypageController::class, 'saveMemo'])
+                ->name('memo.save');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Courses / Teachers
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/courses', [MyCourseController::class, 'index'])
+            ->name('course.courses_info');
+
+        Route::prefix('teachers')->name('teacher.')->group(function () {
+            Route::get('/', [TeacherController::class, 'index'])
+                ->name('teachers_list');
+
+            Route::get('/{teacher}', [TeacherController::class, 'show'])
+                ->whereNumber('teacher')
+                ->name('teachers_info');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Static
+        |--------------------------------------------------------------------------
+        */
+        Route::view('/about', 'user.about')->name('about');
+        Route::view('/privacy', 'user.privacy')->name('privacy');
+        Route::view('/rule', 'user.rule')->name('rule');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Quiz
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('quizzes')->name('quizzes.')->group(function () {
+            Route::get('/', [UserQuizController::class, 'index'])->name('index');
+            Route::get('/{quiz}', [UserQuizController::class, 'show'])->name('show');
+            Route::post('/{quiz}/submit', [UserQuizController::class, 'submit'])->name('submit');
+            Route::get('/{quiz}/result', [UserQuizController::class, 'result'])->name('result');
+        });
     });
