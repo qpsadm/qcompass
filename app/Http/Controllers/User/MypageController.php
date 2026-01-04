@@ -24,7 +24,7 @@ class MypageController extends Controller
             ->unique('date')
             ->values()
             ->map(function ($report) {
-                $report->url = route('user.reports_info', ['report' => $report->id]);
+                $report->url = route('user.reports.info', ['report' => $report->id]);
                 return $report;
             });
 

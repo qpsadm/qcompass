@@ -98,7 +98,7 @@ class ReportController extends Controller
 
         // 日報送信処理　 end
 
-        return redirect()->route('user.reports_complete')
+        return redirect()->route('user.reports.complete')
             ->with('success', '日報を送信しました');
     }
 
