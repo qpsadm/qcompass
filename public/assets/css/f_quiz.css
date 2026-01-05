@@ -31,3 +31,65 @@
 .submit-btn {
     background-color: var(--accent-color);
 }
+
+
+/* show */
+.quiz-form {
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
+.question-container {
+    max-width: 1000px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px dashed #000;
+    font-size: var(--font-size);
+}
+
+.question-number {
+    position: relative;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    /* font-size: 20px; */
+}
+
+.question-number::before {
+    content: "";
+    position: absolute;
+    background-color: var(--sub-color-3);
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+}
+
+.question-title {
+    padding-left: 15px;
+    /* font-size: 20px; */
+    margin-bottom: 45px;
+}
+
+.question-select {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.question-select+.question-select {
+    margin-top: 15px;
+}
+
+.question-select input {
+    width: 13px;
+    height: 13px;
+}
+
+.question-select label {
+    flex: 1;
+}

@@ -774,10 +774,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* search配置用 */
-    position: relative;
     min-height: 55px;
-    /* title・content間隔 */
     margin-bottom: 50px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--main-color);
@@ -802,30 +799,18 @@ footer {
     height: 45px;
 }
 
-/* .page-title h1::before,
-.page-title h1::after {
-    content: "";
-    position: absolute;
-    background-color: #74A0FF;
-}
+@media screen and (max-width: 1024px) {
+    .page-title {
+        display: block;
+        margin-bottom: 20px;
+        border: none;
+    }
 
-.page-title h1::before {
-    top: 5px;
-    left: 0;
-    width: 13px;
-    height: 13px;
-}
-
-.page-title h1::after {
-    top: 18px;
-    left: 13px;
-    width: 10px;
-    height: 10px;
-} */
-
-@media screen and (max-width: 1324px) {
     .page-title h1 {
-        /* width: 100%; */
+        width: 100%;
+        margin-bottom: 50px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--main-color);
     }
 }
 
@@ -854,6 +839,12 @@ footer {
     border-radius: 8px;
     background: var(--accent-color) url(../images/icon/f_icon_search.svg) no-repeat 50% / 25px;
     color: var(--text-color-3);
+}
+
+@media screen and (max-width: 1024px) {
+    .search .search-text {
+        width: 100%;
+    }
 }
 
 
