@@ -57,9 +57,10 @@ return [
         // =============================
         'user.reports.index'     => '日報一覧',
         'user.reports.create'    => '日報作成',
-        'user.reports.info'      => null, // 日報タイトル取得
-        'user.reports.confirm'   => '確認',
+        'user.reports_create'   => '日報作成',
+        'user.reports.confirm'   => '日報作成（確認）',
         'user.reports.complete'  => '完了',
+        'user.reports.info'      => null, // 日報タイトル（日付）取得
 
         // =============================
         // お問い合わせ
@@ -98,10 +99,11 @@ return [
         'user.job.job_offers_info' => 'user.job.job_offers_list',
 
         // 日報
-        'user.reports.info'     => 'user.reports.index',
-        'user.reports.create'   => 'user.reports.index',
-        'user.reports.confirm'  => 'user.reports.index',
-        'user.reports.complete' => 'user.reports.index',
+        'user.reports.create'   => 'user.mypage',
+        'user.reports_create'   => 'user.mypage',
+        'user.reports.confirm'  => 'user.mypage',
+        'user.reports.info'     => 'user.mypage',
+        'user.reports.complete' => 'user.mypage',
     ],
 
 ];
