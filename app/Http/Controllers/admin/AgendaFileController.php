@@ -62,7 +62,13 @@ class AgendaFileController extends Controller
 
         $file = $request->file('file_path');
         $extension = $file->getClientOriginalExtension();
-        $filename = $request->file_name . '.' . $extension;
+        $baseName = pathinfo($request->file_name, PATHINFO_FILENAME); // 二重拡張子防止
+        $filename = $baseName . '.' . $extension;
+
+        // 既存ファイルがあれば削除（上書き対応）
+        if (Storage::disk('public')->exists('images/' . $filename)) {
+            Storage::disk('public')->delete('images/' . $filename);
+        }
 
         $path = $file->storeAs('images', $filename, 'public');
 
@@ -83,6 +89,7 @@ class AgendaFileController extends Controller
             'targetId' => $request->target_id
         ])->with('success', 'ファイルを保存しました。');
     }
+
 
     /**
      * 編集フォーム
@@ -111,60 +118,56 @@ class AgendaFileController extends Controller
         $agendaFile = AgendaFile::findOrFail($id);
 
         $validated = $request->validate([
-            // file_path が存在する場合のみ 'file' ルールを適用
             'file_path' => 'nullable|file',
             'file_name' => 'required|string',
             'description' => 'nullable|string',
-            // target_id の変更も許可する場合はバリデーションに追加
             'target_id' => 'required|exists:' . ($type === 'agenda' ? 'agendas' : 'announcements') . ',id',
-            'target_type' => 'required|in:agenda,announcement', // hiddenフィールドから来るためバリデーション
+            'target_type' => 'required|in:agenda,announcement',
         ]);
 
-        // -----------------------------------------------------
-        // ★ ファイルアップロード処理の追加
-        // -----------------------------------------------------
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
+            $extension = $file->getClientOriginalExtension();
+            $baseName = pathinfo($request->file_name, PATHINFO_FILENAME);
+            $filename = $baseName . '.' . $extension;
 
-            // 古いファイルを削除
+            // 古いファイル削除
             if (Storage::disk('public')->exists($agendaFile->file_path)) {
                 Storage::disk('public')->delete($agendaFile->file_path);
             }
 
-            // 新しいファイル名とパスを生成して保存
-            $extension = $file->getClientOriginalExtension();
-            // 入力された file_name に拡張子を付ける
-            $filename = $request->file_name . '.' . $extension;
+            // 新しいファイル上書き
+            if (Storage::disk('public')->exists('images/' . $filename)) {
+                Storage::disk('public')->delete('images/' . $filename);
+            }
 
             $path = $file->storeAs('images', $filename, 'public');
 
-            // DB情報を更新
             $agendaFile->file_path = $path;
             $agendaFile->file_name = $filename;
             $agendaFile->file_type = $file->getMimeType();
             $agendaFile->file_size = $file->getSize();
         } else {
-            // ファイルがアップロードされていない場合でも、file_nameが変更された場合はDB上のファイル名を更新する。
-            // ただし、ストレージ上のファイル名は変更しない
-            $agendaFile->file_name = $request->file_name;
+            // ファイル未アップロードの場合も DB 上の file_name 更新
+            $currentExtension = pathinfo($agendaFile->file_path, PATHINFO_EXTENSION);
+            $baseName = pathinfo($request->file_name, PATHINFO_FILENAME);
+            $agendaFile->file_name = $baseName . '.' . $currentExtension;
         }
 
-        // target_id, target_type, description を更新
-        $targetType = $request->target_type === 'agenda' ? Agenda::class : Announcement::class;
         $agendaFile->target_id = $request->target_id;
-        $agendaFile->target_type = $targetType;
+        $agendaFile->target_type = $request->target_type === 'agenda' ? Agenda::class : Announcement::class;
         $agendaFile->description = $request->description;
 
         $agendaFile->save();
-        // -----------------------------------------------------
 
         $redirectType = $agendaFile->target_type === Agenda::class ? 'agenda' : 'announcement';
 
         return redirect()->route('admin.files.index', [
             'type' => $redirectType,
-            'targetId' => 0
+            'targetId' => $request->target_id
         ])->with('success', 'ファイルを更新しました。');
     }
+
 
     /**
      * 削除
