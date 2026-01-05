@@ -2,65 +2,44 @@
 
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as Trail;
-use Illuminate\Support\Str;
 
+// =========================
+// 自動生成用パンくず
+// =========================
 Breadcrumbs::for('auto', function (Trail $trail) {
 
     $route = request()->route();
     $routeName = $route?->getName();
     $params = $route?->parameters() ?? [];
 
-    // ----------------------
     // TOP
-    // ----------------------
     $trail->push('TOP', route('user.top'));
 
     if (!$routeName || $routeName === 'user.top') {
         return;
     }
 
-    // ----------------------
-    // 親ルート定義（詳細・編集用）
-    // ----------------------
-    $parents = [
-        // ニュース
-        'user.news.news_info'    => 'user.news.news_list',
-        'user.news.news_edit'    => 'user.news.news_list',
-        'user.news.news_create'  => 'user.news.news_list',
+    // 親ルート定義（configで管理）
+    $parents = config('breadcrumbs.parents', []);
 
-        // アジェンダ
-        'user.agenda.info'       => 'user.agenda.agendas_list',
-        'user.agenda.edit'       => 'user.agenda.agendas_list',
-        'user.agenda.create'     => 'user.agenda.agendas_list',
-
-        // 就職支援 / 求人
-        'user.job.job_offers_info' => 'user.job.job_offers_list',
-
-        // 日報
-        'user.reports.reports_info' => 'user.reports',
-    ];
-
-    // 親があるなら先に追加
     if (isset($parents[$routeName])) {
-        $parent = $parents[$routeName];
+        $parentRoute = $parents[$routeName];
         $trail->push(
-            breadcrumb_label($parent),
-            route($parent)
+            breadcrumb_label($parentRoute, $params),
+            route($parentRoute)
         );
     }
 
-    // ----------------------
     // 現在ページ
-    // ----------------------
     $trail->push(
         breadcrumb_label($routeName, $params),
         route($routeName, $params)
     );
 });
 
-/**
- * パンくず用のラベル取得
- */
+// =========================
+// パンくず表示名を返す関数
+// =========================
 function breadcrumb_label(string $routeName, array $params = [])
 {
     // ===== アジェンダ詳細 =====
@@ -79,20 +58,40 @@ function breadcrumb_label(string $routeName, array $params = [])
         }
     }
 
-    // ===== 日報詳細 =====
-    if ($routeName === 'user.reports.reports_info') {
-        $report = request()->route('report');
-        if ($report) {
-            return $report->title ?? $report->name;
+    // ===== お知らせ詳細 =====
+    if ($routeName === 'user.news.news_info') {
+        $announcement = request()->route('announcement');
+        if ($announcement) {
+            return $announcement->title ?? $announcement->name;
         }
     }
 
-    // 設定があれば config/breadcrumbs.php の labels を参照
-    $labels = config('breadcrumbs.labels', []);
+    // ===== 日報作成 =====
+    if (in_array($routeName, ['user.reports.create', 'user.reports_create'])) {
+        return '日報作成';
+    }
+
+    // ===== 日報詳細 =====
+    if ($routeName === 'user.reports.info') {
+        $report = request()->route('report');
+        if ($report) {
+            return $report->title;
+        }
+    }
+
+    // ===== 学習支援 / Questions List を固定ラベルにする =====
+    if (in_array($routeName, ['user.question.questions_list', 'user.quizzes.index'])) {
+        return '学習支援';
+    }
+
+    // ===== 設定があれば config/breadcrumbs.php の labels を使用 =====
+    $labels = config('breadcrumbs.labels');
     if (isset($labels[$routeName])) {
         return $labels[$routeName];
     }
 
-    // デフォルト：ルート名の末尾を見やすく変換
-    return Str::headline(last(explode('.', $routeName)));
+    // ===== デフォルト =====
+    return \Illuminate\Support\Str::headline(
+        last(explode('.', $routeName))
+    );
 }

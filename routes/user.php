@@ -103,22 +103,23 @@ Route::middleware(['auth', 'no-cache'])
         */
         Route::prefix('reports')->name('reports.')->group(function () {
 
-            // 正規ルート
-            Route::get('/create', [UserReportController::class, 'create'])
-                ->name('create');
+            // 一覧ページ（パンくず用ラベル）
+            Route::get('/', [UserReportController::class, 'index'])->name('index');
 
-            Route::post('/', [UserReportController::class, 'store'])
-                ->name('store');
+            // 日報作成 → 先に固定ルートを置く
+            Route::get('/create', [UserReportController::class, 'create'])->name('create');
 
-            Route::post('/confirm', [UserReportController::class, 'confirm'])
-                ->name('confirm');
+            // POST系（確認・保存）
+            Route::post('/', [UserReportController::class, 'store'])->name('store');
+            Route::post('/confirm', [UserReportController::class, 'confirm'])->name('confirm');
+            Route::get('/complete', [UserReportController::class, 'complete'])->name('complete');
 
-            Route::get('/complete', [UserReportController::class, 'complete'])
-                ->name('complete');
-
+            // 日報詳細 → 必ず最後に
             Route::get('/{report}', [UserReportController::class, 'show'])
+                ->whereNumber('report') // 数字だけマッチ
                 ->name('info');
         });
+
 
         /*
         |--------------------------------------------------------------------------
