@@ -1,8 +1,8 @@
 @props([
 'items',
 'titleField' => 'title',
-'linkRoute' => 'user.news.news_info',
-'paramName' => 'announcement',
+'linkRoute' => 'user.news.news_info', // デフォルトルート
+'paramName' => 'announcement', // デフォルトのルートパラメータ名
 'isNews' => false,
 ])
 
@@ -16,8 +16,17 @@
         // タイトル
         $title = $item->{$titleField} ?? '未設定';
 
-        // リンク
-        $link = route($linkRoute, [$paramName => $item->id]);
+        // ルートパラメータを自動判定
+        if ($item instanceof \App\Models\JobOffer) {
+        $paramKey = 'jobOffer';
+        } elseif ($item instanceof \App\Models\Agenda) {
+        $paramKey = 'agenda';
+        } else {
+        $paramKey = $paramName;
+        }
+
+        // リンク生成
+        $link = route($linkRoute, [$paramKey => $item->id]);
         @endphp
 
         <tr>

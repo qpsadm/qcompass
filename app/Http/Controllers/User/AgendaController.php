@@ -110,15 +110,11 @@ class AgendaController extends Controller
     /**
      * アジェンダ詳細ページ
      */
-    public function agendaDetail($id)
+    public function agendaDetail(Agenda $agenda)
     {
         $userId = Auth::id();
 
-        $agenda = Agenda::where('id', $id)
-            ->where('status', 'yes')
-            ->where('is_show', 1)
-            ->firstOrFail();
-
+        // 👇 ここから下は一切変更しない
         $userCategories = $this->getUserCategories($userId);
         $categoryId = session('agenda_category_id');
         $excludeCategoryIds = [52, 53];
@@ -162,10 +158,11 @@ class AgendaController extends Controller
             'categories' => $userCategories,
             'prevAgenda' => $prevAgenda,
             'nextAgenda' => $nextAgenda,
-            'prevUrl' => $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null,
-            'nextUrl' => $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null,
+            'prevUrl' => $prevAgenda ? route('user.agenda.info', $prevAgenda) : null,
+            'nextUrl' => $nextAgenda ? route('user.agenda.info', $nextAgenda) : null,
             'prevBtn' => (bool)$prevAgenda,
             'nextBtn' => (bool)$nextAgenda,
+            'breadcrumbTitle' => $agenda->agenda_name,
         ]);
     }
 
@@ -181,13 +178,12 @@ class AgendaController extends Controller
             ->paginate($perPage);
     }
 
-    public function jobDlInfo($id)
+    public function jobDlInfo(Agenda $agenda)
     {
-        $agenda = Agenda::findOrFail($id);
 
         // カテゴリ52以外は通常ページにリダイレクト
         if ($agenda->category_id != 52) {
-            return redirect()->route('user.agenda.info', $agenda->id);
+            return redirect()->route('user.agenda.info', $agenda);
         }
 
         // 前後のアジェンダ取得（任意）
@@ -204,9 +200,8 @@ class AgendaController extends Controller
     }
 
 
-    public function download($id)
+    public function download(Agenda $agenda)
     {
-        $agenda = Agenda::findOrFail($id);
 
         // セキュリティ：カテゴリ53以外は弾く
         if ($agenda->category_id != 53) {

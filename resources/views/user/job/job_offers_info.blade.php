@@ -1,6 +1,6 @@
 @extends('layouts.f_layout')
 
-@section('title', $job->title)
+@section('title', $jobOffer->title)
 
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
@@ -10,7 +10,7 @@
 <div class="container">
 
     {{-- ページタイトル --}}
-    <x-f_page_title :search="false" title="{{ $job->title }}" />
+    <x-f_page_title :search="false" title="{{ $jobOffer->title }}" />
 
     {{-- 求人内容 --}}
     <div class="page-content
@@ -19,12 +19,12 @@
             @case(2) font-medium @break
             @case(3) font-large @break
         @endswitch">
-        <div>{!! $job->description !!}</div>
+        <div>{!! $jobOffer->description !!}</div>
 
         {{-- PDFダウンロード --}}
-        @if ($job->file_path)
+        @if ($jobOffer->file_path)
         <div class="mt-4">
-            <a href="{{ asset('storage/job_offers/' . basename($job->file_path)) }}" target="_blank"
+            <a href="{{ asset('storage/job_offers/' . basename($jobOffer->file_path)) }}" target="_blank"
                 class="btn btn-primary">
                 PDF を開く
             </a>
@@ -34,8 +34,8 @@
 
     {{-- 前後ボタン --}}
     @php
-    $prevUrl = $prevJob ? route('user.job.job_offers_info', $prevJob->id) : null;
-    $nextUrl = $nextJob ? route('user.job.job_offers_info', $nextJob->id) : null;
+    $prevUrl = $prevJob ? route('user.job.job_offers_info', ['jobOffer' => $prevJob->id]) : null;
+    $nextUrl = $nextJob ? route('user.job.job_offers_info', ['jobOffer' => $nextJob->id]) : null;
     @endphp
 
     <x-f_btn_list

@@ -53,20 +53,19 @@ class JobOfferController extends Controller
     /**
      * 求人詳細
      */
-    public function show($id)
+    public function show(JobOffer $jobOffer)
     {
         $now = now();
 
-        $job = JobOffer::where('id', $id)
-            ->where('is_show', 1)
-            ->whereNotNull('start_datetime')
-            ->whereNotNull('end_datetime')
-            ->where('start_datetime', '<=', $now)
-            ->where('end_datetime', '>=', $now)
-            ->firstOrFail();
+        // ここで自動的に $jobOffer がモデルとして入る
+        // 公開期間チェック
+        if (!($jobOffer->is_show && $jobOffer->start_datetime && $jobOffer->end_datetime
+            && $jobOffer->start_datetime <= $now && $jobOffer->end_datetime >= $now)) {
+            abort(404);
+        }
 
         // 前後の求人取得
-        $prevJob = JobOffer::where('id', '<', $job->id)
+        $prevJob = JobOffer::where('id', '<', $jobOffer->id)
             ->where('is_show', 1)
             ->whereNotNull('start_datetime')
             ->whereNotNull('end_datetime')
@@ -75,7 +74,7 @@ class JobOfferController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        $nextJob = JobOffer::where('id', '>', $job->id)
+        $nextJob = JobOffer::where('id', '>', $jobOffer->id)
             ->where('is_show', 1)
             ->whereNotNull('start_datetime')
             ->whereNotNull('end_datetime')
@@ -88,6 +87,11 @@ class JobOfferController extends Controller
         $agendaController = new UserAgendaController();
         $agendas = $agendaController->getAgendasDataByCategoryPaginate(52, 5);
 
-        return view('user.job.job_offers_info', compact('job', 'agendas', 'prevJob', 'nextJob'));
+        return view('user.job.job_offers_info', [
+            'jobOffer' => $jobOffer,
+            'agendas' => $agendas,
+            'prevJob' => $prevJob,
+            'nextJob' => $nextJob,
+        ]);
     }
 }

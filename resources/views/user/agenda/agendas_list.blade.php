@@ -21,7 +21,7 @@
             <tr>
                 <td class="date">{{ \Carbon\Carbon::parse($agenda->created_at)->format('Y/m/d') }}</td>
                 <td class="title">
-                    <a href="{{ route('user.agenda.info', ['id' => $agenda->id]) }}">
+                    <a href="{{ route('user.agenda.info', $agenda) }}">
                         {{ $agenda->agenda_name }}
                     </a>
                 </td>

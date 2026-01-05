@@ -65,7 +65,7 @@ Route::middleware(['auth', 'no-cache'])
             Route::get('/category/{category_id}', [UserAgendaController::class, 'agendaByCategory'])
                 ->name('agenda_by_category');
 
-            Route::get('/{id}', [UserAgendaController::class, 'agendaDetail'])
+            Route::get('/{agenda}', [UserAgendaController::class, 'agendaDetail'])
                 ->name('info');
         });
 
@@ -86,14 +86,14 @@ Route::middleware(['auth', 'no-cache'])
             Route::get('/', [UserJobOfferController::class, 'index'])
                 ->name('job_offers_list');
 
-            Route::get('/{id}', [UserJobOfferController::class, 'show'])
+            Route::get('/{jobOffer}', [UserJobOfferController::class, 'show'])
                 ->name('job_offers_info');
 
-            Route::get('/dl/{id}', [UserAgendaController::class, 'jobDlInfo'])
+            Route::get('/dl/{agenda}', [UserAgendaController::class, 'jobDlInfo'])
                 ->name('job_dl_info');
         });
 
-        Route::get('/download/{id}', [UserAgendaController::class, 'download'])
+        Route::get('/download/{agenda}', [UserAgendaController::class, 'download'])
             ->name('download');
 
         /*

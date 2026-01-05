@@ -1,8 +1,22 @@
-{{-- <div class="bread-crumbs">
-    {{ Breadcrumbs::render('auto-breadcrumbs') }}
-</div> --}}
+@php
+$routeName = request()->route()->getName();
+$agenda = request()->route('agenda'); // ← Model Binding
+@endphp
 
-{{-- resources/views/components/breadcrumbs.blade.php などに作っても良い --}}
 <div class="bread-crumbs">
-    {{ Breadcrumbs::render('auto') }}
+    @if ($routeName === 'user.agenda.info' && $agenda)
+
+    @if ($agenda->category_id == 52)
+    {{ Breadcrumbs::render('auto', '求人詳細') }}
+
+    @elseif ($agenda->category_id == 53)
+    {{ Breadcrumbs::render('auto', 'ダウンロード詳細') }}
+
+    @else
+    {{ Breadcrumbs::render('auto', $agenda->agenda_name) }}
+    @endif
+
+    @else
+    {{ Breadcrumbs::render('auto', $breadcrumbTitle ?? null) }}
+    @endif
 </div>

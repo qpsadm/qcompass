@@ -11,9 +11,8 @@
 
 
     @php
-
-    $prevUrl = $prevAgenda ? route('user.agenda.info', ['id' => $prevAgenda->id]) : null;
-    $nextUrl = $nextAgenda ? route('user.agenda.info', ['id' => $nextAgenda->id]) : null;
+    $prevUrl = $prevAgenda ? route('user.agenda.info', $prevAgenda) : null;
+    $nextUrl = $nextAgenda ? route('user.agenda.info', $nextAgenda) : null;
     @endphp
     <x-f_page_title :search="false" title="{{ $agenda->agenda_name }}" />
 
