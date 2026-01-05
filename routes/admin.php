@@ -51,6 +51,24 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\admin\QuizResultController;
 
+// なりすまし開始
+Route::post('/admin/users/{user}/impersonate', [AdminUserController::class, 'impersonate'])
+    ->name('admin.users.impersonate')
+    ->middleware(['auth', 'admin']);
+
+// なりすまし解除
+Route::post('/admin/impersonate/leave', [AdminUserController::class, 'leaveImpersonate'])
+    ->name('admin.users.impersonate.leave')
+    ->middleware('auth');
+
+// ブラウザバック用セッション確認
+Route::get('/admin/check-impersonate', function () {
+    return response()->json([
+        'is_impersonating' => session()->has('impersonator_id'),
+        'is_admin' => auth()->guard('admin')->check(),
+    ]);
+})->name('admin.checkImpersonate')->middleware('auth');
+
 // =============================
 // Admin Route Group
 // =============================
@@ -70,15 +88,6 @@ Route::middleware([
         // =============================
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
-
-        // =============================
-        // Impersonate（なりすまし）
-        // =============================
-        Route::post('/users/{user}/impersonate', [AdminUserController::class, 'impersonate'])
-            ->name('users.impersonate');
-
-        Route::post('/impersonate/leave', [AdminUserController::class, 'leaveImpersonate'])
-            ->name('users.impersonate.leave');
 
         // =============================
         // Users
