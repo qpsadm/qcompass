@@ -72,12 +72,17 @@ Route::middleware([
         Route::resource('daily_quotes', DailyQuoteController::class);
         Route::resource('quotes', QuoteController::class);
 
+        Route::get('categories/trash', [CategoryController::class, 'trash'])
+            ->name('categories.trash');
+
+
         // なりすまし（システム管理者のみ）
         Route::post(
             'users/{user}/impersonate',
             [AdminUserController::class, 'impersonate']
         )->middleware('role:8');
     });
+
 
     /* =============================
      * ユーザー管理
@@ -86,6 +91,20 @@ Route::middleware([
     // 受講者一覧（5,6,7,8）
     Route::middleware('role:5,6,7,8')->group(function () {
         Route::resource('users', AdminUserController::class);
+
+        Route::get('users/trash', [AdminUserController::class, 'trash'])
+            ->name('users.trash');
+
+        // なりすまし開始
+        Route::post(
+            'users/{user}/impersonate',
+            [AdminUserController::class, 'impersonate']
+        )->name('users.impersonate');
+        // なりすまし解除
+        Route::post(
+            'users/impersonate/leave',
+            [AdminUserController::class, 'leaveImpersonate']
+        )->name('users.impersonate.leave');
     });
 
     // ユーザー詳細（6,7,8）
