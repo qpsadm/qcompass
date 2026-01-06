@@ -183,6 +183,7 @@ Route::middleware([
     Route::middleware('role:6,7,8')->group(function () {
         Route::resource('quizzes', QuizController::class);
         Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
+        Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
     });
 
     /* =============================
