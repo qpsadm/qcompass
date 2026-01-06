@@ -59,7 +59,7 @@ header::after {
     margin: 0 300px 0 15px;
 }
 
-.gnav ul {
+.gnav>ul {
     display: flex;
     justify-content: space-around;
     width: calc(100vw - 330px);
@@ -134,7 +134,7 @@ header::after {
 .gnav li.active::after {
     content: "";
     position: absolute;
-    bottom: 0;
+    bottom: 1px;
     left: 50%;
     z-index: 998;
     transform: translate(-50%, 100%);
@@ -153,6 +153,26 @@ header::after {
 .header-container .site-logo,
 .header-container .hamburger-menu {
     display: none;
+}
+
+/* sub-menu */
+.gnav-sub {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display: none;
+    gap: 10px;
+    transform: translate(-50%, 100%);
+    width: 800px;
+    background-color: #ffe696;
+}
+
+.gnav .menu-study:hover .gnav-sub {
+    display: flex;
+}
+
+.gnav-sub a {
+    color: #000 !important;
 }
 
 @media screen and (max-width: 1324px) {
