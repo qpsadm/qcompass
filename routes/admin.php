@@ -149,6 +149,10 @@ Route::middleware([
      * ============================= */
     Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('agendas', AgendaController::class);
+        Route::get(
+            'courses/{course}/agendas',
+            [AgendaController::class, 'indexByCourse']
+        )->name('courses.agendas');
 
         Route::prefix('files')->name('files.')->group(function () {
             Route::get('{type}/{targetId}', [AgendaFileController::class, 'index'])->name('index');
