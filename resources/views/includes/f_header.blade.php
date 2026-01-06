@@ -9,9 +9,9 @@
                 <li class="{{ request()->routeIs('user.agenda.*') ? 'active' : '' }}"><a class="agenda"
                         href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
                 <li class="menu-study {{ request()->routeIs('user.question.*') ? 'active' : '' }}">
-                    <a class="study" href="{{ route('user.question.questions_list') }}">学習支援</a>
+                    <a class="study" href="">学習支援</a>
                     <ul class="gnav-sub">
-                        <li><a href="{{ route('user.agenda.agendas_list') }}">クイズ</a></li>
+                        <li><a href="{{ route('user.quizzes.index') }}">クイズ</a></li>
                         <li><a href="">制作品紹介</a></li>
                         <li><a href="">IT資格</a></li>
                         <li><a href="">参考書籍</a></li>
