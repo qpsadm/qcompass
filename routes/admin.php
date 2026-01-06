@@ -1,22 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Admin Routes
-|--------------------------------------------------------------------------
-| 管理画面
-| URL prefix: /admin
-| Route name: admin.*
-|--------------------------------------------------------------------------
-*/
-
-// =============================
-// Controller Imports
-// =============================
-use App\Http\Controllers\CKEditorController;
-use App\Http\Controllers\admin\{
+use App\Http\Controllers\Admin\{
     AdminDashboardController,
     UserController as AdminUserController,
     RoleController,
@@ -43,66 +28,68 @@ use App\Http\Controllers\admin\{
     AchievementController,
     AchievementsReleaseController,
     UserDetailController,
+    QuizResultController,
 };
 use App\Http\Controllers\{
     LearningController,
     CertificationController,
     JobOfferController,
 };
-use App\Http\Controllers\admin\QuizResultController;
 
-// なりすまし開始
-Route::post('/admin/users/{user}/impersonate', [AdminUserController::class, 'impersonate'])
-    ->name('admin.users.impersonate')
-    ->middleware(['auth', 'admin']);
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 
-// なりすまし解除
-Route::post('/admin/impersonate/leave', [AdminUserController::class, 'leaveImpersonate'])
-    ->name('admin.users.impersonate.leave')
-    ->middleware('auth');
-
-// ブラウザバック用セッション確認
-Route::get('/admin/check-impersonate', function () {
-    return response()->json([
-        'is_impersonating' => session()->has('impersonator_id'),
-        'is_admin' => auth()->guard('admin')->check(),
-    ]);
-})->name('admin.checkImpersonate')->middleware('auth');
-
-// =============================
-// Admin Route Group
-// =============================
 Route::middleware([
     'auth',
     'admin',
+    'role:4,5,6,7,8',
     'redirect.nonuser.dashboard',
     'no-cache',
-    'check.crud.course_teacher',
-])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+])->prefix('admin')->name('admin.')->group(function () {
 
-        // =============================
-        // Dashboard
-        // =============================
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('dashboard');
+    /* =============================
+     * Dashboard（全管理者）
+     * ============================= */
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+        ->name('dashboard');
 
-        // =============================
-        // Users
-        // =============================
-        Route::prefix('users')->name('users.')->group(function () {
-            Route::get('/trash', [AdminUserController::class, 'trash'])->name('trash');
-            Route::post('/{id}/restore', [AdminUserController::class, 'restore'])->name('restore');
-            Route::delete('/{id}/forceDelete', [AdminUserController::class, 'forceDelete'])->name('forceDelete');
-        });
+    /* =============================
+     * システム管理（7,8）
+     * ============================= */
+    Route::middleware('role:7,8')->group(function () {
+        Route::resource('divisions', DivisionController::class);
+        Route::resource('roles', RoleController::class);
+        Route::resource('organizers', OrganizerController::class);
+        Route::resource('levels', LevelController::class);
+        Route::resource('course_type', CourseTypeController::class);
+        Route::resource('course_category', CourseCategoryController::class);
+        Route::resource('tags', TagController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('announcement_types', AnnouncementTypeController::class);
+        Route::resource('daily_quotes', DailyQuoteController::class);
+        Route::resource('quotes', QuoteController::class);
 
+        // なりすまし（システム管理者のみ）
+        Route::post(
+            'users/{user}/impersonate',
+            [AdminUserController::class, 'impersonate']
+        )->middleware('role:8');
+    });
+
+    /* =============================
+     * ユーザー管理
+     * ============================= */
+
+    // 受講者一覧（5,6,7,8）
+    Route::middleware('role:5,6,7,8')->group(function () {
         Route::resource('users', AdminUserController::class);
+    });
 
-        // =============================
-        // User Details（ネスト）
-        // =============================
+    // ユーザー詳細（6,7,8）
+    Route::middleware('role:6,7,8')->group(function () {
         Route::prefix('users/{user}/details')->name('user_details.')->group(function () {
             Route::get('/create', [UserDetailController::class, 'create'])->name('create');
             Route::post('/', [UserDetailController::class, 'store'])->name('store');
@@ -110,18 +97,42 @@ Route::middleware([
             Route::put('/{detail}', [UserDetailController::class, 'update'])->name('update');
             Route::delete('/{detail}', [UserDetailController::class, 'destroy'])->name('destroy');
         });
+    });
 
-        // =============================
-        // CKEditor
-        // =============================
-        Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])
-            ->name('ckeditor.upload');
+    /* =============================
+     * 講座管理（4,5,6,7,8）
+     * ============================= */
+    Route::middleware('role:4,5,6,7,8')->group(function () {
+        Route::resource('courses', CourseController::class);
+        Route::resource('course_teachers', CourseTeacherController::class);
+        Route::resource('course_users', CourseUserController::class);
+        Route::resource('reports', ReportController::class);
+        Route::resource('questions', QuestionController::class);
 
-        // =============================
-        // Files（Agenda / Announcement 共通）
-        // =============================
+        Route::get(
+            'courses/{course}/students',
+            [CourseController::class, 'students']
+        )->name('courses.students');
+
+        Route::get(
+            'courses/{course}/teachers',
+            [CourseController::class, 'getTeachers']
+        )->name('courses.teachers');
+
+        Route::get(
+            'courses/{course}/results',
+            [QuizResultController::class, 'courseResults']
+        )->name('courses.results');
+    });
+
+    /* =============================
+     * アジェンダ管理（4,5,6,7,8）
+     * ============================= */
+    Route::middleware('role:4,5,6,7,8')->group(function () {
+        Route::resource('agendas', AgendaController::class);
+
         Route::prefix('files')->name('files.')->group(function () {
-            Route::get('{type}/{targetId}', [AgendaFileController::class, 'files'])->name('index');
+            Route::get('{type}/{targetId}', [AgendaFileController::class, 'index'])->name('index');
             Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])->name('create');
             Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])->name('store');
             Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])->name('preview');
@@ -129,99 +140,37 @@ Route::middleware([
             Route::put('{type}/{id}', [AgendaFileController::class, 'update'])->name('update');
             Route::delete('{type}/{id}', [AgendaFileController::class, 'destroy'])->name('destroy');
         });
-
-        // =============================
-        // Courses
-        // =============================
-        Route::get('courses/{course}/students', [CourseController::class, 'students'])
-            ->name('courses.students');
-
-        Route::get('courses/{course}/teachers', [CourseController::class, 'getTeachers'])
-            ->name('courses.teachers');
-
-        Route::get('courses/{course}/agendas', [AgendaController::class, 'indexByCourse'])
-            ->name('courses.agendas');
-
-        Route::get('courses/{course}/results', [QuizResultController::class, 'courseResults'])
-            ->name('courses.results');
-
-        Route::resource('courses', CourseController::class);
-
-        // =============================
-        // Agenda
-        // =============================
-        Route::get('agendas-trash', [AgendaController::class, 'trash'])->name('agendas.trash');
-        Route::post('agendas/{id}/restore', [AgendaController::class, 'restore'])->name('agendas.restore');
-        Route::delete('agendas/{id}/force-delete', [AgendaController::class, 'forceDelete'])->name('agendas.forceDelete');
-        Route::post('agendas/upload', [AgendaController::class, 'upload'])->name('agendas.upload');
-        Route::get('agendas/{agenda}/preview', [AgendaController::class, 'preview'])->name('agendas.preview');
-
-        Route::resource('agendas', AgendaController::class);
-
-        // =============================
-        // Category
-        // =============================
-        Route::get('categories-trash', [CategoryController::class, 'trash'])->name('categories.trash');
-        Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
-        Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
-
-        Route::resource('categories', CategoryController::class);
-
-        // =============================
-        // Quiz
-        // =============================
-        Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
-        Route::post('quizzes/{quiz}/play', [QuizController::class, 'submitPlay'])->name('quizzes.submitPlay');
-        Route::get('quizzes/result/{attempt}', [QuizController::class, 'result'])->name('quizzes.result');
-
-        Route::prefix('quizzes/{quiz}')->name('quizzes.')->group(function () {
-            Route::resource('quiz_questions', QuizQuestionController::class);
-        });
-
-        Route::resource('quizzes', QuizController::class);
-
-        // =============================
-        // Report
-        // =============================
-        Route::match(['get', 'post'], 'reports/preview', [ReportController::class, 'previewBlade'])
-            ->name('reports.previewBlade');
-
-        Route::resource('reports', ReportController::class)->where(['report' => '[0-9]+']);
-
-        // =============================
-        // Others（通常管理）
-        // =============================
-        Route::resources([
-            'organizers' => OrganizerController::class,
-            'tags' => TagController::class,
-            'questions' => QuestionController::class,
-            'announcements' => AnnouncementController::class,
-            'announcement_types' => AnnouncementTypeController::class,
-            'daily_quotes' => DailyQuoteController::class,
-            'quotes' => QuoteController::class,
-            'course_teachers' => CourseTeacherController::class,
-            'course_users' => CourseUserController::class,
-            'course_category' => CourseCategoryController::class,
-            'learnings' => LearningController::class,
-            'certifications' => CertificationController::class,
-            'job_offers' => JobOfferController::class,
-            'achievements' => AchievementController::class,
-            'achievements_release' => AchievementsReleaseController::class,
-        ]);
-
-        // =============================
-        // Strict Admin Only
-        // =============================
-        Route::middleware('admin.strict')->group(function () {
-            Route::resource('roles', RoleController::class);
-            Route::resource('levels', LevelController::class);
-            Route::resource('divisions', DivisionController::class);
-            Route::resource('course_type', CourseTypeController::class);
-        });
-
-        // =============================
-        // Quote Toggle
-        // =============================
-        Route::get('quotes/toggle-mode/{quote}', [QuoteController::class, 'toggleMode'])
-            ->name('quotes.toggleMode');
     });
+
+    /* =============================
+     * お知らせ管理（6,7,8）
+     * ============================= */
+    Route::middleware('role:6,7,8')->group(function () {
+        Route::resource('announcements', AnnouncementController::class);
+    });
+
+    /* =============================
+     * 学習サポート（6,7,8）
+     * ============================= */
+    Route::middleware('role:6,7,8')->group(function () {
+        Route::resource('certifications', CertificationController::class);
+        Route::resource('learnings', LearningController::class);
+        Route::resource('job_offers', JobOfferController::class);
+    });
+
+    /* =============================
+     * クイズ管理（6,7,8）※保留可
+     * ============================= */
+    Route::middleware('role:6,7,8')->group(function () {
+        Route::resource('quizzes', QuizController::class);
+        Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
+    });
+
+    /* =============================
+     * 実績管理（6,7,8）※保留
+     * ============================= */
+    Route::middleware('role:6,7,8')->group(function () {
+        Route::resource('achievements', AchievementController::class);
+        Route::resource('achievements_release', AchievementsReleaseController::class);
+    });
+});
