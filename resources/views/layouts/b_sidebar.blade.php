@@ -23,16 +23,22 @@ $menus = config('permissions.sidebar');
 
     <nav class="space-y-2">
         @foreach ($menus as $menu)
-
         {{-- 権限制御 --}}
-        @if (!in_array($roleId, $menu['roles']))
+        @if (!isset($menu['roles']) || !in_array($roleId, $menu['roles']))
         @continue
         @endif
 
         {{-- 単体リンク --}}
         @if (isset($menu['route']))
         <a href="{{ route($menu['route'], $menu['params'] ?? []) }}"
-            class="block p-2 rounded hover:bg-blue-700 hover:text-white">
+            class="flex items-center p-2 rounded hover:bg-blue-700 hover:text-white">
+
+            @if (!empty($menu['icon']))
+            <img src="{{ asset('assets/images/icon/'.$menu['icon']) }}"
+                class="h-4 w-4 mr-2"
+                alt="icon">
+            @endif
+
             {{ $menu['label'] }}
         </a>
 
@@ -43,15 +49,34 @@ $menus = config('permissions.sidebar');
                 type="button"
                 class="accordion-btn w-full flex justify-between items-center
                                font-semibold p-2 rounded hover:bg-blue-400">
-                <span>{{ $menu['label'] }}</span>
+
+                <span>
+                    @if (!empty($menu['icon']))
+                    <img src="{{ asset('assets/images/icon/'.$menu['icon']) }}"
+                        class="h-4 w-4 mr-2 inline"
+                        alt="icon">
+                    @endif
+                    {{ $menu['label'] }}
+                </span>
+
                 <span class="accordion-icon transition-transform">▼</span>
             </button>
 
             <ul class="accordion-content ml-4 space-y-1 hidden">
                 @foreach ($menu['children'] as $child)
+                @if (!isset($child['roles']) || !in_array($roleId, $child['roles']))
+                @continue
+                @endif
                 <li>
                     <a href="{{ route($child['route'], $child['params'] ?? []) }}"
-                        class="block px-2 py-1 rounded hover:bg-blue-700 hover:text-white">
+                        class="flex items-center px-2 py-1 rounded hover:bg-blue-700 hover:text-white">
+
+                        @if (!empty($child['icon']))
+                        <img src="{{ asset('assets/images/icon/'.$child['icon']) }}"
+                            class="h-4 w-4 mr-2"
+                            alt="icon">
+                        @endif
+
                         {{ $child['label'] }}
                     </a>
                 </li>
@@ -59,7 +84,6 @@ $menus = config('permissions.sidebar');
             </ul>
         </div>
         @endif
-
         @endforeach
     </nav>
 
