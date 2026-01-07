@@ -2,26 +2,26 @@
     <div class="header-container">
         <nav class="gnav">
             <ul>
-                <li class="{{ request()->routeIs('user.top') ? 'active' : '' }}"><a class="home"
+                <li class="main-menu {{ request()->routeIs('user.top') ? 'active' : '' }}"><a class="home"
                         href="{{ route('user.top') }}">ホーム</a></li>
-                <li class="{{ request()->routeIs('user.news.*') ? 'active' : '' }}"><a class="news"
+                <li class="main-menu {{ request()->routeIs('user.news.*') ? 'active' : '' }}"><a class="news"
                         href="{{ route('user.news.news_list') }}">お知らせ</a></li>
-                <li class="{{ request()->routeIs('user.agenda.*') ? 'active' : '' }}"><a class="agenda"
+                <li class="main-menu {{ request()->routeIs('user.agenda.*') ? 'active' : '' }}"><a class="agenda"
                         href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
-                <li class="menu-study {{ request()->routeIs('user.question.*') ? 'active' : '' }}">
-                    <a class="study" href="">学習支援</a>
+                <li class="main-menu menu-study {{ request()->routeIs('user.question.*', 'user.quizzes.*') ? 'active' : '' }}">
+                    <a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a>
                     <ul class="gnav-sub">
-                        <li><a href="{{ route('user.quizzes.index') }}">クイズ</a></li>
+                        <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}"><a href="{{ route('user.quizzes.index') }}">クイズ</a></li>
                         <li><a href="">制作品紹介</a></li>
                         <li><a href="">IT資格</a></li>
                         <li><a href="">参考書籍</a></li>
                         <li><a href="">参考サイト</a></li>
                     </ul>
                 </li>
-                <li class="{{ request()->routeIs('user.job.*') ? 'active' : '' }}"><a class="work"
+                <li class="main-menu {{ request()->routeIs('user.job.*') ? 'active' : '' }}"><a class="work"
                         href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
 
-                <li class="{{ request()->routeIs('user.mypage') ? 'active' : '' }}">
+                <li class="main-menu {{ request()->routeIs('user.mypage') ? 'active' : '' }}">
                     <a class="mypage" href="{{ route('user.mypage') }}">マイページ</a>
                 </li>
 
