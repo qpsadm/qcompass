@@ -65,7 +65,6 @@ Route::middleware([
         Route::resource('organizers', OrganizerController::class);
         Route::resource('levels', LevelController::class);
         Route::resource('course_type', CourseTypeController::class);
-        Route::resource('course_category', CourseCategoryController::class);
         Route::resource('tags', TagController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
@@ -123,6 +122,7 @@ Route::middleware([
      * ============================= */
     Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('courses', CourseController::class);
+        Route::resource('course_category', CourseCategoryController::class);
         Route::resource('course_teachers', CourseTeacherController::class);
         Route::resource('course_users', CourseUserController::class);
         Route::resource('reports', ReportController::class);
