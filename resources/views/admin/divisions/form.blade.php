@@ -1,13 +1,34 @@
-<div class="container mx-auto p-6 max-w-5xl"
-    x-data="{ open: false }">
+@extends('layouts.app')
 
-    <div class="bg-white rounded-2xl shadow-lg p-6">
+@section('content')
+<div class="container mx-auto p-4 min-h-screen"
+    x-data="{ deleteOpen: false }">
 
-        <h1 class="text-3xl font-bold mb-6">
-            {{ isset($division) ? '部署編集' : '部署新規作成' }}
-        </h1>
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
 
-        {{-- 保存フォーム --}}
+        <!-- ヘッダー -->
+        <div class="mb-6">
+            <a href="{{ route('admin.divisions.index') }}"
+                class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
+                ← 部署一覧に戻る
+            </a>
+            <h1 class="text-2xl font-bold text-gray-800">
+                {{ isset($division) ? '部署 編集' : '部署 新規作成' }}
+            </h1>
+        </div>
+
+        {{-- バリデーションエラー --}}
+        @if ($errors->any())
+        <div class="bg-red-100 text-red-600 p-3 rounded mb-4">
+            <ul class="list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <!-- 保存フォーム -->
         <form
             action="{{ isset($division)
                 ? route('admin.divisions.update', $division->id)
@@ -18,35 +39,39 @@
             @method('PUT')
             @endisset
 
-            <table class="w-full table-auto border-collapse">
+            <table class="w-full table-auto border-collapse bg-white rounded-lg shadow-sm">
                 <tbody>
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right">部署コード</th>
-                        <td class="px-4 py-2">
+                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
+                            部署コード
+                        </th>
+                        <td class="px-4 py-3">
                             <input type="text" name="code"
                                 value="{{ old('code', $division->code ?? '') }}"
                                 class="border rounded px-3 py-2 w-64">
-                            @error('code')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
                         </td>
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">部署名</th>
-                        <td class="px-4 py-2">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            部署名
+                            <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                必須
+                            </span>
+                        </th>
+                        <td class="px-4 py-3">
                             <input type="text" name="name"
                                 value="{{ old('name', $division->name ?? '') }}"
-                                class="border rounded px-3 py-2 w-64">
-                            @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                class="border rounded px-3 py-2 w-64"
+                                required>
                         </td>
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">電話番号</th>
-                        <td class="px-4 py-2">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            電話番号
+                        </th>
+                        <td class="px-4 py-3">
                             <input type="text" name="tel"
                                 value="{{ old('tel', $division->tel ?? '') }}"
                                 class="border rounded px-3 py-2 w-64">
@@ -54,8 +79,10 @@
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">郵便番号</th>
-                        <td class="px-4 py-2">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            郵便番号
+                        </th>
+                        <td class="px-4 py-3">
                             <input type="text" name="post_code"
                                 value="{{ old('post_code', $division->post_code ?? '') }}"
                                 class="border rounded px-3 py-2 w-64">
@@ -63,8 +90,10 @@
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">住所</th>
-                        <td class="px-4 py-2">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            住所
+                        </th>
+                        <td class="px-4 py-3">
                             <input type="text" name="address"
                                 value="{{ old('address', $division->address ?? '') }}"
                                 class="border rounded px-3 py-2 w-full">
@@ -72,8 +101,10 @@
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">表示フラグ</th>
-                        <td class="px-4 py-2"
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            表示フラグ
+                        </th>
+                        <td class="px-4 py-3"
                             x-data="{ is_show: '{{ old('is_show', $division->is_show ?? 1) }}' }">
                             <div class="flex gap-2">
                                 <label
@@ -100,8 +131,10 @@
                     </tr>
 
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right">備考</th>
-                        <td class="px-4 py-2">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            備考
+                        </th>
+                        <td class="px-4 py-3">
                             <textarea name="memo"
                                 class="border rounded px-3 py-2 w-64">{{ old('memo', $division->memo ?? '') }}</textarea>
                         </td>
@@ -109,20 +142,12 @@
                 </tbody>
             </table>
 
-            {{-- ボタン --}}
-            <div class="mt-6 flex gap-3 items-center">
+            <!-- 操作ボタン -->
+            <div class="mt-6 flex gap-3">
                 <button type="submit"
                     class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                     保存
                 </button>
-
-                @isset($division)
-                <button type="button"
-                    @click="open = true"
-                    class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded">
-                    削除
-                </button>
-                @endisset
 
                 <a href="{{ route('admin.divisions.index') }}"
                     class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
@@ -130,25 +155,49 @@
                 </a>
             </div>
         </form>
+
+        <!-- 危険操作ゾーン（編集時のみ） -->
+        @isset($division)
+        <div class="mt-10 pt-6 border-t border-red-200">
+            <h2 class="text-red-600 font-semibold mb-2">
+                ⚠ 危険な操作
+            </h2>
+
+            <p class="text-sm text-gray-600 mb-4">
+                この部署を削除すると、元に戻すことはできません。
+            </p>
+
+            <button
+                @click="deleteOpen = true"
+                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+                削除する
+            </button>
+        </div>
+        @endisset
     </div>
 
-    {{-- 削除確認モーダル（同じ x-data スコープ内！） --}}
+    <!-- 削除確認モーダル -->
     @isset($division)
-    <div x-show="open" x-cloak x-transition.opacity
+    <div x-show="deleteOpen"
+        x-cloak
+        x-transition.opacity
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 
-        <div x-show="open" x-transition.scale
-            class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+        <div x-show="deleteOpen"
+            x-transition.scale
+            class="bg-white rounded-2xl p-6 w-full max-w-sm">
 
-            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+            <h3 class="text-lg font-semibold text-center mb-3">
+                削除確認
+            </h3>
 
-            <p class="text-gray-700 text-center mb-5">
-                「{{ $division->name }}」を削除しますか？
+            <p class="text-center text-gray-700 mb-5">
+                「<span class="font-semibold">{{ $division->name }}</span>」を削除しますか？
             </p>
 
             <div class="flex justify-center gap-4">
-                <button type="button"
-                    @click="open = false"
+                <button
+                    @click="deleteOpen = false"
                     class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
                     キャンセル
                 </button>
@@ -166,10 +215,11 @@
         </div>
     </div>
     @endisset
-</div>
 
-<style>
-    [x-cloak] {
-        display: none !important;
-    }
-</style>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</div>
+@endsection

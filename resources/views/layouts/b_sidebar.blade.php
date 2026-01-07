@@ -4,13 +4,6 @@ $roleId = auth()->user()->role_id;
 $menus = config('permissions.sidebar');
 @endphp
 
-{{-- SP用：サイドバーを開くボタン --}}
-<button
-    id="sidebar-open"
-    class="fixed top-16 left-0 bg-gray-800 text-white p-2 rounded-r-md z-50 lg:hidden hidden">
-    »
-</button>
-
 <aside
     id="sidebar"
     class="fixed top-12 left-0 w-64 h-[calc(100vh-4rem)]
@@ -19,7 +12,7 @@ $menus = config('permissions.sidebar');
            -translate-x-full lg:translate-x-0
            overflow-y-auto hide-scrollbar">
 
-    {{-- SP用：閉じる --}}
+    {{-- SP用 閉じる --}}
     <button
         id="sidebar-close"
         class="lg:hidden mb-4 text-sm text-right w-full text-gray-700">
@@ -29,10 +22,9 @@ $menus = config('permissions.sidebar');
     <h2 class="text-xl font-bold mb-4">管理者メニュー</h2>
 
     <nav class="space-y-2">
-
         @foreach ($menus as $menu)
 
-        {{-- role 制御 --}}
+        {{-- 権限制御 --}}
         @if (!in_array($roleId, $menu['roles']))
         @continue
         @endif
@@ -47,7 +39,6 @@ $menus = config('permissions.sidebar');
         {{-- アコーディオン --}}
         @elseif (isset($menu['children']))
         <div class="accordion">
-
             <button
                 type="button"
                 class="accordion-btn w-full flex justify-between items-center
@@ -72,11 +63,10 @@ $menus = config('permissions.sidebar');
         @endforeach
     </nav>
 
-    {{-- ログアウト（既存UI維持） --}}
+    {{-- ログアウト --}}
     <form method="POST" action="{{ route('logout') }}" class="mt-6">
         @csrf
-        <button
-            class="w-full text-left p-2 rounded hover:bg-red-600 hover:text-white">
+        <button class="w-full text-left p-2 rounded hover:bg-red-600 hover:text-white">
             ログアウト
         </button>
     </form>

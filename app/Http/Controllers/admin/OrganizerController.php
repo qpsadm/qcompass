@@ -43,11 +43,28 @@ class OrganizerController extends Controller
 
     public function index(Request $request)
     {
-        // 1ページあたり10件でページネーション
-        $organizers = Organizer::orderBy('name', 'asc')->paginate(10);
+        // 並び替えパラメータ取得
+        $sort = $request->get('sort', 'id');          // デフォルト No.(id)
+        $direction = $request->get('direction', 'asc'); // asc / desc
 
-        return view('admin.organizers.index', compact('organizers'));
+        // ソート可能なカラムを限定（安全対策）
+        $sortable = ['id', 'name'];
+        if (!in_array($sort, $sortable)) {
+            $sort = 'id';
+        }
+
+        // クエリ
+        $organizers = Organizer::orderBy($sort, $direction)
+            ->paginate(10)
+            ->appends($request->query()); // ページ遷移でも並び順保持
+
+        return view('admin.organizers.index', compact(
+            'organizers',
+            'sort',
+            'direction'
+        ));
     }
+
 
     public function create()
     {
