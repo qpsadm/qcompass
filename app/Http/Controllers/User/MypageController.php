@@ -28,12 +28,23 @@ class MypageController extends Controller
                 return $report;
             });
 
-        // お知らせ
-        $announcements = Announcement::latest()->take(5)->get();
+        // 自分が所属する講座IDを取得
+        $myCourseIds = $user->myCourses()->pluck('id')->toArray();
 
-        // type_id = 7 のスケジュールのみ取得してページネーション
+        // 自分の講座に紐づくお知らせ（最新5件）
+        $announcements = Announcement::whereIn('course_id', $myCourseIds)
+            ->where('is_show', 1)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // 自分が所属する講座IDを取得
+        $myCourseIds = $user->myCourses()->pluck('id')->toArray();
+
+        // type_id = 7 のスケジュールのみ、自分の講座に属するものをページネーション
         $scheduledAnnouncements = Announcement::where('type_id', 7)
             ->where('is_show', 1)
+            ->whereIn('course_id', $myCourseIds)  // 自分の講座だけに絞る
             ->latest()
             ->paginate(5); // ページネーション件数は任意
 
@@ -54,13 +65,14 @@ class MypageController extends Controller
             'user_details',
             'pending_diaries',
             'submitted_reports',
-            'announcements',
-            'scheduledAnnouncements', // Blade 側と名前を揃える
+            'announcements',           // 自分の講座のみのお知らせ
+            'scheduledAnnouncements',  // Blade 側と名前を揃える
             'courses',
             'divisions',
             'themes'
         ));
     }
+
 
 
     private function getPendingDiaries($user)

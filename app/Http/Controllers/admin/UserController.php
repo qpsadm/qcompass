@@ -54,7 +54,7 @@ class UserController extends Controller
             $users->orderBy($sort, $order);
         }
 
-        $users = $users->paginate(20)->appends($request->query());
+        $users = $users->paginate(10)->appends($request->query());
 
         // プルダウン用講座一覧
         $courses = Course::orderBy('course_name')->get();
@@ -238,10 +238,8 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        // ★ なりすまし用に course_id を明示セット
-        session([
-            'course_id' => $user->courses()->first()?->id,
-        ]);
+        // もし講座IDをセッションに入れる場合
+        session(['course_id' => $user->courses()->first()?->id]);
 
         return redirect()->route('user.mypage');
     }
