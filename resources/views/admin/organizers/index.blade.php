@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md"
+    x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+
     <h1 class="text-2xl font-bold mb-4">講座開催者一覧</h1>
 
-    {{-- 新規作成ボタン --}}
+    <!-- 上部操作 -->
     <div class="flex items-center justify-between mb-4">
         <a href="{{ route('admin.organizers.create') }}"
             class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
@@ -13,14 +15,19 @@
         </a>
     </div>
 
-    {{-- Organizer テーブル --}}
+    <!-- ページネーション（上） -->
+    <div class="mb-4">
+        {{ $organizers->links() }}
+    </div>
+
+    <!-- 一覧テーブル -->
     <div class="overflow-x-auto">
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
                     <th class="border px-4 py-2 w-12 text-center">No.</th>
                     <th class="border px-4 py-2">開催者名</th>
-                    <th class="border px-4 py-2 w-60 text-center">操作</th>
+                    <th class="border px-4 py-2 w-48 text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,18 +36,29 @@
                     <td class="border px-4 py-2 text-center">
                         {{ ($organizers->currentPage() - 1) * $organizers->perPage() + $loop->iteration }}
                     </td>
-                    <td class="border px-4 py-2">{{ $organizer->name }}</td>
+
+                    <!-- 名前クリック＝編集 -->
+                    <td class="border px-4 py-2">
+                        <a href="{{ route('admin.organizers.edit', $organizer->id) }}"
+                            class="text-blue-600 hover:text-blue-800 hover:underline transition">
+                            {{ $organizer->name }}
+                        </a>
+                    </td>
+
                     <td class="border px-4 py-2 text-center">
-                        <div class="flex items-center justify-center space-x-2">
-                            {{-- 編集 --}}
+                        <div class="flex items-center justify-center space-x-3">
+                            <!-- 編集 -->
                             <a href="{{ route('admin.organizers.edit', $organizer->id) }}"
                                 class="flex items-center text-blue-600 hover:text-blue-700">
                                 <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">編集</span>
                             </a>
 
-                            {{-- 削除 --}}
-                            <button @click="open = true; deleteUrl='{{ route('admin.organizers.destroy', $organizer->id) }}'; deleteName='{{ $organizer->name }}';"
+                            <!-- 削除 -->
+                            <button
+                                @click="open = true;
+                                        deleteUrl='{{ route('admin.organizers.destroy', $organizer->id) }}';
+                                        deleteName='{{ $organizer->name }}';"
                                 class="flex items-center text-red-600 hover:text-red-700">
                                 <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
                                 <span class="hidden lg:inline ml-1">削除</span>
@@ -59,12 +77,12 @@
         </table>
     </div>
 
-    {{-- ページネーション --}}
+    <!-- ページネーション（下） -->
     <div class="mt-4">
         {{ $organizers->links() }}
     </div>
 
-    {{-- 共通削除モーダル --}}
+    <!-- 共通削除モーダル -->
     <div x-show="open" x-cloak x-transition.opacity.duration.200ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div x-show="open" x-transition.scale.duration.200ms
@@ -74,13 +92,15 @@
                 「<span x-text="deleteName"></span>」を削除しますか？
             </p>
             <div class="flex justify-center space-x-4">
-                <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                <button @click="open = false"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     キャンセル
                 </button>
                 <form :action="deleteUrl" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    <button type="submit"
+                        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
                         削除する
                     </button>
                 </form>
