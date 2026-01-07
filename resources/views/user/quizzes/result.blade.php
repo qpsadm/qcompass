@@ -63,5 +63,7 @@
         class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
         ← クイズ一覧に戻る
     </a>
+
+    <x-f_bread_crumbs />
 </div>
 @endsection

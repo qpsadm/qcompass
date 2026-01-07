@@ -27,5 +27,7 @@
         @empty
             <p>表示できるクイズはありません</p>
         @endforelse
+
+        <x-f_bread_crumbs />
     </div>
 @endsection

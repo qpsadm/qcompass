@@ -65,5 +65,7 @@
                 一覧へもどる
             </a>
         </form>
+
+        <x-f_bread_crumbs />
     </div>
 @endsection
