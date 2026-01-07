@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 max-w-5xl">
+<div class="container mx-auto p-4 max-w-5xl" x-data="{ deleteOpen: false }">
     <h1 class="text-3xl font-bold mb-6">ユーザー基本情報編集：{{ $user->name }}</h1>
 
     {{-- 詳細情報作成／編集ボタン --}}
@@ -35,9 +35,7 @@
                     <td class="px-4 py-2">
                         <input type="text" name="code" value="{{ old('code', $user->code) }}"
                             class="border rounded px-3 py-2 w-64">
-                        @error('code')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('code') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -50,9 +48,7 @@
                     <td class="px-4 py-2">
                         <input type="text" name="name" value="{{ old('name', $user->name) }}"
                             class="border rounded px-3 py-2 w-64">
-                        @error('name')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -65,9 +61,7 @@
                     <td class="px-4 py-2">
                         <input type="text" name="furigana" value="{{ old('furigana', $user->furigana) }}"
                             class="border rounded px-3 py-2 w-64">
-                        @error('furigana')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('furigana') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -80,9 +74,7 @@
                     <td class="px-4 py-2">
                         <input type="text" name="roman_name" value="{{ old('roman_name', $user->roman_name) }}"
                             class="border rounded px-3 py-2 w-64">
-                        @error('roman_name')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('roman_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -92,9 +84,7 @@
                     <td class="px-4 py-2">
                         <input type="password" name="password" class="border rounded px-3 py-2 w-64">
                         <p class="text-gray-500 text-sm">※変更する場合のみ入力してください</p>
-                        @error('password')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -111,9 +101,7 @@
                             </option>
                             @endforeach
                         </select>
-                        @error('role_id')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('role_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -124,15 +112,12 @@
                         <select name="courses_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>
                             @foreach ($courses as $course)
-                            <option value="{{ $course->id }}"
-                                {{ $user->courses->contains($course->id) ? 'selected' : '' }}>
+                            <option value="{{ $course->id }}" {{ $user->courses->contains($course->id) ? 'selected' : '' }}>
                                 {{ $course->course_name }} ({{ $course->course_code }})
                             </option>
                             @endforeach
                         </select>
-                        @error('courses_id')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('courses_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -143,15 +128,12 @@
                         <select name="division_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択</option>
                             @foreach ($divisions as $division)
-                            <option value="{{ $division->id }}"
-                                {{ old('division_id', $user->division_id) == $division->id ? 'selected' : '' }}>
+                            <option value="{{ $division->id }}" {{ old('division_id', $user->division_id) == $division->id ? 'selected' : '' }}>
                                 {{ $division->name }}
                             </option>
                             @endforeach
                         </select>
-                        @error('division_id')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        @error('division_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -159,25 +141,61 @@
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">メールアドレス</th>
                     <td class="px-4 py-2">
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                            class="border rounded px-3 py-2 w-80">
-                        @error('email')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                        @enderror
+                        <input type="email" name="email" value="{{ old('email', $user->email) }}" class="border rounded px-3 py-2 w-80">
+                        @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <div class="mt-6 flex gap-3">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
-                更新する
-            </button>
-            <a href="{{ route('admin.users.index') }}"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
-                一覧に戻る
-            </a>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">更新する</button>
+            <a href="{{ route('admin.users.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
         </div>
     </form>
+
+    <!-- 危険操作ゾーン（編集時のみ） -->
+    @isset($user)
+    <div class="mt-10 pt-6 border-t border-red-200">
+        <h2 class="text-red-600 font-semibold mb-2">⚠ 危険な操作</h2>
+        <p class="text-sm text-gray-600 mb-4">
+            このユーザーを削除すると、元に戻すことはできません。
+        </p>
+        <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+            削除する
+        </button>
+    </div>
+    @endisset
+
+    <!-- 削除確認モーダル -->
+    <div x-show="deleteOpen" x-cloak
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div x-show="deleteOpen" x-transition.scale.duration.200ms
+            class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+            <p class="text-gray-700 text-center mb-5">
+                「{{ $user->name ?? 'このユーザー' }}」を削除しますか？
+            </p>
+            <div class="flex justify-center space-x-4">
+                <button @click="deleteOpen = false"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    キャンセル
+                </button>
+                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        削除する
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </div>
 @endsection

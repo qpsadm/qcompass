@@ -92,6 +92,9 @@ Route::middleware([
 
         Route::get('users/trash', [AdminUserController::class, 'trash'])
             ->name('users.trash');
+        // ユーザー復元
+        Route::post('/users/{user}/restore', [App\Http\Controllers\Admin\UserController::class, 'restore'])
+            ->name('users.restore');
 
         Route::resource('users', AdminUserController::class);
 

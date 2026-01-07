@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md"
-    x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+    x-data="{ restoreOpen: false, restoreUrl: '', restoreName: '' }">
+
     <h1 class="text-2xl font-bold mb-4">ユーザーゴミ箱一覧</h1>
 
     <div class="flex items-center justify-between mb-4">
@@ -38,15 +39,12 @@
                     <td class="border px-4 py-2">{{ $user->role->role_name ?? 'なし' }}</td>
                     <td class="border px-4 py-2 text-center">
                         <div class="flex items-center justify-center space-x-2 flex-nowrap">
-
-                            <!-- 復元 -->
-                            <form action="{{ route('admin.users.restore', $user->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="flex items-center text-green-600 hover:text-green-700">
-                                    <img src="{{ asset('assets/images/icon/b_recyclebox.svg') }}" class="w-4 h-4">
-                                    <span class="hidden lg:inline ml-1">復元</span>
-                                </button>
-                            </form>
+                            <!-- 復元ボタン（モーダル起動） -->
+                            <button @click="restoreOpen = true; restoreUrl='{{ route('admin.users.restore', $user->id) }}'; restoreName='{{ $user->name }}';"
+                                class="flex items-center text-green-600 hover:text-green-700">
+                                <img src="{{ asset('assets/images/icon/b_recyclebox.svg') }}" class="w-4 h-4">
+                                <span class="hidden lg:inline ml-1">復元</span>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -63,31 +61,32 @@
         </div>
     </div>
 
-    {{-- 共通削除モーダル --}}
-    <div x-show="open" x-cloak x-transition.opacity.duration.200ms
+    {{-- 復元モーダル --}}
+    <div x-show="restoreOpen" x-cloak x-transition.opacity.duration.200ms
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-
-        <div x-show="open" x-transition.scale.duration.200ms
+        <div x-show="restoreOpen" x-transition.scale.duration.200ms
             class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
-            <h2 class="text-lg font-semibold mb-3 text-center">完全削除確認</h2>
+            <h2 class="text-lg font-semibold mb-3 text-center">復元確認</h2>
             <p class="text-gray-700 text-center mb-5">
-                「<span x-text="deleteName"></span>」を完全に削除しますか？
+                「<span x-text="restoreName"></span>」を復元しますか？
             </p>
             <div class="flex justify-center space-x-4">
-                <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                <button @click="restoreOpen = false"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     キャンセル
                 </button>
-                <form :action="deleteUrl" method="POST">
+                <form :action="restoreUrl" method="POST">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        完全削除する
+                    <button type="submit"
+                        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        復元する
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    {{-- /共通削除モーダル --}}
+    {{-- /復元モーダル --}}
+
 </div>
 
 <style>
