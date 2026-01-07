@@ -9,11 +9,25 @@ use Illuminate\Http\Request;
 class AnnouncementTypeController extends Controller
 {
     // 一覧
-    public function index()
+    public function index(Request $request)
     {
-        $types = AnnouncementType::orderBy('id', 'desc')->paginate(20);
-        return view('admin.announcement_types.index', compact('types'));
+        // クエリパラメータでソート対象と方向を取得
+        $sort = $request->query('sort', 'id'); // デフォルト id
+        $direction = $request->query('direction', 'desc'); // デフォルト desc
+
+        // 安全のため、許可するカラムのみ
+        $allowedSorts = ['id', 'type_name', 'is_show'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        $direction = $direction === 'asc' ? 'asc' : 'desc';
+
+        $types = AnnouncementType::orderBy($sort, $direction)->paginate(20)->withQueryString();
+
+        return view('admin.announcement_types.index', compact('types', 'sort', 'direction'));
     }
+
 
     // 作成フォーム
     public function create()
