@@ -89,10 +89,11 @@ Route::middleware([
 
     // 受講者一覧（5,6,7,8）
     Route::middleware('role:5,6,7,8')->group(function () {
-        Route::resource('users', AdminUserController::class);
 
         Route::get('users/trash', [AdminUserController::class, 'trash'])
             ->name('users.trash');
+
+        Route::resource('users', AdminUserController::class);
 
         // なりすまし開始
         Route::post(

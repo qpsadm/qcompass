@@ -26,8 +26,9 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                 </button>
             </form>
             <a href="{{ route('admin.users.create') }}"
-                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-white flex items-center gap-1">
-                ＋ 新規作成
+                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
             <a href="{{ route('admin.users.trash') }}"
                 class="bg-red-100 px-4 py-2 rounded hover:bg-red-600 hover:text-white flex items-center gap-1">
