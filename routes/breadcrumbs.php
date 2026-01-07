@@ -4,8 +4,16 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as Trail;
 use Carbon\Carbon;
 
-Breadcrumbs::for('auto', function (Trail $trail) {
+/*
+|--------------------------------------------------------------------------
+| Auto Breadcrumb
+|--------------------------------------------------------------------------
+|
+| 全ルート共通の自動パンくず生成
+|
+*/
 
+Breadcrumbs::for('auto', function (Trail $trail) {
     $route = request()->route();
     $routeName = $route?->getName();
     $params = $route?->parameters() ?? [];
@@ -17,6 +25,7 @@ Breadcrumbs::for('auto', function (Trail $trail) {
 
     $parents = config('breadcrumbs.parents', []);
 
+    // 親があれば追加
     if (isset($parents[$routeName])) {
         $parentRoute = $parents[$routeName];
         $trail->push(
@@ -25,12 +34,16 @@ Breadcrumbs::for('auto', function (Trail $trail) {
         );
     }
 
+    // 現在ページ
     $trail->push(
         breadcrumb_label($routeName, $params),
         route($routeName, $params)
     );
 });
 
+/**
+ * ルート名からラベルを返す関数
+ */
 function breadcrumb_label(string $routeName, array $params = [])
 {
     // 日報関連ラベル
@@ -71,15 +84,21 @@ function breadcrumb_label(string $routeName, array $params = [])
         if ($announcement) return $announcement->title ?? $announcement->name;
     }
 
-    // 学習支援
-    if (in_array($routeName, ['user.question.questions_list', 'user.quizzes.index'])) {
+    // 学習支援・質疑応答
+    if ($routeName === 'user.quizzes.index') {
         return '学習支援';
     }
 
-    $labels = config('breadcrumbs.labels');
+    if ($routeName === 'user.question.questions_list') {
+        return '質疑応答';
+    }
+
+    // config のラベル
+    $labels = config('breadcrumbs.labels', []);
     if (isset($labels[$routeName]) && $labels[$routeName] !== null) {
         return $labels[$routeName];
     }
 
+    // ない場合は最後のルート名を人間向けに変換
     return \Illuminate\Support\Str::headline(last(explode('.', $routeName)));
 }
