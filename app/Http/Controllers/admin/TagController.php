@@ -12,8 +12,6 @@ class TagController extends Controller
     {
         $roleId = auth()->user()->role_id;
 
-        // role 1～3: 管理画面不可は middleware で弾かれる想定
-
         // role 4: 閲覧のみ
         if ($roleId == 4) {
             $editableRoutes = ['create', 'store', 'edit', 'update', 'destroy'];
@@ -24,28 +22,42 @@ class TagController extends Controller
             }
         }
 
-        // role 5: 制限付き編集可
+        // role 5: 制限付き
         if ($roleId == 5) {
             $allowed = ['questions', 'reports', 'course_teacher', 'agenda'];
             $path = request()->path();
             foreach ($allowed as $a) {
                 if (str_contains($path, $a)) {
-                    return; // OK
+                    return;
                 }
             }
             abort(403, 'アクセス権限がありません。');
         }
-
-        // role 6: 一部制限あり（必要ならここで制御）
-
-        // role 7,8: フル CRUD → ここでは特にチェック不要
     }
 
     public function index(Request $request)
     {
-        $order = $request->get('order', 'desc');
-        $tags = Tag::orderBy('id', $order)->paginate(10); // 10件ずつ表示
-        return view('admin.tags.index', compact('tags'));
+        // 並び替え（Organizer と統一）
+        $sort = $request->get('sort', 'id');
+        $direction = $request->get('direction', 'asc');
+
+        // ホワイトリスト（安全対策）
+        $sortableColumns = ['id', 'name'];
+        if (!in_array($sort, $sortableColumns)) {
+            $sort = 'id';
+        }
+
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        $tags = Tag::orderBy($sort, $direction)->paginate(10);
+
+        return view('admin.tags.index', compact(
+            'tags',
+            'sort',
+            'direction'
+        ));
     }
 
     public function create()
@@ -56,24 +68,26 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
+            'code' => 'nullable|string',
+            'name' => 'required|string',
             'is_show' => 'nullable|boolean',
-
         ]);
 
+        // is_show のデフォルト
         $validated['is_show'] = $validated['is_show'] ?? 0;
 
+        // ⭐ code が空なら name を入れる
+        if (empty($validated['code'])) {
+            $validated['code'] = $validated['name'];
+        }
 
         Tag::create($validated);
-        return redirect()->route('admin.tags.index')->with('success', 'Tag作成完了');
+
+        return redirect()
+            ->route('admin.tags.index')
+            ->with('success', 'Tag作成完了');
     }
 
-    public function show($id)
-    {
-        $Tag = Tag::findOrFail($id);
-        return view('admin.tags.show', compact('Tag'));
-    }
 
     public function edit($id)
     {
@@ -84,24 +98,28 @@ class TagController extends Controller
     public function update(Request $request, $id)
     {
         $Tag = Tag::findOrFail($id);
-        $validated = $request->validate([
-            'code' => 'nullable',
-            'name' => 'nullable',
-            'is_show' => 'nullable|boolean',
 
+        $validated = $request->validate([
+            'code'    => 'nullable|string|max:50',
+            'name'    => 'nullable|string|max:255',
+            'is_show' => 'nullable|boolean',
         ]);
 
         $validated['is_show'] = $validated['is_show'] ?? 0;
 
-
-
         $Tag->update($validated);
-        return redirect()->route('admin.tags.index')->with('success', 'Tag更新完了');
+
+        return redirect()
+            ->route('admin.tags.index')
+            ->with('success', 'Tag更新完了');
     }
 
     public function destroy($id)
     {
         Tag::findOrFail($id)->delete();
-        return redirect()->route('admin.tags.index')->with('success', 'Tag削除完了');
+
+        return redirect()
+            ->route('admin.tags.index')
+            ->with('success', 'Tag削除完了');
     }
 }
