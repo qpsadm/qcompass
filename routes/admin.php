@@ -153,6 +153,10 @@ Route::middleware([
      * ============================= */
     Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('agendas', AgendaController::class);
+
+        Route::get('agendas/{agenda}/preview', [App\Http\Controllers\Admin\AgendaController::class, 'preview'])
+            ->name('agendas.preview');
+
         Route::get(
             'courses/{course}/agendas',
             [AgendaController::class, 'indexByCourse']
