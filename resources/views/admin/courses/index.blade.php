@@ -136,7 +136,7 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                     </td>
                     <td class="border px-4 py-2">{{ $course->course_code }}</td>
                     <td class="border px-4 py-2">
-                        <a href="{{ route('admin.courses.edit',$course->id) }}" class="text-blue-600 hover:underline">
+                        <a href="{{ route('admin.courses.show',$course->id) }}" class="text-blue-600 hover:underline">
                             {{ $course->course_name }}
                         </a>
                     </td>

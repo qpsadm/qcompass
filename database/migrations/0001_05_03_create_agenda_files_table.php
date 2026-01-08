@@ -9,34 +9,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('agenda_files', function (Blueprint $table) {
-
-            $table->id()->comment('主キー');
-
-            // ポリモーフィック（お知らせ・アジェンダ共用）
+            $table->id();
             $table->unsignedBigInteger('target_id')->nullable()->comment('対象レコードID');
-
-            // アジェンダ、お知らせ
             $table->string('target_type')->comment('対象モデルクラス名');
-
             $table->string('file_path', 255)->comment('保存先パス');
             $table->string('file_name', 255)->comment('表示用のファイル名');
-            $table->tinyInteger('file_type')->nullable()->comment('ファイル種別');
+            $table->string('file_type', 100)->nullable()->comment('ファイル種別');
             $table->string('description', 100)->nullable()->comment('備考・用途');
-            $table->integer('file_size')->nullable()->comment('ファイルサイズ（KB）');
-
-            // Laravel 管理
+            $table->integer('file_size')->nullable()->comment('ファイルサイズ（バイト）');
             $table->timestamps();
             $table->softDeletes();
+            $table->string('created_user_name', 50)->nullable();
+            $table->string('updated_user_name', 50)->nullable();
+            $table->string('deleted_user_name', 50)->nullable();
 
-            // 作成者・更新者・削除者
-            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
-            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
-            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+            $table->comment('アジェンダ・お知らせ添付ファイル');
 
-            // 外部キー
-            $table->foreign('target_id')->references('id')->on('agendas')->onDelete('set null');
-
-            $table->comment('アジェンダ添付ファイルマスタ');
+            // ← polymorphic なので外部キーは付けない
         });
     }
 

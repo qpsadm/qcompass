@@ -88,15 +88,6 @@ return [
             'children' => [
                 ['label' => 'アジェンダ一覧', 'route' => 'admin.agendas.index', 'roles' => [5, 6, 7, 8]],
                 ['label' => 'アジェンダ登録', 'route' => 'admin.agendas.create', 'roles' => [6, 7, 8]],
-                [
-                    'label' => 'アジェンダ・ファイル',
-                    'route' => 'admin.files.index',
-                    'params' => [
-                        'type' => 'agenda',
-                        'targetId' => 0,
-                    ],
-                    'roles' => [5, 6, 7, 8],
-                ],
             ],
         ],
 
@@ -111,12 +102,6 @@ return [
             'children' => [
                 ['label' => 'お知らせ一覧', 'route' => 'admin.announcements.index', 'roles' => [5, 6, 7, 8]],
                 ['label' => 'お知らせ投稿', 'route' => 'admin.announcements.create', 'roles' => [6, 7, 8]],
-                [
-                    'label' => 'お知らせ・ファイル一覧',
-                    'route' => 'admin.files.index',
-                    'params' => ['type' => 'announcement', 'targetId' => 0],
-                    'roles' => [5, 6, 7, 8],
-                ],
             ],
         ],
 
@@ -144,6 +129,19 @@ return [
             'children' => [
                 ['label' => 'クイズ一覧', 'route' => 'admin.quizzes.index',  'roles' => [5, 6, 7, 8]],
                 ['label' => 'クイズ登録', 'route' => 'admin.quizzes.create', 'roles' => [6, 7, 8]],
+            ],
+        ],
+
+        // =========================
+        // ファイル管理
+        // =========================
+        [
+            'label' => 'ファイル一覧',
+            'icon'  => 'f_icon_agenda.svg',
+            'roles' => [5, 6, 7, 8],
+            'children' => [
+                ['label' => 'アジェンダファイル一覧', 'route' => 'admin.files.index', 'params' => ['type' => 'agenda'], 'roles' => [5, 6, 7, 8]],
+                ['label' => 'お知らせファイル一覧',   'route' => 'admin.files.index', 'params' => ['type' => 'announcement'], 'roles' => [5, 6, 7, 8]],
             ],
         ],
 

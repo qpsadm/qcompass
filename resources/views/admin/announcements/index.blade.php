@@ -1,92 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{
-    open: false,
-    deleteUrl: '',
-    deleteName: '',
-    search: '{{ request('search') }}',
-    category: '{{ request('category_id') }}',
-    status: '{{ request('status') }}',
-    sort: '{{ request('sort', 'title') }}',
-    direction: '{{ request('direction', 'desc') }}',
-    submitForm(url = null) {
-        const form = document.createElement('form');
-        form.method = 'GET';
-        form.action = url || '{{ route('admin.announcements.index') }}';
+<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
 
-        const inputs = {
-            search: this.search,
-            category_id: this.category,
-            status: this.status,
-            sort: this.sort,
-            direction: this.direction
-        };
-
-        for (const name in inputs) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = name;
-            input.value = inputs[name] ?? '';
-            form.appendChild(input);
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-    },
-    clearSearch() {
-        this.search = '';
-        this.submitForm();
-    },
-    toggleSort(column) {
-        if (this.sort === column) {
-            this.direction = this.direction === 'asc' ? 'desc' : 'asc';
-        } else {
-            this.sort = column;
-            this.direction = 'asc';
-        }
-        this.submitForm();
+    @php
+    function sortLink($label, $column) {
+    $direction = request('direction') === 'asc' ? 'desc' : 'asc';
+    if (request('sort') !== $column) {
+    $direction = 'asc';
     }
-}">
+
+    $query = array_merge(request()->query(), [
+    'sort' => $column,
+    'direction' => $direction,
+    ]);
+
+    $arrow = '';
+    if (request('sort') === $column) {
+    $arrow = request('direction') === 'asc' ? ' ▲' : ' ▼';
+    }
+
+    return '<a href="'.route('admin.announcements.index', $query).'" class="hover:underline">'
+        .$label.$arrow.'</a>';
+    }
+    @endphp
 
     <h1 class="text-2xl font-bold mb-4">お知らせ一覧</h1>
 
-    {{-- 上部操作 + 検索 + 絞り込み --}}
-    <div class="flex flex-wrap items-center justify-between mb-4 space-y-2">
+    {{-- 上部操作・検索・絞り込み --}}
+    <div class="flex items-center justify-between mb-4 space-x-2">
+
+        {{-- 新規作成 --}}
         <a href="{{ route('admin.announcements.create') }}"
-            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-            <span>新規作成</span>
+            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition">
+            新規作成
         </a>
 
-        <div class="flex items-center space-x-2">
-            {{-- 検索 --}}
-            <div class="relative">
-                <input type="text" x-model="search" placeholder="タイトルで検索" @keydown.enter.prevent="submitForm()"
-                    class="border px-2 py-1 rounded pr-8">
-                <button type="button" x-show="search" @click="clearSearch()"
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;</button>
-            </div>
-            <button @click="submitForm()"
-                class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition">
-                検索
-            </button>
+        {{-- 絞り込み --}}
+        <form method="GET" action="{{ route('admin.announcements.index') }}"
+            class="flex items-center space-x-2 flex-1 justify-end">
 
             {{-- カテゴリー --}}
-            <select x-model="category" @change="submitForm()" class="border px-2 py-1 rounded">
-                <option value="">すべてのカテゴリー</option>
+            <select name="category_id" class="border px-2 py-1 rounded">
+                <option value="">全カテゴリー</option>
                 @foreach ($categories as $cat)
-                <option value="{{ $cat->id }}">{{ $cat->type_name }}</option>
+                <option value="{{ $cat->id }}"
+                    {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                    {{ $cat->type_name }}
+                </option>
                 @endforeach
             </select>
 
-            {{-- ステータス --}}
-            <select x-model="status" @change="submitForm()" class="border px-2 py-1 rounded">
-                <option value="">すべての状態</option>
-                <option value="0">下書き</option>
-                <option value="1">承認待ち</option>
-                <option value="2">承認済み</option>
+            {{-- 講座（★追加） --}}
+            <select name="course_id" class="border px-2 py-1 rounded">
+                <option value="">全講座</option>
+                @foreach ($courses as $course)
+                <option value="{{ $course->id }}"
+                    {{ request('course_id') == $course->id ? 'selected' : '' }}>
+                    {{ $course->course_name }}
+                </option>
+                @endforeach
             </select>
-        </div>
+
+            {{-- 状態 --}}
+            <select name="status" class="border px-2 py-1 rounded">
+                <option value="">全状態</option>
+                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>下書き</option>
+                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>承認待ち</option>
+                <option value="2" {{ request('status') === '2' ? 'selected' : '' }}>承認済み</option>
+            </select>
+
+            {{-- 検索 --}}
+            <input type="text" name="search"
+                value="{{ request('search') }}"
+                placeholder="タイトル検索"
+                class="border px-2 py-1 rounded w-60">
+
+            <button type="submit"
+                class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition">
+                絞り込み
+            </button>
+        </form>
+    </div>
+
+    {{-- ページネーション（上） --}}
+    <div class="mb-4">
+        {{ $announcements->links() }}
     </div>
 
     {{-- テーブル --}}
@@ -94,119 +93,73 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="border px-4 py-2 text-center w-16">No.</th>
-                    <th class="border px-4 py-2 cursor-pointer" @click="toggleSort('title')">
-                        タイトル
-                        <span x-show="sort === 'title'">
-                            <span x-show="direction === 'asc'">&#9650;</span>
-                            <span x-show="direction === 'desc'">&#9660;</span>
-                        </span>
-                    </th>
+                    <th class="border px-4 py-2 text-center w-12">No.</th>
+                    <th class="border px-4 py-2">{!! sortLink('タイトル', 'title') !!}</th>
                     <th class="border px-4 py-2">カテゴリー</th>
-                    <th class="border px-4 py-2">講座</th> {{-- 追加 --}}
-                    <th class="border px-4 py-2 text-center w-32">表示</th>
-                    <th class="border px-4 py-2 text-center w-32">状態</th>
-                    <th class="border px-4 py-2 text-center w-40">作成者</th>
-                    <th class="border px-4 py-2 text-center w-60">操作</th>
+                    <th class="border px-4 py-2">講座</th>
+                    <th class="border px-4 py-2 text-center">表示</th>
+                    <th class="border px-4 py-2">{!! sortLink('状態', 'status') !!}</th>
+                    <th class="border px-4 py-2">作成者</th>
+                    <th class="border px-4 py-2">{!! sortLink('作成日', 'created_at') !!}</th>
                 </tr>
             </thead>
+
             <tbody>
                 @forelse ($announcements as $announcement)
                 <tr class="hover:bg-gray-50">
                     <td class="border px-4 py-2 text-center">
                         {{ ($announcements->currentPage() - 1) * $announcements->perPage() + $loop->iteration }}
                     </td>
-                    <td class="border px-4 py-2">{{ $announcement->title }}</td>
-                    <td class="border px-4 py-2">{{ $announcement->type->type_name ?? '-' }}</td>
+
+                    <td class="border px-4 py-2">
+                        <a href="{{ route('admin.announcements.show', $announcement->id) }}"
+                            class="text-blue-600 hover:underline">
+                            {{ $announcement->title }}
+                        </a>
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $announcement->type->type_name ?? '未分類' }}
+                    </td>
+
                     <td class="border px-4 py-2">
                         {{ $announcement->course?->course_name ?? '全体向け' }}
                     </td>
-                    <td class="border px-4 py-2 text-center">
-                        @if ($announcement->is_show)
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
-                        @else
-                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
-                        @endif
-                    </td>
-                    <td class="border px-4 py-2 text-center">
-                        @if ($announcement->status == 0)
-                        下書き
-                        @elseif($announcement->status == 1)
-                        承認待ち
-                        @else
-                        承認済み
-                        @endif
-                    </td>
-                    <td class="border px-4 py-2 text-center">{{ $announcement->created_user_name ?? '不明' }}</td>
-                    <td class="border px-4 py-2 text-center">
-                        <div class="flex items-center justify-center space-x-2">
-                            {{-- 詳細 --}}
-                            <a href="{{ route('admin.announcements.show', $announcement->id) }}"
-                                class="flex items-center text-green-600 hover:text-green-700">
-                                <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">詳細</span>
-                            </a>
 
-                            {{-- 編集 --}}
-                            <a href="{{ route('admin.announcements.edit', $announcement->id) }}"
-                                class="flex items-center text-blue-600 hover:text-blue-700">
-                                <img src="{{ asset('assets/images/icon/b_report.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">編集</span>
-                            </a>
-
-                            {{-- 削除 --}}
-                            <button
-                                @click="open = true; deleteUrl='{{ route('admin.announcements.destroy', $announcement->id) }}'; deleteName='{{ $announcement->title }}';"
-                                class="flex items-center text-red-600 hover:text-red-700">
-                                <img src="{{ asset('assets/images/icon/b_dust.svg') }}" class="w-4 h-4">
-                                <span class="hidden lg:inline ml-1">削除</span>
-                            </button>
-                        </div>
+                    <td class="border px-4 py-2 text-center">
+                        <span class="px-2 py-1 rounded-full text-xs
+                            {{ $announcement->is_show ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700' }}">
+                            {{ $announcement->is_show ? '表示' : '非表示' }}
+                        </span>
                     </td>
 
+                    <td class="border px-4 py-2">
+                        {{ ['下書き','承認待ち','承認済み'][$announcement->status] }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $announcement->created_user_name ?? '-' }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $announcement->created_at->format('Y-m-d') }}
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="text-center py-4 text-gray-500">お知らせはまだ登録されていません。</td>
+                    <td colspan="8" class="border px-4 py-6 text-center text-gray-500">
+                        お知らせはありません
+                    </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
-
-        {{-- ページネーション --}}
-        <div class="mt-4">
-            {{ $announcements->links() }}
-        </div>
     </div>
 
-    {{-- 削除モーダル --}}
-    <div x-show="open" x-cloak x-transition.opacity.duration.200ms
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full" x-transition.scale.duration.200ms>
-            <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
-            <p class="text-gray-700 text-center mb-5">
-                「<span x-text="deleteName"></span>」を削除しますか？
-            </p>
-            <div class="flex justify-center space-x-4">
-                <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                    キャンセル
-                </button>
-                <form :action="deleteUrl" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        削除する
-                    </button>
-                </form>
-            </div>
-        </div>
+    {{-- ページネーション（下） --}}
+    <div class="mt-4">
+        {{ $announcements->links() }}
     </div>
 
 </div>
-
-<style>
-    [x-cloak] {
-        display: none !important;
-    }
-</style>
 @endsection

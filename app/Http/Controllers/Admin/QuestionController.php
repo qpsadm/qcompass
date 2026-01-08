@@ -129,9 +129,26 @@ class QuestionController extends Controller
     // 詳細
     public function show($id)
     {
-        $question = Question::findOrFail($id);  // 質問IDで質問を取得
-        return view('admin.questions.show', compact('question'));  // 質問をビューに渡す
+        $question = Question::with(['course', 'responder', 'tag'])
+            ->findOrFail($id);
+
+        // 前の質問（IDが小さい中で最大）
+        $prevQuestion = Question::where('id', '<', $question->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        // 次の質問（IDが大きい中で最小）
+        $nextQuestion = Question::where('id', '>', $question->id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        return view('admin.questions.show', compact(
+            'question',
+            'prevQuestion',
+            'nextQuestion'
+        ));
     }
+
 
     // 削除
     public function destroy(Question $question)
