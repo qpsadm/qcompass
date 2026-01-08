@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
+    /**
+     * ログイン画面表示
+     */
     public function create(Request $request)
     {
         $courses = Course::loginVisible()
@@ -23,7 +26,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * ログイン処理
      */
     public function store(Request $request)
     {
@@ -34,20 +37,51 @@ class AuthenticatedSessionController extends Controller
             'course_id' => 'required|integer',
         ]);
 
+        // ユーザー取得
         $user = User::where('email', $request->email)->first();
 
+        // 認証チェック
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors([
                 'email' => 'メールアドレスかパスワードが正しくありません。',
             ])->onlyInput('email');
         }
 
-        if ($user->role_id == 1) { // ログイン不可ユーザー
+        /*
+        |--------------------------------------------------------------------------
+        | ユーザー詳細ステータスチェック（停止・無効）
+        |--------------------------------------------------------------------------
+        */
+        if ($user->detail && in_array($user->detail->status, [0, 2], true)) {
+
+            $statusLabel = match ($user->detail->status) {
+                0 => '無効',
+                2 => '停止',
+                default => '制限',
+            };
+
+            $message = "このアカウントは現在「{$statusLabel}」されています。";
+
+
+            return back()
+                ->withErrors([
+                    'email' => $message,
+                ])
+                ->onlyInput('email');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ロール制限（ログイン不可ユーザー）
+        |--------------------------------------------------------------------------
+        */
+        if ($user->role_id == 1) {
             return back()->withErrors([
                 'email' => 'このユーザーはログインできません。',
             ])->onlyInput('email');
         }
 
+        // 講座チェック
         $course = Course::find($request->course_id);
         if (!$course) {
             return back()->withErrors([
@@ -55,8 +89,9 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('course_id');
         }
 
-        // 一般ユーザー（guest,生徒,アルバイト）は講座チェックと isLoginable() を適用
+        // 一般ユーザー（guest / 生徒 / アルバイト）
         if ($user->role_id < 5) {
+
             if (!$user->courses->contains('id', $course->id)) {
                 return back()->withErrors([
                     'course_id' => 'このユーザーは選択されたコースに所属していません。',
@@ -70,32 +105,36 @@ class AuthenticatedSessionController extends Controller
             }
         }
 
-        // ログイン
+        /*
+        |--------------------------------------------------------------------------
+        | ログイン
+        |--------------------------------------------------------------------------
+        */
         Auth::login($user, $request->filled('remember'));
         $request->session()->regenerate();
 
         // 講座IDをセッションに保存
         session(['course_id' => $course->id]);
 
-        // ユーザーのテーマ・フォントサイズをセッションに保存
+        // ユーザー設定（テーマ・文字サイズ）
         $user_details = $user->detail;
         session([
             'settings' => [
                 'theme_id' => $user_details?->theme_id ?? 1,
                 'fontsize' => $user_details?->fontsize ?? 1,
-            ]
+            ],
         ]);
 
         // ロール別リダイレクト
         return match ($user->role_id) {
-            2, 3, 4 => redirect()->route('user.top'),          // guest / 生徒 / アルバイト
-            5, 6, 7, 8 => redirect()->route('admin.dashboard'), // パート / 講師 / 事務 / システム管理者
+            2, 3, 4 => redirect()->route('user.top'),           // guest / 生徒 / アルバイト
+            5, 6, 7, 8 => redirect()->route('admin.dashboard'), // 管理系
             default => redirect()->route('user.top'),
         };
     }
 
     /**
-     * Destroy an authenticated session.
+     * ログアウト
      */
     public function destroy(Request $request)
     {
