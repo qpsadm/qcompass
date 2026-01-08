@@ -180,8 +180,18 @@ class Course extends Model
         return $query
             ->where('is_show', 1)
             ->whereNull('deleted_at')
-            ->whereIn('status', [self::STATUS_DRAFT, self::STATUS_PUBLISHED]);
+            ->where(function ($q) {
+                $q->whereIn('status', [
+                    self::STATUS_DRAFT,
+                    self::STATUS_PUBLISHED
+                ])
+                    ->orWhere(function ($q2) {
+                        $q2->where('status', self::STATUS_ARCHIVED)
+                            ->where('end_date', '>=', now()->subMonth());
+                    });
+            });
     }
+
 
     public function loginRemainingDays(): ?int
     {
