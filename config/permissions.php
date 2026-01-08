@@ -72,7 +72,6 @@ return [
             'children' => [
                 ['label' => '講座一覧',       'route' => 'admin.courses.index',        'roles' => [5, 6, 7, 8]],
                 ['label' => '講座・カテゴリー', 'route' => 'admin.course_category.index', 'roles' => [6, 7, 8]],
-                ['label' => '講座・講師',     'route' => 'admin.course_teachers.index', 'roles' => [6, 7, 8]],
                 ['label' => '講座・受講者',   'route' => 'admin.course_users.index',   'roles' => [6, 7, 8]],
                 ['label' => '日報管理',       'route' => 'admin.reports.index',        'roles' => [5, 6, 7, 8]],
                 ['label' => '質疑応答一覧',   'route' => 'admin.questions.index',      'roles' => [5, 6, 7, 8]],
@@ -96,9 +95,11 @@ return [
                         'type' => 'agenda',
                         'targetId' => 0,
                     ],
+                    'roles' => [5, 6, 7, 8], // ← ここがないと表示されない
                 ],
             ],
         ],
+
 
         // =========================
         // お知らせ管理
