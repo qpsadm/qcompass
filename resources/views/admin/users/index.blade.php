@@ -143,7 +143,7 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                     </td>
                     <td class="border px-4 py-2">{{ $user->code }}</td>
                     <td class="border px-4 py-2">
-                        <a href="{{ route('admin.users.edit', $user->id) }}" class="text-blue-600 hover:underline">
+                        <a href="{{ route('admin.users.show', $user->id) }}" class="text-blue-600 hover:underline">
                             {{ $user->name }}
                         </a>
                     </td>
