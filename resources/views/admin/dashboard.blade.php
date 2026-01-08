@@ -19,7 +19,9 @@
             <ul class="space-y-2">
                 @foreach($ongoingCourses as $course)
                 <li class="border-b pb-2">
-                    <div class="font-medium">{{ $course->course_name }}</div>
+                    <a href="{{ route('admin.courses.show', $course->id) }}" class="font-medium text-blue-600 hover:underline">
+                        {{ $course->course_name }}
+                    </a>
                     <div class="text-sm text-gray-500">
                         {{ $course->start_date }} 〜 {{ $course->end_date }}
                     </div>
@@ -28,6 +30,7 @@
             </ul>
             @endif
         </div>
+
 
         {{-- 最新アジェンダ --}}
         <div class="bg-white shadow rounded p-5">
@@ -49,6 +52,11 @@
                 </li>
                 @endforeach
             </ul>
+            <div class="mt-3 text-right">
+                <a href="{{ route('admin.agendas.index') }}" class="text-blue-600 hover:underline font-medium">
+                    もっと見る &rarr;
+                </a>
+            </div>
             @endif
         </div>
 
@@ -72,10 +80,14 @@
                 </li>
                 @endforeach
             </ul>
+            <div class="mt-3 text-right">
+                <a href="{{ route('admin.announcements.index') }}" class="text-blue-600 hover:underline font-medium">
+                    もっと見る &rarr;
+                </a>
+            </div>
             @endif
         </div>
 
-        {{-- 最新日報 --}}
         {{-- 最新日報 --}}
         <div class="bg-white shadow rounded p-5">
             <h2 class="text-lg font-semibold mb-3 flex items-center">
@@ -101,9 +113,13 @@
                 </li>
                 @endforeach
             </ul>
+            <div class="mt-3 text-right">
+                <a href="{{ route('admin.reports.index') }}" class="text-blue-600 hover:underline font-medium">
+                    もっと見る &rarr;
+                </a>
+            </div>
             @endif
         </div>
-
 
     </div>
 </div>
