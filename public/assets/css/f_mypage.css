@@ -201,6 +201,10 @@
     margin-bottom: 15px;
 }
 
+#calendar td {
+    /* height: 95px; */
+}
+
 #calendar .fc-toolbar.fc-header-toolbar {
     margin-bottom: 15px;
 }

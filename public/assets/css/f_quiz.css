@@ -96,16 +96,25 @@
 
 
 /* result */
+.result-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .result {
     display: flex;
-    gap: 50px;
     align-items: center;
-    max-width: 400px;
+    width: 400px;
     margin-bottom: 50px;
-    padding: 10px 20px 20px;
+    padding: 10px 0 20px 20px;
     font-size: 18px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.result-left {
+    width: 200px;
 }
 
 .point {
@@ -126,10 +135,15 @@
     gap: 10px;
 }
 
+.result-right {
+    width: 180px;
+}
+
 .hantei {
     margin-top: 10px;
     font-size: 40px;
     color: rgb(115, 201, 255);
+    text-align: center;
 }
 
 .hantei.active {
@@ -140,16 +154,20 @@
 .result-table th,
 .result-table td {
     border: 1px solid #000;
-    border-collapse: collapse;
 }
 
 .result-table {
     width: 100%;
+    min-width: 860px;
     table-layout: fixed;
+    border-collapse: collapse;
 }
 
 .result-table th {
+    padding: 20px 0;
+    vertical-align: middle;
     text-align: center;
+    background-color: #dddddd;
 }
 
 .result-table td {
@@ -176,9 +194,17 @@
     text-align: center;
 }
 
+.result-table tr:has(p.active) {
+    background-color: rgb(216, 235, 255);
+}
+
 .result-table ul li {
-    margin: 0 0 5px 23px;
+    margin-left: 23px;
     list-style-type: disc;
+}
+
+.result-table ul li+li {
+    margin-top: 10px;
 }
 
 .result-back {

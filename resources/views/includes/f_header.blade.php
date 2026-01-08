@@ -8,10 +8,12 @@
                         href="{{ route('user.news.news_list') }}">お知らせ</a></li>
                 <li class="main-menu {{ request()->routeIs('user.agenda.*') ? 'active' : '' }}"><a class="agenda"
                         href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
-                <li class="main-menu menu-study {{ request()->routeIs('user.question.*', 'user.quizzes.*') ? 'active' : '' }}">
+                <li
+                    class="main-menu menu-study {{ request()->routeIs('user.question.*', 'user.quizzes.*') ? 'active' : '' }}">
                     <a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a>
                     <ul class="gnav-sub">
-                        <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}"><a href="{{ route('user.quizzes.index') }}">クイズ</a></li>
+                        <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}"><a
+                                href="{{ route('user.quizzes.index') }}">クイズ</a></li>
                         <li><a href="">制作品紹介</a></li>
                         <li><a href="">IT資格</a></li>
                         <li><a href="">参考書籍</a></li>
@@ -111,16 +113,22 @@
                             <li><a class="news" href="{{ route('user.news.news_list') }}">お知らせ</a></li>
                             <li><a class="agenda" href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
                             <li><a class="study" href="{{ route('user.question.questions_list') }}">学習支援</a></li>
-                            <li><a class="work" href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
-                            <li><a class="mypage" href="{{ route('user.mypage') }}">マイページ</a></li>
+                            <ul>
+                                <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}"><a
+                                        href="{{ route('user.quizzes.index') }}">クイズ</a></li>
+                                <li><a href="">制作品紹介</a></li>
+                                <li><a href="">IT資格</a></li>
+                                <li><a href="">参考書籍</a></li>
+                                <li><a href="">参考サイト</a></li>
+                            </ul>
+                            {{-- <li><a class="work" href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
+                            <li><a class="mypage" href="{{ route('user.mypage') }}">マイページ</a></li> --}}
                         </ul>
                     </div>
                     <div class="side-menu-bottom">
                         <ul class="side-menu-list">
-                            {{-- <li><a class="calendar-list" href="../assets/images/f_pamphlet_test.pdf"
-                                    target="_blank">日別計画表</a></li>
-                            <li><a class="question" href="study/study_qa_list.html">質疑応答</a></li>
-                            <li><a class="report" href="mypage/report.html">日報作成</a></li> --}}
+                            <li><a class="work" href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
+                            <li><a class="mypage" href="{{ route('user.mypage') }}">マイページ</a></li>
                             <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
                             @foreach ($courses as $course)
                                 @if ($course->plan_path)
