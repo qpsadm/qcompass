@@ -16,10 +16,11 @@ class QuizController extends Controller
     // -------------------------
     public function index()
     {
-        $quizzes = Quiz::all();
-        $types = [1 => '試験', 2 => 'アンケート', 3 => '練習'];
-        return view('admin.quizzes.index', compact('quizzes', 'types'));
+        // ページネーションで10件ずつ取得
+        $quizzes = Quiz::with('category')->orderBy('id', 'desc')->paginate(10);
+        return view('admin.quizzes.index', compact('quizzes'));
     }
+
 
     // -------------------------
     // 作成フォーム

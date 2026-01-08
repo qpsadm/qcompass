@@ -1,93 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-4 min-h-screen">
+
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6">クイズ一覧</h1>
 
-        <a href="{{ route('admin.quizzes.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-            新規作成
-        </a>
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">
+            クイズ一覧
+        </h1>
 
-        <table class="table-auto w-full border">
-            <thead>
-                <tr>
-                    <th class="border px-2 py-1">ID</th>
-                    <th class="border px-2 py-1">タイトル</th>
-                    <th class="border px-2 py-1">カテゴリ</th>
-                    <th class="border px-2 py-1">レベル</th>
-                    <th class="border px-2 py-1">種類</th>
-                    <th class="border px-2 py-1">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($quizzes as $quiz)
-                <tr>
-                    <td class="border px-2 py-1">{{ $quiz->id }}</td>
-                    <td class="border px-2 py-1">{{ $quiz->title }}</td>
-                    <td class="border px-2 py-1">
-                        {{ $quiz->category?->name ?? '未設定' }}
-                        {{ $quiz->category?->code ? '(' . $quiz->category->code . ')' : '' }}
-                    </td>
-                    <td class="border px-2 py-1">{{ $quiz->level ?? '未設定' }}</td>
-                    <td class="border px-2 py-1">{{ $types[$quiz->type] ?? '不明' }}</td>
-                    <td class="border px-2 py-1 flex flex-wrap gap-2">
-                        <!-- 詳細 -->
-                        <a href="{{ route('admin.quizzes.show', $quiz->id) }}">詳細</a>
-                        <!-- 編集 -->
-                        <a href="{{ route('admin.quizzes.edit', $quiz->id) }}" class="text-blue-600">編集</a>
-                        <!-- 問題一覧 -->
-                        <a href="{{ route('admin.quizzes.quiz_questions.index', $quiz->id) }}" class="text-green-600">問題一覧</a>
-                        <!-- 受験 / プレイ -->
-                        <a href="{{ route('admin.quizzes.play', $quiz->id) }}" class="text-purple-600">受験</a>
-                        <!-- 回答結果を見る -->
-                        @if ($quiz->course_id)
-                        <a href="{{ route('admin.courses.results', $quiz->course_id) }}" class="text-blue-600 underline">
-                            回答結果を見る
-                        </a>
-                        @else
-                        <span class="text-gray-500">コース未設定</span>
-                        @endif
-                        <!-- 削除ボタン -->
-                        <button type="button" onclick="openModal({{ $quiz->id }})" class="text-red-600 ml-2">
-                            削除
-                        </button>
+        <!-- 新規作成ボタン -->
+        <div class="flex justify-end mb-4">
+            <a href="{{ route('admin.quizzes.create') }}"
+                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition">
+                新規作成
+            </a>
+        </div>
 
-                        <!-- 削除モーダル -->
-                        <div id="modal-{{ $quiz->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-                            <div class="bg-white rounded-lg p-6 w-80">
-                                <h2 class="text-lg font-bold mb-4">削除確認</h2>
-                                <p class="mb-4">本当にこのクイズを削除しますか？</p>
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="closeModal({{ $quiz->id }})"
-                                        class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">キャンセル</button>
-                                    <form id="delete-form-{{ $quiz->id }}"
-                                        action="{{ route('admin.quizzes.destroy', $quiz->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600">削除</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="overflow-x-auto mt-4">
+            <table class="table-auto border-collapse border w-full text-sm">
+                <thead class="bg-gray-100 text-gray-700">
+                    <tr>
+                        <th class="border px-4 py-2 w-12 text-center">ID</th>
+                        <th class="border px-4 py-2">タイトル</th>
+                        <th class="border px-4 py-2">カテゴリ</th>
+                        <th class="border px-4 py-2 text-center w-24">表示</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($quizzes as $quiz)
+                    <tr class="hover:bg-gray-50">
+                        <td class="border px-4 py-2 text-center">{{ $quiz->id }}</td>
+
+                        <!-- タイトルクリックで詳細 -->
+                        <td class="border px-4 py-2">
+                            <a href="{{ route('admin.quizzes.show', $quiz->id) }}"
+                                class="text-blue-600 hover:underline">
+                                {{ $quiz->title }}
+                            </a>
+                        </td>
+
+                        <td class="border px-4 py-2">
+                            {{ $quiz->category?->name ?? '-' }}
+                        </td>
+
+                        <td class="border px-4 py-2 text-center">
+                            @if ($quiz->is_show)
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                                公開
+                            </span>
+                            @else
+                            <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
+                                非公開
+                            </span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="border px-4 py-2 text-center text-gray-500">
+                            データがありません
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="mt-4">
+            {{ $quizzes->links() }}
+        </div>
+
     </div>
 </div>
-
-<script>
-    function openModal(id) {
-        document.getElementById('modal-' + id).classList.remove('hidden');
-        document.getElementById('modal-' + id).classList.add('flex');
-    }
-
-    function closeModal(id) {
-        document.getElementById('modal-' + id).classList.add('hidden');
-        document.getElementById('modal-' + id).classList.remove('flex');
-    }
-</script>
 @endsection
