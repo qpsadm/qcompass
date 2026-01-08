@@ -112,7 +112,7 @@
                             <li><a class="home" href="{{ route('user.top') }}">ホーム</a></li>
                             <li><a class="news" href="{{ route('user.news.news_list') }}">お知らせ</a></li>
                             <li><a class="agenda" href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
-                            <li><a class="study" href="{{ route('user.question.questions_list') }}">学習支援</a></li>
+                            <li><a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a></li>
                             <ul>
                                 <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}"><a
                                         href="{{ route('user.quizzes.index') }}">クイズ</a></li>
