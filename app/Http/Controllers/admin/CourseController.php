@@ -17,14 +17,11 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('search');
-
-        // ★ ソート情報
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'asc');
 
         $courses = Course::query();
 
-        // --- 検索 ---
         if ($query) {
             $courses->where(function ($q) use ($query) {
                 $q->where('course_code', 'like', "%{$query}%")
@@ -35,25 +32,22 @@ class CourseController extends Controller
             });
         }
 
-        // --- ソート適用（★重要★） ---
         if (in_array($sort, ['id', 'course_code', 'course_name'])) {
             $courses->orderBy($sort, $order);
         } else {
             $courses->orderBy('id', 'asc');
         }
 
-        // --- ページネーション（検索・ソート保持） ---
         $courses = $courses->paginate(20)->appends($request->query());
 
         return view('admin.courses.index', compact('courses'));
     }
 
-
     public function create()
     {
         return view('admin.courses.create', [
             'organizers' => Organizer::all(),
-            'levels'     => Level::all(),
+            'levels' => Level::all(),
             'courseTypes' => CourseType::all(),
         ]);
     }
@@ -92,29 +86,32 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
+        // ファイル保存（元ファイル名＋タイムスタンプ）
         if ($request->hasFile('plan_path')) {
-            $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
+            $file = $request->file('plan_path');
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
+            $validated['plan_path'] = $file->storeAs('plans', $filename, 'public');
         }
+
         if ($request->hasFile('flier_path')) {
-            $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
+            $file = $request->file('flier_path');
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
+            $validated['flier_path'] = $file->storeAs('fliers', $filename, 'public');
         }
 
         $validated['level_id'] = $validated['level_id'] ?? 2;
         $validated['organizer_id'] = $validated['organizer_id'] ?? null;
         $validated['created_user_name'] = Auth::user()->name ?? 'system';
-        $validated['is_show'] = $request->has('is_show') ? (int) $request->is_show : 1;
+        $validated['is_show'] = $request->has('is_show') ? (int)$request->is_show : 1;
 
         $course = Course::create($validated);
 
-        // カテゴリ同期（論理削除対応）
+        // カテゴリ同期
         if ($request->filled('category_ids')) {
             foreach ($request->category_ids as $categoryId) {
                 $existing = $course->categories()->withTrashed()->where('categories.id', $categoryId)->first();
-
                 if ($existing) {
-                    if ($existing->trashed()) {
-                        $existing->restore();
-                    }
+                    if ($existing->trashed()) $existing->restore();
                     $existing->pivot->update([
                         'is_show' => 1,
                         'updated_user_name' => Auth::user()->name,
@@ -143,16 +140,10 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $course = Course::findOrFail($id);
 
         $validated = $request->validate([
-            'course_code' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('courses', 'course_code')->ignore($course->id),
-            ],
+            'course_code' => ['required', 'string', 'max:50', Rule::unique('courses', 'course_code')->ignore($course->id)],
             'course_type_id' => 'required|exists:course_types,id',
             'level_id' => 'nullable|exists:levels,id',
             'organizer_id' => 'nullable|exists:organizers,id',
@@ -183,14 +174,23 @@ class CourseController extends Controller
             'category_ids.*' => 'integer',
         ]);
 
+        // ファイル保存（上書き＆元ファイル名＋タイムスタンプ）
         if ($request->hasFile('plan_path')) {
-            if ($course->plan_path) Storage::disk('public')->delete($course->plan_path);
-            $validated['plan_path'] = $request->file('plan_path')->store('plans', 'public');
+            if ($course->plan_path && Storage::disk('public')->exists($course->plan_path)) {
+                Storage::disk('public')->delete($course->plan_path);
+            }
+            $file = $request->file('plan_path');
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
+            $validated['plan_path'] = $file->storeAs('plans', $filename, 'public');
         }
 
         if ($request->hasFile('flier_path')) {
-            if ($course->flier_path) Storage::disk('public')->delete($course->flier_path);
-            $validated['flier_path'] = $request->file('flier_path')->store('fliers', 'public');
+            if ($course->flier_path && Storage::disk('public')->exists($course->flier_path)) {
+                Storage::disk('public')->delete($course->flier_path);
+            }
+            $file = $request->file('flier_path');
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $file->getClientOriginalName());
+            $validated['flier_path'] = $file->storeAs('fliers', $filename, 'public');
         }
 
         $validated['level_id'] = $validated['level_id'] ?? 2;
@@ -198,15 +198,12 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        // 中間テーブル更新（論理削除対応）
+        // カテゴリ同期
         $categoryIds = $request->input('category_ids', []);
         foreach ($categoryIds as $categoryId) {
             $existing = $course->categories()->withTrashed()->where('categories.id', $categoryId)->first();
-
             if ($existing) {
-                if ($existing->trashed()) {
-                    $existing->restore();
-                }
+                if ($existing->trashed()) $existing->restore();
                 $existing->pivot->update([
                     'is_show' => 1,
                     'updated_user_name' => Auth::user()->name,
@@ -225,16 +222,8 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::findOrFail($id);
-
-        // 一覧と同じ並び順（ID昇順）
         $allCourses = Course::orderBy('id', 'asc')->get();
-
-        // 何件目か（0スタートなので +1）
-        $position = $allCourses->search(function ($item) use ($course) {
-            return $item->id === $course->id;
-        }) + 1;
-
-        // 合計件数
+        $position = $allCourses->search(fn($item) => $item->id === $course->id) + 1;
         $total = $allCourses->count();
 
         return view('admin.courses.show', compact('course', 'position', 'total'));
