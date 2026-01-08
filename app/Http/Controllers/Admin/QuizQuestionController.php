@@ -115,6 +115,4 @@ class QuizQuestionController extends Controller
         return redirect()->route('admin.quizzes.quiz_questions.index', $quiz->id)
             ->with('success', '問題を削除しました');
     }
-
-    // edit/update/destroy も同様に $quiz を親として受け取り処理
 }

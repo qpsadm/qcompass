@@ -22,28 +22,24 @@
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
                         <th class="border px-4 py-2 w-12 text-center">ID</th>
-                        <th class="border px-4 py-2">タイトル</th>
-                        <th class="border px-4 py-2">カテゴリ</th>
-                        <th class="border px-4 py-2 text-center w-24">表示</th>
+                        <th class="border px-4 py-2 w-64">タイトル</th> <!-- 固定幅 -->
+                        <th class="border px-4 py-2 w-48">カテゴリ</th> <!-- 固定幅 -->
+                        <th class="border px-4 py-2 w-16 text-center">レベル</th>
+                        <th class="border px-4 py-2 w-24 text-center">表示</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($quizzes as $quiz)
                     <tr class="hover:bg-gray-50">
                         <td class="border px-4 py-2 text-center">{{ $quiz->id }}</td>
-
-                        <!-- タイトルクリックで詳細 -->
                         <td class="border px-4 py-2">
                             <a href="{{ route('admin.quizzes.show', $quiz->id) }}"
                                 class="text-blue-600 hover:underline">
                                 {{ $quiz->title }}
                             </a>
                         </td>
-
-                        <td class="border px-4 py-2">
-                            {{ $quiz->category?->name ?? '-' }}
-                        </td>
-
+                        <td class="border px-4 py-2">{{ $quiz->category?->name ?? '-' }}</td>
+                        <td class="border px-4 py-2 text-center">{{ $quiz->level ?? '-' }}</td>
                         <td class="border px-4 py-2 text-center">
                             @if ($quiz->is_show)
                             <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
@@ -58,13 +54,14 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="border px-4 py-2 text-center text-gray-500">
+                        <td colspan="5" class="border px-4 py-2 text-center text-gray-500">
                             データがありません
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
+
         </div>
 
         <!-- ページネーション -->
