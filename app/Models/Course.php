@@ -138,22 +138,39 @@ class Course extends Model
     // ---------------- ログイン判定 ----------------
     public function isLoginable(): bool
     {
-        if (!$this->is_show || $this->deleted_at !== null) {
+        $now = Carbon::now();
+
+        /*
+    |--------------------------------------------------------------------------
+    | 1. 開始前はログイン不可
+    |--------------------------------------------------------------------------
+    */
+        if ($this->start_date && $now->lt(Carbon::parse($this->start_date))) {
             return false;
         }
 
-        // 終了・不明の状態は不可
-        if ($this->status === self::STATUS_ARCHIVED) {
+        /*
+    |--------------------------------------------------------------------------
+    | 2. 終了日＋1か月まではログイン可
+    |--------------------------------------------------------------------------
+    */
+        if ($this->end_date) {
+            $graceEnd = Carbon::parse($this->end_date)->addMonth();
+
+            if ($now->lte($graceEnd)) {
+                return true;
+            }
+
+            // 猶予期間も過ぎたら不可
             return false;
         }
 
-        // 終了日なし → OK
-        if ($this->end_date === null) {
-            return true;
-        }
-
-        // 終了後1か月以内
-        return now()->lte(Carbon::parse($this->end_date)->addMonth()->endOfDay());
+        /*
+    |--------------------------------------------------------------------------
+    | 3. 終了日未設定 → 通常ログイン可
+    |--------------------------------------------------------------------------
+    */
+        return true;
     }
 
 
