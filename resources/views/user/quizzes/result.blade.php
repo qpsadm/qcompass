@@ -7,63 +7,74 @@
 @endsection
 
 @section('main-content')
-<div class="container">
+    <div class="container">
 
-    <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}] 結果" />
+        <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}] 結果" />
 
-    <p class="mb-4">
-        合計得点: {{ $totalScore }}<br>
-        総問題数: {{ $totalQuestions }}<br>
-        合格判定: {{ $passFail }}
-    </p>
+        <div class="result">
+            <div>
+                <div class="point">
+                    <p>合計得点</p>
+                    <span>{{ $totalScore }}</span>
+                    <p>点</p>
+                </div>
+                <div class="count">
+                    <p>全{{ $totalQuestions }}問中</p>
+                    <span>{{ $passingScore }}</span>
+                    <p>問正解！</p>
+                </div>
+            </div>
+            <p class="hantei {{ $passFail == '合格' ? 'active' : '' }}">{{ $passFail }}</p>
+        </div>
 
-    @foreach($results as $res)
-    <div class="mb-4 p-4 border rounded">
-        {{-- 問題文 --}}
-        <p class="font-semibold mb-2">
-            {{ $loop->iteration }}. {{ $res['question']->question_text }}
-        </p>
+        <table class="result-table">
+            <tr>
+                <th class="table-number">No</th>
+                <th class="table-question">問題文</th>
+                <th class="table-select">選択肢</th>
+                <th class="table-seikai">あなたの回答</th>
+                <th class="table-hantei">判定</th>
+            </tr>
+            @foreach ($results as $res)
+                <tr>
+                    <td class="table-number">{{ $loop->iteration }}</td>
+                    <td class="table-question">{{ $res['question']->question_text }}</td>
+                    <td class="table-select">
+                        <ul>
+                            @foreach ($res['question']->choices as $choice)
+                                <li>{{ $choice->choice_text }}</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    <td class="table-seikai">
+                        @php
+                            // [choice_id => choice_text] の対応表を作る
+                            $choiceMap = $res['question']->choices->pluck('choice_text', 'id');
+                        @endphp
 
-        {{-- 選択肢一覧 --}}
-        <p class="font-medium">選択肢:</p>
-        <ul class="list-disc pl-5 mb-2">
-            @foreach($res['question']->choices as $choice)
-            <li>{{ $choice->choice_text }}</li>
+                        @if (is_array($res['userAnswer']))
+                            {{ collect($res['userAnswer'])->map(fn($id) => $choiceMap[$id] ?? '不明')->implode(', ') }}
+                        @else
+                            {{ $choiceMap[$res['userAnswer']] ?? $res['userAnswer'] }}
+                        @endif
+                    </td>
+                    <td class="table-hantei">
+                        @if ($res['isCorrect'] === null)
+                            <p class="text-gray-500">記述式のため採点なし</p>
+                        @elseif($res['isCorrect'])
+                            <p class="text-green-600 font-bold">正解</p>
+                        @else
+                            <p class="text-red-600 font-bold">不正解</p>
+                        @endif
+                    </td>
+                </tr>
             @endforeach
-        </ul>
+        </table>
 
-        <p>
-            あなたの回答:
-            @php
-            // [choice_id => choice_text] の対応表を作る
-            $choiceMap = $res['question']->choices->pluck('choice_text', 'id');
-            @endphp
+        <a href="{{ route('user.quizzes.index') }}" class="back-btn result-back">
+            一覧へもどる
+        </a>
 
-            @if (is_array($res['userAnswer']))
-            {{ collect($res['userAnswer'])
-                    ->map(fn($id) => $choiceMap[$id] ?? '不明')
-                    ->implode(', ') }}
-            @else
-            {{ $choiceMap[$res['userAnswer']] ?? $res['userAnswer'] }}
-            @endif
-        </p>
-
-        {{-- 正解・不正解表示 --}}
-        @if($res['isCorrect'] === null)
-        <p class="text-gray-500">記述式のため採点なし</p>
-        @elseif($res['isCorrect'])
-        <p class="text-green-600 font-bold">正解</p>
-        @else
-        <p class="text-red-600 font-bold">不正解</p>
-        @endif
+        <x-f_bread_crumbs />
     </div>
-    @endforeach
-
-    <a href="{{ route('user.quizzes.index') }}"
-        class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-        ← クイズ一覧に戻る
-    </a>
-
-    <x-f_bread_crumbs />
-</div>
 @endsection
