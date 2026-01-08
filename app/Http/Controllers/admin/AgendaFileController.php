@@ -11,20 +11,25 @@ use Illuminate\Support\Facades\Storage;
 
 class AgendaFileController extends Controller
 {
-    public function index(string $type, $targetId = null)
+    public function index($type, $targetId = null)
     {
-        $query = AgendaFile::query();
-
-        if ($type === 'agenda') $query->where('target_type', Agenda::class);
-        elseif ($type === 'announcement') $query->where('target_type', Announcement::class);
-        elseif ($type !== 'all') abort(404);
-
-        if ($targetId) $query->where('target_id', $targetId);
-
-        $files = $query->orderByDesc('created_at')->get();
+        if ($targetId) {
+            $files = AgendaFile::where('target_type', $this->getTargetClass($type))
+                ->where('target_id', $targetId)
+                ->get();
+        } else {
+            // 全件表示
+            $files = AgendaFile::where('target_type', $this->getTargetClass($type))->get();
+        }
 
         return view('admin.files.index', compact('files', 'type', 'targetId'));
     }
+
+    private function getTargetClass($type)
+    {
+        return $type === 'agenda' ? \App\Models\Agenda::class : \App\Models\Announcement::class;
+    }
+
 
     public function create(string $type, $targetId = null)
     {

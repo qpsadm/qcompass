@@ -163,7 +163,7 @@ Route::middleware([
         )->name('courses.agendas');
 
         Route::prefix('files')->name('files.')->group(function () {
-            Route::get('{type}/{targetId}', [AgendaFileController::class, 'index'])->name('index');
+            Route::get('{type}/{targetId?}', [AgendaFileController::class, 'index'])->name('index'); // targetId optional
             Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])->name('create');
             Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])->name('store');
             Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])->name('preview');
