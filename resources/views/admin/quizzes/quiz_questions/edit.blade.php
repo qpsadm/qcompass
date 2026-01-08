@@ -50,7 +50,7 @@
         </form>
 
         {{-- 一覧に戻る --}}
-        <a href="{{ route('admin.quizzes.quiz_questions.index', $quizQuestion->quiz->id) }}"
+        <a href="{{ route('admin.quizzes.show', $quizQuestion->quiz->id) }}"
             class="text-blue-500 hover:underline inline-block mt-2">
             ← 問題一覧に戻る
         </a>

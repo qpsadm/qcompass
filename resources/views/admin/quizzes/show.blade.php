@@ -2,12 +2,21 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-
     <h1 class="text-2xl font-bold mb-4">クイズ詳細：{{ $quiz->title }}</h1>
+
+    {{-- クイズ編集ボタン --}}
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('admin.quizzes.edit', $quiz->id) }}"
+            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            クイズを編集
+        </a>
+    </div>
 
     {{-- クイズ情報 --}}
     <div class="bg-white p-4 rounded shadow mb-6">
         <p><strong>コード：</strong> {{ $quiz->code }}</p>
+        <p><strong>カテゴリ：</strong> {{ $quiz->category?->name ?? '未設定' }}</p>
+        <p><strong>レベル：</strong> {{ $quiz->level ?? '未設定' }}</p>
         <p><strong>満点（自動計算）：</strong> {{ $quiz->total_score }} 点</p>
         <p><strong>合格点：</strong>
             {{ $quiz->total_score ? ceil($quiz->total_score * 0.7) : 0 }} 点

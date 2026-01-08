@@ -16,10 +16,15 @@ class QuizController extends Controller
     // -------------------------
     public function index()
     {
-        // ページネーションで10件ずつ取得
-        $quizzes = Quiz::with('category')->orderBy('id', 'desc')->paginate(10);
+        // questionsの件数も取得
+        $quizzes = Quiz::with('category')
+            ->withCount('questions') // ここで問題数を取得
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
         return view('admin.quizzes.index', compact('quizzes'));
     }
+
 
 
     // -------------------------
@@ -96,8 +101,11 @@ class QuizController extends Controller
             'is_show' => $validated['is_show'] ?? 1,
         ]);
 
-        return redirect()->back()->with('success', '更新完了');
+        // ★ここを変更
+        return redirect()->route('admin.quizzes.show', $quiz->id)
+            ->with('success', 'クイズを更新しました');
     }
+
 
     // -------------------------
     // 削除（ソフトデリート）
