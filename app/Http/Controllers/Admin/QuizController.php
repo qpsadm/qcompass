@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\QuizAttempt;
-use App\Models\QuizAnswer;
-use App\Models\QuizQuestionChoice;
 use App\Models\Quiz;
-use App\Models\Course;
+use App\Models\Category; // カテゴリモデル
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
+    // -------------------------
+    // 一覧
+    // -------------------------
     public function index()
     {
         $quizzes = Quiz::all();
@@ -21,27 +21,39 @@ class QuizController extends Controller
         return view('admin.quizzes.index', compact('quizzes', 'types'));
     }
 
+    // -------------------------
+    // 作成フォーム
+    // -------------------------
     public function create()
     {
-        $courses = Course::all();
-        $quiz = new Quiz();;
-        return view('admin.quizzes.create', compact('quiz', 'courses'));
+        $categories = Category::all();
+        $quiz = new Quiz();
+        return view('admin.quizzes.create', compact('quiz', 'categories'));
     }
 
+    // -------------------------
+    // 作成処理
+    // -------------------------
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string',
-            'course_id' => 'nullable|integer|exists:courses,id',
-            'type' => 'required|integer'
+            'category_id' => 'nullable|integer|exists:categories,id',
+            'level' => 'nullable|integer|min:1|max:5',
+            'type' => 'required|integer',
+            'status' => 'nullable|integer',
+            'is_show' => 'nullable|boolean',
         ]);
 
         $quiz = Quiz::create([
             'title' => $validated['title'],
             'code' => 'Q-' . strtoupper(Str::random(6)),
             'description' => $request->input('description'),
-            'course_id' => $validated['course_id'] ?? null,
+            'category_id' => $validated['category_id'] ?? null,
+            'level' => $validated['level'] ?? null,
             'type' => $validated['type'],
+            'status' => $validated['status'] ?? 2,
+            'is_show' => $validated['is_show'] ?? 1,
             'created_by' => Auth::id()
         ]);
 
@@ -49,56 +61,74 @@ class QuizController extends Controller
             ->with('success', 'クイズ作成完了');
     }
 
+    // -------------------------
+    // 編集フォーム
+    // -------------------------
     public function edit(Quiz $quiz)
     {
-        $courses = Course::all();
+        $categories = Category::all();
         $questions = $quiz->questions()->with('choices')->get();
-        return view('admin.quizzes.edit', compact('quiz', 'courses', 'questions'));
+        return view('admin.quizzes.edit', compact('quiz', 'categories', 'questions'));
     }
 
+    // -------------------------
+    // 更新処理
+    // -------------------------
     public function update(Request $request, Quiz $quiz)
     {
         $validated = $request->validate([
             'title' => 'required|string',
-            'course_id' => 'nullable|integer|exists:courses,id',
-            'type' => 'required|integer'
+            'category_id' => 'nullable|integer|exists:categories,id',
+            'level' => 'nullable|integer|min:1|max:5',
+            'type' => 'required|integer',
+            'status' => 'nullable|integer',
+            'is_show' => 'nullable|boolean',
         ]);
 
         $quiz->update([
             'title' => $validated['title'],
             'description' => $request->input('description'),
-            'course_id' => $validated['course_id'] ?? null,
-            'type' => $validated['type']
+            'category_id' => $validated['category_id'] ?? null,
+            'level' => $validated['level'] ?? null,
+            'type' => $validated['type'],
+            'status' => $validated['status'] ?? 2,
+            'is_show' => $validated['is_show'] ?? 1,
         ]);
 
         return redirect()->back()->with('success', '更新完了');
     }
 
+    // -------------------------
+    // 削除（ソフトデリート）
+    // -------------------------
     public function destroy(Quiz $quiz)
     {
-        $quiz->delete(); // 物理削除ではなくソフトデリート
+        $quiz->delete();
         return redirect()->route('admin.quizzes.index')->with('success', '削除完了');
     }
-    // GET: クイズプレイ画面
+
+    // -------------------------
+    // クイズプレイ画面
+    // -------------------------
     public function play(Quiz $quiz)
     {
         $questions = $quiz->questions()->with('choices')->get();
         return view('admin.quizzes.play', compact('quiz', 'questions'));
     }
 
+    // -------------------------
+    // プレイ結果送信
+    // -------------------------
     public function submitPlay(Request $request, Quiz $quiz)
     {
-        $userAnswers = $request->input('answers', []); // [question_id => choice_id]
-
+        $userAnswers = $request->input('answers', []);
         $questions = $quiz->questions()->with('choices')->get();
-
         $results = [];
         $totalScore = 0;
 
         foreach ($questions as $question) {
             $selectedChoiceId = $userAnswers[$question->id] ?? null;
             $correctChoice = $question->choices->firstWhere('is_correct', 1);
-
             $isCorrect = $correctChoice && $selectedChoiceId && ((int)$selectedChoiceId === (int)$correctChoice->id);
 
             if ($isCorrect) {
@@ -117,7 +147,6 @@ class QuizController extends Controller
         $passingScore = $quiz->passing_score ?? 70;
         $passFail = ($totalScore >= $passingScore) ? '合格' : '不合格';
 
-        // 保存しないので attempt は null のままでもOK
         return view('admin.quizzes.result', compact(
             'quiz',
             'results',
@@ -128,10 +157,12 @@ class QuizController extends Controller
         ));
     }
 
+    // -------------------------
+    // 結果確認（attempt版）
+    // -------------------------
     public function result($attemptId)
     {
         $attempt = QuizAttempt::with(['quiz.questions.choices', 'answers', 'user'])->findOrFail($attemptId);
-
         $quiz = $attempt->quiz;
         $questions = $quiz->questions;
 
@@ -141,15 +172,13 @@ class QuizController extends Controller
         foreach ($questions as $question) {
             $userAnswer = $attempt->answers->firstWhere('question_id', $question->id);
             $selectedChoiceId = $userAnswer ? $userAnswer->choice_id : null;
-
             $correctChoice = $question->choices->firstWhere('is_correct', 1);
-            $isCorrect = false;
 
-            if ($correctChoice && $selectedChoiceId !== null) {
-                $isCorrect = ((int)$correctChoice->id === (int)$selectedChoiceId);
-                if ($isCorrect) {
-                    $totalCorrect += $question->score ?? 1;
-                }
+            $isCorrect = $correctChoice && $selectedChoiceId !== null &&
+                ((int)$correctChoice->id === (int)$selectedChoiceId);
+
+            if ($isCorrect) {
+                $totalCorrect += $question->score ?? 1;
             }
 
             $results[] = [
@@ -162,8 +191,6 @@ class QuizController extends Controller
         $totalScore = $questions->sum('score');
         $passingScore = $quiz->passing_score ?? 70;
         $passFail = ($totalCorrect >= $passingScore) ? '合格' : '不合格';
-
-        // ← ここで totalQuestions を追加
         $totalQuestions = $questions->count();
 
         return view('admin.quizzes.result', compact(
@@ -173,19 +200,16 @@ class QuizController extends Controller
             'totalScore',
             'passingScore',
             'passFail',
-            'totalQuestions' // 追加
+            'totalQuestions'
         ));
     }
 
-
-
+    // -------------------------
+    // 詳細表示
+    // -------------------------
     public function show($id)
     {
-        $quiz = Quiz::with([
-            'questions.choices'
-        ])->findOrFail($id);
-
-        // total_score を自動計算して更新
+        $quiz = Quiz::with(['questions.choices'])->findOrFail($id);
         $autoScore = $quiz->questions->sum('score');
 
         if ($quiz->total_score !== $autoScore) {

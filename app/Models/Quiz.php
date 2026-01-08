@@ -14,8 +14,6 @@ class Quiz extends Model
         'code',
         'title',
         'description',
-        'course_id',
-        'target_id',
         'type',
         'time_limit',
         'total_score',
@@ -24,6 +22,8 @@ class Quiz extends Model
         'active_from',
         'active_to',
         'created_by',
+        'category_id', // ←追加
+        'level',       // ←追加
     ];
 
     protected $casts = [
@@ -40,16 +40,17 @@ class Quiz extends Model
      */
     public function questions()
     {
-        return $this->hasMany(
-            QuizQuestion::class,
-            'quiz_id',
-            'id'
-        );
+        return $this->hasMany(QuizQuestion::class, 'quiz_id', 'id');
     }
 
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     protected static function booted()

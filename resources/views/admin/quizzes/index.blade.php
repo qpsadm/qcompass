@@ -14,6 +14,8 @@
                 <tr>
                     <th class="border px-2 py-1">ID</th>
                     <th class="border px-2 py-1">タイトル</th>
+                    <th class="border px-2 py-1">カテゴリ</th>
+                    <th class="border px-2 py-1">レベル</th>
                     <th class="border px-2 py-1">種類</th>
                     <th class="border px-2 py-1">操作</th>
                 </tr>
@@ -23,26 +25,24 @@
                 <tr>
                     <td class="border px-2 py-1">{{ $quiz->id }}</td>
                     <td class="border px-2 py-1">{{ $quiz->title }}</td>
+                    <td class="border px-2 py-1">
+                        {{ $quiz->category?->name ?? '未設定' }}
+                        {{ $quiz->category?->code ? '(' . $quiz->category->code . ')' : '' }}
+                    </td>
+                    <td class="border px-2 py-1">{{ $quiz->level ?? '未設定' }}</td>
                     <td class="border px-2 py-1">{{ $types[$quiz->type] ?? '不明' }}</td>
                     <td class="border px-2 py-1 flex flex-wrap gap-2">
-
                         <!-- 詳細 -->
-                        <a href="{{ route('admin.quizzes.show', $quiz->id) }}">
-                            詳細
-                        </a>
+                        <a href="{{ route('admin.quizzes.show', $quiz->id) }}">詳細</a>
                         <!-- 編集 -->
                         <a href="{{ route('admin.quizzes.edit', $quiz->id) }}" class="text-blue-600">編集</a>
-
                         <!-- 問題一覧 -->
                         <a href="{{ route('admin.quizzes.quiz_questions.index', $quiz->id) }}" class="text-green-600">問題一覧</a>
-
                         <!-- 受験 / プレイ -->
                         <a href="{{ route('admin.quizzes.play', $quiz->id) }}" class="text-purple-600">受験</a>
-
                         <!-- 回答結果を見る -->
                         @if ($quiz->course_id)
-                        <a href="{{ route('admin.courses.results', $quiz->course_id) }}"
-                            class="text-blue-600 underline">
+                        <a href="{{ route('admin.courses.results', $quiz->course_id) }}" class="text-blue-600 underline">
                             回答結果を見る
                         </a>
                         @else
@@ -54,8 +54,7 @@
                         </button>
 
                         <!-- 削除モーダル -->
-                        <div id="modal-{{ $quiz->id }}"
-                            class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                        <div id="modal-{{ $quiz->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
                             <div class="bg-white rounded-lg p-6 w-80">
                                 <h2 class="text-lg font-bold mb-4">削除確認</h2>
                                 <p class="mb-4">本当にこのクイズを削除しますか？</p>

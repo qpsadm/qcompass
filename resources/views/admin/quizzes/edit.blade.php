@@ -6,11 +6,11 @@
 
     <div class="mb-6 flex gap-3">
         <a href="{{ route('admin.quizzes.quiz_questions.create', $quiz->id) }}"
-           class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
             新しい問題を追加
         </a>
         <a href="{{ route('admin.quizzes.quiz_questions.index', $quiz->id) }}"
-           class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
             問題一覧
         </a>
     </div>
@@ -29,24 +29,34 @@
                     </th>
                     <td class="px-4 py-2">
                         <input type="text" name="title" value="{{ old('title', $quiz->title) }}"
-                               class="border rounded px-3 py-2 w-64" required>
+                            class="border rounded px-3 py-2 w-64" required>
                         @error('title') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
-                {{-- コース選択 --}}
+                {{-- カテゴリ --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">コース選択</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">カテゴリ選択</th>
                     <td class="px-4 py-2">
-                        <select name="course_id" class="border rounded px-3 py-2 w-64">
+                        <select name="category_id" class="border rounded px-3 py-2 w-64" required>
                             <option value="">選択してください</option>
-                            @foreach ($courses as $course)
-                                <option value="{{ $course->id }}" @selected(old('course_id', $quiz->course_id) == $course->id)>
-                                    {{ $course->course_name }} ({{ $course->course_code ?? '' }})
-                                </option>
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" @selected(old('category_id', $quiz->category_id) == $category->id)>
+                                {{ $category->name }} {{ $category->code ? '(' . $category->code . ')' : '' }}
+                            </option>
                             @endforeach
                         </select>
-                        @error('course_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        @error('category_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                    </td>
+                </tr>
+
+                {{-- レベル --}}
+                <tr class="border-b">
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">レベル</th>
+                    <td class="px-4 py-2">
+                        <input type="number" name="level" value="{{ old('level', $quiz->level) }}"
+                            class="border rounded px-3 py-2 w-32" min="1" max="10">
+                        @error('level') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                     </td>
                 </tr>
 
@@ -71,7 +81,7 @@
                 保存する
             </button>
             <a href="{{ route('admin.quizzes.index') }}"
-               class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition">
+                class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition">
                 一覧に戻る
             </a>
         </div>
