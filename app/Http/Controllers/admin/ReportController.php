@@ -45,30 +45,71 @@ class ReportController extends Controller
     // 一覧
     public function index(Request $request)
     {
-        $query = \App\Models\Report::query();
+        $query = Report::query();
 
-        // ユーザー名・講座名・タイトル検索
+        /*
+    |--------------------------------------------------------------------------
+    | 検索
+    |--------------------------------------------------------------------------
+    */
         if ($search = $request->input('search')) {
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
-            })->orWhereHas('course', function ($q) use ($search) {
-                $q->where('course_name', 'like', "%{$search}%");
-            })->orWhere('title', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($uq) use ($search) {
+                    $uq->where('name', 'like', "%{$search}%");
+                })
+                    ->orWhereHas('course', function ($cq) use ($search) {
+                        $cq->where('course_name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('title', 'like', "%{$search}%");
+            });
         }
 
-        // 日付範囲検索
+        /*
+    |--------------------------------------------------------------------------
+    | 日付範囲検索
+    |--------------------------------------------------------------------------
+    */
         if ($from = $request->input('from_date')) {
-            $query->where('date', '>=', $from);
+            $query->whereDate('date', '>=', $from);
         }
+
         if ($to = $request->input('to_date')) {
-            $query->where('date', '<=', $to);
+            $query->whereDate('date', '<=', $to);
         }
 
-        $reports = $query->with(['user', 'course'])
-            ->orderBy('date', 'desc')
-            ->paginate(20);
+        /*
+    |--------------------------------------------------------------------------
+    | ソート処理
+    |--------------------------------------------------------------------------
+    */
+        $sort = $request->input('sort', 'date');
+        $direction = $request->input('direction', 'desc');
 
-        return view('admin.reports.index', compact('reports'));
+        // 許可するソートカラム
+        $sortable = [
+            'date',
+            'created_at',
+            'user_id',
+            'course_id',
+            'title',
+        ];
+
+        if (!in_array($sort, $sortable)) {
+            $sort = 'date';
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | データ取得
+    |--------------------------------------------------------------------------
+    */
+        $reports = $query
+            ->with(['user', 'course'])
+            ->orderBy($sort, $direction)
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('admin.reports.index', compact('reports', 'sort', 'direction'));
     }
 
 
