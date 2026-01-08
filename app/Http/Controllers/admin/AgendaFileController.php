@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class AgendaFileController extends Controller
 {
     /**
-     * ファイル一覧（共通）
+     * ファイル一覧
      */
     public function index(string $type, $targetId = null)
     {
@@ -22,15 +22,11 @@ class AgendaFileController extends Controller
             case 'agenda':
                 $query->where('target_type', Agenda::class);
                 break;
-
             case 'announcement':
                 $query->where('target_type', Announcement::class);
                 break;
-
             case 'all':
-                // 制限なし
                 break;
-
             default:
                 abort(404);
         }
@@ -49,15 +45,21 @@ class AgendaFileController extends Controller
      */
     public function create(string $type, $targetId = null)
     {
-        match ($type) {
-            'agenda' => $targets = Agenda::all(),
-            'announcement' => $targets = Announcement::all(),
+        $targets = match ($type) {
+            'agenda' => Agenda::all(),
+            'announcement' => Announcement::all(),
             default => abort(404),
         };
 
         $target = $targetId ? $targets->firstWhere('id', $targetId) : null;
+        $returnUrl = request('return'); // ★ 戻り先
 
-        return view('admin.files.create', compact('type', 'targets', 'target'));
+        return view('admin.files.create', compact(
+            'type',
+            'targets',
+            'target',
+            'returnUrl'
+        ));
     }
 
     /**
@@ -71,12 +73,13 @@ class AgendaFileController extends Controller
             'file_path'   => 'required|file',
             'file_name'   => 'required|string',
             'description' => 'nullable|string',
+            'return_url'  => 'nullable|string',
         ]);
 
         $file = $request->file('file_path');
-        $extension = $file->getClientOriginalExtension();
-        $baseName = pathinfo($validated['file_name'], PATHINFO_FILENAME);
-        $filename = $baseName . '.' . $extension;
+        $ext = $file->getClientOriginalExtension();
+        $base = pathinfo($validated['file_name'], PATHINFO_FILENAME);
+        $filename = $base . '.' . $ext;
 
         $path = $file->storeAs('files', $filename, 'public');
 
@@ -92,6 +95,12 @@ class AgendaFileController extends Controller
             'description' => $validated['description'],
         ]);
 
+        // ★ 戻り先があれば最優先
+        if ($request->filled('return_url')) {
+            return redirect($request->return_url)
+                ->with('success', 'ファイルを保存しました');
+        }
+
         return redirect()->route('admin.files.index', [
             'type' => $validated['target_type'],
             'targetId' => $validated['target_id'],
@@ -99,7 +108,7 @@ class AgendaFileController extends Controller
     }
 
     /**
-     * 編集フォーム
+     * 編集
      */
     public function edit(string $type, int $id)
     {
@@ -111,7 +120,14 @@ class AgendaFileController extends Controller
             default => abort(404),
         };
 
-        return view('admin.files.edit', compact('file', 'type', 'targets'));
+        $returnUrl = request('return');
+
+        return view('admin.files.edit', compact(
+            'file',
+            'type',
+            'targets',
+            'returnUrl'
+        ));
     }
 
     /**
@@ -127,6 +143,7 @@ class AgendaFileController extends Controller
             'description' => 'nullable|string',
             'target_id'   => 'required|integer',
             'target_type' => 'required|in:agenda,announcement',
+            'return_url'  => 'nullable|string',
         ]);
 
         if ($request->hasFile('file_path')) {
@@ -152,8 +169,12 @@ class AgendaFileController extends Controller
             ? Agenda::class
             : Announcement::class;
         $file->description = $validated['description'];
-
         $file->save();
+
+        if ($request->filled('return_url')) {
+            return redirect($request->return_url)
+                ->with('success', 'ファイルを更新しました');
+        }
 
         return redirect()->route('admin.files.index', [
             'type' => $validated['target_type'],
@@ -164,7 +185,7 @@ class AgendaFileController extends Controller
     /**
      * 削除
      */
-    public function destroy(string $type, int $id)
+    public function destroy(Request $request, string $type, int $id)
     {
         $file = AgendaFile::findOrFail($id);
 
@@ -176,6 +197,11 @@ class AgendaFileController extends Controller
             : 'announcement';
 
         $file->delete();
+
+        if ($request->filled('return_url')) {
+            return redirect($request->return_url)
+                ->with('success', 'ファイルを削除しました');
+        }
 
         return redirect()->route('admin.files.index', [
             'type' => $redirectType,

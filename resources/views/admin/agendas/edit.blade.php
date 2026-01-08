@@ -127,12 +127,14 @@
                 </table>
             </div>
             @endif
-
-
-
-
-
-
+            <a href="{{ route('admin.files.create', [
+    'type' => 'agenda',
+    'targetId' => $agenda->id,
+    'return' => route('admin.agendas.edit', $agenda->id),
+]) }}"
+                class="bg-blue-500 text-white px-4 py-2 rounded">
+                ファイル追加
+            </a>
 
             <div class="flex gap-2 mt-4">
                 <!-- 更新ボタン -->
