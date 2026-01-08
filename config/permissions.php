@@ -95,7 +95,7 @@ return [
                         'type' => 'agenda',
                         'targetId' => 0,
                     ],
-                    'roles' => [5, 6, 7, 8], // ← ここがないと表示されない
+                    'roles' => [5, 6, 7, 8],
                 ],
             ],
         ],
@@ -115,7 +115,7 @@ return [
                     'label' => 'お知らせ・ファイル一覧',
                     'route' => 'admin.files.index',
                     'params' => ['type' => 'announcement', 'targetId' => 0],
-                    'roles' => [6, 7, 8],
+                    'roles' => [5, 6, 7, 8],
                 ],
             ],
         ],
