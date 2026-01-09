@@ -16,6 +16,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/f_common.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+
+    {{-- <style>
+        .random_arrange {
+            opacity: 0.3;
+            filter: brightness(0) saturate(100%) invert(89%) sepia(100%) saturate(0%) hue-rotate(181deg) brightness(110%) contrast(97%);
+        }
+    </style> --}}
 </head>
 
 <body>
