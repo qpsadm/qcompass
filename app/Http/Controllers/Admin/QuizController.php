@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\Category; // カテゴリモデル
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\Course;
 
 class QuizController extends Controller
 {
@@ -73,8 +74,10 @@ class QuizController extends Controller
     public function edit(Quiz $quiz)
     {
         $categories = Category::all();
-        $questions = $quiz->questions()->with('choices')->get();
-        return view('admin.quizzes.edit', compact('quiz', 'categories', 'questions'));
+        $courses    = Course::all(); // ここを追加
+        $questions  = $quiz->questions()->with('choices')->get();
+
+        return view('admin.quizzes.edit', compact('quiz', 'categories', 'courses', 'questions'));
     }
 
     // -------------------------
