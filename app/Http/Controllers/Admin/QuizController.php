@@ -13,18 +13,36 @@ use App\Models\Course;
 class QuizController extends Controller
 {
     // -------------------------
-    // 一覧
+    // 一覧（ソート対応）
     // -------------------------
-    public function index()
+    public function index(Request $request)
     {
-        // questionsの件数も取得
-        $quizzes = Quiz::with('category')
-            ->withCount('questions') // ここで問題数を取得
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'desc');
 
-        return view('admin.quizzes.index', compact('quizzes'));
+        // 許可するソートカラム（安全対策）
+        $allowedSorts = ['id', 'title'];
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        $quizzes = Quiz::with('category')
+            ->withCount('questions')
+            ->orderBy($sort, $direction)
+            ->paginate(10)
+            ->appends([
+                'sort' => $sort,
+                'direction' => $direction,
+            ]);
+
+        return view('admin.quizzes.index', compact(
+            'quizzes',
+            'sort',
+            'direction'
+        ));
     }
+
 
 
 
@@ -64,7 +82,7 @@ class QuizController extends Controller
             'created_by' => Auth::id()
         ]);
 
-        return redirect()->route('admin.quizzes.edit', $quiz->id)
+        return redirect()->route('admin.quizzes.show', $quiz->id)
             ->with('success', 'クイズ作成完了');
     }
 

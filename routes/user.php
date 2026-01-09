@@ -197,14 +197,27 @@ Route::middleware(['auth', 'no-cache'])
         Route::view('/rule', 'user.rule')->name('rule');
 
         /*
-        |--------------------------------------------------------------------------
-        | Quiz
-        |--------------------------------------------------------------------------
-        */
+|--------------------------------------------------------------------------
+| Quiz（講座 → カテゴリ → クイズ）
+|--------------------------------------------------------------------------
+*/
         Route::prefix('quizzes')->name('quizzes.')->group(function () {
-            Route::get('/', [UserQuizController::class, 'index'])->name('index');
-            Route::get('/{quiz}', [UserQuizController::class, 'show'])->name('show');
-            Route::post('/{quiz}/submit', [UserQuizController::class, 'submit'])->name('submit');
-            Route::get('/{quiz}/result', [UserQuizController::class, 'result'])->name('result');
+            Route::get('/', [UserQuizController::class, 'index'])
+                ->name('index');
+
+            // クイズ表示
+            Route::get('/{quiz}', [UserQuizController::class, 'show'])
+                ->whereNumber('quiz')
+                ->name('show');
+
+            // 回答送信
+            Route::post('/{quiz}/submit', [UserQuizController::class, 'submit'])
+                ->whereNumber('quiz')
+                ->name('submit');
+
+            // 結果表示（DB保存なし）
+            Route::get('/{quiz}/result', [UserQuizController::class, 'result'])
+                ->whereNumber('quiz')
+                ->name('result');
         });
     });

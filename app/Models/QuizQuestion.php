@@ -28,6 +28,23 @@ class QuizQuestion extends Model
     {
         return $this->hasMany(QuizQuestionChoice::class, 'quiz_question_id', 'id');
     }
+    /**
+     * 回答が正解かどうか判定
+     */
+    public function isCorrect($answer): bool
+    {
+        // 正解選択肢を取得
+        $correctChoice = $this->choices
+            ->where('is_correct', 1)
+            ->first();
+
+        if (!$correctChoice) {
+            return false;
+        }
+
+        // 単一選択（radio / select）
+        return (string) $correctChoice->id === (string) $answer;
+    }
 
     protected static function booted()
     {

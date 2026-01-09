@@ -57,4 +57,13 @@ class Category extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    /**
+     * このカテゴリに属するクイズ
+     */
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+        // quizzes.category_id → categories.id
+    }
 }

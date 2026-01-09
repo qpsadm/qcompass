@@ -3,27 +3,78 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\CourseCategory;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    // クイズ一覧
+    /**
+     * クイズ一覧（カテゴリ有無 両対応）
+     */
     public function index()
     {
-        $courseId = (int) session('course_id'); // 型を int に揃える
-        $quizzes = Quiz::where('course_id', $courseId)
-            ->withCount('questions')
+        $courseId = (int) session('course_id');
+
+        /**
+         * ① 講座に紐づくカテゴリIDを取得（中間テーブル）
+         */
+        $categoryIds = CourseCategory::where('course_id', $courseId)
+            ->where('is_show', 1)
+            ->pluck('category_id');
+
+        /**
+         * ② クイズが1件以上あるカテゴリのみ取得
+         */
+        $categories = Category::whereIn('id', $categoryIds)
+            ->whereHas('quizzes', function ($q) {
+                $q->where('is_show', 1);
+            })
+            ->with([
+                'quizzes' => function ($q) {
+                    $q->where('is_show', 1)
+                        ->withCount('questions')
+                        ->orderBy('id');
+                }
+            ])
+            ->orderBy('order')
             ->get();
 
-        return view('user.quizzes.index', compact('quizzes'));
+        /**
+         * ③ 未分類クイズ
+         */
+        $uncategorizedQuizzes = Quiz::where('course_id', $courseId)
+            ->whereNull('category_id')
+            ->where('is_show', 1)
+            ->withCount('questions')
+            ->orderBy('id')
+            ->get();
+
+        return view('user.quizzes.index', compact(
+            'categories',
+            'uncategorizedQuizzes'
+        ));
     }
 
-    // クイズ詳細・問題表示
+    /**
+     * クイズ表示
+     */
     public function show(Quiz $quiz)
     {
         $courseId = (int) session('course_id');
-        if ($quiz->course_id !== $courseId) abort(404);
+
+        if (!$courseId || $quiz->is_show != 1) {
+            abort(404);
+        }
+
+        $belongsToCourse = CourseCategory::where('course_id', $courseId)
+            ->where('category_id', $quiz->category_id)
+            ->exists();
+
+        if (!$belongsToCourse) {
+            abort(404);
+        }
 
         $questions = $quiz->questions()
             ->with('choices')
@@ -34,58 +85,41 @@ class QuizController extends Controller
         return view('user.quizzes.show', compact('quiz', 'questions'));
     }
 
-    // 回答送信
+
+
+    /**
+     * 回答送信（DB保存なし）
+     */
     public function submit(Request $request, Quiz $quiz)
     {
-        $userAnswers = $request->input('answers', []);
-        $questions = $quiz->questions()->with('choices')->get();
+        $courseId = (int) session('course_id');
 
+        if (!$courseId || $quiz->is_show != 1) {
+            abort(404);
+        }
+
+        $belongsToCourse = CourseCategory::where('course_id', $courseId)
+            ->where('category_id', $quiz->category_id)
+            ->exists();
+
+        if (!$belongsToCourse) {
+            abort(404);
+        }
+
+        $questions = $quiz->questions()
+            ->with('choices')
+            ->where('is_show', 1)
+            ->get();
+
+        $score = 0;
         $results = [];
-        $totalScore = 0;
 
         foreach ($questions as $question) {
-
-            $userAnswer = $userAnswers[$question->id] ?? null;
-            $isCorrect = null;
-
-            // 記述式
-            if ($question->type === 'text') {
-                $isCorrect = null;
-
-                // 単一選択（2択・4択）
-            } elseif (in_array($question->type, ['single_2', 'single_4'])) {
-
-                $correctId = $question->choices
-                    ->where('is_correct', 1)
-                    ->pluck('id')
-                    ->first();
-
-                $isCorrect = ($userAnswer !== null && (int)$userAnswer === (int)$correctId);
-
-                // 複数選択（チェックボックス）
-            } elseif ($question->type === 'multi') {
-
-                // 正解ID配列
-                $correctIds = $question->choices
-                    ->where('is_correct', 1)
-                    ->pluck('id')
-                    ->map(fn($v) => (int)$v)
-                    ->sort()
-                    ->values()
-                    ->toArray();
-
-                // ユーザー回答ID配列
-                $userIds = collect($userAnswer ?? [])
-                    ->map(fn($v) => (int)$v)
-                    ->sort()
-                    ->values()
-                    ->toArray();
-
-                $isCorrect = ($userIds === $correctIds);
-            }
+            $userAnswer = $request->input("answers.{$question->id}");
+            $isCorrect  = $question->isCorrect($userAnswer);
 
             if ($isCorrect) {
-                $totalScore += $question->score ?? 1;
+                $score += $question->score ?? 1;
             }
 
             $results[] = [
@@ -95,34 +129,53 @@ class QuizController extends Controller
             ];
         }
 
-        $totalQuestions = $questions->count();
-        $passingScore = $quiz->passing_score ?? 70;
-        $passFail = ($totalScore >= $passingScore) ? '合格' : '不合格';
+        session([
+            "quiz_result_{$quiz->id}" => compact('score', 'results')
+        ]);
+
+        return redirect()->route('user.quizzes.result', $quiz);
+    }
+
+
+    /**
+     * 結果表示
+     */
+    public function result(Quiz $quiz)
+    {
+        $data = session("quiz_result_{$quiz->id}");
+
+        if (!$data) {
+            return redirect()->route('user.quizzes.show', $quiz);
+        }
+
+        $results = $data['results'];
+
+        // 正解数（isCorrect === true のみカウント）
+        $correctCount = collect($results)
+            ->where('isCorrect', true)
+            ->count();
+
+        // 全問題数
+        $totalQuestions = count($results);
+
+        // 合計得点
+        $totalScore = $data['score'];
+
+        // 合格判定
+        if ($quiz->passing_score !== null) {
+            $passFail = $totalScore >= $quiz->passing_score ? '合格' : '不合格';
+        } else {
+            // passing_score 未設定時は正解数で判定
+            $passFail = $correctCount > 0 ? '合格' : '不合格';
+        }
 
         return view('user.quizzes.result', compact(
             'quiz',
             'results',
             'totalScore',
             'totalQuestions',
-            'passingScore',
+            'correctCount',
             'passFail'
         ));
-    }
-
-
-
-
-
-
-    // 結果表示
-    public function result(Quiz $quiz)
-    {
-        $results = session("quiz_{$quiz->id}_results");
-        $score = session("quiz_{$quiz->id}_score");
-        $totalScore = session("quiz_{$quiz->id}_total_score");
-
-        if (!$results) abort(404);
-
-        return view('user.quizzes.result', compact('quiz', 'results', 'score', 'totalScore'));
     }
 }
