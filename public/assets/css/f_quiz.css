@@ -163,6 +163,7 @@
 .point {
     display: flex;
     gap: 20px;
+    justify-content: center;
     align-items: flex-end;
     margin-bottom: 15px;
     padding-bottom: 15px;
@@ -176,6 +177,7 @@
 .count {
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .result-right {
@@ -260,4 +262,14 @@
 .choice-correct {
     color: #FF8282 !important;
     font-weight: bold;
+}
+
+
+@media screen and (max-width: 559px) {
+    .result {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        padding: 10px 20px 20px;
+    }
 }
