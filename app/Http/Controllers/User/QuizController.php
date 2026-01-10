@@ -161,12 +161,13 @@ class QuizController extends Controller
         // 合計得点
         $totalScore = $data['score'];
 
-        // 合格判定
-        if ($quiz->passing_score !== null) {
-            $passFail = $totalScore >= $quiz->passing_score ? '合格' : '不合格';
+        // 合格判定（7割以上）
+        if ($quiz->total_score > 0) {
+            $percentage = ($totalScore / $quiz->total_score) * 100;
+            $passFail = $percentage >= 70 ? '合格' : '不合格';
         } else {
-            // passing_score 未設定時は正解数で判定
-            $passFail = $correctCount > 0 ? '合格' : '不合格';
+            // 念のため満点未設定時のフォールバック
+            $passFail = '不合格';
         }
 
         return view('user.quizzes.result', compact(
