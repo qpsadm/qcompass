@@ -65,7 +65,7 @@
                         <td class="date">{{ $agenda->created_at->format('Y/m/d') }}</td>
                         <td class="title">
                             @if($agenda->category_id == 52)
-                            <a href="{{ url('user/job_dl_info/' . $agenda->id) }}">
+                            <a href="{{ route('user.job.job_dl_info', ['agenda' => $agenda->id]) }}">
                                 {{ $agenda->agenda_name }}
                             </a>
                             @else
@@ -73,6 +73,7 @@
                                 {{ $agenda->agenda_name }}
                             </a>
                             @endif
+
                         </td>
                     </tr>
                     @empty

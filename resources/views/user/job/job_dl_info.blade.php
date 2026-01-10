@@ -10,9 +10,15 @@
 <div class="container">
 
     @php
-    $prevUrl = $prevAgenda ? route('user.job.job_dl_info', ['id' => $prevAgenda->id]) : null;
-    $nextUrl = $nextAgenda ? route('user.job.job_dl_info', ['id' => $nextAgenda->id]) : null;
+    $prevUrl = $prevAgenda
+    ? route('user.job.job_dl_info', ['agenda' => $prevAgenda->id])
+    : null;
+
+    $nextUrl = $nextAgenda
+    ? route('user.job.job_dl_info', ['agenda' => $nextAgenda->id])
+    : null;
     @endphp
+
 
     <x-f_page_title :search="false" title="{{ $agenda->agenda_name }}" />
 

@@ -190,24 +190,29 @@ class AgendaController extends Controller
 
     public function jobDlInfo(Agenda $agenda)
     {
-
-        // カテゴリ52以外は通常ページにリダイレクト
+        // カテゴリ52（Job DL）以外は通常アジェンダへ
         if ($agenda->category_id != 52) {
             return redirect()->route('user.agenda.info', $agenda);
         }
 
-        // 前後のアジェンダ取得（任意）
+        // 前後ナビ用
         $prevAgenda = Agenda::where('id', '<', $agenda->id)
             ->where('category_id', 52)
             ->orderBy('id', 'desc')
             ->first();
+
         $nextAgenda = Agenda::where('id', '>', $agenda->id)
             ->where('category_id', 52)
             ->orderBy('id')
             ->first();
 
-        return view('user.job.job_dl_info', compact('agenda', 'prevAgenda', 'nextAgenda'));
+        return view('user.job.job_dl_info', compact(
+            'agenda',
+            'prevAgenda',
+            'nextAgenda'
+        ));
     }
+
 
 
     public function download(Agenda $agenda)

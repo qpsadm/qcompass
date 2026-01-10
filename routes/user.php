@@ -83,15 +83,20 @@ Route::middleware(['auth', 'no-cache'])
         |--------------------------------------------------------------------------
         */
         Route::prefix('job')->name('job.')->group(function () {
+
             Route::get('/', [UserJobOfferController::class, 'index'])
                 ->name('job_offers_list');
 
-            Route::get('/{jobOffer}', [UserJobOfferController::class, 'show'])
-                ->name('job_offers_info');
-
+            // ✅ 固定パス・詳細パスを先に
             Route::get('/dl/{agenda}', [UserAgendaController::class, 'jobDlInfo'])
                 ->name('job_dl_info');
+
+            // ✅ 最後に catch-all
+            Route::get('/{jobOffer}', [UserJobOfferController::class, 'show'])
+                ->whereNumber('jobOffer')
+                ->name('job_offers_info');
         });
+
 
         Route::get('/download/{agenda}', [UserAgendaController::class, 'download'])
             ->name('download');
