@@ -7,53 +7,53 @@ use App\Models\Category;
 use App\Models\CourseCategory;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
     /**
      * クイズ一覧（カテゴリ有無 両対応）
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courseId = (int) session('course_id');
+        $selectedCategoryId = $request->get('category_id');
 
-        /**
-         * ① 講座に紐づくカテゴリIDを取得（中間テーブル）
-         */
-        $categoryIds = CourseCategory::where('course_id', $courseId)
-            ->where('is_show', 1)
-            ->pluck('category_id');
-
-        /**
-         * ② クイズが1件以上あるカテゴリのみ取得
-         */
-        $categories = Category::whereIn('id', $categoryIds)
+        // カテゴリ + 件数
+        $categories = Category::withCount([
+            'quizzes as quiz_count' => function ($q) {
+                $q->where('is_show', 1)
+                    ->whereNull('deleted_at');
+            }
+        ])
             ->whereHas('quizzes', function ($q) {
-                $q->where('is_show', 1);
+                $q->where('is_show', 1)
+                    ->whereNull('deleted_at');
             })
-            ->with([
-                'quizzes' => function ($q) {
-                    $q->where('is_show', 1)
-                        ->withCount('questions')
-                        ->orderBy('id');
-                }
-            ])
             ->orderBy('order')
             ->get();
 
-        /**
-         * ③ 未分類クイズ
-         */
-        $uncategorizedQuizzes = Quiz::where('course_id', $courseId)
-            ->whereNull('category_id')
-            ->where('is_show', 1)
+
+        // クイズ一覧
+        $quizzes = Quiz::where('is_show', 1)
+            ->when($selectedCategoryId, function ($q) use ($selectedCategoryId) {
+                $q->where('category_id', $selectedCategoryId);
+            })
             ->withCount('questions')
-            ->orderBy('id')
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
+
+        // 選択中カテゴリ名
+        $selectedCategoryName = null;
+        if ($selectedCategoryId) {
+            $selectedCategoryName = $categories
+                ->firstWhere('id', $selectedCategoryId)?->name;
+        }
 
         return view('user.quizzes.index', compact(
             'categories',
-            'uncategorizedQuizzes'
+            'quizzes',
+            'selectedCategoryId',
+            'selectedCategoryName'
         ));
     }
 
@@ -84,8 +84,6 @@ class QuizController extends Controller
 
         return view('user.quizzes.show', compact('quiz', 'questions'));
     }
-
-
 
     /**
      * 回答送信（DB保存なし）

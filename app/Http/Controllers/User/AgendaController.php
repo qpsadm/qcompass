@@ -49,6 +49,16 @@ class AgendaController extends Controller
         $categories = $this->getUserCategories($userId);
         $excludeCategoryIds = [52, 53];
 
+        // ★ カテゴリごとのアジェンダ件数を付与
+        $categories = $categories->map(function ($category) use ($excludeCategoryIds) {
+            $category->agenda_count = Agenda::where('category_id', $category->id)
+                ->where('status', 'yes')
+                ->where('is_show', 1)
+                ->whereNotIn('category_id', $excludeCategoryIds)
+                ->count();
+            return $category;
+        });
+
         // セッションにカテゴリ保存
         $categoryId = $request->input('category_id');
         session(['agenda_category_id' => $categoryId]);

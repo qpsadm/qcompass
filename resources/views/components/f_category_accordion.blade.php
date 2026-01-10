@@ -1,3 +1,16 @@
+@props([
+'categories' => collect(),
+'selectedCategoryId' => null,
+
+// 🔑 必須：カテゴリクリック時のURL生成
+// fn(null) → ALL
+// fn($category) → 個別カテゴリ
+'routeFunction',
+
+'showAllLink' => true,
+'allLabel' => 'All',
+])
+
 <div class="accordion-menu {{ ($selectedCategoryId !== null) ? 'active' : '' }}">
     <div class="menu-title">
         <div class="title"><span>カテゴリ</span></div>
@@ -6,21 +19,47 @@
 
     <div class="menu-content" style="{{ ($selectedCategoryId !== null) ? 'display:block;' : 'display:none;' }}">
         <ul>
-            {{-- 全てのアジェンダ --}}
-            <li class="{{ ($selectedCategoryId === null) ? 'active' : '' }}">
-                <a href="{{ route('user.agenda.agendas_list', ['search' => $search ?? null]) }}">
-                    All
+
+            {{-- ===== ALL ===== --}}
+            @if($showAllLink)
+            <li class="{{ $selectedCategoryId === null ? 'active' : '' }}">
+                <a href="{{ $routeFunction(null) }}">
+                    {{ $allLabel }}
                 </a>
             </li>
+            @endif
 
-            {{-- 個別カテゴリー --}}
+            {{-- ===== 個別カテゴリ ===== --}}
             @foreach($categories as $category)
-            <li class="{{ ((int)$category->id === (int)$selectedCategoryId) ? 'active' : '' }}">
-                <a href="{{ route('user.agenda.agendas_list', ['category_id' => $category->id, 'search' => $search ?? null]) }}">
+            @php
+            $count =
+            $category->agenda_count
+            ?? $category->quiz_count
+            ?? $category->quizzes_count
+            ?? 0;
+
+            // ✅ 0件は表示しない
+            if ((int)$count === 0) {
+            continue;
+            }
+
+            $isActive = ((int)$category->id === (int)$selectedCategoryId);
+            $url = $routeFunction($category);
+            @endphp
+
+            <li class="{{ $isActive ? 'active' : '' }}">
+                <a href="{{ $url }}">
                     {{ $category->name }}
+
+                    @if($count !== null)
+                    <span class="ml-1 text-sm text-gray-500">
+                        （{{ $count }}）
+                    </span>
+                    @endif
                 </a>
             </li>
             @endforeach
+
         </ul>
     </div>
 </div>

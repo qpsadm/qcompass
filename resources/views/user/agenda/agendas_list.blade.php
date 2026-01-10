@@ -13,7 +13,13 @@
 
     <x-f_category_accordion
         :categories="$categories"
-        :selectedCategoryId="$selectedCategoryId" />
+        :selectedCategoryId="$selectedCategoryId"
+        :routeFunction="fn($category) =>
+        $category
+            ? route('user.agenda.agendas_list', ['category_id' => $category->id])
+            : route('user.agenda.agendas_list')
+    " />
+
 
     <div class="content-list">
         <table>

@@ -9,19 +9,28 @@
 @section('main-content')
 <div class="container">
 
-    <x-f_page_title title="クイズ一覧" :search="false" />
+    <x-f_page_title
+        :title="$selectedCategoryName
+        ? 'クイズ一覧：' . $selectedCategoryName
+        : 'クイズ一覧'"
+        :search="false" />
 
-    {{-- =========================
-        カテゴリありクイズ
-    ========================= --}}
-    @foreach ($categories as $category)
-    @if ($category->quizzes->isNotEmpty())
-    <section>
-        <h2 class="quiz-category">
-            {{ $category->name }}
-        </h2>
+    <x-f_category_accordion
+        :categories="$categories"
+        :selectedCategoryId="$selectedCategoryId"
+        :routeFunction="fn($category) =>
+        $category
+            ? route('user.quizzes.index', ['category_id' => $category->id])
+            : route('user.quizzes.index')
+    " />
 
-        @foreach ($category->quizzes as $quiz)
+
+
+
+    {{-- ▼ クイズ一覧 --}}
+    <div class="content-list">
+
+        @forelse ($quizzes as $quiz)
         <div class="quiz-container">
             <h3 class="quiz-title">
                 {{ $quiz->title }}
@@ -44,61 +53,15 @@
                 </a>
             </div>
         </div>
-        @endforeach
-    </section>
-    @endif
-    @endforeach
+        @empty
+        <p class="text-center text-gray-500 mt-10">
+            表示できるクイズはありません
+        </p>
+        @endforelse
 
-    {{-- =========================
-        未分類クイズ
-    ========================= --}}
-    @if ($uncategorizedQuizzes->isNotEmpty())
-    <section class="quiz-category">
-        <h2 class="text-xl font-bold mb-4 border-b pb-2">
-            その他のクイズ
-        </h2>
+    </div>
 
-        @foreach ($uncategorizedQuizzes as $quiz)
-        <div class="quiz-container">
-            <h3 class="quiz-title">
-                {{ $quiz->title }}
-            </h3>
-
-            @if ($quiz->description)
-            <p class="text-gray-600 text-sm mb-2">
-                {{ $quiz->description }}
-            </p>
-            @endif
-
-            <div class="quiz-menu">
-                <p class="quiz-count">
-                    問題数：{{ $quiz->questions_count }} 問
-                </p>
-
-                <a href="{{ route('user.quizzes.show', $quiz) }}"
-                    class="quiz-start">
-                    開始する
-                </a>
-            </div>
-        </div>
-        @endforeach
-    </section>
-    @endif
-
-    {{-- =========================
-        クイズが0件のとき
-    ========================= --}}
-    @php
-    $hasQuiz =
-    $categories->contains(fn($c) => $c->quizzes->isNotEmpty())
-    || $uncategorizedQuizzes->isNotEmpty();
-    @endphp
-
-    @if (!$hasQuiz)
-    <p class="text-center text-gray-500 mt-10">
-        表示できるクイズはありません
-    </p>
-    @endif
+    <x-f_pagination :paginator="$quizzes" />
 
     <x-f_bread_crumbs />
 
