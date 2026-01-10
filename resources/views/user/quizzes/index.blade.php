@@ -16,13 +16,13 @@
     ========================= --}}
     @foreach ($categories as $category)
     @if ($category->quizzes->isNotEmpty())
-    <section class="quiz-category mb-10">
-        <h2 class="text-xl font-bold mb-4 border-b pb-2">
+    <section>
+        <h2 class="quiz-category">
             {{ $category->name }}
         </h2>
 
         @foreach ($category->quizzes as $quiz)
-        <div class="quiz-container mb-4">
+        <div class="quiz-container">
             <h3 class="quiz-title">
                 {{ $quiz->title }}
             </h3>
@@ -53,13 +53,13 @@
         未分類クイズ
     ========================= --}}
     @if ($uncategorizedQuizzes->isNotEmpty())
-    <section class="quiz-category mb-10">
+    <section class="quiz-category">
         <h2 class="text-xl font-bold mb-4 border-b pb-2">
             その他のクイズ
         </h2>
 
         @foreach ($uncategorizedQuizzes as $quiz)
-        <div class="quiz-container mb-4">
+        <div class="quiz-container">
             <h3 class="quiz-title">
                 {{ $quiz->title }}
             </h3>

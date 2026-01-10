@@ -789,6 +789,7 @@ footer {
 @media screen and (max-width: 1324px) {
     footer {
         margin: 0 20px 20px;
+        padding: 50px 35px;
     }
 }
 
@@ -852,10 +853,14 @@ footer {
         border: none;
     }
 
+    .page-title:not(:has(.search)) {
+        margin-bottom: 0;
+    }
+
     .page-title h1 {
         width: 100%;
         margin-bottom: 50px;
-        padding-bottom: 20px;
+        padding-bottom: 15px;
         border-bottom: 1px solid var(--main-color);
     }
 }
