@@ -60,20 +60,26 @@ Route::middleware([
      * システム管理（7,8）
      * ============================= */
     Route::middleware('role:7,8')->group(function () {
+
+        // ★ 必ず resource より前
+        Route::get('categories/trash', [CategoryController::class, 'trash'])
+            ->name('categories.trash');
+        // ★ 復元
+        Route::post('categories/{category}/restore', [CategoryController::class, 'restore'])
+            ->name('categories.restore');
+
+        Route::resource('categories', CategoryController::class)
+            ->except(['show']); // ← 詳細画面不要なら超おすすめ
+
         Route::resource('divisions', DivisionController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('organizers', OrganizerController::class);
         Route::resource('levels', LevelController::class);
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('tags', TagController::class);
-        Route::resource('categories', CategoryController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
         Route::resource('daily_quotes', DailyQuoteController::class);
         Route::resource('quotes', QuoteController::class);
-
-        Route::get('categories/trash', [CategoryController::class, 'trash'])
-            ->name('categories.trash');
-
 
         // なりすまし（システム管理者のみ）
         Route::post(
@@ -81,6 +87,7 @@ Route::middleware([
             [AdminUserController::class, 'impersonate']
         )->middleware('role:8');
     });
+
 
 
     /* =============================

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Illuminate\Support\Facades\Auth;
 
 class Agenda extends Model
 {
-    use HasFactory, SoftDeletes;
-    use Searchable;
+    use HasFactory, SoftDeletes, Searchable;
 
     protected $table = 'agendas';
 
@@ -23,12 +23,50 @@ class Agenda extends Model
         'status',
         'created_user_name',
         'updated_user_name',
+        'deleted_user_name',
     ];
 
     protected $casts = [
         'is_show' => 'boolean',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+    protected static function booted()
+    {
+        // 作成時
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $name = Auth::user()->name;
+                $model->created_user_name = $name;
+                $model->updated_user_name = $name;
+            }
+        });
+
+        // 更新時
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_user_name = Auth::user()->name;
+            }
+        });
+
+        // 削除時（SoftDelete）
+        static::deleting(function ($model) {
+            if (Auth::check()) {
+                $model->deleted_user_name = Auth::user()->name;
+                $model->saveQuietly(); // 無限ループ防止
+            }
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -39,35 +77,36 @@ class Agenda extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function createdUser()
-    {
-        return $this->belongsTo(User::class, 'created_user_name');
-    }
-
-    public function updatedUser()
-    {
-        return $this->belongsTo(User::class, 'updated_user_name');
-    }
     public function files()
     {
         return $this->morphMany(AgendaFile::class, 'target')
             ->whereNull('deleted_at');
     }
-    // course を安全に取得するアクセサ
-    public function getCourseAttribute()
-    {
-        return $this->category ? $this->category->course : null;
-    }
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_agendas', 'agenda_id', 'course_id');
     }
 
-    // 必要に応じて検索対象カラムを指定
+    /*
+    |--------------------------------------------------------------------------
+    | Accessors
+    |--------------------------------------------------------------------------
+    */
+    public function getCourseAttribute()
+    {
+        return $this->category ? $this->category->course : null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scout
+    |--------------------------------------------------------------------------
+    */
     public function toSearchableArray()
     {
         return [
-            'title' => $this->title,
+            'agenda_name' => $this->agenda_name,
             'content' => $this->content,
         ];
     }

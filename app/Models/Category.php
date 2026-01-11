@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -16,7 +17,48 @@ class Category extends Model
         'level',
         'top_id',
         'is_show',
+        'created_user_name',
+        'updated_user_name',
+        'deleted_user_name',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+    protected static function booted()
+    {
+        // 作成時
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $name = Auth::user()->name;
+                $model->created_user_name = $name;
+                $model->updated_user_name = $name;
+            }
+        });
+
+        // 更新時
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_user_name = Auth::user()->name;
+            }
+        });
+
+        // 削除時（SoftDelete）
+        static::deleting(function ($model) {
+            if (Auth::check()) {
+                $model->deleted_user_name = Auth::user()->name;
+                $model->saveQuietly(); // 無限ループ防止
+            }
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
 
     // 子カテゴリ
     public function children()
@@ -26,7 +68,8 @@ class Category extends Model
 
     public function childrenRecursive()
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('childrenRecursive');
+        return $this->hasMany(Category::class, 'parent_id')
+            ->with('childrenRecursive');
     }
 
     // 動的に子数を返す
@@ -34,7 +77,6 @@ class Category extends Model
     {
         return $this->childrenRecursive()->count();
     }
-
 
     public function courses()
     {
@@ -45,12 +87,12 @@ class Category extends Model
 
     public function theme()
     {
-        return $this->belongsTo(Theme::class, 'theme_id'); // categoriesテーブルに theme_id がある場合
+        return $this->belongsTo(Theme::class, 'theme_id');
     }
 
     public function agendas()
     {
-        return $this->hasMany(\App\Models\Agenda::class, 'category_id', 'id');
+        return $this->hasMany(Agenda::class, 'category_id', 'id');
     }
 
     public function course()
@@ -64,6 +106,5 @@ class Category extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
-        // quizzes.category_id → categories.id
     }
 }

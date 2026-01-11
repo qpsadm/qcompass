@@ -5,51 +5,78 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Question extends Model
 {
-    use HasFactory, SoftDeletes; // SoftDeletes トレイトを追加
+    use HasFactory, SoftDeletes;
 
-    // 複数のカラムを一括割り当て可能にする
     protected $fillable = [
-        'asker_id', // 質問者ID
-        'target_id', // 対象者ID
-        'course_id', // 講座ID
-        'title', // 質問タイトル
-        'responder_id', // 回答者ID（講師）
-        'content', // 質問内容
-        'answer', // 回答内容
-        'is_show', // 公開設定（true/false）
-        'tag_id', // タグID
+        'asker_id',        // 質問者ID
+        'target_id',       // 対象者ID
+        'course_id',       // 講座ID
+        'title',           // 質問タイトル
+        'responder_id',    // 回答者ID
+        'content',         // 質問内容
+        'answer',          // 回答内容
+        'is_show',         // 公開設定
+        'tag_id',          // タグID
+        'created_user_name',
+        'updated_user_name',
+        'deleted_user_name',
     ];
 
-    // 講座とのリレーション（1対多）
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id'); // 質問は1つの講座に属している
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
-    // 回答者（講師）とのリレーション（1対多）
     public function responder()
     {
-        return $this->belongsTo(User::class, 'responder_id'); // 質問には1人の回答者（講師）がいる
+        return $this->belongsTo(User::class, 'responder_id');
     }
 
-    // タグとのリレーション（1対多）
     public function tag()
     {
-        return $this->belongsTo(Tag::class, 'tag_id'); // 質問には1つのタグがある
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
 
-    // 質問者（学生）とのリレーション（1対多）
     public function asker()
     {
-        return $this->belongsTo(User::class, 'asker_id'); // 質問は1人の学生（質問者）に関連付けられる
+        return $this->belongsTo(User::class, 'asker_id');
     }
 
-    // 対象者（講師）とのリレーション（1対多）
     public function target()
     {
-        return $this->belongsTo(User::class, 'target_id'); // 質問は1人のターゲット（講師）に関連付けられる
+        return $this->belongsTo(User::class, 'target_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            $userName = Auth::user()->name ?? 'system';
+
+            $model->created_user_name = $model->created_user_name ?? $userName;
+            $model->updated_user_name = $model->updated_user_name ?? $userName;
+        });
+
+        static::updating(function ($model) {
+            $model->updated_user_name = Auth::user()->name ?? 'system';
+        });
+
+        static::deleting(function ($model) {
+            $model->deleted_user_name = Auth::user()->name ?? 'system';
+            $model->saveQuietly(); // 無限ループ防止
+        });
     }
 }

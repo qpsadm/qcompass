@@ -23,9 +23,6 @@ class QuizAnswer extends Model
         'deleted_user_name',
     ];
 
-    // もし created_at / updated_at がテーブルにない場合
-    // public $timestamps = false;
-
     public function attempt()
     {
         return $this->belongsTo(QuizAttempt::class, 'attempt_id');
