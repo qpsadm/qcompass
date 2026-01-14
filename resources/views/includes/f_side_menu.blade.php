@@ -44,8 +44,10 @@
                     <p class="short-title">今日のひとこと</p>
 
                     @if (!empty($todayQuote))
-                    <div class="short-text {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                        @if ($quote_mode === 'mix')
+                    <div class="short-text @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
+                        @if($isBirthday)
+                        お誕生日おめでとう！
+                        @elseif($quote_mode === 'mix')
                         @foreach (session('mix_quote_parts', []) as $text)
                         {{ $text ?? '' }}
                         @endforeach
@@ -54,9 +56,11 @@
                         @endif
                     </div>
 
-                    <div class="short-name {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
+                    <div class="short-name @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
                         -
-                        @if ($quote_mode === 'mix')
+                        @if($isBirthday)
+                        QLIP講師より
+                        @elseif($quote_mode === 'mix')
                         @foreach (session('mix_author_parts', []) as $text)
                         {{ $text ?? '' }}
                         @endforeach

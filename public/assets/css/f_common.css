@@ -521,7 +521,8 @@ header::after {
     color: var(--accent-color);
 }
 
-.today-short .short-text.birthday {
+.today-short .short-text.birthday,
+.today-short .short-name.birthday {
     background: linear-gradient(to right, #ff7777, #ffcb72, #fff100, #62ffa8, #60baff, #777cff, #ff78f1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
