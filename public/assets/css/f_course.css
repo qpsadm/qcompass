@@ -62,6 +62,10 @@ td {
     letter-spacing: 1px;
 }
 
+.bread-crumbs {
+    font-size: 16px;
+}
+
 .teacher-detail .teacher-profile {
     display: flex;
     flex-wrap: wrap;
@@ -139,6 +143,7 @@ td {
 }
 
 @media screen and (max-width: 959px) {
+
     .profile-left,
     .profile-right {
         width: calc(100%);
