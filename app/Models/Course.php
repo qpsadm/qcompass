@@ -245,4 +245,19 @@ class Course extends Model
                     ->orWhere('end_date', '>=', $now->copy()->subMonth());
             });
     }
+
+    // 修了までの日数
+    public function getRemainingDaysAttribute(): ?int
+    {
+        if ($this->end_date === null) {
+            return null;
+        }
+
+        $remaining = now()->diffInDays(
+            Carbon::parse($this->end_date)->endOfDay(),
+            false
+        );
+
+        return $remaining > 0 ? $remaining : 0;
+    }
 }

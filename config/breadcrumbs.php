@@ -76,6 +76,11 @@ return [
         // 管理系（必要に応じて）
         // =============================
         'admin.top' => '管理TOP',
+        'user.about' => '本サイトについて',
+        'user.download' => 'ダウンロード',
+        'user.teacher.teachers_list' => '講師紹介',
+        'user.teacher.teachers_info' => '講師紹介',
+        'user.course.courses_info' => '講座紹介',
     ],
 
     /*
@@ -112,6 +117,9 @@ return [
         'user.reports.confirm'  => 'user.mypage',
         'user.reports.info'     => 'user.mypage',
         'user.reports.complete' => 'user.mypage',
+
+        //講師紹介
+        'user.teacher.teachers_list' =>  'user.teacher.teachers_info'
     ],
 
 ];
