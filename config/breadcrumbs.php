@@ -42,7 +42,7 @@ return [
         // 学習支援 / クイズ
         // =============================
         'user.quizzes.index' => '学習支援',
-        'user.quizzes.show'  => 'クイズ', // 動的タイトル
+        'user.quizzes.show'  => 'クイズ',
         'user.quizzes.result' => '結果',
 
         // =============================
