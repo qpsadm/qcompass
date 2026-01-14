@@ -53,7 +53,7 @@
 
                     @if($count !== null)
                     <span class="ml-1 text-sm text-gray-500">
-                        （{{ $count }}）
+                        ( {{ $count }} )
                     </span>
                     @endif
                 </a>
