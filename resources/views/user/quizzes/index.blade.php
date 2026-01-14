@@ -48,7 +48,7 @@
         <div x-show="open" x-transition class="mt-2">
             @foreach($categoryQuizzes as $quiz)
             <div class="quiz-container mb-3 p-3 border rounded bg-white">
-                <h3 class="quiz-title">{{ $quiz->title }} レベル：{{ $quiz->level }} </h3>
+                <h3 class="quiz-title">{{ $quiz->title }}【レベル：{{ $quiz->level }} 】</h3>
 
                 @if ($quiz->description)
                 <p class="text-gray-600 text-sm mb-2">{{ $quiz->description }}</p>
