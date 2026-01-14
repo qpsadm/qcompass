@@ -44,55 +44,56 @@
                 <div class="hamburger-menu-left">
                     <div class="contents-box">
 
-                        <div class="calendar">
+                        <div class="calendar @if ($isBirthday) birthday-effect @endif">
                             <div class="calendar-data">
                                 <div class="month">{{ now()->format('m') }}</div>
                                 <div class="day">{{ now()->format('d') }}</div>
                                 <span class="border"></span>
                                 <div class="week">{{ strtoupper(now()->format('D')) }}</div>
                             </div>
+
                         </div>
 
                         @forelse ($courses ?? [] as $course)
-                        <div class="course-item">
-                            <div class="countdown">
-                                <p class="countdown-title">修了まであと</p>
-                                <div class="countdown-data">
-                                    <span class="data-number">{{ $course->remaining_days }}</span>
-                                    <span class="data-sub-title">日</span>
+                            <div class="course-item">
+                                <div class="countdown">
+                                    <p class="countdown-title">修了まであと</p>
+                                    <div class="countdown-data">
+                                        <span class="data-number">{{ $course->remaining_days }}</span>
+                                        <span class="data-sub-title">日</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @empty
-                        <span>受講中の講座はありません</span>
+                            <span>受講中の講座はありません</span>
                         @endforelse
                         <div class="today-short">
                             <p class="short-title">今日のひとこと</p>
 
                             @if (!empty($todayQuote))
-                            <div class="short-text">
-                                @if ($quote_mode === 'mix' && is_array(session('mix_quote_parts', [])))
-                                @foreach (session('mix_quote_parts', []) as $part)
-                                {{ $part->text ?? $part }}
-                                @endforeach
-                                @else
-                                {{ $todayQuote->quote_full }}
-                                @endif
-                            </div>
+                                <div class="short-text">
+                                    @if ($quote_mode === 'mix' && is_array(session('mix_quote_parts', [])))
+                                        @foreach (session('mix_quote_parts', []) as $part)
+                                            {{ $part->text ?? $part }}
+                                        @endforeach
+                                    @else
+                                        {{ $todayQuote->quote_full }}
+                                    @endif
+                                </div>
 
-                            <div class="short-name">
-                                -
-                                @if ($quote_mode === 'mix' && is_array(session('mix_author_parts', [])))
-                                @foreach (session('mix_author_parts', []) as $part)
-                                {{ $part->text ?? $part }}
-                                @endforeach
-                                @else
-                                {{ $todayQuote->author_full ?? '作者不明' }}
-                                @endif
-                                -
-                            </div>
+                                <div class="short-name">
+                                    -
+                                    @if ($quote_mode === 'mix' && is_array(session('mix_author_parts', [])))
+                                        @foreach (session('mix_author_parts', []) as $part)
+                                            {{ $part->text ?? $part }}
+                                        @endforeach
+                                    @else
+                                        {{ $todayQuote->author_full ?? '作者不明' }}
+                                    @endif
+                                    -
+                                </div>
                             @else
-                            <span class="short-text">名言が登録されていません</span>
+                                <span class="short-text">名言が登録されていません</span>
                             @endif
                         </div>
                     </div>
@@ -132,14 +133,14 @@
                             <li><a class="mypage" href="{{ route('user.mypage') }}">マイページ</a></li>
                             <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
                             @foreach ($courses as $course)
-                            @if ($course->plan_path)
-                            <li>
-                                <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}"
-                                    target="_blank">
-                                    日別計画表
-                                </a>
-                            </li>
-                            @endif
+                                @if ($course->plan_path)
+                                    <li>
+                                        <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}"
+                                            target="_blank">
+                                            日別計画表
+                                        </a>
+                                    </li>
+                                @endif
                             @endforeach
                             <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
 

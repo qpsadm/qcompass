@@ -9,7 +9,7 @@
 
             <div class="contents-box">
 
-                <div class="calendar @if ($isBirthday) test @endif">
+                <div class="calendar @if ($isBirthday) birthday-effect @endif">
                     <div class="calendar-data">
                         <div class="month">{{ now()->format('m') }}</div>
                         <div class="day">{{ now()->format('d') }}</div>
@@ -19,11 +19,11 @@
 
                 </div>
                 {{-- 誕生日メッセージ --}}
-                @if ($isBirthday)
+                {{-- @if ($isBirthday)
                 <div class="birthday-msg p-2 bg-yellow-200 text-center rounded mb-2">
                     🎉 お誕生日おめでとうございます！ 🎉
                 </div>
-                @endif
+                @endif --}}
 
 
                 @forelse ($courses as $course)

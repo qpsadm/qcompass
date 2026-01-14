@@ -521,6 +521,12 @@ header::after {
     color: var(--accent-color);
 }
 
+.today-short .short-text.birthday {
+    background: linear-gradient(to right, #ff7777, #ffcb72, #fff100, #62ffa8, #60baff, #777cff, #ff78f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .today-short .short-text {
     font-size: 18px;
     text-align: left;
@@ -1250,4 +1256,48 @@ body.impersonating .side-menu::after {
     body.impersonating .hamburger-menu {
         padding: 130px 30px 30px;
     }
+}
+
+
+
+
+/* test_birthday */
+
+.calendar {
+    position: relative;
+}
+
+.calendar.birthday-effect::before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -10px;
+    background: url(../images/icon/f_birthday_2.svg) no-repeat;
+    background-size: 100%;
+    width: 40px;
+    aspect-ratio: 97 / 120;
+    transform: rotate(-25deg);
+}
+
+/* .calendar.test::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../images/icon/f_birthday_1.svg) no-repeat;
+    background-size: 100%;
+    width: 240px;
+    height: 115px;
+} */
+
+.calendar.birthday-effect::after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    right: -5px;
+    background: url(../images/icon/f_birthday_3.svg) no-repeat;
+    background-size: 100%;
+    width: 50px;
+    aspect-ratio: 149 / 209;
+    transform: rotate(70deg);
 }
