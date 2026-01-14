@@ -79,8 +79,9 @@ return [
         'user.about' => '本サイトについて',
         'user.download' => 'ダウンロード',
         'user.teacher.teachers_list' => '講師紹介',
-        'user.teacher.teachers_info' => '講師紹介',
+        'user.teacher.teachers_info' => '講師詳細',
         'user.course.courses_info' => '講座紹介',
+        'user.privacy' => '利用規約・プライバシーポリシー'
     ],
 
     /*
