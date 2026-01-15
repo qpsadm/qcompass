@@ -847,11 +847,40 @@ footer {
     position: absolute;
     background: url(../images/icon/f_icon_h1.svg) no-repeat;
     background-size: 100%;
-    top: -7px;
+    /* top: -7px; */
     left: 0;
-    width: 45px;
-    height: 45px;
+    /* width: 45px;
+    height: 45px; */
+    width: 50px;
+    height: 50px;
+    top: -10px;
 }
+
+.page-title h1[class^="user-news"]::before {
+    background: url(../images/icon/f_icon_h1_news.svg) no-repeat;
+}
+
+.page-title h1[class^="user-agenda"]::before {
+    background: url(../images/icon/f_icon_h1_agenda.svg) no-repeat;
+}
+
+.page-title h1[class^="user-question"]::before {
+    background: url(../images/icon/f_icon_h1_question.svg);
+}
+
+.page-title h1[class^="user-quizzes"]::before {
+    background: url(../images/icon/f_icon_h1_reference.svg) no-repeat;
+}
+
+.page-title h1[class^="user-job"]::before {
+    background: url(../images/icon/f_icon_h1_job.svg) no-repeat;
+
+}
+
+.page-title h1[class^="user-mypage"]::before {
+    background: url(../images/icon/f_icon_h1_mypage.svg) no-repeat;
+}
+
 
 @media screen and (max-width: 1024px) {
     .page-title {
