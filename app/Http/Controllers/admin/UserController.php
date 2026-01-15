@@ -69,11 +69,11 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $courses = Course::all();
-        $divisions = Division::all();   // ← 追加
+        $courses = Course::orderBy('course_name', 'asc')->get();
+        $divisions = Division::all();
+
         return view('admin.users.create', compact('roles', 'courses', 'divisions'));
     }
-
     /**
      * ユーザー登録
      */
@@ -121,9 +121,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();      // これがないと空になります
-        $courses = Course::all();  // 講座も同様
-        // division マスタ
+        $roles = Role::all();
+        $courses = Course::orderBy('course_name', 'asc')->get();
         $divisions = Division::where('is_show', 1)->get();
 
         return view('admin.users.edit', compact('user', 'roles', 'courses', 'divisions'));
@@ -239,7 +238,11 @@ class UserController extends Controller
         Auth::login($user);
 
         // もし講座IDをセッションに入れる場合
-        session(['course_id' => $user->courses()->first()?->id]);
+        session([
+            'course_id' => $user->courses()
+                ->orderBy('course_name', 'asc')
+                ->first()?->id
+        ]);
 
         return redirect()->route('user.mypage');
     }

@@ -164,19 +164,18 @@ class Course extends Model
     */
     public function isLoginable(): bool
     {
-        $now = Carbon::now();
+        $now = now();
 
-        // 1. 開始前は不可
-        if ($this->start_date && $now->lt(Carbon::parse($this->start_date))) {
+        if ($this->start_date && $now->lt($this->start_date)) {
             return false;
         }
 
-        // 2. 終了日＋1か月までは可
         if ($this->end_date) {
-            return $now->lte(Carbon::parse($this->end_date)->addMonth());
+            return $now->lte(
+                \Carbon\Carbon::parse($this->end_date)->addMonth()->endOfDay()
+            );
         }
 
-        // 3. その他は可
         return true;
     }
 
@@ -212,14 +211,12 @@ class Course extends Model
 
     public function getLoginRemainingDaysAttribute(): ?int
     {
-        if ($this->end_date === null) {
-            return null;
-        }
+        if (!$this->end_date) return null;
 
-        $endLimit = Carbon::parse($this->end_date)->addMonth()->endOfDay();
-        $remaining = now()->diffInDays($endLimit, false);
+        $limit = \Carbon\Carbon::parse($this->end_date)->addMonth()->endOfDay();
+        $days = now()->diffInDays($limit, false);
 
-        return $remaining > 0 ? $remaining : 0;
+        return $days > 0 ? $days : 0;
     }
 
     /*
@@ -227,23 +224,35 @@ class Course extends Model
     | ログイン画面に表示するコース（SQL上で不可を除外）
     |--------------------------------------------------------------------------
     */
-    public function scopeLoginVisible(Builder $query)
-    {
-        $now = now();
+    // public function scopeLoginVisible(Builder $query)
+    // {
+    //     $now = now();
 
+    //     return $query
+    //         ->where('is_show', 1)
+    //         ->where(function ($q) use ($now) {
+    //             // 開始前を除外
+    //             $q->whereNull('start_date')
+    //                 ->orWhere('start_date', '<=', $now);
+    //         })
+    //         ->where(function ($q) use ($now) {
+    //             // 終了日未設定 → OK
+    //             $q->whereNull('end_date')
+    //                 // 終了日＋1か月 >= today → OK
+    //                 ->orWhere('end_date', '>=', $now->copy()->subMonth());
+    //         });
+    // }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ログイン画面に表示するコース（表示フラグのみ）
+    |--------------------------------------------------------------------------
+    */
+    public function scopeShowOnLogin(Builder $query)
+    {
         return $query
             ->where('is_show', 1)
-            ->where(function ($q) use ($now) {
-                // 開始前を除外
-                $q->whereNull('start_date')
-                    ->orWhere('start_date', '<=', $now);
-            })
-            ->where(function ($q) use ($now) {
-                // 終了日未設定 → OK
-                $q->whereNull('end_date')
-                    // 終了日＋1か月 >= today → OK
-                    ->orWhere('end_date', '>=', $now->copy()->subMonth());
-            });
+            ->whereNull('deleted_at');
     }
 
     // 修了までの日数

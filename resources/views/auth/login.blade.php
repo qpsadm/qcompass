@@ -6,6 +6,7 @@
         @csrf
 
         <!-- Course 選択 / 表示 -->
+        @if ($showCourse)
         <div class="login-item">
             <div class="item-box">
                 <label for="course_id">講座名</label>
@@ -46,17 +47,17 @@
                     @else
                     <select id="course_id" name="course_id" required
                         class="block mt-1 w-full border-gray-300 rounded-md shadow-sm
-                               focus:ring-indigo-500 focus:border-indigo-500">
+       focus:ring-indigo-500 focus:border-indigo-500">
 
                         <option value="">選択してください</option>
 
                         @foreach ($courses as $course)
                         @php
-                        $disabled = !$course->isLoginable();
                         $days = $course->loginRemainingDays;
 
+                        // ログイン不可なら赤文字、期間が短い場合は黄色
                         $color =
-                        $disabled ? 'text-gray-400'
+                        !$course->isLoginable() ? 'text-red-600'
                         : ($days !== null && $days <= 7 ? 'text-red-600'
                             : ($days !==null && $days <=14 ? 'text-yellow-600'
                             : 'text-gray-700' ));
@@ -64,11 +65,9 @@
 
                             <option value="{{ $course->id }}"
                             class="{{ $color }}"
-                            {{ old('course_id') == $course->id ? 'selected' : '' }}
-                            {{ $disabled ? 'disabled' : '' }}>
-
+                            {{ old('course_id') == $course->id ? 'selected' : '' }}>
                             {{ $course->course_name }}
-                            @if ($disabled)
+                            @if (!$course->isLoginable())
                             🔒 不可
                             @elseif ($days === null)
                             🔓 利用可
@@ -78,11 +77,14 @@
                             </option>
                             @endforeach
                     </select>
+
                     @endif
             </div>
 
             <x-input-error :messages="$errors->get('course_id')" class="error-msg" />
         </div>
+        @endif
+
 
         <!-- Email -->
         <div class="login-item">

@@ -16,132 +16,119 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request)
     {
-        $courses = Course::loginVisible()
-            ->orderBy('start_date', 'desc')
+        // 管理側ONの講座をすべて表示
+        $courses = Course::where('is_show', 1)
+            ->orderBy('course_name', 'asc')
             ->get();
 
+        $showCourse = $courses->isNotEmpty();
         $selected_course = $request->query('course_id');
 
-        return view('auth.login', compact('courses', 'selected_course'));
+        return view('auth.login', compact(
+            'courses',
+            'selected_course',
+            'showCourse'
+        ));
     }
+
 
     /**
      * ログイン処理
      */
     public function store(Request $request)
     {
-        // バリデーション
-        $request->validate([
-            'email'     => 'required|string|email',
-            'password'  => 'required|string',
-            'course_id' => 'required|integer',
-        ]);
+        $showCourse = Course::where('is_show', 1)->exists();
 
-        // ユーザー取得
+        $rules = [
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ];
+
+        if ($showCourse) {
+            $rules['course_id'] = 'required|integer';
+        }
+
+        $request->validate($rules);
+
         $user = User::where('email', $request->email)->first();
 
-        // 認証チェック
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors([
                 'email' => 'メールアドレスかパスワードが正しくありません。',
             ])->onlyInput('email');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ユーザー詳細ステータスチェック（停止・無効）
-        |--------------------------------------------------------------------------
-        */
+        // ユーザー状態
         if ($user->detail && in_array($user->detail->status, [0, 2], true)) {
-
-            $statusLabel = match ($user->detail->status) {
-                0 => '無効',
-                2 => '停止',
-                default => '制限',
-            };
-
-            $message = "このアカウントは現在「{$statusLabel}」されています。";
-
-
-            return back()
-                ->withErrors([
-                    'email' => $message,
-                ])
-                ->onlyInput('email');
+            return back()->withErrors([
+                'email' => 'このアカウントは現在利用できません。',
+            ]);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ロール制限（ログイン不可ユーザー）
-        |--------------------------------------------------------------------------
-        */
-        if ($user->role_id == 1) {
+        if ($user->role_id === 1) {
             return back()->withErrors([
                 'email' => 'このユーザーはログインできません。',
-            ])->onlyInput('email');
+            ]);
         }
 
-        // 講座チェック
-        $course = Course::find($request->course_id);
-        if (!$course) {
-            return back()->withErrors([
-                'course_id' => '講座が存在しません。',
-            ])->onlyInput('course_id');
-        }
+        $course = null;
 
-        // 一般ユーザー（guest / 生徒 / アルバイト）
-        if ($user->role_id < 5) {
+        if ($showCourse) {
+            $course = Course::where('is_show', 1)
+                ->where('id', $request->course_id)
+                ->first();
 
-            if (!$user->courses->contains('id', $course->id)) {
+            if (!$course) {
                 return back()->withErrors([
-                    'course_id' => 'このユーザーは選択されたコースに所属していません。',
-                ])->onlyInput('course_id');
-            }
-
-            if (!$course->isLoginable()) {
-                return back()->withErrors([
-                    'course_id' => 'この講座は現在ログインできません。',
+                    'course_id' => '講座が存在しません。',
                 ]);
             }
+
+            if ($user->role_id < 5) {
+                if (!$user->courses->contains('id', $course->id)) {
+                    return back()->withErrors([
+                        'course_id' => 'この講座に所属していません。',
+                    ]);
+                }
+
+                if (!$course->isLoginable()) {
+                    return back()->withErrors([
+                        'course_id' => 'この講座は現在ログインできません。',
+                    ]);
+                }
+            }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ログイン
-        |--------------------------------------------------------------------------
-        */
-        Auth::login($user, $request->filled('remember'));
+
+        Auth::login($user);
         $request->session()->regenerate();
 
-        // 講座IDをセッションに保存
-        session(['course_id' => $course->id]);
+        if ($course) {
+            session(['course_id' => $course->id]);
+        }
 
-        // ユーザー設定（テーマ・文字サイズ）
-        $user_details = $user->detail;
         session([
             'settings' => [
-                'theme_id' => $user_details?->theme_id ?? 1,
-                'fontsize' => $user_details?->fontsize ?? 1,
+                'theme_id'  => $user->detail?->theme_id ?? 1,
+                'fontsize' => $user->detail?->fontsize ?? 1,
             ],
         ]);
 
-        // ロール別リダイレクト
         return match ($user->role_id) {
-            2, 3, 4 => redirect()->route('user.top'),           // guest / 生徒 / アルバイト
-            5, 6, 7, 8 => redirect()->route('admin.dashboard'), // 管理系
+            2, 3, 4 => redirect()->route('user.top'),
+            5, 6, 7, 8 => redirect()->route('admin.dashboard'),
             default => redirect()->route('user.top'),
         };
     }
+
 
     /**
      * ログアウト
      */
     public function destroy(Request $request)
     {
-        // なりすまし解除
         if (session()->has('impersonator_id')) {
-            $adminId = session('impersonator_id');
-            Auth::loginUsingId($adminId);
+            Auth::loginUsingId(session('impersonator_id'));
             session()->forget('impersonator_id');
 
             return redirect()
@@ -149,11 +136,18 @@ class AuthenticatedSessionController extends Controller
                 ->with('status', 'なりすましを解除しました');
         }
 
-        // 通常ログアウト
-        Auth::guard('web')->logout();
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    /**
+     * 表示可能な講座が存在するか
+     */
+    private function hasVisibleCourse(): bool
+    {
+        return Course::loginVisible()->exists();
     }
 }
