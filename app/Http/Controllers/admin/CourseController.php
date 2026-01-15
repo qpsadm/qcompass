@@ -20,7 +20,7 @@ class CourseController extends Controller
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'asc');
 
-        $courses = Course::query();
+        $courses = Course::withCount('students');
 
         if ($query) {
             $courses->where(function ($q) use ($query) {
@@ -42,6 +42,7 @@ class CourseController extends Controller
 
         return view('admin.courses.index', compact('courses'));
     }
+
 
     public function create()
     {

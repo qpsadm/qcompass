@@ -125,6 +125,7 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                     </th>
                     <th class="border px-4 py-2">分野</th>
                     <th class="border px-4 py-2 w-32">期間</th>
+                    <th class="border px-4 py-2 text-center w-20">受講生</th>
                     <th class="border px-4 py-2 text-center w-24">表示</th>
                 </tr>
             </thead>
@@ -142,6 +143,24 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                     </td>
                     <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td>
                     <td class="border px-4 py-2">{{ $course->start_date }} ～ {{ $course->end_date }}</td>
+                    <td class="border px-4 py-2 text-center">
+                        <a href="{{ route('admin.courses.students', $course->id) }}"
+                            class="inline-flex items-center justify-center
+              w-9 h-9
+              rounded-full
+              bg-indigo-500
+              text-white
+              shadow
+              hover:bg-indigo-600
+              hover:shadow-md
+              transition"
+                            title="受講生一覧">
+                            📋
+                        </a>
+                    </td>
+
+
+
                     <td class="border px-4 py-2 text-center">
                         @if($course->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>

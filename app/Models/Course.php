@@ -260,4 +260,9 @@ class Course extends Model
 
         return $remaining > 0 ? $remaining : 0;
     }
+
+    public function studentsCount(): int
+    {
+        return $this->students()->count();
+    }
 }
