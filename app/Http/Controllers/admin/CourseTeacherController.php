@@ -22,7 +22,7 @@ class CourseTeacherController extends Controller
     public function create()
     {
         $users = User::where('role_id', '>=', 4)->get();
-        $courses = Course::all();
+        $courses = Course::where('is_show', 1)->orderBy('course_name', 'asc')->get();
         return view('admin.course_teachers.create', compact('users', 'courses'));
     }
 
