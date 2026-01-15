@@ -100,7 +100,7 @@ class AgendaController extends Controller
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
-        $agendas = $query->paginate(5);
+        $agendas = $query->paginate(5)->withQueryString();
 
         $selectedCategoryName = 'All';
         if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
