@@ -21,6 +21,7 @@
 
 .quiz-container {
     display: flex;
+    gap: 30px;
     justify-content: space-between;
     align-items: center;
     padding: 15px 25px;
@@ -30,10 +31,16 @@
     font-size: 18px;
 }
 
+.quiz-title {
+    flex: 1;
+}
+
 .quiz-menu {
     display: flex;
     gap: 50px;
+    justify-content: flex-end;
     align-items: center;
+    width: 300px;
 }
 
 .quiz-start {

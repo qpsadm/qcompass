@@ -18,13 +18,6 @@
                     </div>
 
                 </div>
-                {{-- 誕生日メッセージ --}}
-                {{-- @if ($isBirthday)
-                <div class="birthday-msg p-2 bg-yellow-200 text-center rounded mb-2">
-                    🎉 お誕生日おめでとうございます！ 🎉
-                </div>
-                @endif --}}
-
 
                 @forelse ($courses as $course)
                 <div class="course-item">

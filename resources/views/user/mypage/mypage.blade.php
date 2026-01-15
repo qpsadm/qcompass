@@ -231,6 +231,7 @@
                 initialView: 'dayGridMonth',
                 locale: 'ja',
                 timeZone: "Asia/Tokyo",
+                height: 'auto',
 
                 dayCellContent: function(arg) {
                     return arg.date.getDate();
