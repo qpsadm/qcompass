@@ -73,67 +73,108 @@
 
 <script>
     const typeSelect = document.getElementById('questionType');
-    const choiceBlockRow = document.getElementById('choiceBlockRow');
     const choiceInputs = document.getElementById('choiceInputs');
+    const choiceBlockRow = document.getElementById('choiceBlockRow');
     const addChoiceBtn = document.getElementById('addChoice');
 
-    function renderChoices() {
+    const MAX_MULTI_CHOICES = 10;
+
+    function renderChoices(existingChoices = []) {
         const type = typeSelect.value;
         choiceInputs.innerHTML = '';
-        let choiceCount = 0;
-        let maxChoices = 0;
 
         if (type === 'text') {
             choiceBlockRow.style.display = 'none';
             return;
-        } else if (type === 'single_2') {
-            choiceCount = 2;
-            maxChoices = 2;
-            addChoiceBtn.style.display = 'none';
-        } else if (type === 'single_4') {
-            choiceCount = 4;
-            maxChoices = 4;
-            addChoiceBtn.style.display = 'none';
-        } else if (type === 'multi') {
-            choiceCount = 2;
-            maxChoices = 10;
-            addChoiceBtn.style.display = 'inline-block';
         }
 
         choiceBlockRow.style.display = 'table-row';
-        for (let i = 0; i < choiceCount; i++) addChoiceInput();
 
-        addChoiceBtn.onclick = () => {
-            if (choiceInputs.children.length < maxChoices) addChoiceInput();
-            else alert(`選択肢は最大 ${maxChoices} 個までです`);
+        let count;
+        if (type === 'single_2') count = 2;
+        else if (type === 'single_4') count = 4;
+        else count = Math.max(existingChoices.length || 2, 2);
+
+        for (let i = 0; i < count; i++) {
+            addChoiceInput(existingChoices[i], i);
+        }
+
+        // 👇 ここが重要
+        if (type === 'multi') {
+            addChoiceBtn.style.display = 'inline-block';
+            addChoiceBtn.onclick = () => {
+                if (choiceInputs.children.length >= MAX_MULTI_CHOICES) {
+                    alert(`選択肢は最大 ${MAX_MULTI_CHOICES} 個までです`);
+                    return;
+                }
+                addChoiceInput();
+            };
+        } else {
+            addChoiceBtn.style.display = 'none';
+            addChoiceBtn.onclick = null;
         }
     }
 
-    function addChoiceInput() {
-        const index = choiceInputs.children.length;
+    function addChoiceInput(choice = {}, index = null) {
+        const i = index ?? choiceInputs.children.length;
+        const type = typeSelect.value;
+        const isSingle = ['single_2', 'single_4'].includes(type);
+
         const div = document.createElement('div');
         div.classList.add('mb-2');
+
         div.innerHTML = `
-        <input type="text" name="choices[${index}][choice_text]" class="border px-2 py-1 rounded w-64" placeholder="選択肢 ${index+1}" required>
-        <label class="ml-2">正解 <input type="checkbox" name="choices[${index}][is_correct]" value="1"></label>
-        <button type="button" class="removeChoice bg-red-400 text-white px-1 py-0.5 rounded ml-2 hover:bg-red-500 transition">削除</button>
-    `;
+            <input type="text"
+                   name="choices[${i}][choice_text]"
+                   class="border px-2 py-1 rounded w-64"
+                   value="${choice.choice_text ?? ''}"
+                   required>
+
+            <label class="ml-2">
+                正解
+                <input
+                    type="${isSingle ? 'radio' : 'checkbox'}"
+                    name="${isSingle ? 'correct_choice' : `choices[${i}][is_correct]`}"
+                    value="${i}">
+            </label>
+
+            <button type="button"
+                    class="removeChoice bg-red-400 text-white px-1 py-0.5 rounded ml-2 hover:bg-red-500">
+                削除
+            </button>
+        `;
+
         choiceInputs.appendChild(div);
-        div.querySelector('.removeChoice').addEventListener('click', () => {
+
+        // 削除
+        div.querySelector('.removeChoice').onclick = () => {
             div.remove();
-            refreshChoiceIndexes();
+            refreshIndexes();
+        };
+    }
+
+    function refreshIndexes() {
+        const type = typeSelect.value;
+        const isSingle = ['single_2', 'single_4'].includes(type);
+
+        [...choiceInputs.children].forEach((div, i) => {
+            div.querySelector('input[type="text"]').name =
+                `choices[${i}][choice_text]`;
+
+            const correctInput = div.querySelector('input[type="radio"], input[type="checkbox"]');
+
+            if (isSingle) {
+                correctInput.name = 'correct_choice';
+                correctInput.value = i;
+            } else {
+                correctInput.name = `choices[${i}][is_correct]`;
+            }
         });
     }
 
-    function refreshChoiceIndexes() {
-        Array.from(choiceInputs.children).forEach((div, i) => {
-            div.querySelector('input[name$="[choice_text]"]').name = `choices[${i}][choice_text]`;
-            div.querySelector('input[type="checkbox"]').name = `choices[${i}][is_correct]`;
-        });
-    }
-
-    // 初期表示
+    typeSelect.addEventListener('change', () => renderChoices());
     renderChoices();
-    typeSelect.addEventListener('change', renderChoices);
 </script>
+
+
 @endsection

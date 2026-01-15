@@ -33,18 +33,59 @@ class QuizQuestion extends Model
      */
     public function isCorrect($answer): bool
     {
-        // 正解選択肢を取得
-        $correctChoice = $this->choices
-            ->where('is_correct', 1)
-            ->first();
+        // 記述式
+        if ($this->type === 'text') {
+            return true;
+        }
 
-        if (!$correctChoice) {
+        $correctChoices = $this->choices->where('is_correct', true);
+
+        if ($correctChoices->isEmpty()) {
             return false;
         }
 
-        // 単一選択（radio / select）
-        return (string) $correctChoice->id === (string) $answer;
+        // ==========================
+        // 単一選択
+        // ==========================
+        if (in_array($this->type, ['single_2', 'single_4'])) {
+
+            if (!is_scalar($answer)) {
+                return false;
+            }
+
+            return (int)$correctChoices->first()->id === (int)$answer;
+        }
+
+        // ==========================
+        // 複数選択
+        // ==========================
+        if ($this->type === 'multi') {
+
+            if (!is_array($answer)) {
+                return false;
+            }
+
+            // 🔑 全部 int に揃える
+            $correctIds = $correctChoices
+                ->pluck('id')
+                ->map(fn($id) => (int)$id)
+                ->sort()
+                ->values();
+
+            $answerIds = collect($answer)
+                ->map(fn($id) => (int)$id)
+                ->sort()
+                ->values();
+
+            // 🔑 差分がなければ完全一致
+            return $correctIds->diff($answerIds)->isEmpty()
+                && $answerIds->diff($correctIds)->isEmpty();
+        }
+
+        return false;
     }
+
+
 
     protected static function booted()
     {
