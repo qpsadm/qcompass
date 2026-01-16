@@ -62,5 +62,13 @@
         {{ $students->links('pagination::tailwind') }}
     </div>
 
+    {{-- 一覧に戻るボタン --}}
+    <div class="mt-6">
+        <a href="{{ route('admin.courses.index') }}"
+            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+            一覧に戻る
+        </a>
+    </div>
+
 </div>
 @endsection
