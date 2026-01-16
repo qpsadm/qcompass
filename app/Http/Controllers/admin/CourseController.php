@@ -242,8 +242,17 @@ class CourseController extends Controller
 
     public function students(Course $course)
     {
-        $students = $course->students()->paginate(20);
-        $teachers = $course->teachers()->paginate(20);
+        // 受講生のみ取得（role_id = 3）
+        $students = $course->students()
+            ->where('role_id', 3)
+            ->with('detail')   // 状態取得用
+            ->paginate(20);
+
+        // 担当講師のみ取得（role_id = 6,7,8 など）
+        $teachers = $course->teachers()
+            ->whereIn('role_id', [6, 7, 8])
+            ->get();
+
         return view('admin.courses.students', compact('course', 'students', 'teachers'));
     }
 }
