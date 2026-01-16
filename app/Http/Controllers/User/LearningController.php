@@ -31,10 +31,11 @@ class LearningController extends Controller
 
         return view('user.learnings.learnings_list', compact('learnings', 'type'));
     }
+
     /**
      * 詳細表示
      */
-    public function show(Learning $learning)
+    public function show(Learning $learning, Request $request)
     {
         if (!$learning->is_show) {
             abort(404);
@@ -51,9 +52,15 @@ class LearningController extends Controller
             ->orderBy('id', 'asc')
             ->first();
 
-        return view('user.learnings.learnings_info', compact('learning', 'prevLearning', 'nextLearning'));
+        // クエリパラメータ type を取得
+        $type = $request->query('type');
+
+        return view('user.learnings.learnings_info', compact('learning', 'prevLearning', 'nextLearning', 'type'));
     }
 
+    /**
+     * タイプ別一覧
+     */
     public function byType(Request $request, $type)
     {
         $typeNames = [
@@ -72,6 +79,6 @@ class LearningController extends Controller
 
         $typeName = $typeNames[$type] ?? '不明';
 
-        return view('user.learnings.learnings_by_type', compact('learnings', 'typeName'));
+        return view('user.learnings.learnings_by_type', compact('learnings', 'typeName', 'type'));
     }
 }

@@ -30,9 +30,9 @@
 
     {{-- タイプ別リンク --}}
     <div class="mb-4 space-x-2">
-        <a href="{{ route('learnings.list') }}" class="btn btn-secondary">すべて</a>
+        <a href="{{ route('user.learnings.learnings_list') }}" class="btn btn-secondary">すべて</a>
         @for ($i = 1; $i <= 4; $i++)
-            <a href="{{ route('learnings.by_type', ['type' => $i]) }}" class="btn btn-secondary">
+            <a href="{{ route('user.learnings.learnings_by_type', ['type' => $i]) }}" class="btn btn-secondary">
             @switch($i)
             @case(1) 参考書籍 @break
             @case(2) 参考サイト @break
@@ -41,6 +41,7 @@
             @endswitch
             </a>
             @endfor
+
     </div>
 
     {{-- 一覧表示 --}}
@@ -48,7 +49,7 @@
         @foreach($learnings as $learning)
         <div class="learning-item mb-4 p-4 border rounded">
             <h2 class="font-bold text-xl mb-2">
-                <a href="{{ route('learnings.info', ['learning' => $learning->id]) }}">
+                <a href="{{ route('user.learnings.learnings_info', ['learning' => $learning->id]) }}">
                     {{ $learning->title }}
                 </a>
             </h2>
@@ -64,5 +65,6 @@
     <div class="mt-4">
         {{ $learnings->links() }}
     </div>
+    <x-f_bread_crumbs />
 </div>
 @endsection

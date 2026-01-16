@@ -18,7 +18,7 @@
         <div class="learning-item mb-4 p-4 border rounded hover:shadow">
             <h2 class="font-bold text-xl mb-2">
                 {{-- 詳細ページへのリンクを正しいルート名に修正 --}}
-                <a href="{{ route('user.learnings.learnings_info', ['learning' => $learning->id]) }}">
+                <a href="{{ route('user.learnings.learnings_info', ['learning' => $learning->id, 'type' => $type]) }}">
                     {{ $learning->title }}
                 </a>
             </h2>
@@ -36,11 +36,6 @@
     <div class="mt-4">
         {{ $learnings->links() }}
     </div>
-
-    {{-- 一覧ページに戻るリンク --}}
-    <div class="mt-4">
-        <a href="{{ route('user.learnings.learnings_list') }}" class="btn btn-secondary">全件一覧に戻る</a>
-    </div>
-
+    <x-f_bread_crumbs />
 </div>
 @endsection

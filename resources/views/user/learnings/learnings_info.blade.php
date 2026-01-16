@@ -62,10 +62,12 @@
 
     </div>
 
-    {{-- 前後ボタン --}}
+    {{-- 前後ボタン & 一覧に戻る --}}
     @php
-    $prevUrl = $prevLearning ?? null ? route('user.learnings.info', ['learning' => $prevLearning->id]) : null;
-    $nextUrl = $nextLearning ?? null ? route('user.learnings.info', ['learning' => $nextLearning->id]) : null;
+    $prevUrl = $prevLearning ? route('user.learnings.learnings_info', ['learning' => $prevLearning->id, 'type' => $type ?? null]) : null;
+    $nextUrl = $nextLearning ? route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $type ?? null]) : null;
+    $listUrl = $type ? route('user.learnings.learnings_by_type', ['type' => $type]) : route('user.learnings.learnings_list');
+    $listLabel = $type ? ($typeName ?? '一覧').'に戻る' : '全件一覧に戻る';
     @endphp
 
     <x-f_btn_list
@@ -74,8 +76,8 @@
         :prevUrl="$prevUrl"
         :nextUrl="$nextUrl"
         :listBtn="true"
-        listUrl="{{ route('user.learnings.list') }}"
-        listLabel="一覧へもどる" />
+        :listUrl="$listUrl"
+        :listLabel="$listLabel" />
 
     {{-- パンくず --}}
     <x-f_bread_crumbs />
