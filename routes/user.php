@@ -25,6 +25,7 @@ use App\Http\Controllers\User\{
     MypageController,
     MyCourseController,
     TeacherController,
+    LearningController,
 };
 
 Route::middleware(['auth', 'no-cache'])
@@ -174,6 +175,25 @@ Route::middleware(['auth', 'no-cache'])
             Route::post('/memo/save', [MypageController::class, 'saveMemo'])
                 ->name('memo.save');
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | learnings
+        |--------------------------------------------------------------------------
+        */
+        // 学習リソース関連
+        // タイプ別学習リソース一覧
+        Route::get('/learnings/type/{type}', [LearningController::class, 'byType'])
+            ->name('learnings.learnings_by_type');
+
+        // 詳細ページ
+        Route::get('/learnings/learnings_info/{learning}', [LearningController::class, 'show'])
+            ->name('learnings.learnings_info');
+
+        // 全件一覧
+        Route::get('/learnings', [LearningController::class, 'index'])
+            ->name('learnings.learnings_list');
+
 
         /*
         |--------------------------------------------------------------------------
