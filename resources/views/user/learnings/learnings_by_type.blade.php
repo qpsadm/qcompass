@@ -1,41 +1,38 @@
 @extends('layouts.f_layout')
 
-@section('title', $typeName . '一覧')
-
-@section('code-page-css')
-<link rel="stylesheet" href="{{ asset('assets/css/f_learnings.css') }}">
-@endsection
+@section('title', $breadcrumbTitle . '一覧')
 
 @section('main-content')
 <div class="container">
 
-    {{-- ページタイトル --}}
-    <x-f_page_title :search="true" title="{{ $typeName }}一覧" />
+    <div class="bread-crumbs">
+        {{ Breadcrumbs::render('auto') }}
+    </div>
 
-    {{-- タイプ別学習リソース --}}
-    <div class="learnings-list mt-4">
-        @forelse($learnings as $learning)
-        <div class="learning-item mb-4 p-4 border rounded hover:shadow">
-            <h2 class="font-bold text-xl mb-2">
-                {{-- 詳細ページへのリンクを正しいルート名に修正 --}}
-                <a href="{{ route('user.learnings.learnings_info', ['learning' => $learning->id, 'type' => $type]) }}">
-                    {{ $learning->title }}
-                </a>
-            </h2>
-            <p>{{ Str::limit($learning->description, 100) }}</p>
-            @if($learning->tag)
-            <span class="text-sm text-gray-500">{{ $learning->tag->name }}</span>
-            @endif
+    <x-f_page_title :search="true" title="{{ $breadcrumbTitle }}一覧" />
+
+    <div class="mb-4 space-x-2">
+        <a href="{{ route('user.learnings.learnings_list') }}" class="btn btn-secondary">すべて</a>
+        @for ($i = 1; $i <= 4; $i++)
+            <a href="{{ route('user.learnings.learnings_by_type', ['type' => $i]) }}" class="btn btn-secondary">
+            @switch($i)
+            @case(1) 参考書籍 @break
+            @case(2) 参考サイト @break
+            @case(3) IT資格 @break
+            @case(4) 製作品 @break
+            @endswitch
+            </a>
+            @endfor
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @foreach($learnings as $item)
+        <div class="card p-4 border rounded">
+            <h3 class="font-bold">{{ $item->title }}</h3>
+            <p>{{ Str::limit($item->description, 100) }}</p>
+            <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $type]) }}" class="text-blue-500">詳細を見る</a>
         </div>
-        @empty
-        <p>このタイプの学習リソースはまだ登録されていません。</p>
-        @endforelse
+        @endforeach
     </div>
-
-    {{-- ページネーション --}}
-    <div class="mt-4">
-        {{ $learnings->links() }}
-    </div>
-    <x-f_bread_crumbs />
 </div>
 @endsection

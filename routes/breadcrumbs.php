@@ -8,9 +8,7 @@ use Carbon\Carbon;
 |--------------------------------------------------------------------------
 | Auto Breadcrumb
 |--------------------------------------------------------------------------
-|
 | 全ルート共通の自動パンくず生成
-|
 */
 
 Breadcrumbs::for('auto', function (Trail $trail) {
@@ -28,26 +26,17 @@ Breadcrumbs::for('auto', function (Trail $trail) {
 
     $parents = config('breadcrumbs.parents', []);
 
-    /*
-    |--------------------------------------------------------------------------
-    | 親パンくず（安全ガード付き）
-    |--------------------------------------------------------------------------
-    */
+    // 親パンくず（安全ガード付き）
     if (isset($parents[$routeName])) {
-
         $parentRoute = $parents[$routeName];
-
-        // 親ルート定義取得
         $routeObj = app('router')->getRoutes()->getByName($parentRoute);
         $requiredParams = $routeObj?->parameterNames() ?? [];
 
-        // 必要なパラメータだけ抽出
         $parentParams = array_intersect_key(
             $params,
             array_flip($requiredParams)
         );
 
-        // パラメータが全て揃っている場合のみ表示
         if (count($requiredParams) === count($parentParams)) {
             $trail->push(
                 breadcrumb_label($parentRoute, $params),
@@ -58,14 +47,42 @@ Breadcrumbs::for('auto', function (Trail $trail) {
 
     /*
     |--------------------------------------------------------------------------
-    | 現在ページ
+    | Learning詳細ページならタイプを親に追加
     |--------------------------------------------------------------------------
     */
+    if ($routeName === 'user.learnings.learnings_info') {
+        $type = $params['type'] ?? request()->query('type') ?? null;
+        if ($type) {
+            $trail->push(
+                breadcrumb_type_label($type),
+                route('user.learnings.learnings_by_type', ['type' => $type])
+            );
+        }
+    }
+
+    // 現在ページ
     $trail->push(
         breadcrumb_label($routeName, $params),
         route($routeName, $params)
     );
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| タイプリストラベル
+|--------------------------------------------------------------------------
+*/
+function breadcrumb_type_label($type)
+{
+    return match ((int)$type) {
+        1 => '参考書籍',
+        2 => '参考サイト',
+        3 => 'IT資格',
+        4 => '製作品',
+        default => '学習リソース',
+    };
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +110,18 @@ function breadcrumb_label(string $routeName, array $params = [])
             return '日報詳細（' . Carbon::parse($report->date)->format('Y-m-d') . '）';
         }
         return $report->title ?? '日報詳細';
+    }
+
+    // Learning タイプ別一覧
+    if ($routeName === 'user.learnings.learnings_by_type') {
+        $type = $params['type'] ?? null;
+        return breadcrumb_type_label($type);
+    }
+
+    // Learning詳細
+    if ($routeName === 'user.learnings.learnings_info') {
+        $learning = request()->route('learning');
+        return $learning?->title ?? '学習リソース詳細';
     }
 
     // アジェンダ詳細
@@ -123,7 +152,7 @@ function breadcrumb_label(string $routeName, array $params = [])
         return '質疑応答';
     }
 
-    // config ラベル
+    // configラベル
     $labels = config('breadcrumbs.labels', []);
     if (array_key_exists($routeName, $labels)) {
         return $labels[$routeName] ?? '';

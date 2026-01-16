@@ -181,18 +181,11 @@ Route::middleware(['auth', 'no-cache'])
         | learnings
         |--------------------------------------------------------------------------
         */
-        // 学習リソース関連
-        // タイプ別学習リソース一覧
-        Route::get('/learnings/type/{type}', [LearningController::class, 'byType'])
-            ->name('learnings.learnings_by_type');
-
-        // 詳細ページ
-        Route::get('/learnings/learnings_info/{learning}', [LearningController::class, 'show'])
-            ->name('learnings.learnings_info');
-
-        // 全件一覧
-        Route::get('/learnings', [LearningController::class, 'index'])
-            ->name('learnings.learnings_list');
+        Route::prefix('learnings')->name('learnings.')->group(function () {
+            Route::get('/', [LearningController::class, 'index'])->name('learnings_list');
+            Route::get('/type/{type}', [LearningController::class, 'byType'])->name('learnings_by_type');
+            Route::get('/learnings_info/{learning}', [LearningController::class, 'show'])->name('learnings_info');
+        });
 
 
         /*
