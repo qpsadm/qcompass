@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.list-container {
+    max-width: 1000px;
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
