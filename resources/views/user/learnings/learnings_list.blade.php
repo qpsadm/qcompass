@@ -5,13 +5,6 @@
 @section('main-content')
 <div class="container">
 
-    {{-- パンくず --}}
-    <x-f_breadcrumb
-        :items="[
-            ['label' => 'TOP', 'url' => route('user.top')],
-            ['label' => '学習支援']
-        ]" />
-
     {{-- ページタイトル --}}
     <x-f_page_title :search="true" title="学習支援一覧" />
 
@@ -41,5 +34,11 @@
         @endforeach
     </ul>
 
+    {{-- パンくず --}}
+    <x-f_breadcrumb
+        :items="[
+            ['label' => 'TOP', 'url' => route('user.top')],
+            ['label' => '学習支援']
+        ]" />
 </div>
 @endsection

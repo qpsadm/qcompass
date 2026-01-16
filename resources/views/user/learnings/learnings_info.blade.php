@@ -5,10 +5,6 @@
 @section('main-content')
 <div class="container">
 
-    <div class="bread-crumbs">
-        {{ Breadcrumbs::render('auto') }}
-    </div>
-
     <x-f_page_title :search="false" title="{{ $learning->title }}" />
 
     <div class="page-content my-4">
@@ -33,6 +29,9 @@
             <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $type]) }}" class="btn btn-primary">次へ</a>
             @endif
         </div>
+    </div>
+    <div class="bread-crumbs">
+        {{ Breadcrumbs::render('auto') }}
     </div>
 </div>
 @endsection

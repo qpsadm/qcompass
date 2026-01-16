@@ -5,10 +5,6 @@
 @section('main-content')
 <div class="container">
 
-    <div class="bread-crumbs">
-        {{ Breadcrumbs::render('auto') }}
-    </div>
-
     <x-f_page_title :search="true" title="{{ $breadcrumbTitle }}一覧" />
 
     <div class="mb-4 space-x-2">
@@ -33,6 +29,10 @@
             <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $type]) }}" class="text-blue-500">詳細を見る</a>
         </div>
         @endforeach
+    </div>
+
+    <div class="bread-crumbs">
+        {{ Breadcrumbs::render('auto') }}
     </div>
 </div>
 @endsection
