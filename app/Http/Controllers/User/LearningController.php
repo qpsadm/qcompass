@@ -14,7 +14,7 @@ class LearningController extends Controller
     {
         $learnings = Learning::where('is_show', 1)
             ->orderBy('id', 'asc')
-            ->paginate(10)       // ページネーション対応
+            ->paginate(5)       // ページネーション対応
             ->withQueryString();  // クエリ保持
 
         $breadcrumbTitle = '学習リソース';
@@ -58,7 +58,7 @@ class LearningController extends Controller
                 $q->where('tag_id', $currentTag);
             })
             ->orderBy('id', 'asc')
-            ->paginate(10)        // ページネーション10件ずつ
+            ->paginate(5)        // ページネーション10件ずつ
             ->withQueryString();   // ?tag=3 などを維持
 
         // Breadcrumb 用タイトル
