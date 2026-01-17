@@ -8,6 +8,7 @@ use App\Models\AgendaFile;
 use App\Models\Agenda;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AgendaFileController extends Controller
 {
@@ -30,7 +31,6 @@ class AgendaFileController extends Controller
         return $type === 'agenda' ? \App\Models\Agenda::class : \App\Models\Announcement::class;
     }
 
-
     public function create(string $type, $targetId = null)
     {
         $targets = match ($type) {
@@ -42,7 +42,14 @@ class AgendaFileController extends Controller
         $target = $targetId ? $targets->firstWhere('id', $targetId) : null;
         $returnUrl = request('return') ?? url()->previous();
 
-        return view('admin.files.create', compact('type', 'targets', 'target', 'returnUrl'));
+        // 次のファイル番号取得
+        $count = DB::table('files_counts')->value('count') ?? 0;
+        $nextNumber = $count + 1;
+
+        // Blade では拡張子はアップロード時に決まるので仮に空にしておく
+        $defaultFileName = 'f' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+        return view('admin.files.create', compact('type', 'targets', 'target', 'returnUrl', 'defaultFileName'));
     }
 
     public function store(Request $request, string $type, $targetId)
@@ -56,25 +63,45 @@ class AgendaFileController extends Controller
         ]);
 
         $file = $request->file('file_path');
-        $filename = $validated['file_name'] ?? $file->getClientOriginalName();
-        $targetClass = $type === 'agenda' ? Agenda::class : Announcement::class;
 
+        // 拡張子取得
+        $ext = $file->getClientOriginalExtension();
+
+        // 次のファイル番号取得（念のため再取得して衝突防止）
+        $count = DB::table('files_counts')->value('count') ?? 0;
+        $nextNumber = $count + 1;
+
+        // ファイル名生成
+        $baseName = $validated['file_name']
+            ? pathinfo($validated['file_name'], PATHINFO_FILENAME)
+            : 'f' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+        $filename = $baseName . '.' . $ext;
+
+        $targetClass = $type === 'agenda' ? Agenda::class : Announcement::class;
         $path = $file->storeAs('files', $filename, 'public');
 
         AgendaFile::create([
-            'target_id'        => $validated['target_id'],
-            'target_type'      => $targetClass,
-            'file_path'        => $path,
-            'file_name'        => $filename,
-            'file_type'        => $file->getMimeType(),
-            'file_size'        => $file->getSize(),
-            'description'      => $validated['description'] ?? null,
+            'target_id'         => $validated['target_id'],
+            'target_type'       => $targetClass,
+            'file_path'         => $path,
+            'file_name'         => $filename,
+            'file_type'         => $file->getMimeType(),
+            'file_size'         => $file->getSize(),
+            'description'       => $validated['description'] ?? null,
             'created_user_name' => auth()->user()->name,
         ]);
+
+        // files_counts インクリメント
+        DB::table('files_counts')->updateOrInsert(
+            ['id' => 1], // 1行だけ管理
+            ['count' => DB::raw('count + 1')]
+        );
 
         return redirect($validated['return'] ?? route("admin.{$type}s.edit", $validated['target_id']))
             ->with('success', 'ファイルを保存しました');
     }
+
+
 
     public function edit(string $type, int $id)
     {

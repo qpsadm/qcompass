@@ -32,10 +32,11 @@
 
         {{-- 新規作成 --}}
         <a href="{{ route('admin.announcements.create') }}"
-            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition">
+            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
             <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
-            新規作成
+            <span>新規作成</span>
         </a>
+
 
         {{-- 絞り込み --}}
         <form method="GET" action="{{ route('admin.announcements.index') }}"
