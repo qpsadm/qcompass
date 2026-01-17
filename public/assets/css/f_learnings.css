@@ -12,6 +12,9 @@
 .learning-container {
     display: flex;
     gap: 30px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px dashed #000;
 }
 
 .container-left {
@@ -30,10 +33,20 @@
 }
 
 .learning-title {
+    margin-bottom: 30px;
     font-size: 23px;
     font-weight: 500;
 }
 
+.learning-description {
+    margin-bottom: 25px;
+}
+
 .learning-img {
     width: 250px;
+}
+
+.learning-url {
+    color: var(--accent-color);
+    text-decoration: underline;
 }

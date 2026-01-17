@@ -66,7 +66,6 @@
 
                 <h3 class="learning-title">{{ $item->title }}</h3>
 
-
                 <p class="learning-description">
                     {!! nl2br(e($item->description)) !!}
                 </p>
