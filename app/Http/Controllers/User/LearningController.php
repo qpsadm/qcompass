@@ -14,7 +14,8 @@ class LearningController extends Controller
     {
         $learnings = Learning::where('is_show', 1)
             ->orderBy('id', 'asc')
-            ->get();
+            ->paginate(10)       // ページネーション対応
+            ->withQueryString();  // クエリ保持
 
         $breadcrumbTitle = '学習リソース';
 
@@ -50,14 +51,15 @@ class LearningController extends Controller
             ->groupBy('tag_id')
             ->pluck('count', 'tag_id');
 
-        // 学習コンテンツ取得（タグ絞り込み）
+        // 学習コンテンツ取得（タグ絞り込み） ← paginate に変更
         $learnings = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->when($currentTag !== 'all', function ($q) use ($currentTag) {
                 $q->where('tag_id', $currentTag);
             })
             ->orderBy('id', 'asc')
-            ->get();
+            ->paginate(10)        // ページネーション10件ずつ
+            ->withQueryString();   // ?tag=3 などを維持
 
         // Breadcrumb 用タイトル
         $breadcrumbTitle = match ($typeId) {
