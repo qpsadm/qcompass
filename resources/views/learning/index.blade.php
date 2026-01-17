@@ -100,11 +100,9 @@ $tagLabels = [
                     </td>
 
                     <td class="border px-4 py-2 text-center">
-                        @if ($learning->is_visible)
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
-                        @else
-                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
-                        @endif
+                        <span class="px-2 py-1 {{ $learning->is_visible ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700' }} rounded-full text-xs">
+                            {{ $learning->visible_label }}
+                        </span>
                     </td>
                 </tr>
                 @empty

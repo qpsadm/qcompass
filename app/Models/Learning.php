@@ -60,4 +60,12 @@ class Learning extends Model
     {
         return (bool) $this->is_show;
     }
+    /**
+     * 表示文言を統一
+     * $learning->visible_label
+     */
+    public function getVisibleLabelAttribute(): string
+    {
+        return $this->is_visible ? '表示' : '非表示';
+    }
 }
