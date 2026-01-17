@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('layouts.f_layout')
 
 @section('title', $breadcrumbTitle . '一覧')
@@ -67,7 +71,7 @@
                 <h3 class="learning-title">{{ $item->title }}</h3>
 
                 <p class="learning-description">
-                    {!! nl2br(e($item->description)) !!}
+                    {!! nl2br(e(Str::limit($item->description, 50))) !!}
                 </p>
 
                 {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
