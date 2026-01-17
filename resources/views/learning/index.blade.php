@@ -1,3 +1,13 @@
+@php
+$tagLabels = [
+1 => 'WEB制作',
+2 => 'WEBデザイン',
+3 => 'プログラミング',
+4 => 'OA',
+5 => 'その他',
+];
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -86,7 +96,7 @@
                     </td>
 
                     <td class="border px-4 py-2">
-                        {{ $learning->tag->name ?? '-' }}
+                        {{ $tagLabels[$learning->tag_id] ?? '-' }}
                     </td>
 
                     <td class="border px-4 py-2 text-center">
@@ -112,7 +122,6 @@
             {{ $learnings->links() }}
         </div>
     </div>
-    ```
 
 </div>
 

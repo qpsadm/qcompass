@@ -1,7 +1,5 @@
 <?php
 
-// Learning.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,16 +21,42 @@ class Learning extends Model
         'tag_id',
     ];
 
-    // Tagとのリレーション
+    /**
+     * JSON / Blade で使うアクセサを自動追加
+     */
+    protected $appends = [
+        'type_label',
+        'is_visible',
+    ];
+
+    /**
+     * タグとのリレーション
+     */
     public function tag()
     {
-        return $this->belongsTo(Tag::class);  // `tag_id` で `Tag` モデルと関連づけ
+        return $this->belongsTo(Tag::class);
     }
 
     /**
-     * Blade 側で $learning->is_visible としてアクセスできるようにする
+     * 種類ラベル（一覧表示用）
+     * $learning->type_label
      */
-    public function getIsVisibleAttribute()
+    public function getTypeLabelAttribute(): string
+    {
+        return match ($this->type) {
+            'book'    => '本',
+            'site'    => 'サイト',
+            'video'   => '動画',
+            'article' => '記事',
+            default   => '-',
+        };
+    }
+
+    /**
+     * 表示フラグ
+     * $learning->is_visible
+     */
+    public function getIsVisibleAttribute(): bool
     {
         return (bool) $this->is_show;
     }
