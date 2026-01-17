@@ -70,9 +70,10 @@
             <p><strong>タグ:</strong> {{ $item->tag->name ?? '未設定' }}</p>
 
             <p><strong>レベル:</strong> {{ $item->level }}</p>
+            @if($currentTypeId == 4)
             <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
             <p><strong>制作期間:</strong> {{ $item->priod }}</p>
-
+            @endif
             @if($item->url)
             <p><strong>URL:</strong>
                 <a href="{{ $item->url }}" target="_blank" class="text-blue-500">{{ $item->url }}</a>
