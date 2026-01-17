@@ -7,69 +7,98 @@
 
     <x-f_page_title :search="true" title="{{ $breadcrumbTitle }}一覧" />
 
-    <div class="mb-4 space-x-2">
-        <a href="{{ route('user.learnings.learnings_list') }}" class="btn btn-secondary">すべて</a>
-        @for ($i = 1; $i <= 4; $i++)
-            <a href="{{ route('user.learnings.learnings_by_type', ['type' => $i]) }}" class="btn btn-secondary">
-            @switch($i)
-            @case(1) 参考書籍 @break
-            @case(2) 参考サイト @break
-            @case(3) IT資格 @break
-            @case(4) 製作品 @break
-            @endswitch
-            </a>
-            @endfor
+    @php
+    // 表示用（UIには出さない）
+    $categories = [
+    1 => '参考書籍',
+    2 => '参考サイト',
+    3 => 'IT資格',
+    4 => '製作品',
+    5 => 'その他',
+    ];
+
+    // タグ（UIで使用）
+    $tags = [
+    'all' => 'すべて',
+    1 => 'WEB制作',
+    2 => 'WEBデザイン',
+    3 => 'プログラミング',
+    4 => 'OA',
+    5 => 'その他',
+    ];
+
+    $currentTag = request('tag', 'all');
+    @endphp
+
+    {{-- =======================
+         タグメニューのみ表示
+    ======================= --}}
+    <div class="category-menu mb-6">
+        <ul>
+            <li class="{{ $currentTag === 'all' ? 'active' : '' }}">
+                <a href="{{ url()->current() }}">
+                    すべて ({{ $allCount ?? $learnings->count() }})
+                </a>
+            </li>
+
+            @foreach ($tags as $key => $label)
+            @if ($key === 'all') @continue @endif
+
+            <li class="{{ (string)$currentTag === (string)$key ? 'active' : '' }}">
+                <a href="{{ url()->current() }}?tag={{ $key }}">
+                    {{ $label }} ({{ $tagCounts[$key] ?? 0 }})
+                </a>
+            </li>
+            @endforeach
+        </ul>
     </div>
 
+    {{-- =======================
+         一覧表示
+    ======================= --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        @foreach($learnings as $item)
+        @forelse($learnings as $item)
         <div class="card p-4 border rounded shadow-sm">
+
             <h3 class="font-bold text-lg mb-2">{{ $item->title }}</h3>
 
             @if($item->image)
-            <img src="{{ asset('storage/' . $item->image) }}" alt="画像" class="w-full h-40 object-cover mb-2">
+            <img src="{{ asset('storage/' . $item->image) }}"
+                class="w-full h-40 object-cover mb-2">
             @endif
 
             <p class="text-gray-700 mb-2">{{ $item->description }}</p>
 
-            <p><strong>種別:</strong>
-                @switch($item->type)
-                @case(1) 参考書籍 @break
-                @case(2) 参考サイト @break
-                @case(3) IT資格 @break
-                @case(4) 製作品 @break
-                @endswitch
-            </p>
-
-            <p><strong>タグID:</strong> {{ $item->tag_id }}</p>
+            <p><strong>種別:</strong> {{ $categories[$item->type] ?? '未分類' }}</p>
+            <p><strong>タグ:</strong> {{ $tags[$item->tag_id] ?? '未設定' }}</p>
             <p><strong>レベル:</strong> {{ $item->level }}</p>
             <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
             <p><strong>制作期間:</strong> {{ $item->priod }}</p>
-            <p><strong>表示:</strong> {{ $item->is_show ? '表示' : '非表示' }}</p>
-            <p><strong>URL:</strong>
-                @if($item->url)
-                <a href="{{ $item->url }}" target="_blank" class="text-blue-500">{{ $item->url }}</a>
-                @endif
+
+            @if($item->url)
+            <p>
+                <strong>URL:</strong>
+                <a href="{{ $item->url }}" target="_blank" class="text-blue-500">
+                    {{ $item->url }}
+                </a>
             </p>
-            <p><strong>作成日時:</strong> {{ $item->created_at }}</p>
-            <p><strong>更新日時:</strong> {{ $item->updated_at }}</p>
-            <p><strong>削除日時:</strong> {{ $item->deleted_at }}</p>
-            <p><strong>作成者:</strong> {{ $item->created_user_name }}</p>
-            <p><strong>更新者:</strong> {{ $item->updated_user_name }}</p>
-            <p><strong>削除者:</strong> {{ $item->deleted_user_name }}</p>
+            @endif
 
             @if($item->type == 4)
-            <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => 4]) }}" class="text-blue-500 mt-2 inline-block">
+            <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => 4]) }}"
+                class="text-blue-500 mt-2 inline-block">
                 詳細を見る
             </a>
             @endif
-
         </div>
-        @endforeach
+        @empty
+        <p class="text-gray-500">該当するデータがありません。</p>
+        @endforelse
     </div>
 
     <div class="bread-crumbs mt-4">
         {{ Breadcrumbs::render('auto') }}
     </div>
+
 </div>
 @endsection
