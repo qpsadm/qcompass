@@ -5,65 +5,119 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Learning;
+use Illuminate\Support\Facades\DB;
 
 class LearningController extends Controller
 {
     // 全件一覧
     public function index()
     {
-        $learnings = Learning::where('is_show', 1)->orderBy('id', 'asc')->get();
+        $learnings = Learning::where('is_show', 1)
+            ->orderBy('id', 'asc')
+            ->get();
+
         $breadcrumbTitle = '学習リソース';
 
         return view('user.learnings.learnings_list', compact('learnings', 'breadcrumbTitle'));
     }
 
-    // タイプ別一覧
+    // タイプ別一覧（タグ絞り込み対応）
     public function byType($type)
     {
+        $typeMap = [
+            1 => 'book',
+            2 => 'site',
+            3 => 'video',
+            4 => 'article', // 製作品
+            5 => 'other',
+        ];
+
+        $typeId = (int)$type;
+        if (!isset($typeMap[$typeId])) abort(404);
+
+        $typeString = $typeMap[$typeId];
+        $currentTag = request('tag', 'all');
+
+        // 総件数（タグ絞り込み前）
+        $allCount = Learning::where('is_show', 1)
+            ->where('type', $typeString)
+            ->count();
+
+        // タグ件数（タグごとの件数）
+        $tagCounts = Learning::where('is_show', 1)
+            ->where('type', $typeString)
+            ->select('tag_id', DB::raw('count(*) as count'))
+            ->groupBy('tag_id')
+            ->pluck('count', 'tag_id');
+
+        // 学習コンテンツ取得（タグ絞り込み）
         $learnings = Learning::where('is_show', 1)
-            ->where('type', $type)
+            ->where('type', $typeString)
+            ->when($currentTag !== 'all', function ($q) use ($currentTag) {
+                $q->where('tag_id', $currentTag);
+            })
             ->orderBy('id', 'asc')
             ->get();
 
-        $breadcrumbTitle = match ((int)$type) {
+        // Breadcrumb 用タイトル
+        $breadcrumbTitle = match ($typeId) {
             1 => '参考書籍',
             2 => '参考サイト',
             3 => 'IT資格',
             4 => '製作品',
+            5 => 'その他',
             default => '学習リソース',
         };
 
-        return view('user.learnings.learnings_by_type', compact('learnings', 'type', 'breadcrumbTitle'));
+        return view('user.learnings.learnings_by_type', compact(
+            'learnings',
+            'typeId',
+            'breadcrumbTitle',
+            'tagCounts',
+            'currentTag',
+            'allCount'
+        ));
     }
 
-    // 詳細
+    // 詳細ページ
     public function show(Learning $learning, Request $request)
     {
-        $type = $request->query('type');
+        $typeId = (int) $request->query('type');
+
+        $typeMap = [
+            1 => 'book',
+            2 => 'site',
+            3 => 'video',
+            4 => 'article',
+            5 => 'other',
+        ];
+
+        $typeString = $typeMap[$typeId] ?? null;
 
         $prevLearning = Learning::where('is_show', 1)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($typeString, fn($q) => $q->where('type', $typeString))
             ->where('id', '<', $learning->id)
             ->orderBy('id', 'desc')
             ->first();
 
         $nextLearning = Learning::where('is_show', 1)
-            ->when($type, fn($q) => $q->where('type', $type))
+            ->when($typeString, fn($q) => $q->where('type', $typeString))
             ->where('id', '>', $learning->id)
             ->orderBy('id', 'asc')
             ->first();
 
-        $breadcrumbTitle = match ((int)$type) {
+        $breadcrumbTitle = match ($typeId) {
             1 => '参考書籍',
             2 => '参考サイト',
             3 => 'IT資格',
             4 => '製作品',
+            5 => 'その他',
             default => '学習リソース',
         };
 
         return view('user.learnings.learnings_info', compact(
             'learning',
-            'type',
+            'typeId',
             'prevLearning',
             'nextLearning',
             'breadcrumbTitle'
