@@ -2,9 +2,27 @@
 
 @section('content')
 <div class="container mx-auto p-4 max-w-5xl">
+
     <h1 class="text-3xl font-bold mb-6">求人票編集：{{ $job_offer->title ?? '新規作成' }}</h1>
 
-    <form action="{{ route('admin.job_offers.update', $job_offer->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.job_offers.update', $job_offer->id) }}" method="POST" enctype="multipart/form-data"
+        x-data="{
+            description: $refs.descriptionTextarea.value,
+            previewWindow: null,
+            openPreview() {
+                if (!this.previewWindow || this.previewWindow.closed) {
+                    this.previewWindow = window.open('', 'preview', 'width=800,height=600');
+                    this.previewWindow.document.head.innerHTML = '<style>body{font-family:sans-serif;padding:1rem;} a{color:blue;text-decoration:underline;} p{margin-bottom:1em;}</style>';
+                }
+                this.updatePreview();
+            },
+            updatePreview() {
+                if (this.previewWindow && !this.previewWindow.closed) {
+                    this.previewWindow.document.body.innerHTML = this.description;
+                }
+            }
+        }"
+        x-init="$watch('description', value => updatePreview());">
         @csrf
         @method('PUT')
 
@@ -23,8 +41,16 @@
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">説明文</th>
                     <td class="px-4 py-2">
-                        <textarea name="description" class="border rounded px-3 py-2 w-full">{{ old('description', $job_offer->description ?? '') }}</textarea>
+                        <textarea x-ref="descriptionTextarea" x-model="description" name="description"
+                            class="border rounded px-3 py-2 w-full" rows="8">{{ old('description', $job_offer->description ?? '') }}</textarea>
                         @error('description')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+
+                        {{-- プレビューボタンは textarea のすぐ下 --}}
+                        <div class="mt-2">
+                            <button type="button" @click="openPreview()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                                プレビューを別ウィンドウで開く
+                            </button>
+                        </div>
                     </td>
                 </tr>
 
@@ -40,7 +66,7 @@
                     </td>
                 </tr>
 
-                {{-- 表示開始日時 / 終了日時 --}}
+                {{-- 表示期間 --}}
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示期間</th>
                     <td class="px-4 py-2 flex gap-2 items-center">
@@ -53,8 +79,8 @@
                 {{-- 表示フラグ --}}
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
-                    <td class="px-4 py-2" x-data="{ is_show: Number('{{ old('is_show', $job_offer->is_show ?? 1) }}') }">
-                        <div class="flex gap-2">
+                    <td class="px-4 py-2">
+                        <div x-data="{ is_show: Number('{{ old('is_show', $job_offer->is_show ?? 1) }}') }" class="flex gap-2">
                             <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
                                 <input type="radio" name="is_show" :value="1" class="hidden" x-model="is_show">
                                 公開
@@ -66,14 +92,15 @@
                         </div>
                     </td>
                 </tr>
-
             </tbody>
         </table>
 
+        {{-- フォーム操作ボタン --}}
         <div class="mt-6 flex gap-3">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">更新する</button>
             <a href="{{ route('admin.job_offers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
         </div>
+
     </form>
 
     {{-- 危険操作ゾーン --}}
@@ -106,5 +133,6 @@
             display: none !important;
         }
     </style>
+
 </div>
 @endsection
