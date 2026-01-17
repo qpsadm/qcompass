@@ -15,7 +15,8 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.learnings.update', $learning->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.learnings.update', $learning->id) }}" method="POST" enctype="multipart/form-data"
+            x-data="{ type: '{{ old('type', $learning->type) }}', is_show: {{ old('is_show', $learning->is_show ?? 1) }} }">
             @csrf
             @method('PUT')
 
@@ -40,7 +41,7 @@
             {{-- 種別 --}}
             <div class="mb-4">
                 <label class="block font-medium mb-1">種類 <span class="text-red-500">*</span></label>
-                <select name="type" class="border px-3 py-2 w-full rounded" required>
+                <select name="type" class="border px-3 py-2 w-full rounded" required x-model="type">
                     <option value="">選択してください</option>
                     @foreach ($types as $value => $label)
                     <option value="{{ $value }}" {{ old('type', $learning->type) == $value ? 'selected' : '' }}>{{ $label }}</option>
@@ -86,7 +87,7 @@
 
             {{-- タグ --}}
             <div class="mb-4">
-                <label class="block font-medium mb-1">タグ<span class="text-red-500">*</span></label>
+                <label class="block font-medium mb-1">タグ <span class="text-red-500">*</span></label>
                 <div class="flex flex-wrap gap-4">
                     @foreach ($tags as $id => $label)
                     <label class="inline-flex items-center gap-1">
@@ -97,20 +98,20 @@
                 </div>
             </div>
 
-            {{-- 訓練科名 --}}
-            <div class="mb-4">
+            {{-- 訓練科名（製作品のみ表示） --}}
+            <div class="mb-4" x-show="type === 'article'">
                 <label class="block font-medium mb-1">訓練科名</label>
                 <input type="text" name="course_name" class="border px-3 py-2 w-full rounded" value="{{ old('course_name', $learning->course_name) }}">
             </div>
 
-            {{-- 制作期間 --}}
-            <div class="mb-4">
+            {{-- 制作期間（製作品のみ表示） --}}
+            <div class="mb-4" x-show="type === 'article'">
                 <label class="block font-medium mb-1">制作期間</label>
                 <input type="text" name="priod" class="border px-3 py-2 w-full rounded" value="{{ old('priod', $learning->priod) }}">
             </div>
 
             {{-- 表示 --}}
-            <div class="mb-4" x-data="{ is_show: {{ old('is_show', $learning->is_show ?? 1) }} }">
+            <div class="mb-4">
                 <label class="block font-medium mb-1">表示状態</label>
                 <div class="inline-flex gap-2">
                     <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-2 rounded cursor-pointer">
@@ -122,6 +123,7 @@
                 </div>
             </div>
 
+            {{-- ボタン --}}
             <div class="flex gap-4 mt-6">
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">更新</button>
                 <a href="{{ route('admin.learnings.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
