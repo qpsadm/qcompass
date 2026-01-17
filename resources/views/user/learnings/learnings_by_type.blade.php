@@ -69,6 +69,7 @@
             <p><strong>タグ:</strong> {{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
 
             <p><strong>レベル:</strong> {{ $item->level }}</p>
+
             @if($currentTypeId == 4)
             <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
             <p><strong>制作期間:</strong> {{ $item->priod }}</p>

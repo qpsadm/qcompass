@@ -29,9 +29,9 @@ use App\Http\Controllers\Admin\{
     AchievementsReleaseController,
     UserDetailController,
     QuizResultController,
+    LearningController,
 };
 use App\Http\Controllers\{
-    LearningController,
     CertificationController,
     JobOfferController,
 };

@@ -14,19 +14,19 @@
     <div class="flex justify-between mt-6">
         <div>
             @if($prevLearning)
-            <a href="{{ route('user.learnings.learnings_info', ['learning' => $prevLearning->id, 'type' => $type]) }}" class="btn btn-primary">前へ</a>
+            <a href="{{ route('user.learnings.learnings_info', ['learning' => $prevLearning->id, 'type' => $typeId]) }}" class="btn btn-primary">前へ</a>
             @endif
         </div>
 
         <div>
-            <a href="{{ $type ? route('user.learnings.learnings_by_type', ['type' => $type]) : route('user.learnings.learnings_list') }}" class="btn btn-secondary">
+            <a href="{{ $typeId ? route('user.learnings.learnings_by_type', ['type' => $typeId]) : route('user.learnings.learnings_list') }}" class="btn btn-secondary">
                 {{ $breadcrumbTitle ?? '一覧' }}に戻る
             </a>
         </div>
 
         <div>
             @if($nextLearning)
-            <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $type]) }}" class="btn btn-primary">次へ</a>
+            <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $typeId]) }}" class="btn btn-primary">次へ</a>
             @endif
         </div>
     </div>

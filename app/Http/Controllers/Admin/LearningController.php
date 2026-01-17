@@ -1,0 +1,160 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Learning;
+use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
+
+class LearningController extends Controller
+{
+    /**
+     * 一覧表示
+     */
+    public function index()
+    {
+        $learnings = Learning::with('tag')
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+
+        return view('admin.learnings.index', compact('learnings'));
+    }
+
+    /**
+     * 作成フォーム
+     */
+    public function create()
+    {
+        $tags = Tag::all();
+        return view('admin.learnings.create', compact('tags'));
+    }
+
+    /**
+     * 新規作成処理
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'type' => 'required|in:book,site,video,article,other',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|string|max:255',
+            'image_file' => 'nullable|file|image|max:10240',
+            'url' => 'nullable|url|max:255',
+            'level' => 'required|integer',
+            'is_show' => 'nullable|boolean',
+            'tag_id' => 'nullable|exists:tags,id',
+            'course_name' => 'nullable|string|max:255',
+            'priod' => 'nullable|string|max:255',
+        ]);
+
+        // ファイルアップロード処理（store と update 共通）
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            // 元のファイル名取得
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            // 日本語や空白を半角アンダースコアに置換
+            $safeName = preg_replace('/[^\w\-]/u', '_', $originalName);
+
+            // 日付＋安全なファイル名＋拡張子
+            $fileName = date('Ymd_His') . '_' . $safeName . '.' . $extension;
+
+            // public/storage/learnings に保存
+            $path = $file->storeAs('learnings', $fileName, 'public');
+
+            $validated['image'] = $path;
+        }
+
+
+        $validated['is_show'] = $request->boolean('is_show');
+
+        Learning::create($validated);
+
+        return redirect()->route('admin.learnings.index')->with('success', 'Learning作成完了');
+    }
+
+    /**
+     * 詳細表示
+     */
+    public function show($id)
+    {
+        $learning = Learning::with('tag')->findOrFail($id);
+        return view('admin.learnings.show', compact('learning'));
+    }
+
+    /**
+     * 編集フォーム
+     */
+    public function edit($id)
+    {
+        $learning = Learning::findOrFail($id);
+        $tags = Tag::all();
+        return view('admin.learnings.edit', compact('learning', 'tags'));
+    }
+
+    /**
+     * 更新処理
+     */
+    public function update(Request $request, $id)
+    {
+        $learning = Learning::findOrFail($id);
+
+        $validated = $request->validate([
+            'type' => 'required|in:book,site,video,article,other',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|string|max:255',
+            'image_file' => 'nullable|file|image|max:10240', // 10MB
+            'url' => 'nullable|url|max:255',
+            'level' => 'nullable|integer|min:1|max:5',
+            'is_show' => 'nullable|boolean',
+            'tag_id' => 'nullable|exists:tags,id',
+            'course_name' => 'nullable|string|max:255',
+            'priod' => 'nullable|string|max:255',
+            'delete_image' => 'nullable|boolean', // 削除チェック
+        ]);
+
+        // 画像削除処理
+        if ($request->boolean('delete_image') && $learning->image) {
+            Storage::disk('public')->delete($learning->image);
+            $validated['image'] = null;
+        }
+
+        // 新しい画像アップロード
+        if ($request->hasFile('image_file')) {
+            // 古い画像は削除
+            if ($learning->image) {
+                Storage::disk('public')->delete($learning->image);
+            }
+            $path = $request->file('image_file')->storeAs(
+                'learnings',
+                date('Ymd_His_') . '_' . $request->file('image_file')->getClientOriginalName(),
+                'public'
+            );
+            $validated['image'] = $path;
+        }
+
+        $validated['is_show'] = $request->boolean('is_show');
+
+        $learning->update($validated);
+
+        return redirect()
+            ->route('admin.learnings.show', $learning->id)
+            ->with('success', 'Learning更新完了');
+    }
+
+    /**
+     * 削除処理
+     */
+    public function destroy($id)
+    {
+        $learning = Learning::findOrFail($id);
+        $learning->delete();
+
+        return redirect()->route('admin.learnings.index')->with('success', 'Learning削除完了');
+    }
+}

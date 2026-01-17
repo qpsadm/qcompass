@@ -6,6 +6,16 @@ $tagLabels = [
 4 => 'OA',
 5 => 'その他',
 ];
+
+$types = [
+'book' => '参考書籍',
+'site' => '参考サイト',
+'video' => 'IT資格',
+'article' => '製作品',
+'other' => 'その他',
+];
+
+$levelLabels = [1 => '初級', 2 => '中級', 3 => '上級'];
 @endphp
 
 @extends('layouts.app')
@@ -14,12 +24,7 @@ $tagLabels = [
 
 <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
 
-    ```
     <h1 class="text-2xl font-bold mb-4">学習コンテンツ一覧</h1>
-
-    @php
-    $levelLabels = [1 => '初級', 2 => '中級', 3 => '上級'];
-    @endphp
 
     {{-- 新規作成 --}}
     <div class="flex items-center justify-between mb-4">
@@ -58,7 +63,7 @@ $tagLabels = [
                     </td>
 
                     <td class="border px-4 py-2">
-                        {{ $learning->type_label }}
+                        {{ $types[$learning->type] ?? '-' }}
                     </td>
 
                     <td class="border px-4 py-2">
@@ -74,7 +79,10 @@ $tagLabels = [
 
                     <td class="border px-4 py-2 text-center">
                         @if ($learning->image)
-                        <img src="{{ $learning->image }}" class="w-12 h-12 object-cover rounded mx-auto">
+                        <a href="{{ asset('storage/'.$learning->image) }}" target="_blank"
+                            class="inline-block w-12 h-12 bg-gray-100 rounded overflow-hidden border hover:ring-2 hover:ring-blue-400">
+                            <img src="{{ asset('storage/'.$learning->image) }}" class="w-full h-full object-cover">
+                        </a>
                         @else
                         -
                         @endif
@@ -82,8 +90,7 @@ $tagLabels = [
 
                     <td class="border px-4 py-2 text-center">
                         @if ($learning->url)
-                        <a href="{{ $learning->url }}" target="_blank"
-                            class="text-blue-600 hover:underline">
+                        <a href="{{ $learning->url }}" target="_blank" class="text-blue-600 hover:underline">
                             リンク
                         </a>
                         @else

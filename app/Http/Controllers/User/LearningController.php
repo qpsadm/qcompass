@@ -22,46 +22,41 @@ class LearningController extends Controller
         return view('user.learnings.learnings_list', compact('learnings', 'breadcrumbTitle'));
     }
 
-    // タイプ別一覧（タグ絞り込み対応）
-    public function byType($type)
+    // タイプ別一覧
+    public function byType($typeId)
     {
+        $typeId = (int) $typeId;
+
         $typeMap = [
             1 => 'book',
             2 => 'site',
             3 => 'video',
-            4 => 'article', // 製作品
+            4 => 'article',
             5 => 'other',
         ];
 
-        $typeId = (int)$type;
         if (!isset($typeMap[$typeId])) abort(404);
 
         $typeString = $typeMap[$typeId];
         $currentTag = request('tag', 'all');
 
-        // 総件数（タグ絞り込み前）
         $allCount = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->count();
 
-        // タグ件数（タグごとの件数）
         $tagCounts = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->select('tag_id', DB::raw('count(*) as count'))
             ->groupBy('tag_id')
             ->pluck('count', 'tag_id');
 
-        // 学習コンテンツ取得（タグ絞り込み） ← paginate に変更
         $learnings = Learning::where('is_show', 1)
             ->where('type', $typeString)
-            ->when($currentTag !== 'all', function ($q) use ($currentTag) {
-                $q->where('tag_id', $currentTag);
-            })
+            ->when($currentTag !== 'all', fn($q) => $q->where('tag_id', $currentTag))
             ->orderBy('id', 'asc')
-            ->paginate(5)        // ページネーション10件ずつ
-            ->withQueryString();   // ?tag=3 などを維持
+            ->paginate(5)
+            ->withQueryString();
 
-        // Breadcrumb 用タイトル
         $breadcrumbTitle = match ($typeId) {
             1 => '参考書籍',
             2 => '参考サイト',
@@ -84,7 +79,7 @@ class LearningController extends Controller
     // 詳細ページ
     public function show(Learning $learning, Request $request)
     {
-        $typeId = (int) $request->query('type');
+        $typeId = (int) $request->query('type') ?: null;
 
         $typeMap = [
             1 => 'book',
@@ -94,7 +89,7 @@ class LearningController extends Controller
             5 => 'other',
         ];
 
-        $typeString = $typeMap[$typeId] ?? null;
+        $typeString = $typeId ? ($typeMap[$typeId] ?? null) : null;
 
         $prevLearning = Learning::where('is_show', 1)
             ->when($typeString, fn($q) => $q->where('type', $typeString))
@@ -124,5 +119,47 @@ class LearningController extends Controller
             'nextLearning',
             'breadcrumbTitle'
         ));
+    }
+
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'type'        => 'required|string|in:book,site,video,article,other',
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|max:2048',
+            'url'         => 'nullable|url|max:255',
+            'level'       => 'required|string|in:初級,上級', // ← ここを必須に
+            'tag_id'      => 'required|integer|exists:tags,id', // タグも必須にしたい場合
+            'is_show'     => 'required|boolean',
+        ]);
+
+
+        // 空文字・nullを未設定に変換
+        $level = !empty($validated['level']) ? $validated['level'] : '未設定';
+
+        // 画像：アップロードがあれば優先、なければURL、それもなければ null
+        if ($request->hasFile('image_file')) {
+            $imagePath = $request->file('image_file')->store('learnings', 'public');
+        } elseif (!empty($validated['image'])) {
+            $imagePath = $validated['image'];
+        } else {
+            $imagePath = null;
+        }
+
+        Learning::create([
+            'type'        => $validated['type'],
+            'title'       => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'image'       => $imagePath,
+            'url'         => $validated['url'] ?? null,
+            'level'       => $level,
+            'tag_id'      => $validated['tag_id'],
+            'is_show'     => $validated['is_show'],
+        ]);
+
+        return redirect()->route('admin.learnings.index')
+            ->with('success', 'Learning作成完了');
     }
 }

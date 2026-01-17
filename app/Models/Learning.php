@@ -14,56 +14,45 @@ class Learning extends Model
         'type',
         'title',
         'description',
-        'image',
+        'image',        // 画像パス
         'url',
         'level',
         'is_show',
         'tag_id',
+        'course_name',  // 訓練科名
+        'priod',        // 制作期間
     ];
 
-    /**
-     * JSON / Blade で使うアクセサを自動追加
-     */
     protected $appends = [
         'type_label',
         'is_visible',
     ];
 
-    /**
-     * タグとのリレーション
-     */
+    // タグリレーション
     public function tag()
     {
         return $this->belongsTo(Tag::class);
     }
 
-    /**
-     * 種類ラベル（一覧表示用）
-     * $learning->type_label
-     */
+    // 種類ラベル
     public function getTypeLabelAttribute(): string
     {
         return match ($this->type) {
-            'book'    => '本',
-            'site'    => 'サイト',
-            'video'   => '動画',
+            'book' => '本',
+            'site' => 'サイト',
+            'video' => '動画',
             'article' => '記事',
-            default   => '-',
+            'other' => 'その他',
+            default => '-',
         };
     }
 
-    /**
-     * 表示フラグ
-     * $learning->is_visible
-     */
+    // 表示フラグ
     public function getIsVisibleAttribute(): bool
     {
         return (bool) $this->is_show;
     }
-    /**
-     * 表示文言を統一
-     * $learning->visible_label
-     */
+
     public function getVisibleLabelAttribute(): string
     {
         return $this->is_visible ? '表示' : '非表示';
