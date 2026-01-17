@@ -75,5 +75,36 @@
             <a href="{{ route('admin.job_offers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
         </div>
     </form>
+
+    {{-- 危険操作ゾーン --}}
+    <div class="mt-10 pt-6 border-t border-red-200" x-data="{ deleteOpen: false }" x-show="{{ isset($job_offer) ? 'true' : 'false' }}">
+        <h2 class="text-red-600 font-semibold mb-2">⚠ 危険な操作</h2>
+        <p class="text-sm text-gray-600 mb-4">
+            この求人票を削除すると元に戻せません。
+        </p>
+        <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">削除する</button>
+
+        {{-- 削除確認モーダル --}}
+        <div x-show="deleteOpen" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div x-show="deleteOpen" x-transition.scale.duration.200ms class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+                <p class="text-gray-700 text-center mb-5">「{{ $job_offer->title ?? 'この求人票' }}」を削除しますか？</p>
+                <div class="flex justify-center gap-4">
+                    <button @click="deleteOpen = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">キャンセル</button>
+                    <form action="{{ route('admin.job_offers.destroy', $job_offer->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">削除する</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </div>
 @endsection

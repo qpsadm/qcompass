@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller; // ← これを追加
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\JobOffer;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class JobOfferController extends Controller
 {
@@ -46,19 +47,23 @@ class JobOfferController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string', // 長文のためコメントアウト 福島←解除しますby尾上
+            'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
         ]);
 
-        $validated['is_show'] = $request->boolean('is_show'); // ← ここを修正
+        $validated['is_show'] = $request->boolean('is_show');
         $validated['created_user_name'] = auth()->user()->name ?? 'Unknown';
         $validated['updated_user_name'] = auth()->user()->name ?? 'Unknown';
 
-        // PDFファイルの保存
+        // PDFファイルの保存（yyyyMMdd-ファイル名.pdf）
         if ($request->hasFile('pdf_file')) {
-            $path = $request->file('pdf_file')->store('job_offers', 'public');
+            $file = $request->file('pdf_file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
+            $path = $file->storeAs('job_offers', $fileName, 'public');
             $validated['file_path'] = $path;
         }
 
@@ -85,23 +90,27 @@ class JobOfferController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string', // 長文のためコメントアウト 福島←解除しますby尾上
+            'description' => 'nullable|string',
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
         ]);
 
-        $validated['is_show'] = $request->boolean('is_show'); // ← 修正
+        $validated['is_show'] = $request->boolean('is_show');
         $validated['updated_user_name'] = auth()->user()->name ?? 'Unknown';
 
         // PDFファイルの更新
         if ($request->hasFile('pdf_file')) {
-            // 既存ファイル削除（必要なら）
+            // 既存ファイル削除
             if ($job_offer->file_path && Storage::disk('public')->exists($job_offer->file_path)) {
                 Storage::disk('public')->delete($job_offer->file_path);
             }
 
-            $path = $request->file('pdf_file')->store('job_offers', 'public');
+            $file = $request->file('pdf_file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
+            $path = $file->storeAs('job_offers', $fileName, 'public');
             $validated['file_path'] = $path;
         }
 
@@ -111,23 +120,21 @@ class JobOfferController extends Controller
     }
 
     /**
-     * 詳細表示
-     */
-    public function show($id)
-    {
-        $job_offer = JobOffer::findOrFail($id);
-        return view('admin.job_offers.show', compact('job_offer'));
-    }
-
-    /**
      * 削除
      */
     public function destroy($id)
     {
         $job_offer = JobOffer::findOrFail($id);
+
+        // PDFファイルが存在する場合は削除
+        if ($job_offer->file_path && Storage::disk('public')->exists($job_offer->file_path)) {
+            Storage::disk('public')->delete($job_offer->file_path);
+        }
+
+        // 削除ユーザー名を記録して論理削除
         $job_offer->deleted_user_name = auth()->user()->name ?? 'システム';
         $job_offer->save();
-        $job_offer->delete();
+        $job_offer->delete(); // ここでレコード削除（論理削除 or 物理削除）
 
         return redirect()->route('admin.job_offers.index')->with('success', '求人票を削除しました');
     }
