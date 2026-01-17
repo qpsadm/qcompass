@@ -55,9 +55,30 @@
             </div>
 
             {{-- 説明 --}}
-            <div class="mb-4">
+            <div class="mb-4" x-data="{ previewWindow: null, description: '{!! addslashes(old('description', $learning->description ?? '')) !!}' }">
                 <label class="block font-medium mb-1">説明</label>
-                <textarea name="description" class="border px-3 py-2 w-full rounded" rows="3">{{ old('description', $learning->description) }}</textarea>
+                <textarea
+                    name="description"
+                    x-model="description"
+                    x-ref="descriptionTextarea"
+                    class="border px-3 py-2 w-full rounded"
+                    rows="5">{!! old('description', $learning->description ?? '') !!}</textarea>
+                @error('description')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+
+                {{-- プレビューボタン --}}
+                <div class="mt-2">
+                    <button type="button"
+                        @click="
+                if(!previewWindow || previewWindow.closed){
+                    previewWindow = window.open('', 'preview', 'width=800,height=600');
+                    previewWindow.document.head.innerHTML='<style>body{font-family:sans-serif;padding:1rem;} p{margin-bottom:1em;} a{color:blue;}</style>';
+                }
+                previewWindow.document.body.innerHTML = description.replace(/\n/g,'<br>');
+            "
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        プレビューを別ウィンドウで開く
+                    </button>
+                </div>
             </div>
 
             {{-- 画像 --}}

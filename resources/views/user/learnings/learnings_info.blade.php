@@ -8,7 +8,7 @@
     <x-f_page_title :search="false" title="{{ $learning->title }}" />
 
     <div class="page-content my-4">
-        <div>{!! $learning->description !!}</div>
+        <div>{!! nl2br(e($learning->description)) !!}</div>
     </div>
 
     <div class="flex justify-between mt-6">
