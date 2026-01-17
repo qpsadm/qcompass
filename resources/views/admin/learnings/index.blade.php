@@ -10,7 +10,7 @@ $types = [
 'book' => '参考書籍',
 'site' => '参考サイト',
 'video' => 'IT資格',
-'article' => '製作品',
+'article' => '制作品',
 'other' => 'その他',
 ];
 

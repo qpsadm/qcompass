@@ -61,7 +61,7 @@ class LearningController extends Controller
             1 => '参考書籍',
             2 => '参考サイト',
             3 => 'IT資格',
-            4 => '製作品',
+            4 => '制作品',
             5 => 'その他',
             default => '学習リソース',
         };
@@ -121,7 +121,7 @@ class LearningController extends Controller
             1 => '参考書籍',
             2 => '参考サイト',
             3 => 'IT資格',
-            4 => '製作品',
+            4 => '制作品',
             5 => 'その他',
             default => '学習リソース',
         };

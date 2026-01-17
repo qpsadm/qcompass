@@ -16,7 +16,7 @@
     1 => '参考書籍',
     2 => '参考サイト',
     3 => 'IT資格',
-    4 => '製作品',
+    4 => '制作品',
     5 => 'その他',
     ];
 
@@ -81,7 +81,7 @@
                 </p>
                 @endif
 
-                {{-- 詳細リンク（製作品のみ表示） --}}
+                {{-- 詳細リンク（制作品のみ表示） --}}
                 @if ($currentTypeId == 4)
                 <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
                     class="text-blue-500 mt-2 inline-block">

@@ -25,7 +25,7 @@
             'book' => '参考書籍',
             'site' => '参考サイト',
             'video' => 'IT資格',
-            'article' => '製作品',
+            'article' => '制作品',
             ];
             $levels = [1 => '初級', 2 => '上級'];
             $tags = [
@@ -118,13 +118,13 @@
                 </div>
             </div>
 
-            {{-- 訓練科名（製作品のみ表示） --}}
+            {{-- 訓練科名（制作品のみ表示） --}}
             <div class="mb-4" x-show="type === 'article'">
                 <label class="block font-medium mb-1">訓練科名</label>
                 <input type="text" name="course_name" class="border px-3 py-2 w-full rounded" value="{{ old('course_name', $learning->course_name) }}">
             </div>
 
-            {{-- 制作期間（製作品のみ表示） --}}
+            {{-- 制作期間（制作品のみ表示） --}}
             <div class="mb-4" x-show="type === 'article'">
                 <label class="block font-medium mb-1">制作期間</label>
                 <input type="text" name="priod" class="border px-3 py-2 w-full rounded" value="{{ old('priod', $learning->priod) }}">

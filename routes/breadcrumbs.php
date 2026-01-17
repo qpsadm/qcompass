@@ -79,7 +79,7 @@ function breadcrumb_type_label($type)
         1 => '参考書籍',
         2 => '参考サイト',
         3 => 'IT資格',
-        4 => '製作品',
+        4 => '制作品',
         default => '学習リソース',
     };
 }

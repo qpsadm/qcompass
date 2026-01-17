@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::table('learnings', function (Blueprint $table) {
 
-            // type：tinyInteger → integer（製作品=4 を想定）
+            // type：tinyInteger → integer（制作品=4 を想定）
             $table->integer('type')
-                ->comment('種別（1:参考書籍、2:参考サイト、3:IT資格、4:製作品）')
+                ->comment('種別（1:参考書籍、2:参考サイト、3:IT資格、4:制作品）')
                 ->change();
 
             // tag_id：unsignedBigInteger → integer（コード管理に合わせる）
@@ -39,7 +39,7 @@ return new class extends Migration
             if (!Schema::hasColumn('learnings', 'priod')) {
                 $table->string('priod', 100)
                     ->nullable()
-                    ->comment('製作品紹介用')
+                    ->comment('制作品紹介用')
                     ->after('course_name');
             }
 
