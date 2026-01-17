@@ -41,7 +41,10 @@
                     <tr>
                         <th class="border px-4 py-2 bg-gray-100 text-right">ファイル名</th>
                         <td class="border px-4 py-2">
-                            <input type="text" name="file_name" class="w-full border px-2 py-1" required>
+                            <input type="text" name="file_name"
+                                value="{{ old('file_name', $defaultFileName ?? '') }}"
+                                placeholder="アップロードファイルの拡張子が付きます"
+                                class="w-full border px-2 py-1" required>
                         </td>
                     </tr>
 
