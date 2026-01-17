@@ -66,6 +66,19 @@ class LearningController extends Controller
             default => '学習リソース',
         };
 
+        // ここで typeId が 4 のときだけ別ビューを返す
+        if ($typeId === 4) {
+            return view('user.learnings.learnings_list', compact(
+                'learnings',
+                'typeId',
+                'breadcrumbTitle',
+                'tagCounts',
+                'currentTag',
+                'allCount'
+            ));
+        }
+
+        // 通常ビュー
         return view('user.learnings.learnings_by_type', compact(
             'learnings',
             'typeId',
@@ -75,6 +88,7 @@ class LearningController extends Controller
             'allCount'
         ));
     }
+
 
     // 詳細ページ
     public function show(Learning $learning, Request $request)
