@@ -29,8 +29,8 @@
     $currentTag = $currentTag ?? 'all';
     @endphp
 
-    {{-- タグメニュー（製作品以外で表示） --}}
-    @if($currentTypeId != 4)
+    {{-- タグメニュー--}}
+
     <div class="category-menu mb-6">
         <ul>
             <li class="{{ $currentTag === 'all' ? 'active' : '' }}">
@@ -49,7 +49,6 @@
             @endforeach
         </ul>
     </div>
-    @endif
 
 
     {{-- 学習コンテンツ一覧 --}}
