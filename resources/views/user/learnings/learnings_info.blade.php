@@ -11,6 +11,10 @@
         <div>{!! nl2br(e($learning->description)) !!}</div>
     </div>
 
+    <div class="page-content my-4">
+        <div>{ $learning->title }</div>
+    </div>
+
     <div class="flex justify-between mt-6">
         <div>
             @if($prevLearning)

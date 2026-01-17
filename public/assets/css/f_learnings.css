@@ -9,7 +9,7 @@
     letter-spacing: 1px;
 }
 
-/*  */
+/* learnings_by_type */
 
 .learning-container {
     display: flex;
@@ -52,3 +52,5 @@
     color: var(--accent-color);
     text-decoration: underline;
 }
+
+/* learnings_list */
