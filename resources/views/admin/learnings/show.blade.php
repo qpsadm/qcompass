@@ -11,7 +11,6 @@
         'site' => '参考サイト',
         'video' => 'IT資格',
         'article' => '製作品',
-        'other' => 'その他',
         ];
 
         $levelLabels = [
