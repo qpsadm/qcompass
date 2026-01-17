@@ -30,9 +30,6 @@ use App\Http\Controllers\Admin\{
     UserDetailController,
     QuizResultController,
     LearningController,
-};
-use App\Http\Controllers\{
-    CertificationController,
     JobOfferController,
 };
 
@@ -191,7 +188,6 @@ Route::middleware([
      * 学習サポート（6,7,8）
      * ============================= */
     Route::middleware('role:6,7,8')->group(function () {
-        Route::resource('certifications', CertificationController::class);
         Route::resource('learnings', LearningController::class);
         Route::resource('job_offers', JobOfferController::class);
     });

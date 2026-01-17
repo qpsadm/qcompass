@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller; // ← これを追加
 use Illuminate\Http\Request;
 use App\Models\JobOffer;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,7 @@ class JobOfferController extends Controller
             ->paginate(10)
             ->appends($request->query());
 
-        return view('job_offers.index', compact('job_offers', 'sort', 'order', 'search'));
+        return view('admin.job_offers.index', compact('job_offers', 'sort', 'order', 'search'));
     }
 
     /**
@@ -35,7 +36,7 @@ class JobOfferController extends Controller
      */
     public function create()
     {
-        return view('job_offers.create');
+        return view('admin.job_offers.create');
     }
 
     /**
@@ -72,7 +73,7 @@ class JobOfferController extends Controller
     public function edit($id)
     {
         $job_offer = JobOffer::findOrFail($id);
-        return view('job_offers.edit', compact('job_offer'));
+        return view('admin.job_offers.edit', compact('job_offer'));
     }
 
     /**
@@ -115,7 +116,7 @@ class JobOfferController extends Controller
     public function show($id)
     {
         $job_offer = JobOffer::findOrFail($id);
-        return view('job_offers.show', compact('job_offer'));
+        return view('admin.job_offers.show', compact('job_offer'));
     }
 
     /**
