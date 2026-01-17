@@ -153,6 +153,17 @@ class LearningController extends Controller
     public function destroy($id)
     {
         $learning = Learning::findOrFail($id);
+
+        // 画像ファイルがあれば削除
+        if ($learning->image) {
+            Storage::disk('public')->delete($learning->image);
+        }
+
+        // 必要であれば他のアップロードファイルも同様に削除
+        // if ($learning->plan_path) { Storage::disk('public')->delete($learning->plan_path); }
+        // if ($learning->flier_path) { Storage::disk('public')->delete($learning->flier_path); }
+
+        // DBレコード削除
         $learning->delete();
 
         return redirect()->route('admin.learnings.index')->with('success', 'Learning削除完了');

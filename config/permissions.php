@@ -113,7 +113,6 @@ return [
             'icon'  => 'b_desk.svg',
             'roles' => [5, 6, 7, 8],
             'children' => [
-                ['label' => '資格情報管理',   'route' => 'admin.certifications.index', 'roles' => [5, 6, 7, 8]],
                 ['label' => '学習参考コンテンツ', 'route' => 'admin.learnings.index',      'roles' => [5, 6, 7, 8]],
                 ['label' => '就職支援',       'route' => 'admin.job_offers.index',      'roles' => [6, 7, 8]],
             ],

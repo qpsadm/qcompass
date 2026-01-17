@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-6" x-data="{ deleteOpen: false }">
     <div class="bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-6">学習コンテンツ編集</h1>
+        <h1 class="text-2xl font-bold mb-6">学習コンテンツ編集：{{ $learning->title ?? '新規作成' }}</h1>
 
         @if ($errors->any())
         <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
@@ -27,7 +27,6 @@
             'article' => '製作品',
             'other' => 'その他',
             ];
-
             $levels = [1 => '初級', 2 => '上級'];
             $tags = [
             1 => 'WEB制作',
@@ -87,7 +86,7 @@
 
             {{-- タグ --}}
             <div class="mb-4">
-                <label class="block font-medium mb-1">タグ<span class="text-red-500">*</label>
+                <label class="block font-medium mb-1">タグ<span class="text-red-500">*</span></label>
                 <div class="flex flex-wrap gap-4">
                     @foreach ($tags as $id => $label)
                     <label class="inline-flex items-center gap-1">
@@ -111,7 +110,7 @@
             </div>
 
             {{-- 表示 --}}
-            <div class="mb-4" x-data="{ is_show: {{ old('is_show', $learning->is_show) }} }">
+            <div class="mb-4" x-data="{ is_show: {{ old('is_show', $learning->is_show ?? 1) }} }">
                 <label class="block font-medium mb-1">表示状態</label>
                 <div class="inline-flex gap-2">
                     <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-2 rounded cursor-pointer">
@@ -127,8 +126,47 @@
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">更新</button>
                 <a href="{{ route('admin.learnings.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
             </div>
-
         </form>
+
+        {{-- 危険操作ゾーン --}}
+        <div class="mt-10 pt-6 border-t border-red-200" x-show="{{ isset($learning) ? 'true' : 'false' }}">
+            <h2 class="text-red-600 font-semibold mb-2">⚠ 危険な操作</h2>
+            <p class="text-sm text-gray-600 mb-4">
+                この学習コンテンツを削除すると、元に戻すことはできません。
+            </p>
+            <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+                削除する
+            </button>
+        </div>
+
+        {{-- 削除確認モーダル --}}
+        <div x-show="deleteOpen" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div x-show="deleteOpen" x-transition.scale.duration.200ms class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
+                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
+                <p class="text-gray-700 text-center mb-5">
+                    「{{ $learning->title ?? 'この学習コンテンツ' }}」を削除しますか？
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button @click="deleteOpen = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        キャンセル
+                    </button>
+                    <form action="{{ route('admin.learnings.destroy', $learning->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            削除する
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </div>
 @endsection
