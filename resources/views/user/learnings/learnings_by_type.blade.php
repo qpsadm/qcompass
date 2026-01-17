@@ -29,7 +29,8 @@
     $currentTag = $currentTag ?? 'all';
     @endphp
 
-    {{-- タグメニュー --}}
+    {{-- タグメニュー（製作品以外で表示） --}}
+    @if($currentTypeId != 4)
     <div class="category-menu mb-6">
         <ul>
             <li class="{{ $currentTag === 'all' ? 'active' : '' }}">
@@ -48,6 +49,8 @@
             @endforeach
         </ul>
     </div>
+    @endif
+
 
     {{-- 学習コンテンツ一覧 --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -76,11 +79,13 @@
             </p>
             @endif
 
-            {{-- 詳細リンク --}}
+            {{-- 詳細リンク（製作品のみ表示） --}}
+            @if($currentTypeId == 4)
             <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
                 class="text-blue-500 mt-2 inline-block">
                 詳細を見る
             </a>
+            @endif
         </div>
         @empty
         <p class="text-gray-500">該当するデータがありません。</p>
