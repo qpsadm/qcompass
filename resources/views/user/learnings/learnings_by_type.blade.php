@@ -66,7 +66,7 @@
 
             <p><strong>種別:</strong> {{ $categories[$currentTypeId] ?? '未分類' }}</p>
 
-            <p><strong>タグ:</strong> {{ $item->tag->name ?? '未設定' }}</p>
+            <p><strong>タグ:</strong> {{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
 
             <p><strong>レベル:</strong> {{ $item->level }}</p>
             @if($currentTypeId == 4)
