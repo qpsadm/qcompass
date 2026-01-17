@@ -13,10 +13,13 @@ class LearningController extends Controller
      */
     public function index()
     {
-        // Learningモデルとその関連タグ情報を一緒に取得
-        $learnings = Learning::with('tag')->get();
+        $learnings = Learning::with('tag')
+            ->orderBy('id', 'desc')
+            ->paginate(15); // ← ★ get() → paginate()
+
         return view('learning.index', compact('learnings'));
     }
+
 
     /**
      * 作成フォーム

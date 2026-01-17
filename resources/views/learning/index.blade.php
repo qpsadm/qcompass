@@ -1,135 +1,119 @@
 @extends('layouts.app')
 
 @section('content')
-    <div x-data="{ open: false, deleteUrl: '', deleteName: '' }" class="container mx-auto p-6">
 
-        {{-- 🌟 白いカード枠 --}}
-        <div class="bg-white rounded-lg shadow-md p-6">
+<div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
 
-            <h1 class="text-2xl font-bold mb-4">学習コンテンツ一覧</h1>
+    ```
+    <h1 class="text-2xl font-bold mb-4">学習コンテンツ一覧</h1>
 
-            @php
-                $typeLabels = [
-                    'book' => '1. 本',
-                    'site' => '2. サイト',
-                    'video' => '3. 動画',
-                    'article' => '4. 記事',
-                ];
-                $levelLabels = [1 => '初級', 2 => '中級', 3 => '上級'];
-            @endphp
+    @php
+    $levelLabels = [1 => '初級', 2 => '中級', 3 => '上級'];
+    @endphp
 
-            <a href="{{ route('admin.learnings.create') }}"
-                class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition inline-flex justify-center max-w-xs mb-4">
-                新規作成
-            </a>
-
-            {{-- 🌟 枠付きテーブル --}}
-            <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border px-2 py-1">ID</th>
-                            <th class="border px-2 py-1">種類</th>
-                            <th class="border px-2 py-1">タイトル</th>
-                            <th class="border px-2 py-1">説明</th>
-                            <th class="border px-2 py-1">画像</th>
-                            <th class="border px-2 py-1">URL</th>
-                            <th class="border px-2 py-1">レベル</th>
-                            <th class="border px-2 py-1">タグ</th> {{-- タグ列追加 --}}
-                            <th class="border px-2 py-1">表示</th>
-                            <th class="border px-2 py-1">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($learnings as $learning)
-                            <tr class="hover:bg-gray-50">
-                                <td class="border px-2 py-1">{{ $learning->id }}</td>
-                                <td class="border px-2 py-1">{{ $typeLabels[$learning->type] ?? $learning->type }}</td>
-                                <td class="border px-2 py-1">{{ $learning->title }}</td>
-                                <td class="border px-2 py-1">{{ $learning->description }}</td>
-                                <td class="border px-2 py-1">
-                                    @if ($learning->image)
-                                        <img src="{{ $learning->image }}" class="w-16 h-16 object-cover rounded">
-                                    @endif
-                                </td>
-                                <td class="border px-2 py-1">
-                                    @if ($learning->url)
-                                        <a href="{{ $learning->url }}" target="_blank"
-                                            class="text-blue-600 underline">リンク</a>
-                                    @else
-                                        なし
-                                    @endif
-                                </td>
-                                <td class="border px-2 py-1">{{ $levelLabels[$learning->level] ?? '-' }}</td>
-                                {{-- タグ表示 --}}
-                                <td class="border px-2 py-1">
-                                    @if ($learning->tag)
-                                        {{ $learning->tag->name }}
-                                    @else
-                                        なし
-                                    @endif
-                                </td>
-                                <td class="border px-2 py-1 text-center">
-                                    @if ((bool) $learning->is_visible)
-                                        <span class="text-green-600 font-bold">✔</span>
-                                    @else
-                                        <span class="text-red-600 font-bold">❌</span>
-                                    @endif
-                                </td>
-
-                                <td class="border px-2 py-1 text-center">
-                                    <a href="{{ route('admin.learnings.show', $learning->id) }}"
-                                        class="text-blue-600 hover:underline">編集</a>
-                                    <a href="#"
-                                        @click.prevent="open = true; deleteUrl='{{ route('admin.learnings.destroy', $learning->id) }}'; deleteName='{{ $learning->title }}';"
-                                        class="text-red-600 hover:underline ml-4">
-                                        削除
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="border px-2 py-2 text-center text-gray-500">データがありません</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            {{-- 🌟 ここまでカード枠内 --}}
-
-        </div>
-        {{-- 🌟 ここまで白いカード --}}
-
-        <!-- 🗑 削除確認モーダル -->
-        <div x-show="open" x-cloak x-transition.opacity.duration.200ms
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div x-show="open" x-transition.scale.duration.200ms
-                class="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full">
-                <h2 class="text-lg font-semibold mb-3 text-center">削除確認</h2>
-                <p class="text-gray-700 text-center mb-5">
-                    「<span x-text="deleteName"></span>」を削除しますか？
-                </p>
-                <div class="flex justify-center space-x-4">
-                    <button @click="open = false" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                        キャンセル
-                    </button>
-                    <form :action="deleteUrl" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                            削除する
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        {{-- Alpine.js 用 --}}
-        <style>
-            [x-cloak] {
-                display: none !important;
-            }
-        </style>
-
+    {{-- 新規作成 --}}
+    <div class="flex items-center justify-between mb-4">
+        <a href="{{ route('admin.learnings.create') }}"
+            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+            <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+            <span class="hidden lg:inline ml-1">新規作成</span>
+        </a>
     </div>
+
+    {{-- ページネーション（上） --}}
+    <div class="mb-4">
+        {{ $learnings->links() }}
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="table-auto border-collapse border w-full text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border px-4 py-2 text-center w-12">No.</th>
+                    <th class="border px-4 py-2">種類</th>
+                    <th class="border px-4 py-2">タイトル</th>
+                    <th class="border px-4 py-2">説明</th>
+                    <th class="border px-4 py-2">画像</th>
+                    <th class="border px-4 py-2">URL</th>
+                    <th class="border px-4 py-2">レベル</th>
+                    <th class="border px-4 py-2">タグ</th>
+                    <th class="border px-4 py-2 text-center">表示</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($learnings as $learning)
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2 text-center">
+                        {{ ($learnings->currentPage() - 1) * $learnings->perPage() + $loop->iteration }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $learning->type_label }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        <a href="{{ route('admin.learnings.show', $learning->id) }}"
+                            class="text-blue-600 hover:underline">
+                            {{ $learning->title }}
+                        </a>
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ Str::limit($learning->description, 50) }}
+                    </td>
+
+                    <td class="border px-4 py-2 text-center">
+                        @if ($learning->image)
+                        <img src="{{ $learning->image }}" class="w-12 h-12 object-cover rounded mx-auto">
+                        @else
+                        -
+                        @endif
+                    </td>
+
+                    <td class="border px-4 py-2 text-center">
+                        @if ($learning->url)
+                        <a href="{{ $learning->url }}" target="_blank"
+                            class="text-blue-600 hover:underline">
+                            リンク
+                        </a>
+                        @else
+                        -
+                        @endif
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $levelLabels[$learning->level] ?? '-' }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        {{ $learning->tag->name ?? '-' }}
+                    </td>
+
+                    <td class="border px-4 py-2 text-center">
+                        @if ($learning->is_visible)
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                        @else
+                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="9" class="border px-4 py-2 text-center text-gray-500">
+                        データがありません
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        {{-- ページネーション（下） --}}
+        <div class="mt-4">
+            {{ $learnings->links() }}
+        </div>
+    </div>
+    ```
+
+</div>
+
 @endsection
