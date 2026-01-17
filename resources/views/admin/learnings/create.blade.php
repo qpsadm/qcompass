@@ -15,11 +15,12 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.learnings.store') }}" method="POST" enctype="multipart/form-data" x-data="{ type: '{{ old('type') }}', is_show: {{ old('is_show', 1) }} }">
+        <form action="{{ route('admin.learnings.store') }}" method="POST" enctype="multipart/form-data"
+            x-data="{ type: '{{ old('type') }}', is_show: {{ old('is_show', 1) }}, description: '{!! addslashes(old('description')) !!}', previewWindow: null }">
+
             @csrf
 
             @php
-            // 種別
             $types = [
             'book' => '参考書籍',
             'site' => '参考サイト',
@@ -27,11 +28,7 @@
             'article' => '製作品',
             'other' => 'その他',
             ];
-
-            // レベル
             $levels = [1 => '初級', 2 => '上級'];
-
-            // タグ（固定配列）
             $tags = [
             1 => 'WEB制作',
             2 => 'WEBデザイン',
@@ -85,7 +82,16 @@
             {{-- 説明 --}}
             <div class="mb-4">
                 <label class="block font-medium mb-1">説明</label>
-                <textarea name="description" class="border px-3 py-2 w-full rounded" rows="3">{{ old('description') }}</textarea>
+                <textarea x-model="description" x-ref="descriptionTextarea" name="description"
+                    class="border px-3 py-2 w-full rounded" rows="5">{!! old('description') !!}</textarea>
+                @error('description')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+
+                {{-- プレビューボタン --}}
+                <div class="mt-2">
+                    <button type="button" @click="if(!previewWindow || previewWindow.closed){ previewWindow = window.open('', 'preview', 'width=800,height=600'); previewWindow.document.head.innerHTML='<style>body{font-family:sans-serif;padding:1rem;} p{margin-bottom:1em;} a{color:blue;}</style>'; } previewWindow.document.body.innerHTML=description.replace(/\n/g,'<br>');" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        プレビューを別ウィンドウで開く
+                    </button>
+                </div>
             </div>
 
             {{-- 画像 --}}
@@ -101,7 +107,7 @@
                 <input type="text" name="url" class="border px-3 py-2 w-full rounded" value="{{ old('url') }}">
             </div>
 
-            {{-- 訓練科名 & 制作期間（種別が製作品の時のみ表示） --}}
+            {{-- 訓練科名 & 制作期間 --}}
             <div x-show="type === 'article'" class="mb-4">
                 <label class="block font-medium mb-1">訓練科名</label>
                 <input type="text" name="course_name" class="border px-3 py-2 w-full rounded" value="{{ old('course_name') }}">
