@@ -38,9 +38,7 @@ class LearningController extends Controller
         if (!isset($typeMap[$typeId])) abort(404);
 
         $typeString = $typeMap[$typeId];
-
         $currentTag = request('tag', 'all');
-        $keyword    = request('search'); // ← ★ ここ重要
 
         $allCount = Learning::where('is_show', 1)
             ->where('type', $typeString)
@@ -54,26 +52,10 @@ class LearningController extends Controller
 
         $learnings = Learning::where('is_show', 1)
             ->where('type', $typeString)
-
-            // 🔍 検索
-            ->when($keyword, function ($q) use ($keyword) {
-                $q->where(function ($qq) use ($keyword) {
-                    $qq->where('title', 'like', "%{$keyword}%")
-                        ->orWhere('description', 'like', "%{$keyword}%");
-                });
-            })
-
-            // 🏷 タグ
             ->when($currentTag !== 'all', fn($q) => $q->where('tag_id', $currentTag))
-
             ->orderBy('id', 'asc')
             ->paginate(5)
-
-            // ページ送り用
-            ->appends([
-                'tag'    => $currentTag !== 'all' ? $currentTag : null,
-                'search' => $keyword,
-            ]);
+            ->withQueryString();
 
         $breadcrumbTitle = match ($typeId) {
             1 => '参考書籍',
@@ -84,23 +66,28 @@ class LearningController extends Controller
             default => '学習リソース',
         };
 
-        return view(
-            $typeId === 4
-                ? 'user.learnings.learnings_list'
-                : 'user.learnings.learnings_by_type',
-            compact(
+        // ここで typeId が 4 のときだけ別ビューを返す
+        if ($typeId === 4) {
+            return view('user.learnings.learnings_list', compact(
                 'learnings',
                 'typeId',
                 'breadcrumbTitle',
                 'tagCounts',
                 'currentTag',
                 'allCount'
-            )
-        );
+            ));
+        }
+
+        // 通常ビュー
+        return view('user.learnings.learnings_by_type', compact(
+            'learnings',
+            'typeId',
+            'breadcrumbTitle',
+            'tagCounts',
+            'currentTag',
+            'allCount'
+        ));
     }
-
-
-
 
 
     // 詳細ページ
