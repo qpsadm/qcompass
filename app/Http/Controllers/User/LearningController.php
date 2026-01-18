@@ -40,8 +40,9 @@ class LearningController extends Controller
         $typeString = $typeMap[$typeId];
 
         $currentTag = request('tag', 'all');
-        $keyword    = request('search'); // ← ★ ここ重要
+        $keyword    = request('keyword'); // ★ 追加
 
+        // 件数
         $allCount = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->count();
@@ -52,10 +53,11 @@ class LearningController extends Controller
             ->groupBy('tag_id')
             ->pluck('count', 'tag_id');
 
+        // 一覧取得
         $learnings = Learning::where('is_show', 1)
             ->where('type', $typeString)
 
-            // 🔍 検索
+            // 🔍 検索（タイトル・説明文）
             ->when($keyword, function ($q) use ($keyword) {
                 $q->where(function ($qq) use ($keyword) {
                     $qq->where('title', 'like', "%{$keyword}%")
@@ -69,10 +71,10 @@ class LearningController extends Controller
             ->orderBy('id', 'asc')
             ->paginate(5)
 
-            // ページ送り用
+            // ✅ ページ送り時だけ条件保持
             ->appends([
-                'tag'    => $currentTag !== 'all' ? $currentTag : null,
-                'search' => $keyword,
+                'tag'     => $currentTag !== 'all' ? $currentTag : null,
+                'keyword' => $keyword,
             ]);
 
         $breadcrumbTitle = match ($typeId) {
@@ -98,7 +100,6 @@ class LearningController extends Controller
             )
         );
     }
-
 
 
 
