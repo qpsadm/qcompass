@@ -149,3 +149,14 @@
     color: var(--accent-color);
     text-decoration: underline;
 }
+
+@media screen and (max-width: 959px) {
+    .info-table tr {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-table tr+tr {
+        margin-top: 40px;
+    }
+}

@@ -19,45 +19,53 @@
 
             <table class="info-table">
                 <tr>
-                    <td class="title"><p>作成者</p></td>
+                    <td class="title">
+                        <p>作成者</p>
+                    </td>
                     <td class="text">{{ $learning->course_name }}</td>
                 </tr>
                 <tr>
-                    <td class="title"><p>作成日時</p></td>
+                    <td class="title">
+                        <p>作成日時</p>
+                    </td>
                     <td class="text">{{ $learning->priod }}</td>
                 </tr>
                 <tr>
-                    <td class="title"><p>作品紹介</p></td>
+                    <td class="title">
+                        <p>作品紹介</p>
+                    </td>
                     <td class="text">{!! nl2br(e($learning->description)) !!}</td>
                 </tr>
                 <tr>
-                    <td class="title"><p>サイトURL</p></td>
+                    <td class="title">
+                        <p>サイトURL</p>
+                    </td>
                     <td class="text url"><a href="{{ $learning->url }}" target="_blank">{{ $learning->url }}</a></td>
                 </tr>
             </table>
         </div>
 
-        <div class="flex justify-between mt-6">
-            <div>
-                @if ($prevLearning)
-                    <a href="{{ route('user.learnings.learnings_info', ['learning' => $prevLearning->id, 'type' => $typeId]) }}"
-                        class="btn btn-primary">前へ</a>
-                @endif
-            </div>
-
-            <div>
-                <a href="{{ $typeId ? route('user.learnings.learnings_by_type', ['type' => $typeId]) : route('user.learnings.learnings_list') }}"
-                    class="btn btn-secondary">
-                    {{ $breadcrumbTitle ?? '一覧' }}に戻る
-                </a>
-            </div>
-
-            <div>
-                @if ($nextLearning)
+        <div class="btn-list">
+            <ul>
+                <li class="short-btn">
+                    @if ($prevLearning)
+                        <a href="{{ route('user.learnings.learnings_info', ['learning' => $prevLearning->id, 'type' => $typeId]) }}"
+                            class="btn btn-primary">前へ</a>
+                    @endif
+                </li>
+                <li class="default-btn">
+                    <a href="{{ $typeId ? route('user.learnings.learnings_by_type', ['type' => $typeId]) : route('user.learnings.learnings_list') }}"
+                        class="btn btn-secondary">
+                        一覧へもどる
+                    </a>
+                </li>
+                <li class="short-btn">
+                    @if ($nextLearning)
                     <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $typeId]) }}"
                         class="btn btn-primary">次へ</a>
                 @endif
-            </div>
+                </li>
+            </ul>
         </div>
         <div class="bread-crumbs">
             {{ Breadcrumbs::render('auto') }}
