@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+/* learnings_by_type */
+
 .list-container {
     max-width: 1000px;
     margin-bottom: 50px;
@@ -8,8 +10,6 @@
     line-height: 27px;
     letter-spacing: 1px;
 }
-
-/* learnings_by_type */
 
 .learning-container {
     display: flex;
@@ -53,4 +53,99 @@
     text-decoration: underline;
 }
 
+@media screen and (max-width: 1000px) {
+    .learning-container {
+        flex-direction: column;
+    }
+
+    .container-left {
+        order: 2;
+    }
+
+    .learning-img {
+        order: 1;
+    }
+}
+
+
 /* learnings_list */
+
+.performance-list-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
+.performance-url {
+    width: calc(30%);
+}
+
+.learning-performance-container {
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #E9EEFF;
+}
+
+.learning-performance-container .learning-img {
+    margin-bottom: 20px;
+}
+
+.learning-performance-container .learning-category {
+    margin-bottom: 0;
+}
+
+
+/* learning-info */
+
+.info-container {
+    max-width: 1000px;
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
+.info-container .learning-img {
+    width: 100%;
+    margin-bottom: 60px;
+}
+
+.info-table {
+    width: 100%;
+}
+
+.info-table tr {
+    display: flex;
+    gap: 30px;
+}
+
+.info-table tr+tr {
+    margin-top: 30px;
+}
+
+.info-table td.title p {
+    width: 120px;
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color: #83BE85;
+    color: var(--text-color-3);
+    text-align: center;
+    font-size: 16px;
+}
+
+.info-table td.text {
+    flex: 1;
+    padding-top: 5px;
+}
+
+.info-table td.url {
+    color: var(--accent-color);
+    text-decoration: underline;
+}

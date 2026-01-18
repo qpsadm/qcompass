@@ -62,27 +62,31 @@
 
 
         {{-- 学習コンテンツ一覧 --}}
-        <div class="list-container">
+        <div class="performance-list-container">
             @forelse($learnings as $item)
-                <div class="learning-container">
-                    <div class="container-left">
-
-                        @if ($item->image)
-                        <img src="{{ asset('storage/' . $item->image) }}" class="learning-img">
-                        @endif
-
-                        <h3 class="learning-title">{{ $item->title }}</h3>
-
-                        <p class="learning-description">
-                            {!! nl2br(e(Str::limit($item->description, 100))) !!}
-                        </p>
-
-                        <p class="learning-category">{{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
+                @if ($currentTypeId == 4)
+                    <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
+                        class="performance-url">
+                        <div class="learning-performance-container">
 
 
-                        {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
 
-                        {{-- @if ($currentTypeId == 4)
+                            @if ($item->image)
+                                <img src="{{ asset('storage/' . $item->image) }}" class="learning-img">
+                            @endif
+
+                            <h3 class="learning-title">{{ $item->title }}</h3>
+
+                            <p class="learning-description">
+                                {!! nl2br(e(Str::limit($item->description, 100))) !!}
+                            </p>
+
+                            <p class="learning-category">{{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
+
+
+                            {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
+
+                            {{-- @if ($currentTypeId == 4)
                             <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
                             <p><strong>制作期間:</strong> {{ $item->priod }}</p>
                         @endif
@@ -91,26 +95,22 @@
                             </p>
                         @endif --}}
 
-                        {{-- 詳細リンク（制作品のみ表示） --}}
-                        @if ($currentTypeId == 4)
-                            <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
-                                class="text-blue-500 mt-2 inline-block">
-                                詳細を見る
-                            </a>
-                        @endif
-                    </div>
 
-                </div>
+
+                        </div>
+                    </a>
+                @endif
             @empty
                 <p class="text-gray-500">該当するデータがありません。</p>
             @endforelse
         </div>
-        {{-- ページネーション --}}
-        <x-f_pagination :paginator="$learnings" />
+    </div>
+    {{-- ページネーション --}}
+    <x-f_pagination :paginator="$learnings" />
 
-        {{-- パンくず --}}
-        <div class="bread-crumbs mt-4">
-            {{ Breadcrumbs::render('auto') }}
-        </div>
+    {{-- パンくず --}}
+    <div class="bread-crumbs mt-4">
+        {{ Breadcrumbs::render('auto') }}
+    </div>
 
-    @endsection
+@endsection
