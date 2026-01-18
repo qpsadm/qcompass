@@ -104,13 +104,15 @@
                 <p class="text-gray-500">該当するデータがありません。</p>
             @endforelse
         </div>
-    </div>
-    {{-- ページネーション --}}
-    <x-f_pagination :paginator="$learnings" />
 
-    {{-- パンくず --}}
-    <div class="bread-crumbs mt-4">
-        {{ Breadcrumbs::render('auto') }}
+        {{-- ページネーション --}}
+        <x-f_pagination :paginator="$learnings" />
+
+        {{-- パンくず --}}
+        <div class="bread-crumbs">
+            {{ Breadcrumbs::render('auto') }}
+        </div>
+
     </div>
 
 @endsection
