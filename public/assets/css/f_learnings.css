@@ -58,11 +58,11 @@
         flex-direction: column;
     }
 
-    .container-left {
+    .learning-container .container-left {
         order: 2;
     }
 
-    .learning-img {
+    .learning-container .learning-img {
         order: 1;
     }
 }
@@ -73,6 +73,8 @@
 .performance-list-container {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap;
+    align-items: stretch;
     margin-bottom: 50px;
     font-weight: 400;
     font-size: 18px;
@@ -80,8 +82,8 @@
     letter-spacing: 1px;
 }
 
-.performance-url {
-    width: calc(30%);
+/* .performance-url {
+    width: calc((100% - 60px) / 3);
 }
 
 .learning-performance-container {
@@ -90,14 +92,64 @@
     border-radius: 15px;
     overflow: hidden;
     background-color: #E9EEFF;
+} */
+
+.learning-performance-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: calc((100% - 60px) / 3);
+    padding: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #E9EEFF;
+}
+
+.learning-performance-container .performance-url {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
 }
 
 .learning-performance-container .learning-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
     margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.learning-img .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.learning-description {
+    flex: 1;
 }
 
 .learning-performance-container .learning-category {
     margin-bottom: 0;
+}
+
+@media screen and (min-width: 1324px) and (max-width: 1500px) {
+    .learning-performance-container {
+        width: calc((100% - 30px) / 2);
+    }
+}
+
+@media screen and (max-width: 1140px) {
+    .learning-performance-container {
+        width: calc((100% - 30px) / 2);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .learning-performance-container {
+        width: 100%;
+    }
 }
 
 
