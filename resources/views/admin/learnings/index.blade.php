@@ -112,10 +112,12 @@ return '<a href="' . e($url) . '" class="flex items-center justify-center gap-1 
                 class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition">
                 絞り込み
             </button>
+            @if(request()->query())
             <a href="{{ route('admin.learnings.index') }}"
                 class="bg-gray-300 px-4 py-1 rounded hover:bg-gray-400 transition">
                 リセット
             </a>
+            @endif
         </form>
     </div>
 
