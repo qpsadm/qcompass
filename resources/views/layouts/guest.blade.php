@@ -37,29 +37,51 @@
 
         </div>
 
-        <img src="{{ asset('assets/images/test/github_icon.png') }}" alt="icon_1" class="random_arrange"
+        {{-- <img src="{{ asset('assets/images/login/github_icon.png') }}" alt="icon_1" class="random_arrange"
             style="top:10%; left:20%;">
-        <img src="{{ asset('assets/images/test/apple_icon.png') }}" alt="icon_2" class="random_arrange"
+        <img src="{{ asset('assets/images/login/apple_icon.png') }}" alt="icon_2" class="random_arrange"
             style="top:28%; left:2%;">
-        <img src="{{ asset('assets/images/test/illustrator_icon.png') }}" alt="icon_3" class="random_arrange"
+        <img src="{{ asset('assets/images/login/illustrator.svg') }}" alt="icon_3" class="random_arrange"
             style="top:48%; left:15%;">
-        <img src="{{ asset('assets/images/test/js_icon.png') }}" alt="icon_4" class="random_arrange"
+        <img src="{{ asset('assets/images/login/js_icon.png') }}" alt="icon_4" class="random_arrange"
             style="top:30%; left:29%;">
-        <img src="{{ asset('assets/images/test/windows_icon.png') }}" alt="icon_5" class="random_arrange"
+        <img src="{{ asset('assets/images/login/windows_icon.png') }}" alt="icon_5" class="random_arrange"
             style="top:3%; left:65%;">
-        <img src="{{ asset('assets/images/test/photoshop_icon.png') }}" alt="icon_6" class="random_arrange"
+        <img src="{{ asset('assets/images/login/photoshop_icon.png') }}" alt="icon_6" class="random_arrange"
             style="top:25%; left:77%;">
-        <img src="{{ asset('assets/images/test/php_icon.png') }}" alt="icon_7" class="random_arrange"
+        <img src="{{ asset('assets/images/login/php_icon.png') }}" alt="icon_7" class="random_arrange"
             style="top:3%; left:85%;">
-        <img src="{{ asset('assets/images/test/vscode_icon.png') }}" alt="icon_8" class="random_arrange"
+        <img src="{{ asset('assets/images/login/vscode_icon.png') }}" alt="icon_8" class="random_arrange"
             style="top:42%; left:90%;">
-        <img src="{{ asset('assets/images/test/laravel_icon.png') }}" alt="icon_9" class="random_arrange"
+        <img src="{{ asset('assets/images/login/laravel_icon.png') }}" alt="icon_9" class="random_arrange"
             style="top:50%; left:70%;">
-        <img src="{{ asset('assets/images/test/html_icon.png') }}" alt="icon_10" class="random_arrange"
+        <img src="{{ asset('assets/images/login/html_icon.png') }}" alt="icon_10" class="random_arrange"
             style="top:70%; left:77%;">
-        <img src="{{ asset('assets/images/test/codepen_icon.png') }}" alt="icon_11" class="random_arrange"
-            style="top:2%; left:5%;">
+        <img src="{{ asset('assets/images/login/css_icon.png') }}" alt="icon_11" class="random_arrange"
+            style="top:2%; left:5%;"> --}}
 
+        <img src="{{ asset('assets/images/login/icon_login_github.svg') }}" alt="icon_1" class="random_arrange"
+            style="top:10%; left:20%;">
+        <img src="{{ asset('assets/images/login/icon_login_apple.svg') }}" alt="icon_2" class="random_arrange"
+            style="top:28%; left:2%;">
+        <img src="{{ asset('assets/images/login/icon_login_illustrator.svg') }}" alt="icon_3" class="random_arrange"
+            style="top:48%; left:15%;">
+        <img src="{{ asset('assets/images/login/icon_login_javascript.svg') }}" alt="icon_4" class="random_arrange"
+            style="top:30%; left:29%;">
+        <img src="{{ asset('assets/images/login/icon_login_windows.svg') }}" alt="icon_5" class="random_arrange"
+            style="top:3%; left:65%;">
+        <img src="{{ asset('assets/images/login/icon_login_photoshop.svg') }}" alt="icon_6" class="random_arrange"
+            style="top:25%; left:77%;">
+        <img src="{{ asset('assets/images/login/icon_login_php.svg') }}" alt="icon_7" class="random_arrange"
+            style="top:3%; left:85%;">
+        <img src="{{ asset('assets/images/login/icon_login_vscode.svg') }}" alt="icon_8" class="random_arrange"
+            style="top:42%; left:90%;">
+        <img src="{{ asset('assets/images/login/icon_login_laravel.svg') }}" alt="icon_9" class="random_arrange"
+            style="top:50%; left:70%;">
+        <img src="{{ asset('assets/images/login/icon_login_html.svg') }}" alt="icon_10" class="random_arrange"
+            style="top:70%; left:77%;">
+        <img src="{{ asset('assets/images/login/icon_login_css.svg') }}" alt="icon_11" class="random_arrange"
+            style="top:2%; left:5%;">
 
 
     </div>

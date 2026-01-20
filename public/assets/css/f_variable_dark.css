@@ -58,7 +58,8 @@
     /* sub-color */
     --sub-color-1: #4B7DA1;
     /* ライトモードの水色を深めに */
-    --sub-color-2: #1E2A3A;
+    --sub-color-2: #4B7DA1;
+    /* --sub-color-2: #1E2A3A; */
     /* 背景向けに暗いブルーグレー */
     --sub-color-3: #6179C7;
     /* 紫寄りに落ち着かせる */
@@ -72,7 +73,7 @@
     /* ダークグレー */
 
     /* background-color */
-    --background-color: #FCFCFC;
+    --background-color: #1E2A3A;
 
     --filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(26%) hue-rotate(308deg) brightness(104%) contrast(100%);
 
