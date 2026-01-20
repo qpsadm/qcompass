@@ -287,7 +287,6 @@ header::after {
     }
 
     .hamburger-menu-right {
-        /* flex: 1; */
         display: flex;
         justify-content: space-around;
     }
@@ -847,10 +846,7 @@ footer {
     position: absolute;
     background: url(../images/icon/f_icon_h1.svg) no-repeat;
     background-size: 100%;
-    /* top: -7px; */
     left: 0;
-    /* width: 45px;
-    height: 45px; */
     width: 50px;
     height: 50px;
     top: -10px;
@@ -1308,17 +1304,6 @@ body.impersonating .side-menu::after {
     aspect-ratio: 97 / 120;
     transform: rotate(-25deg);
 }
-
-/* .calendar.test::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: url(../images/icon/f_birthday_1.svg) no-repeat;
-    background-size: 100%;
-    width: 240px;
-    height: 115px;
-} */
 
 .calendar.birthday-effect::after {
     content: "";

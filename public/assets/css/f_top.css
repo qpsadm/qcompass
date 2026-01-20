@@ -49,27 +49,6 @@
     background: url(../images/icon/f_icon_h1.svg) no-repeat;
 }
 
-/* .section-box .box-title h2::before,
-.section-box .box-title h2::after {
-    content: "";
-    position: absolute;
-    background-color: #74A0FF;
-}
-
-.section-box .box-title h2::before {
-    top: 5px;
-    left: 0;
-    width: 13px;
-    height: 13px;
-}
-
-.section-box .box-title h2::after {
-    top: 18px;
-    left: 13px;
-    width: 10px;
-    height: 10px;
-} */
-
 .section-box .content-list {
     margin-bottom: 10px;
 }

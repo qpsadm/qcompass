@@ -55,7 +55,6 @@
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
-        /* padding: 30px 25px 15px; */
     }
 
     .quiz-menu {
@@ -104,7 +103,6 @@
     position: relative;
     margin-bottom: 15px;
     padding-left: 15px;
-    /* font-size: 20px; */
 }
 
 .question-number::before {
@@ -120,7 +118,6 @@
 
 .question-title {
     padding-left: 15px;
-    /* font-size: 20px; */
     margin-bottom: 45px;
 }
 
@@ -230,10 +227,6 @@
 .table-number {
     width: 40px;
     text-align: center;
-}
-
-.table-question {
-    /* width: 10px; */
 }
 
 .table-select,

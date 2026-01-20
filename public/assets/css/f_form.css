@@ -3,7 +3,6 @@
 /* 日報フォーム */
 
 .form-content {
-    /* max-width: 1000px; */
     font-weight: 400;
     line-height: 27px;
     letter-spacing: 1px;
@@ -25,7 +24,6 @@
     display: flex;
     gap: 15px;
     align-items: flex-start;
-    /* margin-bottom: 30px; */
     padding-bottom: 30px;
     border-bottom: 1px dashed #5e5e5e;
 }
@@ -41,7 +39,6 @@
     align-items: center;
     width: 220px;
     margin-top: 10px;
-    /* margin-bottom: 15px; */
     font-weight: 500;
 }
 

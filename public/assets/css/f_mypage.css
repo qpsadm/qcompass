@@ -144,10 +144,6 @@
 .profile-data p.division::before {
     background: url(../images/icon/f_icon_hellowork.svg) no-repeat;
 }
-/*
-.profile-data p.division-tel::before {
-    background: url(../images/icon/f_icon_phone.svg) no-repeat;
-} */
 
 .profile-data p.division-tel {
     padding: 0 0 0 16px;
@@ -226,7 +222,6 @@
     cursor: pointer;
     width: 40px !important;
     height: 40px !important;
-    /* filter: brightness(0) saturate(100%) invert(75%) sepia(42%) saturate(915%) hue-rotate(343deg) brightness(100%) contrast(102%); */
 }
 
 .memo textarea {

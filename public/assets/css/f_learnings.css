@@ -82,18 +82,6 @@
     letter-spacing: 1px;
 }
 
-/* .performance-url {
-    width: calc((100% - 60px) / 3);
-}
-
-.learning-performance-container {
-    width: 100%;
-    padding: 20px;
-    border-radius: 15px;
-    overflow: hidden;
-    background-color: #E9EEFF;
-} */
-
 .learning-performance-container {
     position: relative;
     display: flex;
