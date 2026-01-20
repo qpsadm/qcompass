@@ -22,6 +22,7 @@ class UserDetail extends Model
         'address2',
         'emergency_contact',
         'avatar_path',
+        'avatar_type',
         'theme_color',
         'status',
         'is_show',
