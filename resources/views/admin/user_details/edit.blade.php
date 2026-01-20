@@ -1,3 +1,4 @@
+```blade
 @extends('layouts.app')
 
 @section('content')
@@ -7,8 +8,10 @@
         ユーザー詳細情報編集：{{ $user->name }}
     </h1>
 
-    <form action="{{ route('admin.user_details.update', ['user' => $user->id, 'detail' => $detail->id]) }}"
-        method="POST" enctype="multipart/form-data">
+    <form
+        action="{{ route('admin.user_details.update', ['user' => $user->id, 'detail' => $detail->id]) }}"
+        method="POST"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -30,7 +33,7 @@
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">性別</th>
                     <td class="px-4 py-2">
                         <select name="gender" class="border rounded px-3 py-2 w-32">
-                            <option value="">選択してください</option>
+                            <option value="">選択</option>
                             <option value="1" {{ old('gender', $detail->gender) == 1 ? 'selected' : '' }}>男性</option>
                             <option value="2" {{ old('gender', $detail->gender) == 2 ? 'selected' : '' }}>女性</option>
                             <option value="9" {{ old('gender', $detail->gender) == 9 ? 'selected' : '' }}>その他</option>
@@ -38,7 +41,7 @@
                     </td>
                 </tr>
 
-                {{-- 電話番号1 --}}
+                {{-- 電話番号 --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">電話番号1</th>
                     <td class="px-4 py-2">
@@ -48,7 +51,6 @@
                     </td>
                 </tr>
 
-                {{-- 電話番号2 --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">電話番号2</th>
                     <td class="px-4 py-2">
@@ -68,7 +70,7 @@
                     </td>
                 </tr>
 
-                {{-- 郵便番号 --}}
+                {{-- 住所 --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">郵便番号</th>
                     <td class="px-4 py-2">
@@ -78,7 +80,6 @@
                     </td>
                 </tr>
 
-                {{-- 住所1 --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">住所1</th>
                     <td class="px-4 py-2">
@@ -88,7 +89,6 @@
                     </td>
                 </tr>
 
-                {{-- 住所2 --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">住所2</th>
                     <td class="px-4 py-2">
@@ -107,102 +107,114 @@
                     </td>
                 </tr>
 
-                {{-- メモ --}}
+                {{-- メモ（内部用） --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">メモ</th>
                     <td class="px-4 py-2">
-                        <textarea name="note" rows="3"
+                        <textarea name="note" rows="4"
                             class="border rounded px-3 py-2 w-full">{{ old('note', $detail->note) }}</textarea>
                     </td>
                 </tr>
 
-                {{-- 備考 --}}
+                {{-- 備考（短文） --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right font-medium">備考</th>
                     <td class="px-4 py-2">
-                        <textarea name="memo" rows="3"
+                        <textarea name="memo" rows="2"
                             class="border rounded px-3 py-2 w-full">{{ old('memo', $detail->memo) }}</textarea>
                     </td>
                 </tr>
 
-                {{-- 写真 --}}
+                {{-- 管理画面用アバター --}}
                 <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">写真</th>
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">プロフィール写真</th>
                     <td class="px-4 py-2">
-                        <input type="file" name="avatar_path"
+                        <input type="file" name="avatar_path" accept="image/*"
                             class="border rounded px-3 py-2 w-full"
-                            accept="image/*" onchange="previewImage(event)">
+                            onchange="previewImage(event)">
                         <div class="mt-3">
                             <img id="avatarPreview"
                                 class="w-24 h-24 object-cover rounded-full border"
-                                src="{{ $detail->avatar_path ? asset('storage/' . $detail->avatar_path) : '' }}"
+                                src="{{ $detail->avatar_path ? asset('storage/'.$detail->avatar_path) : '' }}"
                                 style="{{ $detail->avatar_path ? '' : 'display:none;' }}">
                         </div>
                     </td>
                 </tr>
 
-                {{-- 入社日 / 退所日 --}}
+                {{-- ユーザー画面用アバター --}}
                 <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">入社日 / 退所日</th>
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">アバタータイプ</th>
                     <td class="px-4 py-2">
-                        <div class="flex gap-3">
-                            <input type="date" name="joining_date"
-                                value="{{ old('joining_date', $detail->joining_date?->format('Y-m-d')) }}"
-                                class="border rounded px-3 py-2 w-48">
-                            <input type="date" name="leaving_date"
-                                value="{{ old('leaving_date', $detail->leaving_date?->format('Y-m-d')) }}"
-                                class="border rounded px-3 py-2 w-48">
-                        </div>
+                        <select name="avatar_type" class="border rounded px-3 py-2 w-40">
+                            <option value="">未設定</option>
+                            <option value="1" {{ old('avatar_type', $detail->avatar_type) == 1 ? 'selected' : '' }}>デフォルト</option>
+                            <option value="2" {{ old('avatar_type', $detail->avatar_type) == 2 ? 'selected' : '' }}>パターン1</option>
+                            <option value="3" {{ old('avatar_type', $detail->avatar_type) == 3 ? 'selected' : '' }}>パターン2</option>
+                        </select>
                     </td>
                 </tr>
 
-                {{-- 退所理由 --}}
+                {{-- テーマ --}}
                 <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">退所理由</th>
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">テーマカラー</th>
+                    <td class="px-4 py-2">
+                        <select name="theme_id" class="border rounded px-3 py-2 w-48">
+                            <option value="">未設定</option>
+                            @foreach ($themes as $theme)
+                            <option value="{{ $theme->id }}"
+                                {{ old('theme_id', $detail->theme_id) == $theme->id ? 'selected' : '' }}>
+                                {{ $theme->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
+
+                {{-- 在籍 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">入社日 / 退社日</th>
+                    <td class="px-4 py-2 flex gap-3">
+                        <input type="date" name="joining_date"
+                            value="{{ old('joining_date', $detail->joining_date?->format('Y-m-d')) }}"
+                            class="border rounded px-3 py-2 w-48">
+                        <input type="date" name="leaving_date"
+                            value="{{ old('leaving_date', $detail->leaving_date?->format('Y-m-d')) }}"
+                            class="border rounded px-3 py-2 w-48">
+                    </td>
+                </tr>
+
+                {{-- 理由 --}}
+                <tr class="border-b">
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">退社理由</th>
                     <td class="px-4 py-2">
                         <textarea name="leaving_reason" rows="3"
                             class="border rounded px-3 py-2 w-full">{{ old('leaving_reason', $detail->leaving_reason) }}</textarea>
                     </td>
                 </tr>
 
-                {{-- ユーザー状態 --}}
+                {{-- ステータス --}}
                 <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                        ユーザー状態
-                    </th>
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">ユーザー状態</th>
                     <td class="px-4 py-2">
                         <select name="status" class="border rounded px-3 py-2 w-40">
-                            <option value="">選択してください</option>
-
-                            <option value="1"
-                                {{ old('status', $detail->status) == 1 ? 'selected' : '' }}>
-                                有効
-                            </option>
-
-                            <option value="0"
-                                {{ (string) old('status', $detail->status) === '0' ? 'selected' : '' }}>
-                                無効
-                            </option>
-
-                            <option value="2"
-                                {{ old('status', $detail->status) == 2 ? 'selected' : '' }}>
-                                停止
-                            </option>
+                            <option value="">選択</option>
+                            <option value="1" {{ old('status', $detail->status) == 1 ? 'selected' : '' }}>有効</option>
+                            <option value="0" {{ (string)old('status', $detail->status) === '0' ? 'selected' : '' }}>無効</option>
+                            <option value="2" {{ old('status', $detail->status) == 2 ? 'selected' : '' }}>停止</option>
                         </select>
                     </td>
                 </tr>
+
             </tbody>
         </table>
 
-        {{-- ボタン --}}
         <div class="mt-6 flex gap-3">
-            <button type="submit"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                 更新する
             </button>
 
             <a href="{{ route('admin.users.show', ['user' => $user->id, 'tab' => 'detail']) }}"
-                class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+                class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                 ユーザー詳細に戻る
             </a>
         </div>
@@ -221,3 +233,4 @@
     }
 </script>
 @endsection
+```

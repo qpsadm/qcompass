@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Theme;
 
 class UserDetail extends Model
 {
@@ -21,18 +23,27 @@ class UserDetail extends Model
         'address1',
         'address2',
         'emergency_contact',
-        'avatar_path',
-        'avatar_type',
-        'theme_color',
+
+        // アバター
+        'avatar_path', // 管理画面用（アップロード画像）
+        'avatar_type', // ユーザー画面用（1:default, 2:pattern1, 3:pattern2）
+
+        // UI設定
+        'theme_id',
+        'fontsize',
+
+        // 状態・プロフィール
         'status',
-        'is_show',
-        'divisions_id',
         'bio',
-        'memo1',
-        'memo2',
+        'note',
+        'memo',
+
+        // 在籍情報
         'joining_date',
         'leaving_date',
         'leaving_reason',
+
+        // 管理情報
         'created_user_name',
         'updated_user_name',
         'deleted_user_name',
@@ -41,12 +52,13 @@ class UserDetail extends Model
     protected $casts = [
         'gender'        => 'integer',
         'status'        => 'integer',
-        'theme_color'   => 'integer',
-        'is_show'       => 'boolean',
+        'avatar_type'   => 'integer',
+        'theme_id'      => 'integer',
+        'fontsize'      => 'integer',
+        'birthday'      => 'date',
         'joining_date'  => 'date',
         'leaving_date'  => 'date',
         'deleted_at'    => 'datetime',
-        'birthday'      => 'date',
     ];
 
     /*
@@ -68,7 +80,7 @@ class UserDetail extends Model
 
         static::deleting(function ($model) {
             $model->deleted_user_name = Auth::user()->name ?? 'system';
-            $model->saveQuietly(); // SoftDelete時の無限ループ防止
+            $model->saveQuietly(); // SoftDelete 無限ループ防止
         });
     }
 
@@ -83,9 +95,26 @@ class UserDetail extends Model
         return $this->belongsTo(User::class);
     }
 
-    // テーマ
     public function theme()
     {
-        return $this->belongsTo(\App\Models\Theme::class, 'theme_id');
+        return $this->belongsTo(Theme::class, 'theme_id');
+    }
+
+    public function getAvatarTypeLabelAttribute()
+    {
+        return [
+            1 => 'デフォルト',
+            2 => 'パターン1',
+            3 => 'パターン2',
+        ][$this->avatar_type] ?? '未設定';
+    }
+
+    public function getAvatarTypeImageAttribute()
+    {
+        return match ($this->avatar_type) {
+            2 => asset('assets\images\f_profile_image2.svg'),
+            3 => asset('assets\images\f_profile_image3.svg'),
+            default => asset('assets\images\f_profile_image1.svg'),
+        };
     }
 }
