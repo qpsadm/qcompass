@@ -13,10 +13,17 @@ class JobOffer extends Model
 
     protected $table = 'job_offers';
 
+    /**
+     * 保存可能カラム
+     */
     protected $fillable = [
         'title',
         'description',
         'file_path',
+        'file_path2',
+        'file_path3',
+        'file_path4',
+        'file_path5',
         'start_datetime',
         'end_datetime',
         'is_show',
@@ -25,19 +32,21 @@ class JobOffer extends Model
         'deleted_user_name',
     ];
 
+    /**
+     * 型キャスト
+     */
     protected $casts = [
         'start_datetime' => 'datetime',
         'end_datetime'   => 'datetime',
         'is_show'        => 'boolean',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Model Events
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * モデルイベント
+     */
     protected static function booted()
     {
+        // 作成時
         static::creating(function ($model) {
             $userName = Auth::user()->name ?? 'system';
 
@@ -45,13 +54,29 @@ class JobOffer extends Model
             $model->updated_user_name = $model->updated_user_name ?? $userName;
         });
 
+        // 更新時
         static::updating(function ($model) {
             $model->updated_user_name = Auth::user()->name ?? 'system';
         });
 
+        // 削除時（論理削除）
         static::deleting(function ($model) {
             $model->deleted_user_name = Auth::user()->name ?? 'system';
             $model->saveQuietly(); // 無限ループ防止
         });
+    }
+
+    /**
+     * ファイルパスを配列で取得するアクセサ
+     */
+    public function getFilePathsAttribute()
+    {
+        return array_filter([
+            $this->file_path,
+            $this->file_path2,
+            $this->file_path3,
+            $this->file_path4,
+            $this->file_path5,
+        ]);
     }
 }

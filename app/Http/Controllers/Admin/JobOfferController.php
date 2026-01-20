@@ -48,7 +48,11 @@ class JobOfferController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file1' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file2' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file3' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file4' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file5' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
         ]);
@@ -57,14 +61,19 @@ class JobOfferController extends Controller
         $validated['created_user_name'] = auth()->user()->name ?? 'Unknown';
         $validated['updated_user_name'] = auth()->user()->name ?? 'Unknown';
 
-        // PDFファイルの保存（yyyyMMdd-ファイル名.pdf）
-        if ($request->hasFile('pdf_file')) {
-            $file = $request->file('pdf_file');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
-            $path = $file->storeAs('job_offers', $fileName, 'public');
-            $validated['file_path'] = $path;
+        // PDFファイルをまとめて保存
+        foreach (range(1, 5) as $i) {
+            $inputName = 'pdf_file' . $i;
+            $columnName = 'file_path' . ($i === 1 ? '' : $i);
+
+            if ($request->hasFile($inputName)) {
+                $file = $request->file($inputName);
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
+                $path = $file->storeAs('job_offers', $fileName, 'public');
+                $validated[$columnName] = $path;
+            }
         }
 
         JobOffer::create($validated);
@@ -91,7 +100,11 @@ class JobOfferController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file1' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file2' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file3' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file4' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf_file5' => 'nullable|file|mimes:pdf|max:2048',
             'start_datetime' => 'nullable|date',
             'end_datetime' => 'nullable|date|after_or_equal:start_datetime',
         ]);
@@ -99,19 +112,24 @@ class JobOfferController extends Controller
         $validated['is_show'] = $request->boolean('is_show');
         $validated['updated_user_name'] = auth()->user()->name ?? 'Unknown';
 
-        // PDFファイルの更新
-        if ($request->hasFile('pdf_file')) {
-            // 既存ファイル削除
-            if ($job_offer->file_path && Storage::disk('public')->exists($job_offer->file_path)) {
-                Storage::disk('public')->delete($job_offer->file_path);
-            }
+        // PDFファイル更新
+        foreach (range(1, 5) as $i) {
+            $inputName = 'pdf_file' . $i;
+            $columnName = 'file_path' . ($i === 1 ? '' : $i);
 
-            $file = $request->file('pdf_file');
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
-            $path = $file->storeAs('job_offers', $fileName, 'public');
-            $validated['file_path'] = $path;
+            if ($request->hasFile($inputName)) {
+                // 古いファイル削除
+                if ($job_offer->$columnName && Storage::disk('public')->exists($job_offer->$columnName)) {
+                    Storage::disk('public')->delete($job_offer->$columnName);
+                }
+
+                $file = $request->file($inputName);
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
+                $path = $file->storeAs('job_offers', $fileName, 'public');
+                $validated[$columnName] = $path;
+            }
         }
 
         $job_offer->update($validated);
@@ -126,15 +144,18 @@ class JobOfferController extends Controller
     {
         $job_offer = JobOffer::findOrFail($id);
 
-        // PDFファイルが存在する場合は削除
-        if ($job_offer->file_path && Storage::disk('public')->exists($job_offer->file_path)) {
-            Storage::disk('public')->delete($job_offer->file_path);
+        // 全てのPDFファイルを削除
+        foreach (range(1, 5) as $i) {
+            $columnName = 'file_path' . ($i === 1 ? '' : $i);
+            if ($job_offer->$columnName && Storage::disk('public')->exists($job_offer->$columnName)) {
+                Storage::disk('public')->delete($job_offer->$columnName);
+            }
         }
 
         // 削除ユーザー名を記録して論理削除
         $job_offer->deleted_user_name = auth()->user()->name ?? 'システム';
         $job_offer->save();
-        $job_offer->delete(); // ここでレコード削除（論理削除 or 物理削除）
+        $job_offer->delete();
 
         return redirect()->route('admin.job_offers.index')->with('success', '求人票を削除しました');
     }

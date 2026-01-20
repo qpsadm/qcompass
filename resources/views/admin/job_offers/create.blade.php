@@ -1,107 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">
-                {{ isset($JobOffer) ? '求人票編集' : '求人票作成' }}（管理画面）
-            </h1>
+<div class="container mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-4">
+            {{ isset($JobOffer) ? '求人票編集' : '求人票作成' }}（管理画面）
+        </h1>
 
-            {{-- エラー表示 --}}
-            @if ($errors->any())
-                <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>• {{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+        {{-- エラー表示 --}}
+        @if ($errors->any())
+        <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>• {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form action="{{ isset($JobOffer) ? route('admin.job_offers.update', $JobOffer->id) : route('admin.job_offers.store') }}"
+            method="POST" enctype="multipart/form-data">
+            @csrf
+            @if (isset($JobOffer))
+            @method('PUT')
             @endif
 
-            <form
-                action="{{ isset($JobOffer) ? route('admin.job_offers.update', $JobOffer->id) : route('admin.job_offers.store') }}"
-                method="POST" enctype="multipart/form-data">
-                @csrf
-                @if (isset($JobOffer))
-                    @method('PUT')
+            {{-- 求人タイトル --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-1">求人タイトル<span class="text-red-500">*</span></label>
+                <input type="text" name="title" value="{{ old('title', $JobOffer->title ?? '') }}"
+                    class="border px-2 py-1 w-full rounded" required>
+            </div>
+
+            {{-- 説明文 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-1">説明文</label>
+                <textarea name="description" class="border px-2 py-1 w-full rounded">{{ old('description', $JobOffer->description ?? '') }}</textarea>
+            </div>
+
+            {{-- PDFファイル 1～5 --}}
+            @foreach(range(1,5) as $i)
+            @php
+            $column = $i === 1 ? 'file_path' : 'file_path'.$i;
+            $inputName = 'pdf_file'.$i;
+            @endphp
+            <div class="mb-4">
+                <label class="block font-medium mb-1">PDFファイル{{ $i }}</label>
+
+                @if (isset($JobOffer) && $JobOffer->$column)
+                <p>現在のファイル:
+                    <a href="{{ asset('storage/' . $JobOffer->$column) }}" target="_blank">確認</a>
+                </p>
                 @endif
 
-                {{-- 求人タイトル --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">求人タイトル<span class="text-red-500">*</span></label>
-                    <input type="text" name="title" value="{{ old('title', $JobOffer->title ?? '') }}"
-                        class="border px-2 py-1 w-full rounded" required>
+                <input type="file" name="{{ $inputName }}" class="border px-2 py-1 w-full rounded">
+            </div>
+            @endforeach
+
+            {{-- 表示開始日時 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-1">表示開始日時</label>
+                <input type="date" name="start_datetime"
+                    value="{{ old('start_datetime', isset($JobOffer) && $JobOffer->start_datetime ? $JobOffer->start_datetime->format('Y-m-d') : '') }}"
+                    class="border px-2 py-1 w-full rounded">
+            </div>
+
+            {{-- 表示終了日時 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-1">表示終了日時</label>
+                <input type="date" name="end_datetime"
+                    value="{{ old('end_datetime', isset($JobOffer) && $JobOffer->end_datetime ? $JobOffer->end_datetime->format('Y-m-d') : '') }}"
+                    class="border px-2 py-1 w-full rounded">
+            </div>
+
+            {{-- 表示フラグ --}}
+            <div class="mb-4" x-data="{ is_show: '{{ old('is_show', $JobOffer->is_show ?? 0) }}' }">
+                <span class="font-medium mr-2">表示フラグ</span>
+                <div class="flex gap-2">
+                    <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                        <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
+                        公開
+                    </label>
+
+                    <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                        <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
+                        非公開
+                    </label>
                 </div>
+            </div>
 
-                {{-- 説明文 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">説明文</label>
-                    <textarea name="description" class="border px-2 py-1 w-full rounded">{{ old('description', $JobOffer->description ?? '') }}</textarea>
-                </div>
+            {{-- 作成者名 --}}
+            <div class="mb-4">
+                <label class="block font-medium mb-1">作成者名</label>
+                <input type="text" name="created_user_name"
+                    value="{{ old('created_user_name', $JobOffer->created_user_name ?? auth()->user()->name) }}"
+                    class="border px-2 py-1 w-full rounded" readonly>
+            </div>
 
-                {{-- PDFファイルパス --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">PDFファイル</label>
-
-                    @if (isset($JobOffer) && $JobOffer->file_path)
-                        <p>現在のファイル: <a href="{{ asset('storage/' . $JobOffer->file_path) }}" target="_blank">確認</a></p>
-                    @endif
-
-                    <input type="file" name="pdf_file" class="border px-2 py-1 w-full rounded">
-                </div>
-
-
-                {{-- 表示開始日時 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">表示開始日時</label>
-                    <input type="date" name="start_datetime"
-                        value="{{ old('start_datetime', isset($JobOffer) ? $JobOffer->start_datetime->format('Y-m-d') : '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                {{-- 表示終了日時 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">表示終了日時</label>
-                    <input type="date" name="end_datetime"
-                        value="{{ old('end_datetime', isset($JobOffer) ? $JobOffer->end_datetime->format('Y-m-d') : '') }}"
-                        class="border px-2 py-1 w-full rounded">
-                </div>
-
-                {{-- 表示フラグ --}}
-         <div class="mb-4" x-data="{ is_show: '{{ old('is_show', $job_offer->is_show ?? 0) }}' }">
-                    <span class="font-medium mr-2">表示フラグ</span>
-                    <div class="flex gap-2">
-                        <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
-                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                            <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
-                            公開
-                        </label>
-
-                        <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
-                            class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                            <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
-                            非公開
-                        </label>
-                    </div>
-                </div>
-
-                {{-- 作成者名 --}}
-                <div class="mb-4">
-                    <label class="block font-medium mb-1">作成者名</label>
-                    <input type="text" name="created_user_name"
-                        value="{{ old('created_user_name', $JobOffer->created_user_name ?? auth()->user()->name) }}"
-                        class="border px-2 py-1 w-full rounded" readonly>
-                </div>
-
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    {{ isset($JobOffer) ? '更新する' : '保存する' }}
-                </button>
-                <a href="{{ route('admin.job_offers.index') }}"
-                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                    一覧に戻る
-                </a>
-        </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                {{ isset($JobOffer) ? '更新する' : '保存する' }}
+            </button>
+            <a href="{{ route('admin.job_offers.index') }}"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                一覧に戻る
+            </a>
         </form>
     </div>
-    </div>
+</div>
 @endsection

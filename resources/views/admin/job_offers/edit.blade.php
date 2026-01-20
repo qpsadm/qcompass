@@ -5,7 +5,8 @@
 
     <h1 class="text-3xl font-bold mb-6">求人票編集：{{ $job_offer->title ?? '新規作成' }}</h1>
 
-    <form action="{{ route('admin.job_offers.update', $job_offer->id) }}" method="POST" enctype="multipart/form-data"
+    <form action="{{ isset($job_offer) ? route('admin.job_offers.update', $job_offer->id) : route('admin.job_offers.store') }}"
+        method="POST" enctype="multipart/form-data"
         x-data="{
             description: $refs.descriptionTextarea.value,
             previewWindow: null,
@@ -21,10 +22,12 @@
                     this.previewWindow.document.body.innerHTML = this.description;
                 }
             }
-        }"
+          }"
         x-init="$watch('description', value => updatePreview());">
         @csrf
+        @if(isset($job_offer))
         @method('PUT')
+        @endif
 
         <table class="w-full table-auto border-collapse">
             <tbody>
@@ -45,7 +48,6 @@
                             class="border rounded px-3 py-2 w-full" rows="8">{{ old('description', $job_offer->description ?? '') }}</textarea>
                         @error('description')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
 
-                        {{-- プレビューボタンは textarea のすぐ下 --}}
                         <div class="mt-2">
                             <button type="button" @click="openPreview()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                                 プレビューを別ウィンドウで開く
@@ -54,17 +56,24 @@
                     </td>
                 </tr>
 
-                {{-- PDF --}}
+                {{-- PDFファイル 1～5 --}}
+                @foreach(range(1,5) as $i)
+                @php
+                $column = $i === 1 ? 'file_path' : 'file_path'.$i;
+                $inputName = 'pdf_file'.$i;
+                @endphp
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">PDFファイル</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">PDFファイル{{ $i }}</th>
                     <td class="px-4 py-2 flex gap-2 items-center">
-                        <input type="file" name="pdf_file" class="border rounded px-3 py-2">
-                        @if ($job_offer->file_path)
-                        <a href="{{ asset('storage/' . $job_offer->file_path) }}" target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">確認</a>
+                        <input type="file" name="{{ $inputName }}" class="border rounded px-3 py-2">
+                        @if(isset($job_offer) && $job_offer->$column)
+                        <a href="{{ asset('storage/' . $job_offer->$column) }}" target="_blank"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">確認</a>
                         @endif
-                        @error('pdf_file')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+                        @error($inputName)<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
                     </td>
                 </tr>
+                @endforeach
 
                 {{-- 表示期間 --}}
                 <tr class="border-b">
@@ -100,11 +109,11 @@
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">更新する</button>
             <a href="{{ route('admin.job_offers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
         </div>
-
     </form>
 
     {{-- 危険操作ゾーン --}}
-    <div class="mt-10 pt-6 border-t border-red-200" x-data="{ deleteOpen: false }" x-show="{{ isset($job_offer) ? 'true' : 'false' }}">
+    @if(isset($job_offer))
+    <div class="mt-10 pt-6 border-t border-red-200" x-data="{ deleteOpen: false }">
         <h2 class="text-red-600 font-semibold mb-2">⚠ 危険な操作</h2>
         <p class="text-sm text-gray-600 mb-4">
             この求人票を削除すると元に戻せません。
@@ -127,6 +136,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <style>
         [x-cloak] {

@@ -78,7 +78,6 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                             求人タイトル @if($sort==='title')<span>{{ $order==='asc'?'▲':'▼' }}</span>@endif
                         </a>
                     </th>
-                    <th class="border px-4 py-2 text-center">PDF</th>
                     <th class="border px-4 py-2 text-center">公開期間</th>
                     <th class="border px-4 py-2 text-center">表示</th>
                 </tr>
@@ -92,15 +91,6 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                         <a href="{{ route('admin.job_offers.edit', $jobOffer->id) }}" class="text-blue-600 hover:underline">
                             {{ \Illuminate\Support\Str::limit($jobOffer->title,50) }}
                         </a>
-                    </td>
-                    <td class="border px-4 py-2 text-center">
-                        @if($jobOffer->file_path)
-                        <a href="{{ url('storage/'.$jobOffer->file_path) }}" target="_blank">
-                            <img src="{{ asset('assets/images/icon/b_agenda.svg') }}" class="w-6 h-6 inline-block">
-                        </a>
-                        @else
-                        ❌
-                        @endif
                     </td>
                     <td class="border px-4 py-2 text-center">
                         {{ $jobOffer->start_datetime? $jobOffer->start_datetime->format('Y-m-d'):'-' }}
