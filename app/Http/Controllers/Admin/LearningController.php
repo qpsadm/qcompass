@@ -13,14 +13,52 @@ class LearningController extends Controller
     /**
      * 一覧表示
      */
-    public function index()
+    /**
+     * 一覧表示（検索・絞り込み・ソート対応）
+     */
+    public function index(Request $request)
     {
-        $learnings = Learning::with('tag')
-            ->orderBy('id', 'desc')
-            ->paginate(15);
+        $query = Learning::with('tag');
+
+        // --- 絞り込み ---
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('tag_id')) {
+            $query->where('tag_id', $request->tag_id);
+        }
+
+        if ($request->filled('level')) {
+            $query->where('level', $request->level);
+        }
+
+        if ($request->filled('is_visible')) {
+            $query->where('is_show', $request->is_visible);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // --- ソート ---
+        $sortable = ['id', 'title', 'level', 'type'];
+        $sort = $request->get('sort', 'id');
+        $direction = $request->get('direction', 'desc');
+
+        if (!in_array($sort, $sortable)) {
+            $sort = 'id';
+        }
+
+        $query->orderBy($sort, $direction);
+
+        $learnings = $query
+            ->paginate(15)
+            ->withQueryString();
 
         return view('admin.learnings.index', compact('learnings'));
     }
+
 
     /**
      * 作成フォーム
