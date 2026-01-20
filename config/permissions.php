@@ -147,15 +147,15 @@ return [
         // =========================
         // その他
         // =========================
-        [
-            'label' => 'その他',
-            'icon'  => 'b_system.svg',
-            'roles' => [7, 8],
-            'children' => [
-                ['label' => '実績管理',     'route' => 'admin.achievements.index',         'roles' => [7, 8]],
-                ['label' => '実績解除管理', 'route' => 'admin.achievements_release.index', 'roles' => [8]],
-            ],
-        ],
+        // [
+        //     'label' => 'その他',
+        //     'icon'  => 'b_system.svg',
+        //     'roles' => [7, 8],
+        //     'children' => [
+        //         ['label' => '実績管理',     'route' => 'admin.achievements.index',         'roles' => [7, 8]],
+        //         ['label' => '実績解除管理', 'route' => 'admin.achievements_release.index', 'roles' => [8]],
+        //     ],
+        // ],
 
     ],
 ];
