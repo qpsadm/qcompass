@@ -141,22 +141,27 @@ class LearningController extends Controller
     {
         $learning = Learning::findOrFail($id);
 
+        // バリデーション
         $validated = $request->validate([
             'type' => 'required|in:book,site,video,article,other',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string|max:255',
-            'image_file' => 'nullable|file|image|max:10240', // 10MB
+            'image_file' => 'nullable|file|image|max:10240',
             'url' => 'nullable|url|max:255',
             'level' => 'nullable|integer|min:1|max:5',
             'is_show' => 'nullable|boolean',
             'tag_id' => 'nullable|exists:tags,id',
             'course_name' => 'nullable|string|max:255',
             'priod' => 'nullable|string|max:255',
-            'delete_image' => 'nullable|boolean', // 削除チェック
+            'delete_image' => 'nullable|boolean',
         ]);
 
-        // 画像削除処理
+        // description は空送信でも元値を保持
+        $validated['description'] = $request->input('description', $learning->description);
+        $validated['is_show'] = $request->boolean('is_show');
+
+        // 画像削除
         if ($request->boolean('delete_image') && $learning->image) {
             Storage::disk('public')->delete($learning->image);
             $validated['image'] = null;
@@ -164,26 +169,25 @@ class LearningController extends Controller
 
         // 新しい画像アップロード
         if ($request->hasFile('image_file')) {
-            // 古い画像は削除
             if ($learning->image) {
                 Storage::disk('public')->delete($learning->image);
             }
-            $path = $request->file('image_file')->storeAs(
-                'learnings',
-                date('Ymd_His_') . '_' . $request->file('image_file')->getClientOriginalName(),
-                'public'
-            );
-            $validated['image'] = $path;
+            $file = $request->file('image_file');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $safeName = preg_replace('/[^\w\-]/u', '_', $originalName);
+            $fileName = date('Ymd_His') . '_' . $safeName . '.' . $extension;
+            $validated['image'] = $file->storeAs('learnings', $fileName, 'public');
         }
 
-        $validated['is_show'] = $request->boolean('is_show');
-
+        // deleted_at を絶対に触らない
         $learning->update($validated);
 
-        return redirect()
-            ->route('admin.learnings.show', $learning->id)
+        return redirect()->route('admin.learnings.show', $learning->id)
             ->with('success', 'Learning更新完了');
     }
+
+
 
     /**
      * 削除処理
