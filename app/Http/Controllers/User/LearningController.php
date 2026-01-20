@@ -9,20 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class LearningController extends Controller
 {
-    // 全件一覧
+    /**
+     * 全件一覧
+     */
     public function index()
     {
         $learnings = Learning::where('is_show', 1)
             ->orderBy('id', 'asc')
-            ->paginate(5)       // ページネーション対応
-            ->withQueryString();  // クエリ保持
+            ->paginate(5)
+            ->withQueryString();
 
         $breadcrumbTitle = '学習リソース';
 
-        return view('user.learnings.learnings_list', compact('learnings', 'breadcrumbTitle'));
+        return view('user.learnings.learnings_list', compact(
+            'learnings',
+            'breadcrumbTitle'
+        ));
     }
 
-    // タイプ別一覧
+    /**
+     * タイプ別一覧
+     */
     public function byType($typeId)
     {
         $typeId = (int) $typeId;
@@ -35,23 +42,31 @@ class LearningController extends Controller
             5 => 'other',
         ];
 
-        if (!isset($typeMap[$typeId])) abort(404);
+        if (!isset($typeMap[$typeId])) {
+            abort(404);
+        }
 
         $typeString = $typeMap[$typeId];
 
-        $currentTag = request('tag', 'all');
-        $keyword    = request('keyword'); // ✅ 修正
+        // 🔑 typeId=4 のときだけ 9件
+        $perPage = ($typeId === 4) ? 9 : 5;
 
+        $currentTag = request('tag', 'all');
+        $keyword    = request('keyword');
+
+        // 全件数
         $allCount = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->count();
 
+        // タグ別件数
         $tagCounts = Learning::where('is_show', 1)
             ->where('type', $typeString)
             ->select('tag_id', DB::raw('count(*) as count'))
             ->groupBy('tag_id')
             ->pluck('count', 'tag_id');
 
+        // 一覧取得
         $learnings = Learning::where('is_show', 1)
             ->where('type', $typeString)
 
@@ -63,11 +78,15 @@ class LearningController extends Controller
                 });
             })
 
-            // 🏷 タグ
-            ->when($currentTag !== 'all', fn($q) => $q->where('tag_id', $currentTag))
+            // 🏷 タグ絞り込み
+            ->when(
+                $currentTag !== 'all',
+                fn($q) =>
+                $q->where('tag_id', $currentTag)
+            )
 
             ->orderBy('id', 'asc')
-            ->paginate(5)
+            ->paginate($perPage)
             ->appends([
                 'tag'     => $currentTag !== 'all' ? $currentTag : null,
                 'keyword' => $keyword,
@@ -97,12 +116,9 @@ class LearningController extends Controller
         );
     }
 
-
-
-
-
-
-    // 詳細ページ
+    /**
+     * 詳細ページ
+     */
     public function show(Learning $learning, Request $request)
     {
         $typeId = (int) $request->query('type') ?: null;
@@ -147,7 +163,9 @@ class LearningController extends Controller
         ));
     }
 
-
+    /**
+     * 登録処理
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -156,22 +174,19 @@ class LearningController extends Controller
             'description' => 'nullable|string',
             'image'       => 'nullable|image|max:2048',
             'url'         => 'nullable|url|max:255',
-            'level'       => 'required|string|in:初級,上級', // ← ここを必須に
-            'tag_id'      => 'required|integer|exists:tags,id', // タグも必須にしたい場合
+            'level'       => 'required|string|in:初級,上級',
+            'tag_id'      => 'required|integer|exists:tags,id',
             'is_show'     => 'required|boolean',
         ]);
 
+        $level = $validated['level'] ?? '未設定';
 
-        // 空文字・nullを未設定に変換
-        $level = !empty($validated['level']) ? $validated['level'] : '未設定';
-
-        // 画像：アップロードがあれば優先、なければURL、それもなければ null
+        // 画像処理
         if ($request->hasFile('image_file')) {
-            $imagePath = $request->file('image_file')->store('learnings', 'public');
-        } elseif (!empty($validated['image'])) {
-            $imagePath = $validated['image'];
+            $imagePath = $request->file('image_file')
+                ->store('learnings', 'public');
         } else {
-            $imagePath = null;
+            $imagePath = $validated['image'] ?? null;
         }
 
         Learning::create([
@@ -185,7 +200,8 @@ class LearningController extends Controller
             'is_show'     => $validated['is_show'],
         ]);
 
-        return redirect()->route('admin.learnings.index')
+        return redirect()
+            ->route('admin.learnings.index')
             ->with('success', 'Learning作成完了');
     }
 }
