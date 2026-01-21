@@ -4,31 +4,106 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Announcement;
+use App\Models\Category;
+use Illuminate\Support\Collection;
 
 class NewsController extends Controller
 {
+    /**
+     * News一覧（ALL）
+     */
+    public function newsListAll(Request $request)
+    {
+        session(['news_category' => 'all']);
+        $courseId = session('course_id');
+        return $this->newsList('all', $request, $courseId);
+    }
+
+    /**
+     * 訓練校ニュース一覧（全体記事のみ）
+     */
+    public function mainNews(Request $request)
+    {
+        session(['news_category' => 'main']);
+        $courseId = session('course_id');
+        return $this->newsList('main', $request, $courseId);
+    }
+
+    /**
+     * 自分の講座ニュース一覧（本講座記事のみ）
+     */
+    public function myNews(Request $request)
+    {
+        session(['news_category' => 'my']);
+        $courseId = session('course_id');
+        return $this->newsList('my', $request, $courseId);
+    }
+
+    /**
+     * ニュース一覧共通処理
+     *
+     * @param string $scope all | main | my
+     * @param Request $request
+     * @param int|null $courseId
+     */
+    private function newsList(string $scope, Request $request, ?int $courseId = null)
+    {
+        $search = $request->input('search');
+
+        $query = Announcement::where('status', 2)
+            ->where('is_show', 1);
+
+        if ($scope === 'main') {
+            $query->whereNull('course_id'); // 全体記事のみ
+        } elseif ($scope === 'my') {
+            if ($courseId) {
+                $query->where('course_id', $courseId); // 本講座記事のみ
+            } else {
+                // 本講座未設定なら何も出さない
+                $query->whereRaw('1 = 0');
+            }
+        } else { // all
+            $query->where(function ($q) use ($courseId) {
+                $q->whereNull('course_id'); // 全体記事
+                if ($courseId) {
+                    $q->orWhere('course_id', $courseId); // 本講座記事
+                }
+            });
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $announcements = $query->orderBy('updated_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(5)
+            ->withQueryString();
+
+        return view('user.news.news_list', [
+            'announcements' => $announcements,
+            'category'      => $scope,
+            'categories'    => Category::all(),
+            'search'        => $search,
+        ]);
+    }
+
     /**
      * お知らせ詳細
      */
     public function news_info(Announcement $announcement)
     {
-        $userId = auth()->id();
-        $userCourseIds = DB::table('course_users')
-            ->where('user_id', $userId)
-            ->pluck('course_id')
-            ->toArray();
-
+        $courseId = session('course_id');
         $categoryScope = session('news_category', 'all');
 
-        // 一覧順に全件取得（作成日降順）
-        $allAnnouncements = $this->getAnnouncementsForPrevNext($categoryScope, $userCourseIds);
+        $allAnnouncements = $this->getAnnouncementsForPrevNext($categoryScope, $courseId);
 
-        // 現在記事のキー
         $currentIndex = $allAnnouncements->search(fn($a) => $a->id === $announcement->id);
 
-        // 前後記事
         $prevAnnouncement = $currentIndex > 0 ? $allAnnouncements[$currentIndex - 1] : null;
         $nextAnnouncement = $currentIndex < $allAnnouncements->count() - 1 ? $allAnnouncements[$currentIndex + 1] : null;
 
@@ -40,9 +115,9 @@ class NewsController extends Controller
     }
 
     /**
-     * 一覧順に全件取得（前後リンク用）
+     * 前後記事用のコレクションを取得
      */
-    private function getAnnouncementsForPrevNext($scope, $userCourseIds)
+    private function getAnnouncementsForPrevNext(string $scope, ?int $courseId): Collection
     {
         $query = Announcement::where('status', 2)
             ->where('is_show', 1);
@@ -50,88 +125,22 @@ class NewsController extends Controller
         if ($scope === 'main') {
             $query->whereNull('course_id');
         } elseif ($scope === 'my') {
-            $query->whereIn('course_id', $userCourseIds);
+            if ($courseId) {
+                $query->where('course_id', $courseId);
+            } else {
+                $query->whereRaw('1 = 0');
+            }
         } else { // all
-            $query->where(function ($q) use ($userCourseIds) {
-                $q->whereNull('course_id')
-                    ->orWhereIn('course_id', $userCourseIds);
+            $query->where(function ($q) use ($courseId) {
+                $q->whereNull('course_id');
+                if ($courseId) {
+                    $q->orWhere('course_id', $courseId);
+                }
             });
         }
 
-        // 作成日が新しい順（降順）
         return $query->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
             ->get();
-    }
-
-    /**
-     * News一覧（ALL）
-     */
-    public function newsListAll(Request $request)
-    {
-        session(['news_category' => 'all']);
-        return $this->newsList('all', $request);
-    }
-
-    /**
-     * 訓練校ニュース一覧
-     */
-    public function mainNews(Request $request)
-    {
-        session(['news_category' => 'main']);
-        return $this->newsList('main', $request);
-    }
-
-    /**
-     * 自分の講座ニュース一覧
-     */
-    public function myNews(Request $request)
-    {
-        session(['news_category' => 'my']);
-        return $this->newsList('my', $request);
-    }
-
-    /**
-     * ニュース一覧の共通処理
-     */
-    private function newsList($scope, Request $request)
-    {
-        $search = $request->input('search');
-        $userId = auth()->id();
-        $userCourseIds = DB::table('course_users')->where('user_id', $userId)->pluck('course_id')->toArray();
-
-        $query = Announcement::where('status', 2)
-            ->where('is_show', 1);
-
-        if ($scope === 'main') {
-            $query->whereNull('course_id');
-        } elseif ($scope === 'my') {
-            $query->whereIn('course_id', $userCourseIds);
-        } else { // all
-            $query->where(function ($q) use ($userCourseIds) {
-                $q->whereNull('course_id')
-                    ->orWhereIn('course_id', $userCourseIds);
-            });
-        }
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('content', 'like', "%{$search}%");
-            });
-        }
-
-        // 作成日降順でページネート
-        $announcements = $query->orderBy('updated_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(5)
-            ->withQueryString();
-
-        return view('user.news.news_list', [
-            'announcements' => $announcements,
-            'category' => $scope,
-            'categories' => \App\Models\Category::all(),
-            'search' => $search,
-        ]);
     }
 }

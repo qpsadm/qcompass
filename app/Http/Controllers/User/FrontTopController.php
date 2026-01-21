@@ -25,25 +25,28 @@ class FrontTopController extends Controller
         // ----------------------------
         $globalAnnouncements = Announcement::where('status', 2)
             ->where('is_show', 1)
-            ->whereNull('course_id')
+            ->whereNull('course_id') // 全体記事のみ
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
         // ----------------------------
-        // 自分の講座のお知らせ
+        // 現在ログイン中の講座ID
         // ----------------------------
-        $userCourseIds = DB::table('course_users')
-            ->where('user_id', $userId)
-            ->pluck('course_id')
-            ->toArray();
+        $userCourseId = session('course_id');
 
-        $courseAnnouncements = Announcement::where('status', 2)
-            ->where('is_show', 1)
-            ->whereIn('course_id', $userCourseIds)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
+        // ----------------------------
+        // 本講座のお知らせ（現在講座のみ）
+        // ----------------------------
+        $courseAnnouncements = collect();
+        if ($userCourseId) {
+            $courseAnnouncements = Announcement::where('status', 2)
+                ->where('is_show', 1)
+                ->where('course_id', $userCourseId) // 本講座のみ
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+        }
 
         // ----------------------------
         // 求人情報（最新5件）
@@ -60,25 +63,29 @@ class FrontTopController extends Controller
         // ----------------------------
         // 最新アジェンダ
         // ----------------------------
+        $userCourseIds = DB::table('course_users')
+            ->where('user_id', $userId)
+            ->pluck('course_id')
+            ->toArray();
+
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
             ->where('is_show', 1)
             ->pluck('category_id')
             ->toArray();
 
-        $excludeCategoryIds = [52, 53]; // ← 追加
+        $excludeCategoryIds = [52, 53]; // 除外カテゴリー
 
         $agendas = collect();
         if (!empty($categoryIds)) {
             $agendas = Agenda::whereIn('category_id', $categoryIds)
-                ->whereNotIn('category_id', $excludeCategoryIds) // ← これで除外！
+                ->whereNotIn('category_id', $excludeCategoryIds)
                 ->where('status', 'yes')
                 ->where('is_show', 1)
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
         }
-
 
         // ----------------------------
         // Blade に渡す
