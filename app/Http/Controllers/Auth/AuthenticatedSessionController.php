@@ -144,7 +144,7 @@ class AuthenticatedSessionController extends Controller
             session()->forget(['impersonator_id', 'impersonator_course_id']);
 
             return redirect()
-                ->route('admin.dashboard')
+                ->route('admin.users.index')
                 ->with('status', 'なりすましを解除しました');
         }
 
