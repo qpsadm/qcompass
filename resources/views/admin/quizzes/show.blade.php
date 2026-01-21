@@ -43,7 +43,7 @@
             <div class="p-3 bg-gray-100 flex justify-between cursor-pointer"
                 @click="open = !open">
                 <div>
-                    <span class="font-bold">Q{{ $q->order }}.</span>
+                    <span class="font-bold">Q{{ sprintf('%02d', $loop->iteration) }}.</span>
                     {{ Str::limit($q->question_text, 40) }}
                 </div>
                 <div>

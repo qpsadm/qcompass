@@ -13,9 +13,11 @@
             {{-- 問題文 --}}
             <div class="mb-4">
                 <label class="block font-semibold text-gray-700 mb-1">問題文</label>
-                <input type="text" name="question_text" value="{{ $quizQuestion->question_text }}" required
-                    class="border border-gray-300 rounded px-3 py-2 w-full focus:ring focus:ring-blue-200">
+                <textarea name="question_text" required
+                    class="border border-gray-300 rounded px-3 py-2 w-full focus:ring focus:ring-blue-200"
+                    rows="4">{{ old('question_text', $quizQuestion->question_text) }}</textarea>
             </div>
+
 
             {{-- 配点 --}}
             <div class="mb-4">

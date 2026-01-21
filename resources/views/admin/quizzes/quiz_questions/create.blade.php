@@ -10,16 +10,19 @@
             <tbody>
                 {{-- 問題文 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">問題文
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                        問題文
                         <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
                     </th>
                     <td class="px-4 py-2">
-                        <input type="text" name="question_text" placeholder="問題文"
-                            value="{{ old('question_text') }}"
-                            class="border rounded px-3 py-2 w-full" required>
-                        @error('question_text') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        <textarea name="question_text" placeholder="問題文" rows="4"
+                            class="border rounded px-3 py-2 w-full" required>{{ old('question_text') }}</textarea>
+                        @error('question_text')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
                     </td>
                 </tr>
+
 
                 {{-- 配点 --}}
                 <tr class="border-b">
