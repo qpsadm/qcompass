@@ -11,6 +11,7 @@
             <div class="item-box">
                 <label for="course_id">講座名</label>
 
+                {{-- すでに講座が確定している場合 --}}
                 @if ($selected_course)
                 @php
                 $course = $courses->find($selected_course);
@@ -18,73 +19,60 @@
                 $endDate = $course?->end_date
                 ? \Carbon\Carbon::parse($course->end_date)->format('Y/m/d')
                 : null;
+                @endphp
 
-                $color =
-                !$course?->isLoginable() ? 'text-gray-400'
-                : ($days !== null && $days <= 7 ? 'text-red-600'
-                    : ($days !==null && $days <=14 ? 'text-yellow-600'
-                    : 'text-gray-700' ));
-                    @endphp
-
-                    <span class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
+                <span class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
                     {{ $course->course_name ?? '不明なコース' }}
 
-                    <span class="ml-2 text-sm {{ $color }}"
-                        @if ($endDate)
-                        title="終了日：{{ $endDate }}"
-                        @endif>
+                    <span class="ml-2 text-sm text-gray-600"
+                        @if ($endDate) title="終了日：{{ $endDate }}" @endif>
                         @if (!$course?->isLoginable())
-                        🔒 不可
+                        🔒 利用不可
                         @elseif ($days === null)
                         🔓 利用可
                         @else
                         🔓 {{ $days }}日
                         @endif
                     </span>
-                    </span>
+                </span>
 
-                    <input type="hidden" name="course_id" value="{{ $selected_course }}">
-                    @else
-                    <select id="course_id" name="course_id" required
-                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm
-       focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="hidden" name="course_id" value="{{ $selected_course }}">
 
-                        <option value="">選択してください</option>
+                {{-- 未選択：通常の select --}}
+                @else
+                <select
+                    id="course_id"
+                    name="course_id"
+                    required
+                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm
+                               focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">選択してください</option>
 
-                        @foreach ($courses as $course)
-                        @php
-                        $days = $course->loginRemainingDays;
+                    @foreach ($courses as $course)
+                    @php
+                    $days = $course->loginRemainingDays;
+                    @endphp
 
-                        // ログイン不可なら赤文字、期間が短い場合は黄色
-                        $color =
-                        !$course->isLoginable() ? 'text-red-600'
-                        : ($days !== null && $days <= 7 ? 'text-red-600'
-                            : ($days !==null && $days <=14 ? 'text-yellow-600'
-                            : 'text-gray-700' ));
-                            @endphp
-
-                            <option value="{{ $course->id }}"
-                            class="{{ $color }}"
-                            {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                            {{ $course->course_name }}
-                            @if (!$course->isLoginable())
-                            🔒 不可
-                            @elseif ($days === null)
-                            🔓 利用可
-                            @else
-                            🔓 {{ $days }}日
-                            @endif
-                            </option>
-                            @endforeach
-                    </select>
-
-                    @endif
+                    <option
+                        value="{{ $course->id }}"
+                        {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                        {{ $course->course_name }}
+                        @if (!$course->isLoginable())
+                        （🔒 利用不可）
+                        @elseif ($days === null)
+                        （🔓 利用可）
+                        @else
+                        （🔓 {{ $days }}日）
+                        @endif
+                    </option>
+                    @endforeach
+                </select>
+                @endif
             </div>
 
             <x-input-error :messages="$errors->get('course_id')" class="error-msg" />
         </div>
         @endif
-
 
         <!-- Email -->
         <div class="login-item">
