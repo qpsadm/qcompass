@@ -8,46 +8,78 @@ use App\Models\CourseCategory;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
     /**
-     * クイズ一覧（カテゴリ有無 両対応）
+     * 現在講座ID取得（なりすまし優先）
+     */
+    private function getCurrentCourseId(): int
+    {
+        if (session()->has('impersonator_course_id')) {
+            return session('impersonator_course_id');
+        }
+
+        $courseId = session('course_id');
+        if (!$courseId) {
+            abort(404, '講座が選択されていません');
+        }
+
+        return $courseId;
+    }
+
+    /**
+     * 講座に紐づくカテゴリIDリスト
+     */
+    private function getAccessibleCategoryIds(int $courseId): array
+    {
+        return DB::table('course_categories')
+            ->where('course_id', $courseId)
+            ->pluck('category_id')
+            ->toArray();
+    }
+
+    /**
+     * クイズ一覧（講座カテゴリ限定、削除済み除外）
      */
     public function index(Request $request)
     {
+        $courseId = $this->getCurrentCourseId();
+        $accessibleCategoryIds = $this->getAccessibleCategoryIds($courseId);
+
         $selectedCategoryId = $request->get('category_id');
+        if ($selectedCategoryId && !in_array($selectedCategoryId, $accessibleCategoryIds)) {
+            abort(404);
+        }
 
-        // カテゴリ + 件数
-        $categories = Category::withCount([
-            'quizzes as quiz_count' => function ($q) {
-                $q->where('is_show', 1)
-                    ->whereNull('deleted_at');
-            }
-        ])
-            ->whereHas('quizzes', function ($q) {
-                $q->where('is_show', 1)
-                    ->whereNull('deleted_at');
-            })
-            ->orderBy('order')
-            ->get();
-
+        // カテゴリ一覧 + 件数
+        $categories = DB::table('categories')
+            ->whereIn('id', $accessibleCategoryIds)
+            ->orderBy('sort')
+            ->get()
+            ->map(function ($cat) {
+                $cat->quiz_count = DB::table('quizzes')
+                    ->where('category_id', $cat->id)
+                    ->where('is_show', 1)
+                    ->whereNull('deleted_at')
+                    ->count();
+                return $cat;
+            });
 
         // クイズ一覧
         $quizzes = Quiz::where('is_show', 1)
-            ->when($selectedCategoryId, function ($q) use ($selectedCategoryId) {
-                $q->where('category_id', $selectedCategoryId);
-            })
+            ->whereIn('category_id', $accessibleCategoryIds)
+            ->whereNull('deleted_at')
+            ->when($selectedCategoryId, fn($q) => $q->where('category_id', $selectedCategoryId))
             ->withCount('questions')
+            ->orderBy('order')
             ->paginate(10)
             ->withQueryString();
 
-        // 選択中カテゴリ名
-        $selectedCategoryName = null;
-        if ($selectedCategoryId) {
-            $selectedCategoryName = $categories
-                ->firstWhere('id', $selectedCategoryId)?->name;
-        }
+        $selectedCategoryName = $selectedCategoryId
+            ? $categories->firstWhere('id', $selectedCategoryId)?->name
+            : null;
 
         return view('user.quizzes.index', compact(
             'categories',
@@ -58,76 +90,43 @@ class QuizController extends Controller
     }
 
     /**
-     * クイズ表示
+     * クイズ表示（講座チェック＋削除済み問題除外）
      */
     public function show(Quiz $quiz)
     {
-        $courseId = (int) session('course_id');
+        $courseId = $this->getCurrentCourseId();
+        $accessibleCategoryIds = $this->getAccessibleCategoryIds($courseId);
 
-        // --- テスト用フォールバック ---
-        if (!$courseId) {
-            \Log::warning("session('course_id') が未設定。Quiz ID: {$quiz->id} にフォールバックコースを適用");
-
-            // 存在する最初の course_id を取得（テスト用）
-            $courseId = \App\Models\CourseCategory::query()
-                ->select('course_id')
-                ->where('category_id', $quiz->category_id)
-                ->value('course_id');
-
-            if ($courseId) {
-                session(['course_id' => $courseId]);
-            }
-        }
-
-        // is_show チェック（必須）
-        if ($quiz->is_show != 1) {
+        if (!in_array($quiz->category_id, $accessibleCategoryIds) || $quiz->is_show != 1 || $quiz->deleted_at) {
             abort(404);
         }
 
-        // CourseCategory チェック（本番環境のみ）
-        if (app()->environment('production')) {
-            $belongsToCourse = CourseCategory::where('course_id', $courseId)
-                ->where('category_id', $quiz->category_id)
-                ->exists();
-
-            if (!$belongsToCourse) {
-                abort(404);
-            }
-        }
-
-        // クイズの問題取得
         $questions = $quiz->questions()
             ->with('choices')
             ->where('is_show', 1)
+            ->whereNull('deleted_at')
             ->orderBy('order')
             ->get();
 
         return view('user.quizzes.show', compact('quiz', 'questions'));
     }
 
-
     /**
-     * 回答送信（DB保存なし）
+     * 回答送信（DB保存なし、削除済み問題除外）
      */
     public function submit(Request $request, Quiz $quiz)
     {
-        $courseId = (int) session('course_id');
+        $courseId = $this->getCurrentCourseId();
+        $accessibleCategoryIds = $this->getAccessibleCategoryIds($courseId);
 
-        if (!$courseId || $quiz->is_show != 1) {
-            abort(404);
-        }
-
-        $belongsToCourse = CourseCategory::where('course_id', $courseId)
-            ->where('category_id', $quiz->category_id)
-            ->exists();
-
-        if (!$belongsToCourse) {
+        if (!in_array($quiz->category_id, $accessibleCategoryIds) || $quiz->is_show != 1 || $quiz->deleted_at) {
             abort(404);
         }
 
         $questions = $quiz->questions()
             ->with('choices')
             ->where('is_show', 1)
+            ->whereNull('deleted_at')
             ->get();
 
         $score = 0;
@@ -155,38 +154,32 @@ class QuizController extends Controller
         return redirect()->route('user.quizzes.result', $quiz);
     }
 
-
     /**
-     * 結果表示
+     * 結果表示（削除済み問題除外）
      */
     public function result(Quiz $quiz)
     {
-        $data = session("quiz_result_{$quiz->id}");
+        $courseId = $this->getCurrentCourseId();
+        $accessibleCategoryIds = $this->getAccessibleCategoryIds($courseId);
 
+        if (!in_array($quiz->category_id, $accessibleCategoryIds) || $quiz->is_show != 1 || $quiz->deleted_at) {
+            abort(404);
+        }
+
+        $data = session("quiz_result_{$quiz->id}");
         if (!$data) {
             return redirect()->route('user.quizzes.show', $quiz);
         }
 
         $results = $data['results'];
-
-        // 正解数（isCorrect === true のみカウント）
-        $correctCount = collect($results)
-            ->where('isCorrect', true)
-            ->count();
-
-        // 全問題数
+        $correctCount = collect($results)->where('isCorrect', true)->count();
         $totalQuestions = count($results);
-
-        // 合計得点
         $totalScore = $data['score'];
 
-        // 合格判定（7割以上）
+        $passFail = '不合格';
         if ($quiz->total_score > 0) {
             $percentage = ($totalScore / $quiz->total_score) * 100;
             $passFail = $percentage >= 70 ? '合格' : '不合格';
-        } else {
-            // 念のため満点未設定時のフォールバック
-            $passFail = '不合格';
         }
 
         return view('user.quizzes.result', compact(
