@@ -127,21 +127,35 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
+        // なりすまし中の場合は管理者に戻す
         if (session()->has('impersonator_id')) {
-            Auth::loginUsingId(session('impersonator_id'));
-            session()->forget('impersonator_id');
+            $adminId = session('impersonator_id');
+            Auth::loginUsingId($adminId);
+
+            // 元の講座IDを復元
+            $originalCourseId = session('impersonator_course_id');
+            if ($originalCourseId) {
+                session(['course_id' => $originalCourseId]);
+            } else {
+                session()->forget('course_id');
+            }
+
+            // なりすまし情報を削除
+            session()->forget(['impersonator_id', 'impersonator_course_id']);
 
             return redirect()
                 ->route('admin.dashboard')
                 ->with('status', 'なりすましを解除しました');
         }
 
+        // 通常ログアウト処理
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
     }
+
 
     /**
      * 表示可能な講座が存在するか
