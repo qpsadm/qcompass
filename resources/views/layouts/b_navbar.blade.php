@@ -12,16 +12,31 @@
                 </a>
             </div>
 
-            <!-- 右側：ユーザー情報 + ログアウト -->
+            <!-- 右側：ユーザー情報 + ログアウト + 講座情報 -->
             <div class="flex items-center space-x-2 md:space-x-4">
 
                 <!-- ユーザー名 + ロール（タブレット以上表示） -->
                 <span class="hidden md:inline text-gray-700 whitespace-nowrap">
                     {{ Auth::user()->name ?? 'ゲスト' }}
                     @if (Auth::check() && Auth::user()->role)
-                        ({{ Auth::user()->role->role_name }})
+                    ({{ Auth::user()->role->role_name }})
                     @endif
                 </span>
+
+                <!-- 講座情報（なりすまし時） -->
+                @php
+                $courseName = null;
+                if (session()->has('course_id')) {
+                $course = App\Models\Course::find(session('course_id'));
+                $courseName = $course?->course_name;
+                }
+                @endphp
+
+                @if($courseName)
+                <span class="hidden md:inline text-gray-800 font-semibold">
+                    講座: {{ $courseName }}
+                </span>
+                @endif
 
                 <!-- ログアウトボタン -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -33,6 +48,7 @@
                     </button>
                 </form>
             </div>
+
         </div>
     </div>
 </nav>
