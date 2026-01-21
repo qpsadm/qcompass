@@ -12,17 +12,16 @@ class AgendaController extends Controller
 {
     /**
      * ユーザーがアクセス可能なカテゴリを取得
+     * @param int $userId
+     * @param int|null $courseId
      */
-    private function getUserCategories($userId)
+    private function getUserCategories(int $userId, ?int $courseId = null)
     {
-        $userCourseIds = DB::table('course_users')
-            ->where('user_id', $userId)
-            ->pluck('course_id')
-            ->toArray();
+        $userCourseIds = $courseId
+            ? [$courseId]
+            : DB::table('course_users')->where('user_id', $userId)->pluck('course_id')->toArray();
 
-        if (empty($userCourseIds)) {
-            return collect();
-        }
+        if (empty($userCourseIds)) return collect();
 
         $categoryIds = DB::table('course_categories')
             ->whereIn('course_id', $userCourseIds)
@@ -30,9 +29,7 @@ class AgendaController extends Controller
             ->pluck('category_id')
             ->toArray();
 
-        if (empty($categoryIds)) {
-            return collect();
-        }
+        if (empty($categoryIds)) return collect();
 
         return DB::table('categories')
             ->whereIn('id', $categoryIds)
@@ -45,21 +42,34 @@ class AgendaController extends Controller
      */
     public function myCourseAgendaList(Request $request)
     {
-        $userId = Auth::id();
-        $categories = $this->getUserCategories($userId);
+        $isImpersonating = session()->has('impersonator_id');
+        $userId = $isImpersonating ? session('impersonator_id') : Auth::id();
+        $courseId = $isImpersonating
+            ? session('impersonator_course_id')
+            : session('course_id'); // 通常ユーザーの現在講座IDも優先
+
         $excludeCategoryIds = [52, 53];
 
-        // ★ カテゴリごとのアジェンダ件数を付与
-        $categories = $categories->map(function ($category) use ($excludeCategoryIds) {
-            $category->agenda_count = Agenda::where('category_id', $category->id)
-                ->where('status', 'yes')
-                ->where('is_show', 1)
-                ->whereNotIn('category_id', $excludeCategoryIds)
-                ->count();
-            return $category;
-        });
+        // ユーザーがアクセス可能なカテゴリID
+        $accessibleCategoryIds = DB::table('course_categories')
+            ->when($courseId, fn($q) => $q->where('course_id', $courseId))
+            ->when(!$courseId, fn($q) => $q->whereIn('course_id', DB::table('course_users')->where('user_id', $userId)->pluck('course_id')))
+            ->where('is_show', 1)
+            ->pluck('category_id')
+            ->diff($excludeCategoryIds)
+            ->toArray();
 
-        // セッションにカテゴリ保存
+        // カテゴリ一覧
+        $categories = $this->getUserCategories($userId, $courseId)
+            ->map(function ($category) use ($excludeCategoryIds) {
+                $category->agenda_count = Agenda::where('category_id', $category->id)
+                    ->where('status', 'yes')
+                    ->where('is_show', 1)
+                    ->whereNotIn('category_id', $excludeCategoryIds)
+                    ->count();
+                return $category;
+            });
+
         $categoryId = $request->input('category_id');
         session(['agenda_category_id' => $categoryId]);
 
@@ -67,43 +77,33 @@ class AgendaController extends Controller
 
         $query = Agenda::where('status', 'yes')
             ->where('is_show', 1)
-            ->whereNotIn('category_id', $excludeCategoryIds);
+            ->whereIn('category_id', $accessibleCategoryIds); // ✅ アクセス可能カテゴリのみ
 
-        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
-            // 選択カテゴリあり
-            $query->where('category_id', $categoryId)
-                ->orderBy('created_at', 'desc')
-                ->orderBy('id', 'desc');
-        } else {
-            // ALL の場合、一覧ページと同じカテゴリ順
-            $userCourseIds = DB::table('course_users')->where('user_id', $userId)->pluck('course_id');
-            $categoryIds = DB::table('course_categories')
-                ->whereIn('course_id', $userCourseIds)
-                ->pluck('category_id')
-                ->diff($excludeCategoryIds)
-                ->toArray();
-
-            if (!empty($categoryIds)) {
-                $orderSql = "CASE category_id ";
-                foreach ($categoryIds as $index => $catId) {
-                    $orderSql .= "WHEN {$catId} THEN {$index} ";
-                }
-                $orderSql .= "END";
-
-                $query->orderByRaw($orderSql)
-                    ->orderBy('created_at', 'desc')
-                    ->orderBy('id', 'desc');
-            }
+        if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {
+            $query->where('category_id', $categoryId);
         }
 
         if ($search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
 
+        // 並び順
+        if (!empty($accessibleCategoryIds)) {
+            $orderSql = "CASE category_id ";
+            foreach ($accessibleCategoryIds as $index => $catId) {
+                $orderSql .= "WHEN {$catId} THEN {$index} ";
+            }
+            $orderSql .= "END";
+
+            $query->orderByRaw($orderSql)
+                ->orderBy('created_at', 'desc')
+                ->orderBy('id', 'desc');
+        }
+
         $agendas = $query->paginate(5)->withQueryString();
 
         $selectedCategoryName = 'All';
-        if ($categoryId && !in_array($categoryId, $excludeCategoryIds)) {
+        if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {
             $selectedCategory = $categories->firstWhere('id', $categoryId);
             $selectedCategoryName = $selectedCategory ? $selectedCategory->name : 'All';
         }
@@ -122,37 +122,36 @@ class AgendaController extends Controller
      */
     public function agendaDetail(Agenda $agenda)
     {
-        $userId = Auth::id();
+        $isImpersonating = session()->has('impersonator_id');
+        $userId = $isImpersonating ? session('impersonator_id') : Auth::id();
+        $courseId = $isImpersonating
+            ? session('impersonator_course_id')
+            : session('course_id');
 
-        // 👇 ここから下は一切変更しない
-        $userCategories = $this->getUserCategories($userId);
-        $categoryId = session('agenda_category_id');
         $excludeCategoryIds = [52, 53];
 
-        // 基本クエリ
+        $accessibleCategoryIds = DB::table('course_categories')
+            ->when($courseId, fn($q) => $q->where('course_id', $courseId))
+            ->when(!$courseId, fn($q) => $q->whereIn('course_id', DB::table('course_users')->where('user_id', $userId)->pluck('course_id')))
+            ->where('is_show', 1)
+            ->pluck('category_id')
+            ->diff($excludeCategoryIds)
+            ->toArray();
+
+        $userCategories = $this->getUserCategories($userId, $courseId);
+        $categoryId = session('agenda_category_id');
+
         $baseQuery = Agenda::where('status', 'yes')
             ->where('is_show', 1)
-            ->whereNotIn('category_id', $excludeCategoryIds);
+            ->whereIn('category_id', $accessibleCategoryIds); // ✅ アクセス可能カテゴリのみ
 
-        if ($categoryId) {
-            // 選択カテゴリがある場合
+        if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {
             $baseQuery->where('category_id', $categoryId);
-            $categoryIds = null; // ALLじゃないので不要
+            $categoryIds = null;
         } else {
-            // ALL の場合、ユーザーの講座カテゴリ順
-            $userCourseIds = DB::table('course_users')
-                ->where('user_id', $userId)
-                ->pluck('course_id');
-
-            $categoryIds = DB::table('course_categories')
-                ->whereIn('course_id', $userCourseIds)
-                ->where('is_show', 1)
-                ->pluck('category_id')
-                ->diff($excludeCategoryIds)
-                ->toArray();
+            $categoryIds = $accessibleCategoryIds;
         }
 
-        // 全件取得して一覧順に並び替え
         $allAgendas = $baseQuery->get()->sortBy([
             fn($a, $b) => $categoryIds ? array_search($a->category_id, $categoryIds) <=> array_search($b->category_id, $categoryIds) : 0,
             fn($a, $b) => $b->created_at <=> $a->created_at,
@@ -190,12 +189,10 @@ class AgendaController extends Controller
 
     public function jobDlInfo(Agenda $agenda)
     {
-        // カテゴリ52（Job DL）以外は通常アジェンダへ
         if ($agenda->category_id != 52) {
             return redirect()->route('user.agenda.info', $agenda);
         }
 
-        // 前後ナビ用
         $prevAgenda = Agenda::where('id', '<', $agenda->id)
             ->where('category_id', 52)
             ->orderBy('id', 'desc')
@@ -213,16 +210,9 @@ class AgendaController extends Controller
         ));
     }
 
-
-
     public function download(Agenda $agenda)
     {
-
-        // セキュリティ：カテゴリ53以外は弾く
-        if ($agenda->category_id != 53) {
-            abort(404);
-        }
-
+        if ($agenda->category_id != 53) abort(404);
         return view('user.download', compact('agenda'));
     }
 }
