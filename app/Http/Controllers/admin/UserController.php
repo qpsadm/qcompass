@@ -233,19 +233,39 @@ class UserController extends Controller
      */
     public function impersonate(User $user)
     {
-        Session::put('impersonator_id', Auth::id());
+        $currentUser = Auth::user();
+
+        // 講師の場合は担当講座だけ
+        if ($currentUser->role_id >= 4 && $currentUser->role_id < 7) {
+            $myCoursesIds = $currentUser->courses()->pluck('id')->toArray();
+            $userCourseIds = $user->courses()->pluck('id')->toArray();
+            $commonCourseIds = array_intersect($myCoursesIds, $userCourseIds);
+
+            if (count($commonCourseIds) === 0) {
+                abort(403, 'この講座のユーザーにはなりすませません。');
+            }
+
+            // 講師の元講座IDを保持
+            session(['impersonator_id' => $currentUser->id]);
+            session(['impersonator_course_id' => session('course_id')]); // 元講座保持
+
+            // なりすまし対象の講座IDをセット
+            session(['course_id' => $commonCourseIds[0]]);
+        } else if ($currentUser->role_id >= 7) {
+            // 管理者は制限なし
+            session(['impersonator_id' => $currentUser->id]);
+            session(['impersonator_course_id' => session('course_id')]);
+            session(['course_id' => $user->courses()->first()?->id]);
+        } else {
+            abort(403, '権限がありません。');
+        }
 
         Auth::login($user);
 
-        // もし講座IDをセッションに入れる場合
-        session([
-            'course_id' => $user->courses()
-                ->orderBy('course_name', 'asc')
-                ->first()?->id
-        ]);
-
         return redirect()->route('user.mypage');
     }
+
+
 
     /**
      * なりすまし解除
@@ -256,7 +276,17 @@ class UserController extends Controller
 
         if ($adminId) {
             Auth::loginUsingId($adminId);
-            session()->forget('impersonator_id');
+
+            // 元講座IDに戻す
+            $originalCourseId = session('impersonator_course_id');
+            if ($originalCourseId) {
+                session(['course_id' => $originalCourseId]);
+            } else {
+                session()->forget('course_id');
+            }
+
+            // セッションのなりすまし情報は削除
+            session()->forget(['impersonator_id', 'impersonator_course_id']);
         }
 
         return redirect()->route('admin.users.index');
