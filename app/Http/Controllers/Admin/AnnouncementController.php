@@ -48,7 +48,7 @@ class AnnouncementController extends Controller
         return view('admin.announcements.index', [
             'announcements' => $announcements,
             'categories'    => AnnouncementType::all(),
-            'courses'       => Course::all(),
+            'courses'       => Course::orderBy('course_name', 'asc')->get(), // 名前順
             'sort'          => $sort,
             'direction'     => $direction,
         ]);
@@ -59,7 +59,7 @@ class AnnouncementController extends Controller
         return view('admin.announcements.create', [
             'announcement' => new Announcement(),
             'types'        => AnnouncementType::all(),
-            'courses'      => Course::all(),
+            'courses'      => Course::orderBy('course_name', 'asc')->get(), // 名前順
         ]);
     }
 
@@ -94,7 +94,7 @@ class AnnouncementController extends Controller
         return view('admin.announcements.edit', [
             'announcement' => $announcement,
             'types'        => AnnouncementType::all(),
-            'courses'      => Course::all(),
+            'courses'      => Course::orderBy('course_name', 'asc')->get(), // 名前順
         ]);
     }
 
