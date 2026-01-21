@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Models\Announcement;
 use App\Models\JobOffer;
 use App\Models\Agenda;
@@ -12,44 +11,52 @@ use Carbon\Carbon;
 
 class FrontTopController extends Controller
 {
-    /**
-     * トップページ表示
-     */
     public function index()
     {
-        $userId = Auth::id();
         $now = Carbon::now();
 
+        // なりすまし中のユーザーか判定
+        $isImpersonating = session()->has('impersonator_id');
+
+        // 表示対象ユーザー
+        $viewUser = $isImpersonating
+            ? \App\Models\User::find(session('impersonator_id'))
+            : Auth::user();
+
+        if (!$viewUser) abort(403, 'ユーザーが見つかりません');
+
         // ----------------------------
-        // 全体のお知らせ（訓練校）
+        // 1. 全体お知らせ
         // ----------------------------
         $globalAnnouncements = Announcement::where('status', 2)
             ->where('is_show', 1)
-            ->whereNull('course_id') // 全体記事のみ
+            ->whereNull('course_id')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
         // ----------------------------
-        // 現在ログイン中の講座ID
+        // 2. 本講座ID（セッション優先）
         // ----------------------------
-        $userCourseId = session('course_id');
+        $userCourseId = $isImpersonating
+            ? session('impersonator_course_id') ?? $viewUser->courses()->first()?->id
+            : session('course_id') ?? $viewUser->courses()->first()?->id;
 
         // ----------------------------
-        // 本講座のお知らせ（現在講座のみ）
+        // 3. 本講座お知らせ
         // ----------------------------
         $courseAnnouncements = collect();
         if ($userCourseId) {
             $courseAnnouncements = Announcement::where('status', 2)
                 ->where('is_show', 1)
-                ->where('course_id', $userCourseId) // 本講座のみ
+                ->where('course_id', $userCourseId)
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
         }
 
         // ----------------------------
-        // 求人情報（最新5件）
+        // 4. 求人情報
         // ----------------------------
         $jobs = JobOffer::where('is_show', 1)
             ->whereNotNull('start_datetime')
@@ -61,20 +68,15 @@ class FrontTopController extends Controller
             ->get();
 
         // ----------------------------
-        // 最新アジェンダ
+        // 5. 最新アジェンダ（本講座のみ）
         // ----------------------------
-        $userCourseIds = DB::table('course_users')
-            ->where('user_id', $userId)
-            ->pluck('course_id')
-            ->toArray();
-
-        $categoryIds = DB::table('course_categories')
-            ->whereIn('course_id', $userCourseIds)
+        $categoryIds = \DB::table('course_categories')
+            ->where('course_id', $userCourseId)
             ->where('is_show', 1)
             ->pluck('category_id')
             ->toArray();
 
-        $excludeCategoryIds = [52, 53]; // 除外カテゴリー
+        $excludeCategoryIds = [52, 53];
 
         $agendas = collect();
         if (!empty($categoryIds)) {
@@ -88,7 +90,7 @@ class FrontTopController extends Controller
         }
 
         // ----------------------------
-        // Blade に渡す
+        // 6. Blade に渡す
         // ----------------------------
         return view('user.top', compact(
             'globalAnnouncements',
