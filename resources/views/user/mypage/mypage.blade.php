@@ -204,16 +204,13 @@
         var submittedEvents = [
             @foreach($submitted_reports as $report) {
                 title: '',
-                start: '{{ \Carbon\Carbon::parse($report->date)->format('
-                Y - m - d ') }}',
+                start: '{{ \Carbon\Carbon::parse($report->date)->format('Y-m-d')}}',
                 allDay: true,
                 backgroundColor: 'transparent',
                 borderColor: 'transparent',
                 extendedProps: {
                     isPending: false,
-                    url: '{{ route('
-                    user.reports.info ', ['
-                    report ' => $report->id]) }}'
+                    url: '{{ route('user.reports.info',['report'=>$report->id])}}'
                 }
             },
             @endforeach
