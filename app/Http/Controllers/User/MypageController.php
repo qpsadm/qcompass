@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\Theme;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use DatePeriod;
+use DateInterval;
 
 class MypageController extends Controller
 {
@@ -15,12 +19,43 @@ class MypageController extends Controller
         $user = auth()->user();
         $user_details = $user->detail;
 
-        // 未提出日報
-        $pending_diaries = $this->getPendingDiaries($user);
+        /*
+        |--------------------------------------------------------------------------
+        | 表示用講座の決定
+        |--------------------------------------------------------------------------
+        | 優先順位
+        | 1. なりすまし講座（session）
+        | 2. ユーザー自身の講座
+        */
 
-        // 提出済み日報（日付ごとに最新1件のみ）
-        $submitted_reports = $user->reports
-            ->sortByDesc('date')
+        $impersonateCourseId = session('impersonator_course_id');
+
+        if ($impersonateCourseId) {
+            // なりすまし中
+            $courses = Course::where('id', $impersonateCourseId)->get();
+        } else {
+            // 通常
+            $courses = $user->myCourses;
+        }
+
+        $courseIds = $courses->pluck('id')->toArray();
+
+        /*
+        |--------------------------------------------------------------------------
+        | 未提出日報（表示用講座基準）
+        |--------------------------------------------------------------------------
+        */
+        $pending_diaries = $this->getPendingDiariesByCourses($user, $courses);
+
+        /*
+        |--------------------------------------------------------------------------
+        | 提出済み日報（日付ごとに最新1件）
+        |--------------------------------------------------------------------------
+        */
+        $submitted_reports = $user->reports()
+            ->whereIn('course_id', $courseIds)
+            ->orderByDesc('date')
+            ->get()
             ->unique('date')
             ->values()
             ->map(function ($report) {
@@ -28,65 +63,69 @@ class MypageController extends Controller
                 return $report;
             });
 
-        // 自分が所属する講座IDを取得
-        $myCourseIds = $user->myCourses()->pluck('id')->toArray();
-
-        // 自分の講座に紐づくお知らせ（最新5件）
-        $announcements = Announcement::whereIn('course_id', $myCourseIds)
-            ->where('is_show', 1)
-            ->latest()
-            ->take(5)
-            ->get();
-
-        // 自分が所属する講座IDを取得
-        $myCourseIds = $user->myCourses()->pluck('id')->toArray();
-
-        // type_id = 7 のスケジュールのみ、自分の講座に属するものをページネーション
+        /*
+        |--------------------------------------------------------------------------
+        | 各種スケジュール（type_id = 7）
+        |--------------------------------------------------------------------------
+        */
         $scheduledAnnouncements = Announcement::where('type_id', 7)
             ->where('is_show', 1)
-            ->whereIn('course_id', $myCourseIds)  // 自分の講座だけに絞る
+            ->whereIn('course_id', $courseIds)
             ->latest()
-            ->paginate(5); // ページネーション件数は任意
+            ->paginate(5);
 
-        $courses = $user->myCourses;
+        /*
+        |--------------------------------------------------------------------------
+        | その他表示用データ
+        |--------------------------------------------------------------------------
+        */
         $divisions = $user->division;
-
-        // テーマを取得
         $themes = Theme::where('is_show', 1)->get();
 
-        // テーマ・フォントサイズをセッションに保存
-        session(['settings' => [
-            'theme_id' => $user_details?->theme_id ?? 1,
-            'fontsize' => $user_details?->fontsize ?? 1,
-        ]]);
+        /*
+        |--------------------------------------------------------------------------
+        | テーマ・フォントサイズをセッション保存
+        |--------------------------------------------------------------------------
+        */
+        session([
+            'settings' => [
+                'theme_id' => $user_details?->theme_id ?? 1,
+                'fontsize' => $user_details?->fontsize ?? 1,
+            ]
+        ]);
 
         return view('user.mypage.mypage', compact(
             'user',
             'user_details',
+            'courses',
             'pending_diaries',
             'submitted_reports',
-            'announcements',           // 自分の講座のみのお知らせ
-            'scheduledAnnouncements',  // Blade 側と名前を揃える
-            'courses',
+            'scheduledAnnouncements',
             'divisions',
             'themes'
         ));
     }
 
-
-
-    private function getPendingDiaries($user)
+    /*
+    |--------------------------------------------------------------------------
+    | 未提出日報取得（講座注入型）
+    |--------------------------------------------------------------------------
+    */
+    private function getPendingDiariesByCourses($user, $courses)
     {
-        $courses = $user->myCourses()->get();
         $pending = [];
 
         foreach ($courses as $course) {
-            $start = \Carbon\Carbon::parse($course->start_date);
-            $end   = \Carbon\Carbon::parse($course->end_date);
+            if (!$course->start_date || !$course->end_date) {
+                continue;
+            }
 
-            $period = new \DatePeriod(
+            $start = Carbon::parse($course->start_date);
+            $end   = Carbon::parse($course->end_date);
+
+            $period = new DatePeriod(
                 $start,
-                new \DateInterval('P1D'),
+                new DateInterval('P1D'),
                 $end->copy()->addDay()
             );
 
@@ -101,10 +140,9 @@ class MypageController extends Controller
                     $diary->date = $date->format('Y-m-d');
                     $diary->course_id = $course->id;
                     $diary->course_name = $course->course_name;
-                    // 日報作成URL
                     $diary->url = route('user.reports_create', [
                         'course_id' => $course->id,
-                        'date' => $date->format('Y-m-d')
+                        'date'      => $date->format('Y-m-d'),
                     ]);
 
                     $pending[] = $diary;
@@ -112,29 +150,39 @@ class MypageController extends Controller
             }
         }
 
-        // 日付でユニークにして、同じ日が複数講座でも1件だけに
-        $pending = collect($pending)->unique('date')->values()->all();
-
-        return $pending;
+        // 同一日付は1件にまとめる
+        return collect($pending)
+            ->unique('date')
+            ->values()
+            ->all();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | フォントサイズ更新
+    |--------------------------------------------------------------------------
+    */
     public function updateFontsize(Request $request)
     {
         $request->validate([
-            'fontsize' => 'required|integer|min:1|max:3', // 任意の範囲
+            'fontsize' => 'required|integer|min:1|max:3',
         ]);
 
         $user = auth()->user();
 
-        // user_details が存在しない場合は作成
         $user->detail()->updateOrCreate(
             ['user_id' => $user->id],
             ['fontsize' => $request->fontsize]
         );
 
-        return redirect()->back()->with('success', '文字サイズを更新しました');
+        return back()->with('success', '文字サイズを更新しました');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | テーマ更新
+    |--------------------------------------------------------------------------
+    */
     public function updateTheme(Request $request)
     {
         $request->validate([
@@ -142,30 +190,29 @@ class MypageController extends Controller
         ]);
 
         $user = auth()->user();
-
-        // ユーザー詳細がない場合は作成
         $details = $user->detail ?? $user->detail()->create([]);
 
-        // テーマIDを更新
         $details->theme_id = $request->theme_id;
         $details->save();
 
-        return redirect()->back()->with('success', 'テーマを変更しました。');
+        return back()->with('success', 'テーマを変更しました。');
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | テーマ・フォントサイズ一括更新
+    |--------------------------------------------------------------------------
+    */
     public function updateSettings(Request $request)
     {
-        // バリデーション
         $request->validate([
-            'fontsize' => 'nullable|integer|min:1|max:3',   // 文字サイズは任意
-            'theme_id' => 'nullable|exists:themes,id',       // テーマIDも任意
+            'fontsize' => 'nullable|integer|min:1|max:3',
+            'theme_id' => 'nullable|exists:themes,id',
         ]);
 
         $user = auth()->user();
-
-        // user_details が存在しない場合は作成
         $details = $user->detail ?? $user->detail()->create([]);
 
-        // 入力値がある場合だけ更新
         if ($request->has('fontsize')) {
             $details->fontsize = $request->fontsize;
         }
@@ -175,24 +222,29 @@ class MypageController extends Controller
         }
 
         $details->save();
-        // セッション更新
-        session(['settings' => [
-            'theme_id' => $details->theme_id,
-            'fontsize' => $details->fontsize,
-        ]]);
 
-        return redirect()->back()->with('success', '設定を更新しました。');
+        session([
+            'settings' => [
+                'theme_id' => $details->theme_id,
+                'fontsize' => $details->fontsize,
+            ]
+        ]);
+
+        return back()->with('success', '設定を更新しました。');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | メモ保存
+    |--------------------------------------------------------------------------
+    */
     public function saveMemo(Request $request)
     {
         $user = auth()->user();
+        $detail = $user->detail ?? $user->detail()->create([]);
 
-        // ここでは簡易例として user_details に memo カラムを保存すると仮定
-        $userDetail = $user->detail;
-
-        $userDetail->memo = $request->input('memo'); // textarea の name が memo なら
-        $userDetail->save();
+        $detail->memo = $request->input('memo');
+        $detail->save();
 
         return back()->with('success', 'メモを保存しました');
     }
