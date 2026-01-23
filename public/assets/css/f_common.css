@@ -7,12 +7,22 @@ html {
     font-weight: 500;
 }
 
+body {
+    user-select: none;
+}
+
 body.no-scroll {
     overflow: hidden;
 }
 
 input::placeholder {
     color: var(--placeholder-color);
+}
+
+@media print {
+    body {
+        display: none;
+    }
 }
 
 /* =========================================

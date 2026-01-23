@@ -3,8 +3,8 @@
 .modal-profile {
     display: none;
     position: fixed;
-    top: 50%;
-    left: calc((100% - 285px) / 2);
+    top: calc((100% - 95px) / 2 + 75px);
+    left: calc((100% - 330px) / 2 + 20px);
     transform: translate(-50%, -50%);
     z-index: 1000;
     padding: 50px;
@@ -15,14 +15,16 @@
 .modal-customize {
     display: none;
     position: fixed;
-    top: 50%;
-    left: calc((100% - 285px) / 2);
+    top: calc((100% - 95px) / 2 + 75px);
+    left: calc((100% - 330px) / 2 + 20px);
     transform: translate(-50%, -50%);
     z-index: 1000;
     width: 535px;
+    max-height: calc(100% - 155px);
     padding: 50px;
     border-radius: 15px;
     background-color: var(--sub-color-2);
+    overflow: auto;
 }
 
 @media screen and (max-width: 1324px) {
@@ -294,6 +296,10 @@
     font-size: 18px;
 }
 
+.modal-customize .form-container {
+    /* display: flex; */
+}
+
 .modal-customize .theme-color-select {
     margin-bottom: 30px;
 }
@@ -332,4 +338,27 @@
 
 .note {
     margin-top: 15px;
+}
+
+
+.img-container {
+    display: flex;
+    gap: 20px 30px;
+    margin-top: 10px;
+}
+
+.modal-customize .img-container input {
+    display: none;
+}
+
+.avatar-img {
+    width: 100px;
+    aspect-ratio: 1/ 1;
+    border-radius: 50%;
+}
+
+@media screen and (max-width: 959px) {
+    .modal-customize .form-container {
+        flex-direction: column;
+    }
 }
