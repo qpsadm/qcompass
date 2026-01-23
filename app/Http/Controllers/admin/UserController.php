@@ -233,19 +233,22 @@ class UserController extends Controller
      */
     public function impersonate(User $user)
     {
-        // 管理者のIDと講座IDを保存
-        Session::put('impersonator_id', Auth::id());
-        Session::put('impersonator_course_id', session('course_id')); // 元の講座ID
+        // ① 今の講座IDを一旦ローカル変数に退避
+        $currentCourseId = session('course_id');
 
+        // ② 管理者IDと講座IDを保存
+        Session::put('impersonator_id', Auth::id());
+        Session::put('impersonator_course_id', $currentCourseId);
+
+        // ③ なりすましログイン
         Auth::login($user);
 
-        // 対象ユーザーの講座をセット
-        session([
-            'course_id' => $user->courses()->orderBy('course_name')->first()?->id
-        ]);
+        // ④ 講座IDを復元
+        session(['course_id' => $currentCourseId]);
 
         return redirect()->route('user.mypage');
     }
+
 
 
     /**

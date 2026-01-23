@@ -24,9 +24,11 @@
 
         <form class="report-form" action="{{ route('user.reports.confirm') }}" method="POST">
             @csrf
-            {{-- 講座ID（hidden） --}}
-            @if (!empty($course))
-            <input type="hidden" name="course_id" value="{{ $course->id }}">
+            @if ($course)
+            <p>講座名：{{ $course->course_name }}</p>
+            <p>期間：{{ $course->start_date }} 〜 {{ $course->end_date }}</p>
+            @else
+            <p class="text-red-500">講座情報を取得できません。</p>
             @endif
             {{-- 氏名・メール --}}
             <div class="form-item">

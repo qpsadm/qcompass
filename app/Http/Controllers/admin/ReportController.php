@@ -116,18 +116,25 @@ class ReportController extends Controller
     // 作成フォーム
     public function create()
     {
-        $user = auth()->user();
-        $courses = $user->courses()->get();
+        $courseId = session('course_id');
+        $courses = $courseId
+            ? \App\Models\Course::where('id', $courseId)->get()
+            : collect();
 
         return view('admin.reports.create', compact('courses'));
     }
 
+
     // 保存＋メール送信
     public function store(Request $request)
     {
-        // ← ここにバリデーションを書く
+        $courseId = session('course_id');
+
+        if (!$courseId) {
+            abort(403, '講座が選択されていません');
+        }
+
         $validated = $request->validate([
-            'course_id'  => 'required|exists:courses,id',
             'date'       => 'required|date',
             'title'      => 'required|string|max:255',
             'content'    => 'required|string',
@@ -137,7 +144,8 @@ class ReportController extends Controller
 
         // DB保存
         $report = Report::create(array_merge($validated, [
-            'user_id'         => Auth::id(),
+            'course_id' => $courseId,
+            'user_id'   => Auth::id(),
             'created_user_name' => auth()->user()->name ?? 'system',
             'updated_user_name' => auth()->user()->name ?? 'system',
         ]));
