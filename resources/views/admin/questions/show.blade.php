@@ -35,21 +35,13 @@
                     <td class="px-4 py-2 whitespace-pre-line">{{ $question->answer }}</td>
                 </tr>
 
-                {{-- タグ --}}
                 <tr class="border-b">
                     <th class="px-4 py-2 bg-gray-100 text-right">タグ</th>
                     <td class="px-4 py-2">
-                        {{-- @if ($question->tags && $question->tags->count()) --}}
                         @if ($question->tag)
-                        <div class="flex flex-wrap gap-2">
-                            {{-- @foreach ($question->tags as $tag) --}}
-                            <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
-                                {{-- {{ $tag->name }} --}}
-
-                                {{ $question->tag->name }}
-                            </span>
-                            {{-- @endforeach --}}
-                        </div>
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
+                            {{ $question->tag->name }}
+                        </span>
                         @else
                         なし
                         @endif
@@ -64,7 +56,6 @@
         </table>
 
         <div class="mt-6 flex flex-wrap gap-3 justify-between">
-
             {{-- 前・次 --}}
             <div class="flex gap-2">
                 @if ($prevQuestion)
@@ -102,9 +93,7 @@
                     一覧に戻る
                 </a>
             </div>
-
         </div>
-
     </div>
 </div>
 @endsection
