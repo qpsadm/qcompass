@@ -23,7 +23,6 @@
                     </td>
                 </tr>
 
-
                 {{-- 配点 --}}
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">配点</th>

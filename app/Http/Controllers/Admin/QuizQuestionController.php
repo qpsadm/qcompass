@@ -121,7 +121,7 @@ class QuizQuestionController extends Controller
         $quiz_question->delete();
 
         return redirect()
-            ->route('admin.quizzes.quiz_questions.index', $quiz->id)
+            ->route('admin.quizzes.show', $quiz->id)
             ->with('success', '問題を削除しました');
     }
 }

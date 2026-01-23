@@ -24,7 +24,6 @@
         </p>
     </div>
 
-
     {{-- 新しい問題追加 --}}
     <div class="mb-4">
         <a href="{{ route('admin.quizzes.quiz_questions.create', $quiz->id) }}"
@@ -57,7 +56,9 @@
 
                 <p class="mb-2">
                     <strong>問題文：</strong><br>
-                    {{ $q->question_text }}
+                    <span class="whitespace-pre-line">
+                        {{ $q->question_text }}
+                    </span>
                 </p>
 
                 <p class="mb-2">
@@ -93,28 +94,6 @@
                     </button>
                 </div>
 
-                {{-- 削除モーダル --}}
-                <div id="delete-{{ $q->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-                    <div class="bg-white rounded-lg p-6 w-80">
-                        <h2 class="text-lg font-bold mb-4">削除確認</h2>
-                        <p class="mb-4">本当にこの問題を削除しますか？</p>
-                        <div class="flex justify-end gap-2">
-                            <button @click="document.getElementById('delete-{{ $q->id }}').classList.add('hidden')"
-                                class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">
-                                キャンセル
-                            </button>
-                            <form action="{{ route('admin.quizzes.quiz_questions.destroy', [$quiz->id, $q->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600">
-                                    削除
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
         @endforeach
@@ -125,4 +104,30 @@
         ← クイズ一覧へ戻る
     </a>
 </div>
+
+{{-- モーダルはBladeの最後にまとめて置く --}}
+@foreach ($quiz->questions->sortBy('order') as $q)
+<div id="delete-{{ $q->id }}"
+    class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-80">
+        <h2 class="text-lg font-bold mb-4">削除確認</h2>
+        <p class="mb-4">本当にこの問題を削除しますか？</p>
+        <div class="flex justify-end gap-2">
+            <button onclick="document.getElementById('delete-{{ $q->id }}').classList.add('hidden')"
+                class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">
+                キャンセル
+            </button>
+            <form action="{{ route('admin.quizzes.quiz_questions.destroy', [$quiz->id, $q->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600">
+                    削除
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 @endsection
