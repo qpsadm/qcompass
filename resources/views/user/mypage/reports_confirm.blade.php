@@ -25,7 +25,6 @@
         <form class="form-confirm" action="{{ route('user.reports.store') }}" method="POST">
             @csrf
 
-            <input type="hidden" name="course_id" value="{{ optional($courses->first())->id }}">
             <input type="hidden" name="name" value="{{ $inputs['name'] }}">
             <input type="hidden" name="email" value="{{ $inputs['email'] }}">
             <input type="hidden" name="date" value="{{ $inputs['date'] }}">

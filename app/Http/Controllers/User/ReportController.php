@@ -4,16 +4,17 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Report;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use App\Mail\ReportSubmitted;
-use App\Models\Course;
 
 class ReportController extends Controller
 {
-    // 日報一覧（ログインユーザーのみ）
+    /*
+    |--------------------------------------------------------------------------
+    | 日報一覧（ログインユーザーのみ）
+    |--------------------------------------------------------------------------
+    */
     public function index()
     {
         $reports = Report::where('user_id', Auth::id())
@@ -23,7 +24,11 @@ class ReportController extends Controller
         return view('user.mypage.reports_info', compact('reports'));
     }
 
-    // 日報作成フォーム
+    /*
+    |--------------------------------------------------------------------------
+    | 日報作成フォーム
+    |--------------------------------------------------------------------------
+    */
     public function create(Request $request)
     {
         $courseId = session('course_id');
@@ -40,14 +45,46 @@ class ReportController extends Controller
             abort(403, '無効な講座です');
         }
 
-        // 日付は URL から来ても OK（補助情報なので）
+        // 日付は補助情報（URL から来てもOK）
         $date = $request->input('date');
 
         return view('user.mypage.reports_create', compact('course', 'date'));
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | 確認画面
+    |--------------------------------------------------------------------------
+    */
+    public function confirm(Request $request)
+    {
+        $inputs = $request->validate([
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|email',
+            'date'          => 'required|date',
+            'daily_report'  => 'required|string',
+            'impression'    => 'required|string',
+            'message'       => 'nullable|string',
+        ]);
 
-    // 日報保存&送信処理
+        $courseId = session('course_id');
+        $course = $courseId
+            ? Course::find($courseId)
+            : null;
+
+        return view('user.mypage.reports_confirm', compact(
+            'inputs',
+            'course'
+        ));
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | 日報保存
+    |--------------------------------------------------------------------------
+    */
     public function store(Request $request)
     {
         $courseId = session('course_id');
@@ -66,9 +103,9 @@ class ReportController extends Controller
             'email'        => 'required|email',
         ]);
 
-        $report = Report::create([
+        Report::create([
             'user_id'           => Auth::id(),
-            'course_id'         => $course->id,   // ← session 由来
+            'course_id'         => $course->id, // ← session 由来
             'date'              => $validated['date'],
             'title'             => '【日報】 - ' . $course->course_name,
             'content'           => $validated['daily_report'],
@@ -78,30 +115,29 @@ class ReportController extends Controller
             'updated_user_name' => Auth::user()->name ?? 'system',
         ]);
 
-        // メール送信（省略）
+        // 必要ならここで session 破棄も可
+        // session()->forget('course_id');
 
         return redirect()
             ->route('user.reports.complete')
             ->with('success', '日報を送信しました');
     }
 
-
-
-    // 日報プレビュー（任意）
-    public function preview(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | 完了画面
+    |--------------------------------------------------------------------------
+    */
+    public function complete()
     {
-        $reportData = $request->all();
-        $course = null;
-        if (!empty($reportData['course_id'])) {
-            $course = \App\Models\Course::find($reportData['course_id']);
-        }
-        return view('user.mypage.reports_preview', [
-            'report' => $reportData,
-            'course' => $course,
-        ]);
+        return view('user.mypage.reports_complete');
     }
 
-    // 個別日報詳細
+    /*
+    |--------------------------------------------------------------------------
+    | 個別日報詳細
+    |--------------------------------------------------------------------------
+    */
     public function show(Report $report)
     {
         if ($report->user_id !== Auth::id()) {
@@ -113,7 +149,11 @@ class ReportController extends Controller
         return view('user.mypage.reports_info', compact('report', 'course'));
     }
 
-    // 削除（必要なら）
+    /*
+    |--------------------------------------------------------------------------
+    | 削除
+    |--------------------------------------------------------------------------
+    */
     public function destroy(Report $report)
     {
         if ($report->user_id !== Auth::id()) {
@@ -122,43 +162,8 @@ class ReportController extends Controller
 
         $report->delete();
 
-        return redirect()->route('user.reports_info')
+        return redirect()
+            ->route('user.reports_info')
             ->with('success', '日報を削除しました');
-    }
-
-    public function confirm(Request $request)
-    {
-        $courseId = session('course_id');
-
-        if (!$courseId) {
-            return redirect()
-                ->route('user.reports_create')
-                ->with('error', '講座が選択されていません。');
-        }
-
-        $course = \App\Models\Course::find($courseId);
-
-        if (!$course) {
-            abort(403, '無効な講座です');
-        }
-
-        // フォーム入力だけ取得（course_id は含めない）
-        $inputs = $request->validate([
-            'date'         => 'required|date',
-            'daily_report' => 'required|string',
-            'impression'   => 'required|string',
-            'message'      => 'nullable|string',
-            'email'        => 'required|email',
-        ]);
-
-        return view('user.mypage.reports_confirm', compact('inputs', 'course'));
-    }
-
-
-
-
-    public function complete()
-    {
-        return view('user.mypage.reports_complete');
     }
 }
