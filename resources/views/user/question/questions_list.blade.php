@@ -11,6 +11,12 @@
         border-radius: 2px;
         padding: 0 2px;
     }
+
+    .question-text span,
+    .answer-text span {
+        white-space: pre-line;
+        /* 改行を表示 */
+    }
 </style>
 @endsection
 
