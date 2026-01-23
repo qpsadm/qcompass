@@ -235,6 +235,26 @@ class MypageController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | アバター変更
+    |--------------------------------------------------------------------------
+    */
+    public function updateAvatarType(Request $request)
+    {
+        $request->validate([
+            'avatar_type' => 'required|in:1,2,3',
+        ]);
+
+        $user = auth()->user();
+
+        $detail = $user->detail ?? $user->detail()->create([]);
+        $detail->avatar_type = $request->avatar_type;
+        $detail->save();
+
+        return back()->with('success', 'アバター表示を変更しました');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | メモ保存
     |--------------------------------------------------------------------------
     */

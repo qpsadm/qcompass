@@ -174,6 +174,8 @@ Route::middleware(['auth', 'no-cache'])
                 ->name('settings.update');
             Route::post('/memo/save', [MypageController::class, 'saveMemo'])
                 ->name('memo.save');
+            Route::post('/avatar-type', [MypageController::class, 'updateAvatarType'])
+                ->name('avatar_type');
         });
 
         /*
