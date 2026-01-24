@@ -86,7 +86,8 @@
 .quiz-form {
     margin-bottom: 50px;
     font-weight: 400;
-    font-size: 18px;
+    /* font-size: 18px; */
+    font-size: var(--font-size);
     line-height: 27px;
     letter-spacing: 1px;
 }
@@ -96,7 +97,7 @@
     margin-bottom: 50px;
     padding-bottom: 50px;
     border-bottom: 1px dashed #000;
-    font-size: var(--font-size);
+    /* font-size: var(--font-size); */
 }
 
 .question-number {

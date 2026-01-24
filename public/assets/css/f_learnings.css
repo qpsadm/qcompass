@@ -6,7 +6,8 @@
     max-width: 1000px;
     margin-bottom: 50px;
     font-weight: 400;
-    font-size: 18px;
+    /* font-size: 18px; */
+    font-size: var(--font-size);
     line-height: 27px;
     letter-spacing: 1px;
 }
@@ -14,6 +15,7 @@
 .learning-container {
     display: flex;
     gap: 30px;
+    align-items: flex-start;
     margin-bottom: 50px;
     padding-bottom: 50px;
     border-bottom: 1px dashed #000;
@@ -72,12 +74,13 @@
 
 .performance-list-container {
     display: flex;
-    gap: 30px;
+    gap: 60px;
     flex-wrap: wrap;
     align-items: stretch;
     margin-bottom: 50px;
     font-weight: 400;
-    font-size: 18px;
+    /* font-size: 18px; */
+    font-size: var(--font-size);
     line-height: 27px;
     letter-spacing: 1px;
 }
@@ -86,7 +89,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: calc((100% - 60px) / 3);
+    width: calc((100% - 120px) / 3);
     padding: 20px;
     border-radius: 15px;
     overflow: hidden;
@@ -124,13 +127,13 @@
 
 @media screen and (min-width: 1324px) and (max-width: 1500px) {
     .learning-performance-container {
-        width: calc((100% - 30px) / 2);
+        width: calc((100% - 60px) / 2);
     }
 }
 
 @media screen and (max-width: 1140px) {
     .learning-performance-container {
-        width: calc((100% - 30px) / 2);
+        width: calc((100% - 60px) / 2);
     }
 }
 
@@ -147,7 +150,8 @@
     max-width: 1000px;
     margin-bottom: 50px;
     font-weight: 400;
-    font-size: 18px;
+    /* font-size: 18px; */
+    font-size: var(--font-size);
     line-height: 27px;
     letter-spacing: 1px;
 }

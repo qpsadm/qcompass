@@ -66,34 +66,39 @@
 
 
         {{-- 学習コンテンツ一覧 --}}
-        <div class="performance-list-container">
+        <div
+            class="performance-list-container @switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
             @forelse($learnings as $item)
                 @if ($currentTypeId == 4)
                     {{-- <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
                         class="performance-url"> --}}
-                        <div class="learning-performance-container">
+                    <div class="learning-performance-container">
 
-                            <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
-                        class="performance-url"></a>
+                        <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
+                            class="performance-url"></a>
 
-                            <div class="learning-img">
-                                @if ($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" class="img">
-                                @endif
-                            </div>
+                        <div class="learning-img">
+                            @if ($item->image)
+                                <img src="{{ asset('storage/' . $item->image) }}" class="img">
+                            @endif
+                        </div>
 
-                            <h3 class="learning-title">{{ $item->title }}</h3>
+                        <h3 class="learning-title">{{ $item->title }}</h3>
 
-                            <p class="learning-description">
-                                {!! nl2br(e(Str::limit($item->description, 100))) !!}
-                            </p>
+                        <p class="learning-description">
+                            {!! nl2br(e(Str::limit($item->description, 100))) !!}
+                        </p>
 
-                            <p class="learning-category">{{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
+                        <p class="learning-category">{{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
 
 
-                            {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
+                        {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
 
-                            {{-- @if ($currentTypeId == 4)
+                        {{-- @if ($currentTypeId == 4)
                             <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
                 <p><strong>制作期間:</strong> {{ $item->priod }}</p>
                 @endif
@@ -104,7 +109,7 @@
 
 
 
-                        </div>
+                    </div>
                     {{-- </a> --}}
                 @endif
             @empty

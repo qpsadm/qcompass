@@ -11,7 +11,12 @@
 
         <x-f_page_title :search="false" title="制作品紹介 - {{ $learning->title }}" />
 
-        <div class="info-container">
+        <div
+            class="info-container @switch(session('settings.fontsize', 2))
+@case(1)@break
+@case(2) font-medium @break
+@case(3) font-large @break
+@endswitch">
 
             @if ($learning->image)
                 <img src="{{ asset('storage/' . $learning->image) }}" class="learning-img">
@@ -61,9 +66,9 @@
                 </li>
                 <li class="short-btn">
                     @if ($nextLearning)
-                    <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $typeId]) }}"
-                        class="btn btn-primary">次へ</a>
-                @endif
+                        <a href="{{ route('user.learnings.learnings_info', ['learning' => $nextLearning->id, 'type' => $typeId]) }}"
+                            class="btn btn-primary">次へ</a>
+                    @endif
                 </li>
             </ul>
         </div>
