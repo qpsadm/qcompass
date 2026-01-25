@@ -4,14 +4,7 @@
 
 @section('code-page-css')
 <link rel="stylesheet" href="{{ asset('assets/css/f_qa.css') }}">
-<style>
-    .highlight {
-        background-color: #ffff66;
-        font-weight: bold;
-        border-radius: 2px;
-        padding: 0 2px;
-    }
-</style>
+
 @endsection
 
 @section('main-content')

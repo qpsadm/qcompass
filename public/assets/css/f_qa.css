@@ -106,3 +106,13 @@
 .qa-info .answer-icon {
     margin-bottom: 15px;
 }
+
+
+/* てｓｔ */
+
+    .highlight {
+        background-color: #ffff66;
+        font-weight: bold;
+        border-radius: 2px;
+        padding: 0 2px;
+    }
