@@ -36,42 +36,15 @@ class CourseTeacherController extends Controller
         ]);
         $validated['created_user_name'] = Auth::user()->name;
 
-        // 論理削除済みの同じ組み合わせがあるかチェック
-        $existing = CourseTeacher::withTrashed()
-            ->where('course_id', $validated['course_id'])
-            ->where('user_id', $validated['user_id'])
-            ->first();
-
-        if ($existing) {
-            if ($existing->trashed()) {
-                // 削除済みなら復活
-                $existing->restore();
-                $existing->deleted_user_name = null; // 復活時に削除者情報をクリア
-                $existing->updated_user_name = Auth::user()->name;
-                $existing->role_in_course = $validated['role_in_course'];
-                $existing->save();
-
-                return redirect()
-                    ->route('admin.course_teachers.index')
-                    ->with('success', '削除済みの講師を復活させました');
-            } else {
-                return redirect()
-                    ->back()
-                    ->withErrors(['user_id' => 'この講座には既に同じ講師が登録されています']);
-            }
-        }
-
-        // 新規作成
         CourseTeacher::create($validated);
 
-        return redirect()->route('admin.course_teachers.index')->with('success', '講座講師情報を作成しました');
+        return redirect()->route('admin.course_teachers.index')->with('success', 'CourseTeacher作成完了');
     }
-
 
     public function edit($id)
     {
         $CourseTeacher = CourseTeacher::findOrFail($id);
-        $courses = Course::all();
+        $courses = Course::orderBy('course_name', 'asc')->get();
         $users = User::all();
         return view('admin.course_teachers.edit', compact('CourseTeacher', 'courses', 'users'));
     }
