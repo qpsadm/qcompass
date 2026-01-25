@@ -11,12 +11,6 @@
         border-radius: 2px;
         padding: 0 2px;
     }
-
-    .question-text span,
-    .answer-text span {
-        white-space: pre-line;
-        /* 改行を表示 */
-    }
 </style>
 @endsection
 
@@ -54,16 +48,16 @@
         <div class="qa-accordion">
             <div class="question-container">
                 <div class="question-icon"><span>Q</span></div>
-                <div class="question-text">
-                    <span>{!! $highlight($q->content) !!}</span>
+                <div>
+                    <span>{!! nl2br( $highlight($q->content)) !!}</span>
                 </div>
                 <div class="accordion-btn"><span></span></div>
             </div>
             <div class="answer-container">
                 <div class="answer-content">
                     <div class="answer-icon"><span>A</span></div>
-                    <div class="answer-text">
-                        <span>{!! $highlight($q->answer ?? '-') !!}</span>
+                    <div>
+                        <span>{!! nl2br( $highlight($q->answer ?? '-')) !!}</span>
                     </div>
                 </div>
             </div>

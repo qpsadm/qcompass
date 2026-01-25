@@ -52,8 +52,8 @@
                 <td class="table-number">{{ $loop->iteration }}</td>
 
                 {{-- 問題文 --}}
-                <td class="table-question" style="white-space: pre-line;">
-                    {{ $res['question']->question_text }}
+                <td class="table-question">
+                    {!! nl2br( $res['question']->question_text) !!}
                 </td>
 
                 {{-- 選択肢（正解は赤） --}}
