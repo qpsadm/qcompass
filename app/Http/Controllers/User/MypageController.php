@@ -68,11 +68,14 @@ class MypageController extends Controller
         | 各種スケジュール（type_id = 7）
         |--------------------------------------------------------------------------
         */
+        $currentCourseId = session('course_id'); // 現在ログイン中の講座ID
+
         $scheduledAnnouncements = Announcement::where('type_id', 7)
             ->where('is_show', 1)
-            ->whereIn('course_id', $courseIds)
+            ->where('course_id', $currentCourseId) // 単一IDで絞る
             ->latest()
             ->paginate(5);
+
 
         /*
         |--------------------------------------------------------------------------

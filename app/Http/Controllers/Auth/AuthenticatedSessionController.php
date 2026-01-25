@@ -111,7 +111,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if ($course) {
-            session(['course_id' => $course->id]);
+            session([
+                'course_id' => $course->id,
+                'current_course_name' => $course->course_name,
+            ]);
         }
 
         session([

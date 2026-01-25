@@ -110,7 +110,11 @@
                 <div class="profile-data">
                     <h4>{{ $user->name }}</h4>
                     <p class="mail">{{ $user->email ?? '未登録' }}</p>
-                    <p class="course">{{ $courses->pluck('course_name')->join(' / ') ?: '未設定' }}</p>
+
+                    <p class="course">
+                        {{ session('current_course_name') ?? '未設定' }}
+                    </p>
+
                     <p class="division">{{ $divisions->name ?? '未設定' }}</p>
                     <p class="division-tel">（{{ $divisions->tel ?? '未設定' }}）</p>
 
