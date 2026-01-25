@@ -58,13 +58,14 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('email');
         }
 
-        // ユーザー状態
+        // ユーザー状態(ステータス)
         if ($user->detail && in_array($user->detail->status, [0, 2], true)) {
             return back()->withErrors([
                 'email' => 'このアカウントは現在利用できません。',
             ]);
         }
 
+        // ログイン不可ユーザー
         if ($user->role_id === 1) {
             return back()->withErrors([
                 'email' => 'このユーザーはログインできません。',
@@ -84,21 +85,27 @@ class AuthenticatedSessionController extends Controller
                 ]);
             }
 
-            if ($user->role_id < 5) {
-                if (!$user->courses->contains('id', $course->id)) {
+            // 講師・生徒の場合のみ所属講座チェック
+            if (in_array($user->role_id, [3, 4, 5, 6])) {
+                $userCourseIds = match ($user->role_id) {
+                    3 => $user->courses()->pluck('courses.id')->toArray(),      // 生徒（所属講座チェックなし）
+                    4, 5, 6 => $user->teachingCourses()->pluck('courses.id')->toArray(), // アルバイト・パート・講師
+                };
+
+                // role_id=3（生徒）は画面表示用なので、チェック不要
+                if (in_array($user->role_id, [4, 5, 6]) && !in_array($course->id, $userCourseIds)) {
                     return back()->withErrors([
                         'course_id' => 'この講座に所属していません。',
                     ]);
                 }
 
-                if (!$course->isLoginable()) {
+                if (in_array($user->role_id, [4, 5, 6]) && !$course->isLoginable()) {
                     return back()->withErrors([
                         'course_id' => 'この講座は現在ログインできません。',
                     ]);
                 }
             }
         }
-
 
         Auth::login($user);
         $request->session()->regenerate();
@@ -120,6 +127,7 @@ class AuthenticatedSessionController extends Controller
             default => redirect()->route('user.top'),
         };
     }
+
 
 
     /**

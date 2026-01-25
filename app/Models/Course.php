@@ -162,22 +162,34 @@ class Course extends Model
     | ログイン判定ロジック
     |--------------------------------------------------------------------------
     */
+    // Course.php
     public function isLoginable(): bool
     {
+        // 実施中なら問答無用でログイン可能
+        if ($this->status === self::STATUS_PUBLISHED) {
+            return true;
+        }
+
         $now = now();
 
-        if ($this->start_date && $now->lt($this->start_date)) {
+        // 開校準備（ドラフト）または終了（アーカイブ）はログイン不可
+        if ($this->status === self::STATUS_DRAFT || $this->status === self::STATUS_ARCHIVED) {
             return false;
         }
 
-        if ($this->end_date) {
-            return $now->lte(
-                \Carbon\Carbon::parse($this->end_date)->addMonth()->endOfDay()
-            );
+        // 日付チェック（PUBLISHED以外の講座にのみ適用）
+        if ($this->start_date instanceof \Carbon\Carbon && $this->start_date->gt($now)) {
+            return false;
         }
 
-        return true;
+        if ($this->end_date instanceof \Carbon\Carbon && $this->end_date->lt($now)) {
+            return false;
+        }
+
+        return false; // 上記条件に該当しなければログイン不可
     }
+
+
 
     public function loginRemainingDays(): ?int
     {

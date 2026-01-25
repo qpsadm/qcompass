@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CourseTeacher;
 use App\Models\Course;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class CourseTeacherController extends Controller
@@ -35,10 +36,37 @@ class CourseTeacherController extends Controller
         ]);
         $validated['created_user_name'] = Auth::user()->name;
 
+        // 論理削除済みの同じ組み合わせがあるかチェック
+        $existing = CourseTeacher::withTrashed()
+            ->where('course_id', $validated['course_id'])
+            ->where('user_id', $validated['user_id'])
+            ->first();
+
+        if ($existing) {
+            if ($existing->trashed()) {
+                // 削除済みなら復活
+                $existing->restore();
+                $existing->deleted_user_name = null; // 復活時に削除者情報をクリア
+                $existing->updated_user_name = Auth::user()->name;
+                $existing->role_in_course = $validated['role_in_course'];
+                $existing->save();
+
+                return redirect()
+                    ->route('admin.course_teachers.index')
+                    ->with('success', '削除済みの講師を復活させました');
+            } else {
+                return redirect()
+                    ->back()
+                    ->withErrors(['user_id' => 'この講座には既に同じ講師が登録されています']);
+            }
+        }
+
+        // 新規作成
         CourseTeacher::create($validated);
 
-        return redirect()->route('admin.course_teachers.index')->with('success', 'CourseTeacher作成完了');
+        return redirect()->route('admin.course_teachers.index')->with('success', '講座講師情報を作成しました');
     }
+
 
     public function edit($id)
     {
@@ -50,22 +78,54 @@ class CourseTeacherController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (Auth::user()->role_id == 5) {
-            abort(403, '権限がありません。');
-        }
+        $CourseTeacher = CourseTeacher::withTrashed()->findOrFail($id);
 
-        $CourseTeacher = CourseTeacher::findOrFail($id);
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'user_id' => 'required|exists:users,id',
             'role_in_course' => 'required|integer',
         ]);
+
         $validated['updated_user_name'] = Auth::user()->name;
 
+        // 論理削除済みの同じ組み合わせがあるか確認
+        $existing = CourseTeacher::withTrashed()
+            ->where('course_id', $validated['course_id'])
+            ->where('user_id', $validated['user_id'])
+            ->where('id', '!=', $CourseTeacher->id)
+            ->first();
+
+        if ($existing) {
+            if ($existing->trashed()) {
+                // 削除済みなら復活させる
+                $existing->restore();
+                $existing->deleted_user_name = null; // ここで空にする
+                $existing->updated_user_name = $validated['updated_user_name'];
+                $existing->role_in_course = $validated['role_in_course'];
+                $existing->save();
+
+                // 元のレコードは削除してもOK
+                $CourseTeacher->delete();
+
+                return redirect()
+                    ->route('admin.course_teachers.index')
+                    ->with('success', '削除済みの講師を復活させました');
+            } else {
+                // 既存のレコードが存在していたらエラー
+                return redirect()
+                    ->back()
+                    ->withErrors(['user_id' => 'この講座には既に同じ講師が登録されています']);
+            }
+        }
+
+        // 通常更新
         $CourseTeacher->update($validated);
 
-        return redirect()->route('admin.course_teachers.index')->with('success', 'CourseTeacher更新完了');
+        return redirect()
+            ->route('admin.course_teachers.index')
+            ->with('success', '講座講師情報を更新しました');
     }
+
 
     public function destroy($id)
     {

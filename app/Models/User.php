@@ -105,6 +105,20 @@ class User extends Authenticatable
             ->withPivot('created_user_name', 'updated_user_name');
     }
 
+    // 講師・アルバイト・パート用
+    // User.php の teachingCourses リレーション
+    public function teachingCourses()
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'course_teachers',
+            'user_id',
+            'course_id'
+        )
+            ->whereNull('course_teachers.deleted_at'); // ← テーブル名を明示
+    }
+
+
     public function course_teachers()
     {
         return $this->hasMany(CourseTeacher::class, 'user_id', 'id');
