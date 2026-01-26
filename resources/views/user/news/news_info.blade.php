@@ -12,14 +12,14 @@
         <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="{{ $announcement->title }}" />
 
-        <!-- コンテンツ詳細 -->
+        <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div
             class="page-content
             @switch(session('settings.fontsize', 2))
             @case(1)@break
             @case(2) font-medium @break
             @case(3) font-large @break
-            @endswitch">
+        @endswitch">
             <div>{!! $announcement->content !!}</div>
         </div>
 
