@@ -69,34 +69,34 @@ window.onload = function () {
 
 // キャプチャ・コピペ・印刷・DevTools等制限
 
-$(function () {
-    $(document).on('copy', function (e) {
-        e.preventDefault();
-        e.originalEvent.clipboardData.setData(
-            'text/plain',
-            'コピーは禁止されています'
-        );
-    });
+// $(function () {
+//     $(document).on('copy', function (e) {
+//         e.preventDefault();
+//         e.originalEvent.clipboardData.setData(
+//             'text/plain',
+//             'コピーは禁止されています'
+//         );
+//     });
 
-    $(document).on('contextmenu', function (e) {
-        e.preventDefault();
-    });
+//     $(document).on('contextmenu', function (e) {
+//         e.preventDefault();
+//     });
 
-    $(document).on('keydown', function (e) {
-        if (
-            e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && (
-                e.key.toLowerCase() === 'i' ||
-                e.key.toLowerCase() === 'j' ||
-                e.key.toLowerCase() === 'c'
-            )) ||
-            (e.ctrlKey && (
-                e.key.toLowerCase() === 's' ||
-                e.key.toLowerCase() === 'u'
-            ))
-        ) {
-            e.preventDefault();
-            return false;
-        }
-    });
-});
+//     $(document).on('keydown', function (e) {
+//         if (
+//             e.key === 'F12' ||
+//             (e.ctrlKey && e.shiftKey && (
+//                 e.key.toLowerCase() === 'i' ||
+//                 e.key.toLowerCase() === 'j' ||
+//                 e.key.toLowerCase() === 'c'
+//             )) ||
+//             (e.ctrlKey && (
+//                 e.key.toLowerCase() === 's' ||
+//                 e.key.toLowerCase() === 'u'
+//             ))
+//         ) {
+//             e.preventDefault();
+//             return false;
+//         }
+//     });
+// });

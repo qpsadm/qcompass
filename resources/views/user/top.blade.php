@@ -8,10 +8,13 @@
 
 @section('main-content')
     <div class="container">
+
+        <!-- キービジュアル -->
         <div class="kv">
             <video id="kv-video" loop autoplay muted></video>
         </div>
 
+        <!-- アジェンダ一覧 -->
         <div class="section-box">
             <div class="box-title">
                 <h2>最新のアジェンダ</h2>
@@ -25,6 +28,7 @@
             </div>
         </div>
 
+        <!-- 本講座のお知らせ一覧 -->
         <div class="section-box">
             <div class="box-title">
                 <h2>本講座のお知らせ</h2>
@@ -37,6 +41,7 @@
             </div>
         </div>
 
+        <!-- 全体のお知らせ一覧 -->
         <div class="section-box">
             <div class="box-title">
                 <h2>全体のお知らせ</h2>
@@ -50,6 +55,8 @@
         </div>
 
         <div class="section-flex">
+
+            <!-- フェイスブック -->
             <div class="section-box facebook">
                 <div class="box-title">
                     <h2>Facebook</h2>
@@ -63,6 +70,7 @@
                 </div>
             </div>
 
+            <!-- 求人一覧 -->
             <div class="section-box job-offer">
                 <div class="box-title">
                     <h2>最新の求人情報</h2>
