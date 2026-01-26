@@ -34,8 +34,8 @@
         @endphp
 
         <!-- ボタンリスト -->
-        <x-f_btn_list :prevBtn="$prevAnnouncement !== null" :nextBtn="$nextAnnouncement !== null" :listBtn="true" listUrl="{{ route('user.news.news_list') }}"
-            listLabel="一覧へもどる" :prevUrl="$prevUrl" :nextUrl="$nextUrl" />
+        <x-f_btn_list :prevBtn="$prevAnnouncement !== null" :nextBtn="$nextAnnouncement !== null" :listBtn="true" :prevUrl="$prevUrl" :nextUrl="$nextUrl"
+            listUrl="{{ route('user.news.news_list') }}" listLabel="一覧へもどる" />
 
         <!-- パンくずリスト -->
         <x-f_bread_crumbs />

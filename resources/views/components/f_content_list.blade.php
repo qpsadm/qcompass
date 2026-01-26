@@ -11,7 +11,7 @@
         @foreach ($items as $item)
         @php
         // 日付
-        $date = optional($item->created_at)->format('Y/m/d') ?? '';
+        $date = optional($item->updated_at)->format('Y/m/d') ?? '';
 
         // タイトル
         $title = $item->{$titleField} ?? '未設定';

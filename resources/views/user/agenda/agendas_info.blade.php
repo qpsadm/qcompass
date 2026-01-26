@@ -30,8 +30,8 @@
         @endphp
 
         <!-- ボタンリスト -->
-        <x-f_btn_list :prevBtn="(bool) $prevAgenda" :nextBtn="(bool) $nextAgenda" :prevUrl="$prevUrl" :nextUrl="$nextUrl" :listBtn="true"
-            listLabel="一覧へもどる" listUrl="{{ url('user/agendas') }}" />
+        <x-f_btn_list :prevBtn="(bool) $prevAgenda" :nextBtn="(bool) $nextAgenda" :listBtn="true" :prevUrl="$prevUrl" :nextUrl="$nextUrl"
+            listUrl="{{ url('user/agendas') }}" listLabel="一覧へもどる" />
 
         <!-- パンくずリスト -->
         <x-f_bread_crumbs />
