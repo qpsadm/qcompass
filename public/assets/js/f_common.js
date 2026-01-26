@@ -1,8 +1,7 @@
 "use strict";
 
-// ------------------------------
 // ハンバーガーメニュー open/close
-// ------------------------------
+
 const hamburgerBtn = $(".hamburger-btn");
 
 hamburgerBtn.click(function () {
@@ -11,9 +10,10 @@ hamburgerBtn.click(function () {
     $("body").toggleClass("no-scroll");
 });
 
-// ------------------------------
+
+
 // アコーディオンメニュー open/close
-// ------------------------------
+
 const accordionMenu = $(".accordion-menu");
 const menuTitle = $(".menu-title");
 
@@ -22,9 +22,10 @@ menuTitle.click(function () {
     accordionMenu.toggleClass("active");
 });
 
-// ------------------------------
+
+
 // QAアコーディオン
-// ------------------------------
+
 const qaAccordion = $(".qa-accordion");
 const questionContainer = $(".question-container");
 
@@ -40,9 +41,10 @@ questionContainer.click(function () {
     parentAccordion.toggleClass("active");
 });
 
-// ------------------------------
+
+
 // カレンダー・日報日付入力
-// ------------------------------
+
 window.onload = function () {
 
     const today = new Date();
@@ -63,9 +65,10 @@ window.onload = function () {
     }
 };
 
-// ------------------------------
+
+
 // キャプチャ・コピペ・印刷・DevTools等制限
-// ------------------------------
+
 $(function () {
     $(document).on('copy', function (e) {
         e.preventDefault();

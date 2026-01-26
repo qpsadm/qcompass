@@ -50,7 +50,6 @@
         </div>
 
         <div class="section-flex">
-
             <div class="section-box facebook">
                 <div class="box-title">
                     <h2>Facebook</h2>
@@ -81,7 +80,7 @@
 @endsection
 
 @section('code-page-js')
-    <script src="../assets/js/f_top.js"></script>
+    <script src="{{ asset('assets/js/f_top.js') }}"></script>
     <script>
         const baseVideoPath = "{{ asset('assets/images/kv') }}";
     </script>

@@ -1,11 +1,9 @@
 @charset "UTF-8";
 
-
 /* kv
 ------------------------------------- */
 .kv {
     margin-bottom: 45px;
-
 }
 
 .kv video {
@@ -13,13 +11,18 @@
     border-radius: 15px;
 }
 
-/* section-box
+/* section
 ------------------------------------- */
+.section-flex {
+    display: flex;
+    gap: 40px;
+}
+
 .section-box {
     margin-bottom: 30px;
     padding: 35px;
-    background-color: var(--sub-color-2);
     border-radius: 15px;
+    background-color: var(--sub-color-2);
 }
 
 .section-box .box-title {
@@ -30,48 +33,19 @@
     position: relative;
     width: 100%;
     padding-left: 33px;
-    font-size: 26px;
     font-weight: bold;
+    font-size: 26px;
 }
 
 .section-box .box-title h2::before {
     content: "";
     position: absolute;
-    background: url(../images/icon/f_icon_book.svg) no-repeat;
-    background-size: 100%;
     top: -12px;
     left: -12px;
     width: 45px;
     height: 45px;
-}
-
-.section-box.facebook .box-title h2::before {
-    background: url(../images/icon/f_icon_h1.svg) no-repeat;
-}
-
-.section-box .content-list {
-    margin-bottom: 10px;
-}
-
-.section-flex {
-    display: flex;
-    gap: 40px;
-}
-
-.facebook {
-    width: 370px;
-}
-
-.job-offer {
-    flex: 1;
-}
-
-.section-box.facebook {
-    padding: 35px 20px 20px;
-}
-
-.section-box.facebook .box-title {
-    margin-bottom: 25px;
+    background: url(../images/icon/f_icon_book.svg) no-repeat;
+    background-size: 100%;
 }
 
 .more-btn {
@@ -91,37 +65,62 @@
     text-align: center;
 }
 
-@media screen and (max-width: 1324px) {
-    .section-box .box-title h2 {
-        width: calc(100%);
-    }
+/* components > f_content_list.blade.php */
+.section-box .content-list {
+    margin-bottom: 10px;
+}
 
-    .job-offer .content-list tr {
-        align-items: flex-end;
-    }
+/* facebook */
+.section-box.facebook {
+    width: 370px;
+    padding: 35px 20px 20px;
+}
 
-    .job-offer .content-list .title {
+.section-box.facebook .box-title {
+    margin-bottom: 25px;
+}
+
+.section-box.facebook .box-title h2::before {
+    background: url(../images/icon/f_icon_h1.svg) no-repeat;
+}
+
+/* job-offer */
+.section-box.job-offer {
+    flex: 1;
+}
+
+@media screen and (max-width: 1424px) {
+    .section-box.job-offer .content-list .title {
         flex: unset;
         width: 100%;
     }
 }
 
+@media screen and (max-width: 1324px) {
+    .section-box .box-title h2 {
+        width: calc(100%);
+    }
+
+    .section-box.job-offer .content-list tr {
+        align-items: flex-end;
+    }
+}
 
 @media screen and (max-width: 959px) {
     .section-flex {
         flex-direction: column;
     }
 
-    .facebook {
+    .section-box.facebook {
         width: 100%;
     }
 
-    .facebook-container {
+    .section-box .facebook-container {
         display: flex;
         justify-content: center;
     }
 
-    .facebook iframe {
+    .section-box.facebook iframe {
         aspect-ratio: 33 / 50;
     }
 }
