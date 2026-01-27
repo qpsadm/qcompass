@@ -64,14 +64,47 @@
                 @endphp
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">PDFファイル{{ $i }}</th>
-                    <td class="px-4 py-2 flex gap-2 items-center">
+                    <td class="px-4 py-2 flex gap-2 items-center"
+                        x-data="{
+        copied:false,
+        url: '{{ isset($job_offer) && $job_offer->$column ? asset('storage/' . $job_offer->$column) : '' }}',
+        copy() {
+            navigator.clipboard.writeText(this.url).then(() => {
+                this.copied = true;
+                setTimeout(() => this.copied = false, 1500);
+            });
+        }
+    }">
                         <input type="file" name="{{ $inputName }}" class="border rounded px-3 py-2">
+
                         @if(isset($job_offer) && $job_offer->$column)
-                        <a href="{{ asset('storage/' . $job_offer->$column) }}" target="_blank"
-                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">確認</a>
+                        {{-- 確認 --}}
+                        <a href="{{ asset('storage/' . $job_offer->$column) }}"
+                            target="_blank"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">
+                            確認
+                        </a>
+
+                        {{-- URLコピー --}}
+                        <button type="button"
+                            @click="copy()"
+                            class="px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
+                            URLコピー
+                        </button>
+
+                        {{-- コピー完了 --}}
+                        <span x-show="copied"
+                            x-transition
+                            class="text-green-600 text-xs">
+                            コピーしました
+                        </span>
                         @endif
-                        @error($inputName)<p class="text-red-500 text-sm">{{ $message }}</p>@enderror
+
+                        @error($inputName)
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
                     </td>
+
                 </tr>
                 @endforeach
 

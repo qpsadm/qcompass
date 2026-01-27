@@ -22,13 +22,17 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
 
     <!-- 検索 -->
     <div x-data="searchBox()" class="flex items-center space-x-2 mb-4">
-        <form :action="url" method="GET" class="relative flex-1">
+        <form :action="url" method="GET" class="relative w-full max-w-sm">
             <input type="text" name="search" x-model="search" placeholder="求人タイトルで検索"
-                @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
+                @keydown.enter.prevent="submit()"
+                class="w-full border px-2 py-1 rounded pr-8">
+
             <button type="button" x-show="search" @click="clear()"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                &times;
             </button>
         </form>
+
         <button @click="submit()"
             class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
             <img src="{{ asset('assets/images/icon/b_search.svg') }}" class="w-4 h-4">
@@ -98,11 +102,9 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                         {{ $jobOffer->end_datetime? $jobOffer->end_datetime->format('Y-m-d'):'-' }}
                     </td>
                     <td class="border px-4 py-2 text-center">
-                        @if($jobOffer->is_show)
-                        <span class="text-green-600">表示</span>
-                        @else
-                        <span class="text-gray-400">非表示</span>
-                        @endif
+                        <span class="px-2 py-1 {{ $jobOffer->is_show ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700' }} rounded-full text-xs">
+                            {{ $jobOffer->is_show ? '表示' : '非表示' }}
+                        </span>
                     </td>
                 </tr>
                 @empty

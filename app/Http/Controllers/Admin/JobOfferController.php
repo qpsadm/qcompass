@@ -114,11 +114,31 @@ class JobOfferController extends Controller
 
         // PDFファイル更新
         foreach (range(1, 5) as $i) {
-            $inputName = 'pdf_file' . $i;
+            $inputName  = 'pdf_file' . $i;
+            $deleteName = 'delete_pdf' . $i;
             $columnName = 'file_path' . ($i === 1 ? '' : $i);
 
+            /*
+     |------------------------------------------
+     | 削除チェックが入っている場合
+     |------------------------------------------
+     */
+            if ($request->boolean($deleteName)) {
+                if ($job_offer->$columnName && Storage::disk('public')->exists($job_offer->$columnName)) {
+                    Storage::disk('public')->delete($job_offer->$columnName);
+                }
+                $validated[$columnName] = null;
+            }
+
+            /*
+     |------------------------------------------
+     | 新しいPDFがアップロードされた場合
+     |（削除チェックより優先）
+     |------------------------------------------
+     */
             if ($request->hasFile($inputName)) {
-                // 古いファイル削除
+
+                // 既存ファイル削除
                 if ($job_offer->$columnName && Storage::disk('public')->exists($job_offer->$columnName)) {
                     Storage::disk('public')->delete($job_offer->$columnName);
                 }
@@ -127,10 +147,12 @@ class JobOfferController extends Controller
                 $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $extension = $file->getClientOriginalExtension();
                 $fileName = now()->format('Ymd') . '-' . Str::slug($originalName) . '.' . $extension;
+
                 $path = $file->storeAs('job_offers', $fileName, 'public');
                 $validated[$columnName] = $path;
             }
         }
+
 
         $job_offer->update($validated);
 
