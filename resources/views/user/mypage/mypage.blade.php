@@ -288,33 +288,24 @@
         });
 
         // -------------------------
-        // アバター変更：モーダル内ハイライト＋リアルタイム反映＋DB更新
+        // アバター変更：ハイライトのみ（即時反映しない）
         // -------------------------
-        const $profileImg = $('.profile-icon img');
+        $(function() {
 
-        // 初期選択をハイライト
-        $('.img-container input[name="avatar_type"]').each(function() {
-            if ($(this).is(':checked')) $(this).closest('label').addClass('selected');
-        });
-
-        $('.img-container input[name="avatar_type"]').on('change', function() {
-            const avatar = $(this).val();
-
-            // ① モーダル内ハイライト
-            $(this).closest('.img-container').find('label').removeClass('selected');
-            $(this).closest('label').addClass('selected');
-
-            // ② プロフィール画像をリアルタイム更新
-            $profileImg.attr('src', `/assets/images/f_profile_image${avatar}.svg`);
-
-            // ③ AjaxでDB更新
-            $.post("{{ route('user.avatar_type') }}", {
-                _token: '{{ csrf_token() }}',
-                avatar_type: avatar
-            }).fail(function() {
-                alert('アバター変更に失敗しました');
+            // 初期ハイライト
+            $('.img-container input[name="avatar_type"]:checked').each(function() {
+                $(`label[for="${this.id}"]`).addClass('selected');
             });
+
+            // 選択変更時
+            $('.img-container input[name="avatar_type"]').on('change', function() {
+                $('.img-container label').removeClass('selected');
+                $(`label[for="${this.id}"]`).addClass('selected');
+            });
+
         });
+
+
 
     });
 </script>

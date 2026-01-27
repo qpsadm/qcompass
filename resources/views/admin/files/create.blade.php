@@ -65,7 +65,7 @@
                 @if (!empty($returnUrl))
                 <a href="{{ $returnUrl }}"
                     class="bg-gray-500 text-white px-6 py-2 rounded">
-                    アジェンダに戻る
+                    {{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} に戻る
                 </a>
                 @endif
             </div>

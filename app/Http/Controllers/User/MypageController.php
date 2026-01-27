@@ -209,19 +209,24 @@ class MypageController extends Controller
     public function updateSettings(Request $request)
     {
         $request->validate([
-            'fontsize' => 'nullable|integer|min:1|max:3',
-            'theme_id' => 'nullable|exists:themes,id',
+            'fontsize'    => 'nullable|integer|min:1|max:3',
+            'theme_id'    => 'nullable|exists:themes,id',
+            'avatar_type' => 'nullable|in:1,2,3', // ← 追加
         ]);
 
         $user = auth()->user();
         $details = $user->detail ?? $user->detail()->create([]);
 
-        if ($request->has('fontsize')) {
+        if ($request->filled('fontsize')) {
             $details->fontsize = $request->fontsize;
         }
 
-        if ($request->has('theme_id')) {
+        if ($request->filled('theme_id')) {
             $details->theme_id = $request->theme_id;
+        }
+
+        if ($request->filled('avatar_type')) {
+            $details->avatar_type = $request->avatar_type; // ← 追加
         }
 
         $details->save();
@@ -235,6 +240,7 @@ class MypageController extends Controller
 
         return back()->with('success', '設定を更新しました。');
     }
+
 
     /*
     |--------------------------------------------------------------------------
