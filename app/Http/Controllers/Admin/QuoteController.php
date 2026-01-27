@@ -82,7 +82,7 @@ class QuoteController extends Controller
     {
         $request->validate([
             'quote_full' => 'required|string|max:255',
-            'author_full' => 'nullable|string|max:255',
+            'author_full' => 'required|string|max:255',
             'quote_parts.A' => 'required|string|max:255',
             'quote_parts.B' => 'required|string|max:255',
             'quote_parts.C' => 'required|string|max:255',

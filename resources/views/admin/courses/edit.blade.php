@@ -17,7 +17,7 @@
             <tbody>
                 {{-- 講座コード --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座コード</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座コード<span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
                     <td class="px-4 py-2">
                         <input type="text" name="course_code" value="{{ old('course_code', $course->course_code ?? '') }}"
                             class="border rounded px-3 py-2 w-64">
@@ -27,7 +27,7 @@
 
                 {{-- 講座名 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座名</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座名<span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
                     <td class="px-4 py-2">
                         <input type="text" name="course_name" value="{{ old('course_name', $course->course_name ?? '') }}"
                             class="border rounded px-3 py-2 w-80">
@@ -37,7 +37,7 @@
 
                 {{-- 講座分野 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座分野</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座分野<span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
                     <td class="px-4 py-2">
                         <select name="course_type_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>
@@ -54,7 +54,7 @@
 
                 {{-- 講座種類 --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座種類</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座種類<span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
                     <td class="px-4 py-2">
                         <select name="level_id" class="border rounded px-3 py-2 w-64">
                             <option value="">選択してください</option>

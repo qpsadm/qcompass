@@ -33,7 +33,7 @@
             <tbody>
                 {{-- 求人タイトル --}}
                 <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">求人タイトル</th>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">求人タイトル <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span></th>
                     <td class="px-4 py-2">
                         <input type="text" name="title" value="{{ old('title', $job_offer->title ?? '') }}" class="border rounded px-3 py-2 w-full">
                         @error('title')<p class="text-red-500 text-sm">{{ $message }}</p>@enderror

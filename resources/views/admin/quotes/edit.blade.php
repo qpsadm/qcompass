@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-4 min-h-screen" x-data="{ deleteOpen: false }">
+
     <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
 
         <!-- ヘッダー -->
@@ -26,89 +27,111 @@
         </div>
         @endif
 
-        <!-- 編集フォーム -->
+        <!-- フォーム -->
         <form action="{{ isset($quote) ? route('admin.quotes.update', $quote->id) : route('admin.quotes.store') }}"
             method="POST">
             @csrf
-            @if(isset($quote))
+            @isset($quote)
             @method('PUT')
-            @endif
+            @endisset
 
             <table class="w-full table-auto border-collapse bg-white rounded-lg shadow-sm">
                 <tbody>
+
                     <!-- 原文名言 -->
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
+                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                             原文名言
                             <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                                 必須
                             </span>
                         </th>
                         <td class="px-4 py-3">
-                            <input type="text" name="quote_full"
+                            <input type="text"
+                                name="quote_full"
                                 value="{{ old('quote_full', $quote->quote_full ?? '') }}"
-                                class="border rounded px-3 py-2 w-96 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                            @error('quote_full')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                required
+                                class="border rounded px-3 py-2 w-full
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </td>
                     </tr>
 
                     <!-- 原作者名 -->
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                             原作者名
+                            <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                必須
+                            </span>
                         </th>
                         <td class="px-4 py-3">
-                            <input type="text" name="author_full"
+                            <input type="text"
+                                name="author_full"
                                 value="{{ old('author_full', $quote->author_full ?? '') }}"
-                                class="border rounded px-3 py-2 w-96 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            @error('author_full')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                required
+                                class="border rounded px-3 py-2 w-96
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </td>
                     </tr>
 
-                    <!-- 名言パーツ -->
-                    <tr class="border-b">
-                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
+                    <!-- 名言パーツ 見出し -->
+                    <tr class="bg-gray-50">
+                        <th colspan="2" class="px-4 py-3 font-semibold text-gray-700">
                             名言パーツ
                         </th>
-                        <td class="px-4 py-3">
-                            @foreach(['A','B','C'] as $part)
-                            <label class="block mt-1 font-medium">{{ $part }}</label>
-                            <input type="text"
-                                name="quote_parts[{{ $part }}]"
-                                value="{{ old('quote_parts.'.$part, $quote->quoteParts->where('part_type',$part)->first()->text ?? '') }}"
-                                class="border rounded px-3 py-2 w-96 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                            @endforeach
-                        </td>
                     </tr>
 
-                    <!-- 作者パーツ -->
+                    @foreach(['A','B','C'] as $part)
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
-                            作者パーツ
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                            パーツ {{ $part }}
+                            <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                必須
+                            </span>
                         </th>
                         <td class="px-4 py-3">
-                            @foreach(['A','B','C'] as $part)
-                            @php
-                            $authorValue = old(
-                            'author_parts.'.$part,
-                            isset($quote) ? optional($quote->authorParts->where('part_type',$part)->first())->text : ''
-                            );
-                            @endphp
-                            <label class="block mt-1 font-medium">{{ $part }}</label>
                             <input type="text"
-                                name="author_parts[{{ $part }}]"
-                                value="{{ $authorValue }}"
-                                class="border rounded px-3 py-2 w-96 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                            @endforeach
+                                name="quote_parts[{{ $part }}]"
+                                value="{{ old(
+                                        'quote_parts.'.$part,
+                                        optional($quote->quoteParts->where('part_type',$part)->first())->text ?? ''
+                                   ) }}"
+                                required
+                                class="border rounded px-3 py-2 w-full
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </td>
                     </tr>
+                    @endforeach
+
+                    <!-- 作者パーツ 見出し -->
+                    <tr class="bg-gray-50">
+                        <th colspan="2" class="px-4 py-3 font-semibold text-gray-700">
+                            作者パーツ
+                        </th>
+                    </tr>
+
+                    @foreach(['A','B','C'] as $part)
+                    <tr class="border-b">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                            パーツ {{ $part }}
+                            <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                必須
+                            </span>
+                        </th>
+                        <td class="px-4 py-3">
+                            <input type="text"
+                                name="author_parts[{{ $part }}]"
+                                value="{{ old(
+                                        'author_parts.'.$part,
+                                        optional($quote->authorParts->where('part_type',$part)->first())->text ?? ''
+                                   ) }}"
+                                required
+                                class="border rounded px-3 py-2 w-full
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </td>
+                    </tr>
+                    @endforeach
+
                 </tbody>
             </table>
 
@@ -118,6 +141,7 @@
                     class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                     {{ isset($quote) ? '更新する' : '登録する' }}
                 </button>
+
                 <a href="{{ route('admin.quotes.index') }}"
                     class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                     一覧に戻る
@@ -125,12 +149,10 @@
             </div>
         </form>
 
-        @if(isset($quote))
+        @isset($quote)
         <!-- 危険操作ゾーン -->
         <div class="mt-10 pt-6 border-t border-red-200">
-            <h2 class="text-red-600 font-semibold mb-2">
-                ⚠ 危険な操作
-            </h2>
+            <h2 class="text-red-600 font-semibold mb-2">⚠ 危険な操作</h2>
             <p class="text-sm text-gray-600 mb-4">
                 この名言を削除すると、元に戻すことはできません。
             </p>
@@ -139,27 +161,19 @@
                 削除する
             </button>
         </div>
-        @endif
+        @endisset
     </div>
 
     <!-- 削除確認モーダル -->
-    @if(isset($quote))
-    <div x-show="deleteOpen"
-        x-cloak
-        x-transition.opacity
+    @isset($quote)
+    <div x-show="deleteOpen" x-cloak x-transition.opacity
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-
-        <div x-show="deleteOpen"
-            x-transition.scale
+        <div x-show="deleteOpen" x-transition.scale
             class="bg-white rounded-2xl p-6 w-full max-w-sm">
-
-            <h3 class="text-lg font-semibold text-center mb-3">
-                削除確認
-            </h3>
+            <h3 class="text-lg font-semibold text-center mb-3">削除確認</h3>
             <p class="text-center text-gray-700 mb-5">
-                「<span class="font-semibold">{{ $quote->quote_full }}</span>」を
-                削除しますか？<br>
-                <span class="text-sm text-red-600">※ この操作は取り消せません</span>
+                「<span class="font-semibold">{{ $quote->quote_full }}</span>」を削除しますか？
+                <br><span class="text-sm text-red-600">※ この操作は取り消せません</span>
             </p>
 
             <div class="flex justify-center gap-4">
@@ -179,11 +193,11 @@
             </div>
         </div>
     </div>
-    @endif
+    @endisset
 
     <style>
         [x-cloak] {
-            display: none !important;
+            display: none !important
         }
     </style>
 </div>

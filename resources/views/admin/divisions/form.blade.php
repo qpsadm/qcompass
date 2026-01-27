@@ -44,6 +44,9 @@
                     <tr class="border-b">
                         <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium">
                             部署コード
+                            <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                必須
+                            </span>
                         </th>
                         <td class="px-4 py-3">
                             <input type="text" name="code"
