@@ -57,56 +57,72 @@
                 </tr>
 
                 {{-- PDFファイル 1～5 --}}
+                {{-- PDFファイル 1～5 --}}
                 @foreach(range(1,5) as $i)
                 @php
                 $column = $i === 1 ? 'file_path' : 'file_path'.$i;
                 $inputName = 'pdf_file'.$i;
+                $today = now()->format('Ymd'); // 日付プレフィックス
                 @endphp
                 <tr class="border-b">
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">PDFファイル{{ $i }}</th>
-                    <td class="px-4 py-2 flex gap-2 items-center"
+                    <td class="px-4 py-2 flex flex-col gap-2"
                         x-data="{
-        copied:false,
-        url: '{{ isset($job_offer) && $job_offer->$column ? asset('storage/' . $job_offer->$column) : '' }}',
-        copy() {
-            navigator.clipboard.writeText(this.url).then(() => {
-                this.copied = true;
-                setTimeout(() => this.copied = false, 1500);
-            });
-        }
-    }">
-                        <input type="file" name="{{ $inputName }}" class="border rounded px-3 py-2">
+            fileName: '',
+            copied:false,
+            baseUrl: '{{ asset('storage/job_offers') }}',
+            get sanitizedFileName() {
+                if(!this.fileName) return '';
+                let parts = this.fileName.split('.');
+                let ext = parts.length > 1 ? '.' + parts.pop().toLowerCase() : '';
+                let name = parts.join('.').toLowerCase().replace(/[^a-z0-9]/g,'');
+                return name + ext;
+            },
+            get virtualUrl() {
+                return `${this.baseUrl}/${'{{ $today }}'}-${this.sanitizedFileName}`;
+            },
+            copy(url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    this.copied = true;
+                    setTimeout(() => this.copied = false, 1500);
+                });
+            }
+        }">
+                        <input type="file" name="{{ $inputName }}" class="border rounded px-3 py-2"
+                            @change="fileName = $event.target.files[0]?.name ?? ''">
 
+                        {{-- 仮想URL --}}
+                        <template x-if="fileName">
+                            <div class="flex items-center gap-2 text-sm break-all">
+                                <span class="text-gray-600 shrink-0">予定URL：</span>
+                                <a :href="virtualUrl" target="_blank" class="text-blue-600 underline break-all" x-text="virtualUrl"></a>
+                                <button type="button" @click="copy(virtualUrl)"
+                                    class="shrink-0 px-2 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300">コピー</button>
+                                <span x-show="copied" x-transition class="text-green-600 text-xs shrink-0">コピーしました</span>
+                            </div>
+                        </template>
+
+                        {{-- 既存PDF --}}
                         @if(isset($job_offer) && $job_offer->$column)
-                        {{-- 確認 --}}
-                        <a href="{{ asset('storage/' . $job_offer->$column) }}"
-                            target="_blank"
-                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">
-                            確認
-                        </a>
-
-                        {{-- URLコピー --}}
-                        <button type="button"
-                            @click="copy()"
-                            class="px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
-                            URLコピー
-                        </button>
-
-                        {{-- コピー完了 --}}
-                        <span x-show="copied"
-                            x-transition
-                            class="text-green-600 text-xs">
-                            コピーしました
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ asset('storage/' . $job_offer->$column) }}" target="_blank"
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">
+                                確認
+                            </a>
+                            <button type="button" @click="copy('{{ asset('storage/' . $job_offer->$column) }}')"
+                                class="px-3 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 text-sm">
+                                URLコピー
+                            </button>
+                        </div>
                         @endif
 
                         @error($inputName)
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                         @enderror
                     </td>
-
                 </tr>
                 @endforeach
+
 
                 {{-- 表示期間 --}}
                 <tr class="border-b">
@@ -119,16 +135,17 @@
                 </tr>
 
                 {{-- 表示フラグ --}}
-                <tr class="border-b">
-                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
+                <tr>
+                    <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示状態
+                    </th>
                     <td class="px-4 py-2">
-                        <div x-data="{ is_show: Number('{{ old('is_show', $job_offer->is_show ?? 1) }}') }" class="flex gap-2">
-                            <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                                <input type="radio" name="is_show" :value="1" class="hidden" x-model="is_show">
+                        <div x-data="{ is_show: Number('{{ old('is_show', $JobOffer->is_show ?? 0) }}') }" class="flex gap-2">
+                            <label :class="is_show === 1 ? 'bg-green-600 text-white' : 'bg-gray-200'" class="px-4 py-2 rounded cursor-pointer">
+                                <input type="radio" name="is_show" value="1" class="hidden" x-model.number="is_show">
                                 公開
                             </label>
-                            <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'" class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                                <input type="radio" name="is_show" :value="0" class="hidden" x-model="is_show">
+                            <label :class="is_show === 0 ? 'bg-red-500 text-white' : 'bg-gray-200'" class="px-4 py-2 rounded cursor-pointer">
+                                <input type="radio" name="is_show" value="0" class="hidden" x-model.number="is_show">
                                 非公開
                             </label>
                         </div>
