@@ -372,15 +372,11 @@
 
 
 /* test */
-.img-container {
-    display: flex;
-    gap: 12px;
-}
 
 .img-container label {
     cursor: pointer;
     border: 3px solid transparent;
-    border-radius: 8px;
+    border-radius: 50%;
     padding: 4px;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
