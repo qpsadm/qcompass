@@ -31,7 +31,7 @@ class FrontTopController extends Controller
         $globalAnnouncements = Announcement::where('status', 2)
             ->where('is_show', 1)
             ->whereNull('course_id')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->limit(5)
             ->get();
 
@@ -50,7 +50,7 @@ class FrontTopController extends Controller
             $courseAnnouncements = Announcement::where('status', 2)
                 ->where('is_show', 1)
                 ->where('course_id', $userCourseId)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('updated_at', 'desc')
                 ->limit(5)
                 ->get();
         }
@@ -63,7 +63,7 @@ class FrontTopController extends Controller
             ->whereNotNull('end_datetime')
             ->where('start_datetime', '<=', $now)
             ->where('end_datetime', '>=', $now)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->limit(5)
             ->get();
 
@@ -84,7 +84,7 @@ class FrontTopController extends Controller
                 ->whereNotIn('category_id', $excludeCategoryIds)
                 ->where('status', 'yes')
                 ->where('is_show', 1)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('updated_at', 'desc')
                 ->limit(5)
                 ->get();
         }

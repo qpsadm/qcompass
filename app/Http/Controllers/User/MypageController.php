@@ -73,6 +73,7 @@ class MypageController extends Controller
         $scheduledAnnouncements = Announcement::where('type_id', 7)
             ->where('is_show', 1)
             ->where('course_id', $currentCourseId) // 単一IDで絞る
+            ->orderBy('updated_at', 'desc')
             ->latest()
             ->paginate(5);
 

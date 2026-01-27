@@ -73,7 +73,7 @@ class QuizController extends Controller
             ->whereNull('deleted_at')
             ->when($selectedCategoryId, fn($q) => $q->where('category_id', $selectedCategoryId))
             ->withCount('questions')
-            ->orderBy('order')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
@@ -105,7 +105,7 @@ class QuizController extends Controller
             ->with('choices')
             ->where('is_show', 1)
             ->whereNull('deleted_at')
-            ->orderBy('order')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('user.quizzes.show', compact('quiz', 'questions'));
