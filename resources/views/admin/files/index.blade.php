@@ -50,7 +50,11 @@
                 <td class="border px-4 py-2">{{ $file->created_user_name ?? '-' }}</td>
                 <td class="border px-4 py-2 flex gap-2">
                     <a href="{{ route('admin.files.preview', ['type' => $type, 'id' => $file->id]) }}"
-                        class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">プレビュー</a>
+                        target="_blank"
+                        rel="noopener"
+                        class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
+                        プレビュー
+                    </a>
                     <a href="{{ route('admin.files.edit', ['type' => $type, 'id' => $file->id]) }}"
                         class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">編集</a>
                     <form method="POST"
