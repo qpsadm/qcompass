@@ -1,4 +1,4 @@
-"use-strict"
+"use-strict";
 
 // KVの動画読み込み切り替え
 

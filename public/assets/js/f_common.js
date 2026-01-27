@@ -10,8 +10,6 @@ hamburgerBtn.click(function () {
     $("body").toggleClass("no-scroll");
 });
 
-
-
 // アコーディオンメニュー open/close
 
 const accordionMenu = $(".accordion-menu");
@@ -22,9 +20,7 @@ menuTitle.click(function () {
     accordionMenu.toggleClass("active");
 });
 
-
-
-// QAアコーディオン
+// 質疑応答のアコーディオンメニュー open/close
 
 const qaAccordion = $(".qa-accordion");
 const questionContainer = $(".question-container");
@@ -35,20 +31,15 @@ questionContainer.click(function () {
 
     qaAccordion.not(parentAccordion).removeClass("active")
         .find(".answer-container").slideUp(300);
-
     answer.slideToggle(300);
-
     parentAccordion.toggleClass("active");
 });
-
-
 
 // カレンダー・日報日付入力
 
 window.onload = function () {
 
     const today = new Date();
-
     const yyyy = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
@@ -56,16 +47,11 @@ window.onload = function () {
     $(".month").text(month);
     $(".day").text(day);
 
-    //const weekDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-    // $(".week").text(weekDayList[today.getDay()]);
-
     const dateInput = $("#date");
     if (!dateInput.val()) {
         dateInput.val(`${yyyy}-${month}-${day}`);
     }
 };
-
-
 
 // キャプチャ・コピペ・印刷・DevTools等制限
 

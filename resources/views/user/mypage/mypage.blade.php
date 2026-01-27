@@ -70,7 +70,7 @@
                     <div class="avatar">
                         <label for="">アバター画像</label>
                         <div class="img-container">
-                            @for ($i = 1; $i <= 3; $i++)
+                            @for ($i = 1; $i <= 6; $i++)
                                 <input type="radio" id="avatar{{ $i }}" name="avatar_type" value="{{ $i }}" {{ $avatarType == $i ? 'checked' : '' }}>
                                 <label for="avatar{{ $i }}">
                                     <img src="{{ asset("assets/images/f_profile_image{$i}.svg") }}" alt="" class="avatar-img">
