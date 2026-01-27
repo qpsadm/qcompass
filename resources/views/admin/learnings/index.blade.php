@@ -55,7 +55,7 @@ return '<a href="' . e($url) . '" class="flex items-center justify-center gap-1 
 
         {{-- 新規作成 --}}
         <a href="{{ route('admin.learnings.create') }}"
-            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+            class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
             <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
             <span class="hidden lg:inline ml-1">新規作成</span>
         </a>
@@ -110,8 +110,8 @@ return '<a href="' . e($url) . '" class="flex items-center justify-center gap-1 
                 class="border px-2 py-1 rounded w-48">
 
             <button type="submit"
-                class="bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 hover:text-white transition">
-                絞り込み
+                class="bg-blue-500 px-4 py-1 text-white rounded hover:bg-blue-600 hover:text-white transition">
+                検索
             </button>
             @if(request()->query())
             <a href="{{ route('admin.learnings.index') }}"

@@ -32,7 +32,7 @@
 
         {{-- 新規作成 --}}
         <a href="{{ route('admin.announcements.create') }}"
-            class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+            class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
             <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
             <span>新規作成</span>
         </a>
