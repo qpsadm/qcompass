@@ -14,9 +14,9 @@
 
         <div x-data="{ tab: '{{ $currentTab }}' }">
 
-            {{-- タブボタン --}}
-            <div class="tab-container mb-4">
-                <div class="btn-tab flex gap-2">
+            <!-- カテゴリ一覧 -->
+            <div class="tab-container">
+                <div class="btn-tab">
                     <button class="tab-button" :class="{ 'active': tab === 'offers' }"
                         @click="tab = 'offers'; changeTab('offers')">
                         ハローワークの求人票
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            {{-- 求人票タブ --}}
+            <!-- 求人票一覧ページ -->
             <div x-show="tab === 'offers'" class="content-box" x-cloak>
                 <div class="content-list">
                     <table>
@@ -41,7 +41,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2" class="text-center text-gray-500 py-4">
+                                <td colspan="2">
                                     該当する求人はありません
                                 </td>
                             </tr>
@@ -51,7 +51,7 @@
                 <x-f_pagination :paginator="$jobs" />
             </div>
 
-            {{-- ダウンロードタブ --}}
+            <!-- ダウンロード一覧ページ -->
             <div x-show="tab === 'download'" class="content-box" x-cloak>
                 <div class="content-list">
                     <table>
