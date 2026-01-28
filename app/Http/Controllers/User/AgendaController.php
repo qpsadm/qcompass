@@ -75,14 +75,17 @@ class AgendaController extends Controller
 
         $search = $request->input('search');
 
+        // ✅ 基本クエリ
         $query = Agenda::where('status', 'yes')
             ->where('is_show', 1)
-            ->whereIn('category_id', $accessibleCategoryIds); // ✅ アクセス可能カテゴリのみ
+            ->whereIn('category_id', $accessibleCategoryIds);
 
+        // カテゴリ指定
         if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {
             $query->where('category_id', $categoryId);
         }
 
+        // 検索
         if ($search) {
             $query->where('agenda_name', 'like', "%{$search}%");
         }
@@ -95,8 +98,12 @@ class AgendaController extends Controller
             }
             $orderSql .= "END";
 
-            $query->orderByRaw($orderSql)
-                ->orderBy('created_at', 'desc')
+            $query->orderBy('updated_at', 'desc') // まず更新日降順
+                ->orderByRaw($orderSql)         // 次にカテゴリ順
+                ->orderBy('id', 'desc');        // 最後にID降順
+        } else {
+            // カテゴリが空でも更新日→ID降順でソート
+            $query->orderBy('updated_at', 'desc')
                 ->orderBy('id', 'desc');
         }
 
@@ -117,6 +124,7 @@ class AgendaController extends Controller
         ]);
     }
 
+
     /**
      * アジェンダ詳細ページ
      */
@@ -130,6 +138,7 @@ class AgendaController extends Controller
 
         $excludeCategoryIds = [52, 53];
 
+        // ユーザーがアクセス可能なカテゴリID
         $accessibleCategoryIds = DB::table('course_categories')
             ->when($courseId, fn($q) => $q->where('course_id', $courseId))
             ->when(!$courseId, fn($q) => $q->whereIn('course_id', DB::table('course_users')->where('user_id', $userId)->pluck('course_id')))
@@ -141,9 +150,10 @@ class AgendaController extends Controller
         $userCategories = $this->getUserCategories($userId, $courseId);
         $categoryId = session('agenda_category_id');
 
+        // 基本クエリ
         $baseQuery = Agenda::where('status', 'yes')
             ->where('is_show', 1)
-            ->whereIn('category_id', $accessibleCategoryIds); // ✅ アクセス可能カテゴリのみ
+            ->whereIn('category_id', $accessibleCategoryIds);
 
         if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {
             $baseQuery->where('category_id', $categoryId);
@@ -152,12 +162,17 @@ class AgendaController extends Controller
             $categoryIds = $accessibleCategoryIds;
         }
 
+        // 全アジェンダ取得してコレクションでソート
         $allAgendas = $baseQuery->get()->sortBy([
+            // 1. 更新日降順
+            fn($a, $b) => $b->updated_at <=> $a->updated_at,
+            // 2. カテゴリ順（アクセス可能順）
             fn($a, $b) => $categoryIds ? array_search($a->category_id, $categoryIds) <=> array_search($b->category_id, $categoryIds) : 0,
-            fn($a, $b) => $b->created_at <=> $a->created_at,
+            // 3. ID降順
             fn($a, $b) => $b->id <=> $a->id,
         ])->values();
 
+        // 現在表示中のアジェンダのインデックス
         $currentIndex = $allAgendas->search(fn($a) => $a->id === $agenda->id);
         $prevAgenda = $currentIndex > 0 ? $allAgendas[$currentIndex - 1] : null;
         $nextAgenda = $currentIndex < $allAgendas->count() - 1 ? $allAgendas[$currentIndex + 1] : null;
@@ -175,6 +190,7 @@ class AgendaController extends Controller
         ]);
     }
 
+
     /**
      * カテゴリ指定でアジェンダをページネート取得
      */
@@ -183,7 +199,7 @@ class AgendaController extends Controller
         return Agenda::where('category_id', $categoryId)
             ->where('status', 'yes')
             ->where('is_show', 1)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
     }
 

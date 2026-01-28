@@ -15,7 +15,7 @@ class AgendaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Agenda::with('category'); // ← categoryをロード
+        $query = Agenda::with('category');
 
         // 検索
         if ($search = $request->search) {
@@ -33,17 +33,41 @@ class AgendaController extends Controller
             else $query->where('status', 'draft');
         }
 
-        // 並び替え
-        $sort = $request->sort ?? 'agenda_name';
-        $direction = $request->direction ?? 'asc';
-        $query->orderBy($sort, $direction);
+        // 並び替え用
+        $sort = $request->sort ?? null;
+        $direction = $request->direction ?? 'desc';
+
+        // ソート可能カラム
+        $allowedSort = ['agenda_name', 'status', 'created_user_name', 'created_at', 'updated_at', 'id'];
+
+        if ($sort && in_array($sort, $allowedSort)) {
+            $query->orderBy($sort, $direction)->orderBy('id', 'desc');
+        } else {
+            // デフォルト：更新日降順 → カテゴリー順 → ID降順
+            $categoryOrder = Category::pluck('id')->toArray();
+            if (!empty($categoryOrder)) {
+                $orderSql = "CASE category_id ";
+                foreach ($categoryOrder as $index => $catId) {
+                    $orderSql .= "WHEN {$catId} THEN {$index} ";
+                }
+                $orderSql .= "END";
+
+                $query->orderBy('updated_at', 'desc')
+                    ->orderByRaw($orderSql)
+                    ->orderBy('id', 'desc');
+            } else {
+                $query->orderBy('updated_at', 'desc')->orderBy('id', 'desc');
+            }
+        }
 
         $agendas = $query->paginate(10);
 
         $categories = Category::all(); // プルダウン用
 
-        return view('admin.agendas.index', compact('agendas', 'categories'));
+        return view('admin.agendas.index', compact('agendas', 'categories', 'sort', 'direction'));
     }
+
+
 
 
 

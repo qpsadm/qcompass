@@ -23,8 +23,7 @@
             <select name="category_id" class="border px-2 py-1 rounded">
                 <option value="">全てのカテゴリー</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}"
-                    {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
                 @endforeach
@@ -38,16 +37,24 @@
             </select>
 
             {{-- キーワード --}}
-            <input type="text" name="search"
-                value="{{ request('search') }}"
-                placeholder="アジェンダ名で検索"
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="アジェンダ名で検索"
                 class="border px-2 py-1 rounded w-60">
 
+            {{-- 検索ボタン --}}
             <button type="submit"
-                class="bg-blue-500 px-4 py-1 text-white rounded hover:bg-blue-600 hover:text-white transition">
+                class="bg-blue-500 px-4 py-1 text-white rounded hover:bg-blue-600 transition">
                 検索
             </button>
+
+            {{-- リセットボタン --}}
+            @if(request()->query())
+            <a href="{{ route('admin.agendas.index') }}"
+                class="bg-gray-300 px-4 py-1 text-gray-800 rounded hover:bg-gray-400 transition">
+                リセット
+            </a>
+            @endif
         </form>
+
     </div>
 
     {{-- ページネーション（上） --}}
@@ -60,12 +67,46 @@
         <table class="table-auto border-collapse border w-full text-sm">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="border px-4 py-2 text-center w-12">No.</th>
-                    <th class="border px-4 py-2">アジェンダ名</th>
-                    <th class="border px-4 py-2">カテゴリー</th>
+                    @php
+                    $directionToggle = request('direction') === 'asc' ? 'desc' : 'asc';
+                    @endphp
+
+                    <th class="border px-4 py-2 text-center w-12">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'id','direction'=>$directionToggle])) }}">
+                            No.
+                        </a>
+                    </th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'agenda_name','direction'=>$directionToggle])) }}">
+                            アジェンダ名
+                        </a>
+                    </th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'category_id','direction'=>$directionToggle])) }}">
+                            カテゴリー
+                        </a>
+                    </th>
                     <th class="border px-4 py-2 text-center">表示</th>
-                    <th class="border px-4 py-2">承認</th>
-                    <th class="border px-4 py-2">作成者</th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'status','direction'=>$directionToggle])) }}">
+                            承認
+                        </a>
+                    </th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'created_user_name','direction'=>$directionToggle])) }}">
+                            作成者
+                        </a>
+                    </th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'created_at','direction'=>$directionToggle])) }}">
+                            作成日
+                        </a>
+                    </th>
+                    <th class="border px-4 py-2">
+                        <a href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort'=>'updated_at','direction'=>$directionToggle])) }}">
+                            更新日
+                        </a>
+                    </th>
                 </tr>
             </thead>
 
@@ -75,19 +116,14 @@
                     <td class="border px-4 py-2 text-center">
                         {{ ($agendas->currentPage() - 1) * $agendas->perPage() + $loop->iteration }}
                     </td>
-
-                    {{-- タイトル → 詳細 --}}
                     <td class="border px-4 py-2">
-                        <a href="{{ route('admin.agendas.show', $agenda->id) }}"
-                            class="text-blue-600 hover:underline">
+                        <a href="{{ route('admin.agendas.show', $agenda->id) }}" class="text-blue-600 hover:underline">
                             {{ $agenda->agenda_name }}
                         </a>
                     </td>
-
                     <td class="border px-4 py-2">
                         {{ $agenda->category->name ?? '未分類' }}
                     </td>
-
                     <td class="border px-4 py-2 text-center">
                         @if ($agenda->is_show)
                         <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -95,23 +131,22 @@
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                         @endif
                     </td>
-
                     <td class="border px-4 py-2">
                         {{ $agenda->status === 'yes' ? '承認済み' : '下書き' }}
                     </td>
-
-                    <td class="border px-4 py-2">
-                        {{ $agenda->created_user_name ?? '-' }}
-                    </td>
+                    <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '-' }}</td>
+                    <td class="border px-4 py-2">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
+                    <td class="border px-4 py-2">{{ $agenda->updated_at->format('Y-m-d H:i') }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="border px-4 py-2 text-center text-gray-500">
+                    <td colspan="8" class="border px-4 py-2 text-center text-gray-500">
                         データがありません
                     </td>
                 </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
 
