@@ -32,12 +32,6 @@
             <input type="hidden" name="impression" value="{{ $inputs['impression'] }}">
             <input type="hidden" name="message" value="{{ $inputs['message'] ?? '' }}">
 
-            @if ($course)
-            <p>講座名：{{ $course->course_name }}</p>
-            <p>期間：{{ $course->start_date }} 〜 {{ $course->end_date }}</p>
-            @else
-            <p class="text-red-500">講座情報を取得できません。</p>
-            @endif
             {{-- 氏名・メール --}}
             <div class="confirm-item">
                 <div class="item-label">
