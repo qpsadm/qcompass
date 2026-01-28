@@ -9,9 +9,19 @@
 
 @section('main-content')
     <div class="container">
+
+        <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="講座情報" />
 
-        <div class="page-content">
+        <!-- コンテンツ詳細（文字サイズ変更対象） -->
+        <div
+            class="page-content
+            @switch(session('settings.fontsize', 2))
+            @case(1)@break
+            @case(2) font-medium @break
+            @case(3) font-large @break
+        @endswitch">
+
             <table>
                 <tr>
                     <td class="table-title">
@@ -26,7 +36,7 @@
                         <p>概要</p>
                     </td>
                     <td class="table-text">
-                        <p>{{ $course->description }}</p>
+                        <p>{!! nl2br(e($course->description)) !!}</p>
                     </td>
                 </tr>
                 <tr>
@@ -49,20 +59,25 @@
                     <td class="table-title">
                         <p>日別計画表</p>
                     </td>
-                    <td class="table-text"><a href="{{ asset('storage/' . $course->plan_path) }}" target="_blank">日別計画表を開く</a>
+                    <td class="table-text"><a href="{{ asset('storage/' . $course->plan_path) }}"
+                            target="_blank">日別計画表を開く</a>
                 </tr>
                 <tr>
                     <td class="table-title">
                         <p>パンフレット</p>
                     </td>
-                    <td class="table-text"><a href="{{ asset('storage/' . $course->flier_path) }}" target="_blank">パンフレットを開く</a></td>
+                    <td class="table-text"><a href="{{ asset('storage/' . $course->flier_path) }}"
+                            target="_blank">パンフレットを開く</a></td>
                 </tr>
             </table>
         </div>
 
-        <x-f_btn_list :prevBtn="false" :listBtn="true" :nextBtn="false" listUrl="{{ url('/') }}"
+        <!-- ボタンリスト -->
+        <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true" listUrl="{{ route('user.news.news_list') }}"
             listLabel="トップへもどる" />
 
+        <!-- パンくずリスト -->
         <x-f_bread_crumbs />
+
     </div>
 @endsection

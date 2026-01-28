@@ -26,7 +26,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title title="職業訓練受講規則" :search="false" />
+        <x-f_page_title :search="false" title="職業訓練受講規則" />
 
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div

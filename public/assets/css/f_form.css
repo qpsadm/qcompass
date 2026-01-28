@@ -167,6 +167,7 @@ textarea {
 
 /* complete */
 .complete {
+    font-size: var(--font-size);
     text-align: center;
     line-height: 27px;
     letter-spacing: 1px;
@@ -177,10 +178,6 @@ textarea {
     font-size: 32px;
     color: var(--main-color);
     font-weight: bold;
-}
-
-.complete p {
-    font-size: 18px;
 }
 
 .complete p+p {

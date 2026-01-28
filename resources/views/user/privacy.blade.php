@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title title="プライバシーポリシー" :search="false" />
+        <x-f_page_title :search="false" title="プライバシーポリシー" />
 
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div
