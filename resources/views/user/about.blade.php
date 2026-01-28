@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title title="本サイトについて" :search="false" />
+        <x-f_page_title :search="false" title="本サイトについて" />
 
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div

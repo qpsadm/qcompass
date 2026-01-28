@@ -9,8 +9,10 @@
 @section('main-content')
     <div class="container">
 
+        <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="講師紹介（{{ $teacher->name }} 先生）" />
 
+        <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div class="teacher-detail">
 
             <div class="teacher-profile">
@@ -22,17 +24,16 @@
                         <p>{{ $teacher->name }} 先生<br>（{{ $teacher->furigana }}）</p>
                     </div>
                 </div>
-
                 {!! $teacher->detail->bio !!}
-
             </div>
 
+            <!-- ボタンリスト -->
             <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true"
                 listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へもどる" />
 
+            <!-- パンくずリスト -->
             <x-f_bread_crumbs />
 
         </div>
-
     </div>
 @endsection

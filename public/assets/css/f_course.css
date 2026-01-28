@@ -1,9 +1,11 @@
 @charset "UTF-8";
 
+/* course
+------------------------------------- */
 table {
-    border-collapse: collapse;
-    border-radius: 15px;
     width: 100%;
+    border-radius: 15px;
+    border-collapse: collapse;
 }
 
 tr {
@@ -24,8 +26,8 @@ td {
 
 .table-title p {
     padding: 5px 10px;
-    background-color: var(--sub-color-1);
     border-radius: 7px;
+    background-color: var(--sub-color-1);
     text-align: center;
 }
 
@@ -34,12 +36,12 @@ td {
     margin-top: 5px;
 }
 
-.page-content h3 {
+.table-text h3 {
     margin-bottom: 0;
 }
 
-
-/* teacher-list */
+/* teacher-list
+------------------------------------- */
 .teacher-list {
     margin-bottom: 50px;
     font-size: 18px;
@@ -54,16 +56,12 @@ td {
     color: var(--accent-color);
 }
 
-
-
+/* teacher-info
+------------------------------------- */
 .teacher-detail {
     font-size: 18px;
     line-height: 27px;
     letter-spacing: 1px;
-}
-
-.bread-crumbs {
-    font-size: 16px;
 }
 
 .teacher-detail .teacher-profile {
@@ -71,36 +69,6 @@ td {
     flex-wrap: wrap;
     gap: 50px;
     max-width: 1000px;
-}
-
-.teacher-data-flex {
-    display: flex;
-    gap: 15px;
-}
-
-.teacher-detail h3 {
-    position: relative;
-    padding-left: 20px;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.teacher-detail h3::before {
-    content: "";
-    position: absolute;
-    background-color: #74A0FF;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    width: 13px;
-    height: 13px;
-}
-
-.teacher-data h3 {
-    margin-bottom: 15px;
-}
-
-.teacher-profile {
     margin-bottom: 30px;
 }
 
@@ -118,8 +86,8 @@ td {
 .profile-left .teacher-image {
     width: 80%;
     margin-bottom: 20px;
-    border-radius: 50%;
     overflow: hidden;
+    border-radius: 50%;
 }
 
 .profile-left .teacher-image img {
@@ -129,9 +97,9 @@ td {
 }
 
 .profile-left .teacher-name {
+    color: var(--text-color-3);
     font-size: 22px;
     text-align: center;
-    color: var(--text-color-3);
 }
 
 .profile-right {
@@ -140,6 +108,34 @@ td {
 
 .profile-right div+div {
     margin-top: 30px;
+}
+
+.teacher-data-flex {
+    display: flex;
+    gap: 15px;
+}
+
+.teacher-data h3 {
+    position: relative;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.teacher-data h3::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    background-color: #74A0FF;
+    content: "";
+    transform: translateY(-50%);
+}
+
+.bread-crumbs {
+    font-size: 16px;
 }
 
 @media screen and (max-width: 959px) {
