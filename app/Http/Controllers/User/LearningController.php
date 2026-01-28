@@ -15,7 +15,7 @@ class LearningController extends Controller
     public function index()
     {
         $learnings = Learning::where('is_show', 1)
-            ->orderBy('id', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(5)
             ->withQueryString();
 
@@ -85,7 +85,7 @@ class LearningController extends Controller
                 $q->where('tag_id', $currentTag)
             )
 
-            ->orderBy('id', 'asc')
+            ->orderBy('updated_at', 'desc')
             ->paginate($perPage)
             ->appends([
                 'tag'     => $currentTag !== 'all' ? $currentTag : null,
