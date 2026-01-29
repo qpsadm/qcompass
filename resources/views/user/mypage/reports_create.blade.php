@@ -8,15 +8,18 @@
 
 @section('main-content')
     <div class="container">
+
+        <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="日報入力フォーム" />
 
+        <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div
             class="form-content
-@switch(session('settings.fontsize', 2))
-@case(1)@break
-@case(2) font-medium @break
-@case(3) font-large @break
-@endswitch">
+            @switch(session('settings.fontsize', 2))
+            @case(1)@break
+            @case(2) font-medium @break
+            @case(3) font-large @break
+        @endswitch">
             <div class="description-text">
                 <p>本講座をスムーズに進めるために、日々の報告・連絡・相談が欠かせないと思います。<br>
                     日報は報告・連絡・相談に一番有効な手段の1つとして、ぜひ最初のうちから日報提出の良い習慣を身に付けられるように頑張ってください。</p>
@@ -24,13 +27,8 @@
 
             <form class="report-form" action="{{ route('user.reports.confirm') }}" method="POST">
                 @csrf
-                {{-- @if ($course)
-            <p>講座名：{{ $course->course_name }}</p>
-            <p>期間：{{ $course->start_date }} 〜 {{ $course->end_date }}</p>
-            @else
-            <p class="text-red-500">講座情報を取得できません。</p>
-            @endif --}}
-                {{-- 氏名・メール --}}
+
+                <!-- 氏名 -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="name">氏名</label>
@@ -38,6 +36,8 @@
                     </div>
                     <input type="text" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
                 </div>
+
+                <!-- メールアドレス -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="mail">メールアドレス</label>
@@ -46,7 +46,7 @@
                     <input type="email" id="mail" name="email" value="{{ Auth::user()->email }}" readonly>
                 </div>
 
-                {{-- 報告日 --}}
+                <!-- 報告日 -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="date">報告日</label>
@@ -55,11 +55,11 @@
                     <div>
                         <input type="date" id="date" name="date" value="{{ $date ?? date('Y-m-d') }}" required
                             min="{{ $course->start_date }}" max="{{ $course->end_date }}">
-                        <p style="margin-top: 10px;">選択可能期間：{{ $course->start_date }} 〜 {{ $course->end_date }}</p>
+                        <p class="period">選択可能期間：{{ $course->start_date }} 〜 {{ $course->end_date }}</p>
                     </div>
                 </div>
 
-                {{-- 日報内容 --}}
+                <!-- 日報内容 -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="daily-report-input">日報</label>
@@ -69,7 +69,7 @@
                         required></textarea>
                 </div>
 
-                {{-- 感想・気づき・質問 --}}
+                <!-- 感想・気づき・質問 -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="impression">感想・気づき・質問</label>
@@ -78,7 +78,7 @@
                     <textarea name="impression" id="impression" rows="6" placeholder="本日の講習で良かったこと、反省点または気づいたこと等をご記入ください。" required></textarea>
                 </div>
 
-                {{-- 連絡事項 --}}
+                <!-- 連絡事項 -->
                 <div class="form-item">
                     <div class="item-label">
                         <label for="message">連絡事項</label>
@@ -86,19 +86,22 @@
                     <textarea name="message" id="message" rows="6" placeholder="個人情報変更やお休みなどの連絡事項をご記入ください。"></textarea>
                 </div>
 
-                {{-- 個人情報保護方針 --}}
+                <!-- 個人情報保護方針への同意 -->
                 <div class="privacy-policy">
                     <p>【個人情報保護方針】</p>
                     <p>下記のリンクから【個人情報保護方針】を確認してください。</p>
                     <p><a href="{{ url('/user/privacy') }}" target="_blank">個人情報保護方針を確認する</a></p>
                 </div>
 
+                <!-- ボタンリスト -->
                 <div class="form-btn-container">
                     <button type="submit" class="form-btn">個人情報保護方針に同意して送信する</button>
                 </div>
             </form>
-
         </div>
+
+        <!-- パンくずリスト -->
         <x-f_bread_crumbs />
+
     </div>
 @endsection
