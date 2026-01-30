@@ -13,12 +13,10 @@
 @section('main-content')
     <div class="container">
 
-        {{-- ===============================
-        ページタイトル + 検索
-        keyword で検索
-    =============================== --}}
-        <x-f_page_title :search="true" title="{{ $breadcrumbTitle }}一覧" searchName="keyword" searchPlaceholder="キーワード検索" />
+        <!-- ページタイトル（検索フォームあり） -->
+        <x-f_page_title title="{{ $breadcrumbTitle }}一覧" :search="true" searchName="keyword" searchPlaceholder="キーワード検索" />
 
+        <!-- カテゴリ/タグ変換 -->
         @php
             $categories = [
                 1 => '参考書籍',
@@ -27,7 +25,6 @@
                 4 => '制作品',
                 5 => 'その他',
             ];
-
             $tagsMenu = [
                 'all' => 'すべて',
                 1 => 'WEB制作',
@@ -36,13 +33,11 @@
                 4 => 'OA',
                 5 => 'その他',
             ];
-
             $currentTypeId = $typeId ?? 0;
             $currentTag = $currentTag ?? 'all';
         @endphp
 
-        {{-- タグメニュー --}}
-
+        <!-- カテゴリ一覧 -->
         <div class="category-menu">
             <ul>
                 <li class="{{ $currentTag === 'all' ? 'active' : '' }}">
@@ -50,7 +45,6 @@
                         すべて ({{ $allCount }})
                     </a>
                 </li>
-
                 @foreach ($tagsMenu as $key => $label)
                     @if ($key === 'all')
                         @continue
@@ -65,19 +59,17 @@
         </div>
 
 
-        {{-- 学習コンテンツ一覧 --}}
+        <!-- コンテンツ一覧（文字サイズ変更対象） -->
         <div
-            class="performance-list-container @switch(session('settings.fontsize', 2))
-@case(1)@break
-@case(2) font-medium @break
-@case(3) font-large @break
-@endswitch">
+            class="performance-list-container
+            @switch(session('settings.fontsize', 2))
+            @case(1)@break
+            @case(2) font-medium @break
+            @case(3) font-large @break
+        @endswitch">
             @forelse($learnings as $item)
                 @if ($currentTypeId == 4)
-                    {{-- <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
-                        class="performance-url"> --}}
                     <div class="learning-performance-container">
-
                         <a href="{{ route('user.learnings.learnings_info', ['learning' => $item->id, 'type' => $currentTypeId]) }}"
                             class="performance-url"></a>
 
@@ -94,37 +86,20 @@
                         </p>
 
                         <p class="learning-category">{{ $tagsMenu[$item->tag_id] ?? '未設定' }}</p>
-
-
-                        {{-- <p><strong>レベル:</strong> {{ $item->level }}</p> --}}
-
-                        {{-- @if ($currentTypeId == 4)
-                            <p><strong>訓練科名:</strong> {{ $item->course_name }}</p>
-                <p><strong>制作期間:</strong> {{ $item->priod }}</p>
-                @endif
-                @if ($item->url)
-                <p class="learning-url"><a href="{{ $item->url }}" target="_blank">詳細をみる</a>
-                </p>
-                @endif --}}
-
-
-
                     </div>
-                    {{-- </a> --}}
                 @endif
             @empty
-                <p class="text-gray-500">該当するデータがありません。</p>
+                <p>該当するデータがありません。</p>
             @endforelse
         </div>
 
-        {{-- ページネーション --}}
+        <!-- ページネーション -->
         <x-f_pagination :paginator="$learnings" />
 
-        {{-- パンくず --}}
+        <!-- パンくずリスト -->
         <div class="bread-crumbs">
             {{ Breadcrumbs::render('auto') }}
         </div>
 
     </div>
-
 @endsection

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
-/* learnings_by_type */
-
+/* learnings_by_type
+------------------------------------- */
 .list-container {
     max-width: 1000px;
     margin-bottom: 50px;
@@ -70,8 +70,8 @@
 }
 
 
-/* learnings_list */
-
+/* learning-list
+------------------------------------- */
 .performance-list-container {
     display: flex;
     gap: 60px;
@@ -144,8 +144,8 @@
 }
 
 
-/* learning-info */
-
+/* learning-info
+------------------------------------- */
 .info-container {
     max-width: 1000px;
     margin-bottom: 50px;
