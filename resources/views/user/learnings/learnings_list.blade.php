@@ -58,7 +58,6 @@
             </ul>
         </div>
 
-
         <!-- コンテンツ一覧（文字サイズ変更対象） -->
         <div
             class="performance-list-container
