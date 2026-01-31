@@ -17,6 +17,7 @@
             ? route('user.quizzes.index', ['category_id' => $category->id])
             : route('user.quizzes.index')" />
 
+        <!-- クイズ一覧 -->
         @foreach ($categories as $category)
             @php
                 $categoryQuizzes = $quizzes->where('category_id', $category->id);
@@ -24,32 +25,21 @@
             @endphp
 
             @if ($categoryQuizzes->isNotEmpty())
-                <div x-data="{ open: {{ $isActive ? 'true' : 'false' }} }">
 
-                    {{-- カテゴリ見出し --}}
-                    <button type="button" @click="open = !open" class="quiz-category">
-                        <span>{{ $category->name }}</span>
-                        <span x-text="open ? '−' : '＋'"></span>
-                    </button>
+                <!-- カテゴリ -->
+                <span class="quiz-category">{{ $category->name }}</span>
 
-                    {{-- Accordion内にクイズ一覧 --}}
-                    <div x-show="open" x-transition>
-                        @foreach ($categoryQuizzes as $quiz)
-                            <div class="quiz-container">
-                                <h3 class="quiz-title">{{ $quiz->title }}【レベル：{{ $quiz->level }} 】</h3>
+                <!-- クイズ -->
+                @foreach ($categoryQuizzes as $quiz)
+                    <div class="quiz-container">
+                        <h3 class="quiz-title">{{ $quiz->title }}【レベル：{{ $quiz->level }} 】</h3>
 
-                                @if ($quiz->description)
-                                    <p>{{ $quiz->description }}</p>
-                                @endif
-
-                                <div class="quiz-menu">
-                                    <p class="quiz-count">問題数：{{ $quiz->questions_count }} 問</p>
-                                    <a href="{{ route('user.quizzes.show', $quiz) }}" class="quiz-start">開始する</a>
-                                </div>
-                            </div>
-                        @endforeach
+                        <div class="quiz-menu">
+                            <p class="quiz-count">問題数：{{ $quiz->questions_count }} 問</p>
+                            <a href="{{ route('user.quizzes.show', $quiz) }}" class="quiz-start">開始する</a>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             @endif
         @endforeach
 

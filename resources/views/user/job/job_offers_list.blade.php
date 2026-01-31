@@ -30,6 +30,8 @@
 
             <!-- 求人票一覧ページ -->
             <div x-show="tab === 'offers'" class="content-box" x-cloak>
+
+                <!-- コンテンツ一覧 -->
                 <div class="content-list">
                     <table>
                         @forelse ($jobs as $job)
@@ -42,17 +44,22 @@
                         @empty
                             <tr>
                                 <td colspan="2">
-                                    該当する求人はありません
+                                    <p>該当する求人はありません</p>
                                 </td>
                             </tr>
                         @endforelse
                     </table>
                 </div>
+
+                <!-- ページネーション -->
                 <x-f_pagination :paginator="$jobs" />
+
             </div>
 
             <!-- ダウンロード一覧ページ -->
             <div x-show="tab === 'download'" class="content-box" x-cloak>
+
+                <!-- コンテンツ一覧 -->
                 <div class="content-list">
                     <table>
                         @forelse ($agendas as $agenda)
@@ -74,7 +81,7 @@
                         @empty
                             <tr>
                                 <td colspan="2">
-                                    ダウンロード可能な資料はありません
+                                    <p>ダウンロード可能な資料はありません</p>
                                 </td>
                             </tr>
                         @endforelse
