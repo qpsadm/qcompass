@@ -9,11 +9,10 @@
 @section('main-content')
     <div class="container">
 
+        <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}] 結果" />
 
-        {{-- =====================
-        集計結果
-    ===================== --}}
+        <!-- 結果判定 -->
         <div class="result">
             <div class="result-left">
                 <div class="point">
@@ -34,9 +33,7 @@
             </div>
         </div>
 
-        {{-- =====================
-        問題ごとの結果
-    ===================== --}}
+        <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div class="result-container
             @switch(session('settings.fontsize', 2))
             @case(1)@break
@@ -56,12 +53,12 @@
                     <tr>
                         <td class="table-number">{{ $loop->iteration }}</td>
 
-                        {{-- 問題文 --}}
+                        <!-- 問題文 -->
                         <td class="table-question">
                             {!! nl2br($res['question']->question_text) !!}
                         </td>
 
-                        {{-- 選択肢（正解は赤） --}}
+                        <!-- 選択肢（正答は赤字で表示） -->
                         <td class="table-select">
                             <ul>
                                 @foreach ($res['question']->choices as $choice)
@@ -72,7 +69,7 @@
                             </ul>
                         </td>
 
-                        {{-- ユーザー回答 --}}
+                        <!-- ユーザー回答 -->
                         <td class="table-seikai">
                             @php
                                 $choiceMap = $res['question']->choices->pluck('choice_text', 'id');
@@ -88,7 +85,7 @@
                             @endif
                         </td>
 
-                        {{-- 判定 --}}
+                        <!-- 正誤判定 -->
                         <td class="table-hantei">
                             @if ($res['isCorrect'] === null)
                                 <p class="active">採点なし</p>
@@ -107,6 +104,8 @@
             一覧へもどる
         </a>
 
+        <!-- パンくずリスト -->
         <x-f_bread_crumbs />
+        
     </div>
 @endsection
