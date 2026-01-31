@@ -105,7 +105,7 @@ class QuizController extends Controller
             ->with('choices')
             ->where('is_show', 1)
             ->whereNull('deleted_at')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('id', 'asc') // ← ここ
             ->get();
 
         return view('user.quizzes.show', compact('quiz', 'questions'));
