@@ -34,7 +34,7 @@ return [
         // =========================
         [
             'label' => 'システム管理',
-            'icon'  => 'b_system2.svg',
+            'icon'  => 'b_system.svg',
             'roles' => [8],
             'children' => [
                 ['label' => '部署',             'route' => 'admin.divisions.index',           'roles' => [8]],
