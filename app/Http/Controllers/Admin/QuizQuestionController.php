@@ -144,7 +144,7 @@ class QuizQuestionController extends Controller
         }
 
         return redirect()
-            ->route('admin.quizzes.quiz_questions.index', $quiz->id)
+            ->route('admin.quizzes.show', $quiz->id)
             ->with('success', '問題を更新しました。');
     }
 
