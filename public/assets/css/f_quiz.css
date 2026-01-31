@@ -143,6 +143,17 @@
     background-color: var(--accent-color);
 }
 
+.question-select textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #5e5e5e;
+    border-radius: 10px;
+    background-color: var(--text-color-3);
+    line-height: 27px;
+    letter-spacing: 1px;
+    resize: none;
+}
+
 
 /* result */
 .result-container {
@@ -212,6 +223,9 @@
     min-width: 860px;
     table-layout: fixed;
     border-collapse: collapse;
+    font-size: var(--font-size);
+    line-height: 27px;
+    letter-spacing: 1px;
 }
 
 .result-table th {
