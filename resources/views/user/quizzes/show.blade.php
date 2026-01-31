@@ -12,8 +12,6 @@
         <!-- ページタイトル（検索フォームなし） -->
         <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}]" />
 
-        <p class="">{{ $quiz->description }}</p>
-
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <form
             class="quiz-form
@@ -47,7 +45,7 @@
                         <!-- 複数選択 -->
                     @elseif ($question->type === 'multi')
                         @foreach ($question->choices as $choice)
-                            <div>
+                            <div class="question-select">
                                 <input type="checkbox" id="choice_{{ $choice->id }}"
                                     name="answers[{{ $question->id }}][]" value="{{ $choice->id }}"
                                     style="appearance:auto;">
@@ -59,7 +57,9 @@
 
                         <!-- 記述式 -->
                     @elseif ($question->type === 'text')
-                        <textarea name="answers[{{ $question->id }}]" rows="3" placeholder="回答を入力してください"></textarea>
+                        <div class="question-select">
+                            <textarea name="answers[{{ $question->id }}]" rows="3" placeholder="回答を入力してください"></textarea>
+                        </div>
                     @endif
 
                 </div>
