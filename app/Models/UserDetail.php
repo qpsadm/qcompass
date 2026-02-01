@@ -114,6 +114,9 @@ class UserDetail extends Model
         return match ($this->avatar_type) {
             2 => asset('assets\images\f_profile_image2.svg'),
             3 => asset('assets\images\f_profile_image3.svg'),
+            4 => asset('assets\images\f_profile_image1.svg'),
+            5 => asset('assets\images\f_profile_image2.svg'),
+            6 => asset('assets\images\f_profile_image3.svg'),
             default => asset('assets\images\f_profile_image1.svg'),
         };
     }

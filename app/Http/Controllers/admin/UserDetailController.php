@@ -106,7 +106,7 @@ class UserDetailController extends Controller
     {
         $data = $request->validate([
             // アバター関連
-            'avatar_type' => 'nullable|in:1,2,3',
+            'avatar_type' => 'nullable|in:1,2,3,4,5,6',
             'avatar_path' => 'nullable|file|image|max:2048',
 
             // 基本情報

@@ -62,10 +62,10 @@
 
             {{-- 状態 --}}
             <select name="status" class="border px-2 py-1 rounded">
-                <option value="">全状態</option>
-                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>下書き</option>
-                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>承認待ち</option>
-                <option value="2" {{ request('status') === '2' ? 'selected' : '' }}>承認済み</option>
+                <option value="" {{ request('status', '') === '' ? 'selected' : '' }}>全状態</option>
+                <option value="0" {{ request('status', '') === '0' ? 'selected' : '' }}>下書き</option>
+                <option value="1" {{ request('status', '') === '1' ? 'selected' : '' }}>承認待ち</option>
+                <option value="2" {{ request('status', '') === '2' ? 'selected' : '' }}>承認済み</option>
             </select>
 
             {{-- キーワード --}}
@@ -140,7 +140,7 @@
                         </span>
                     </td>
 
-                    <td class="border px-4 py-2">
+                    <td class="border px-4 py-2 text-center">
                         @php
                         $statusLabels = ['下書き','承認待ち','承認済み'];
                         @endphp

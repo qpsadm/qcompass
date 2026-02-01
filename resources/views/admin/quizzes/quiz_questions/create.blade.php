@@ -41,7 +41,7 @@
                             <option value="single_2" @selected(old('type')=='single_2' )>2択</option>
                             <option value="single_4" @selected(old('type')=='single_4' )>4択</option>
                             <option value="multi" @selected(old('type')=='multi' )>複数選択</option>
-                            <option value="text" @selected(old('type')=='text' )>記述式</option>
+                            <!-- <option value="text" @selected(old('type')=='text' )>記述式</option> -->
                         </select>
                     </td>
                 </tr>

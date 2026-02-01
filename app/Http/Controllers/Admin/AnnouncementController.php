@@ -29,10 +29,12 @@ class AnnouncementController extends Controller
             $query->where('course_id', $request->course_id);
         }
 
-        // 📌 ステータス（0を弾かない）
-        if ($request->has('status') && $request->status !== '') {
-            $query->where('status', $request->status);
+        // 📌 ステータス絞り込み（安全版）
+        $status = $request->input('status', null); // デフォルトは null
+        if ($status !== null && $status !== '') {
+            $query->where('status', (int)$status); // 文字列でも整数に変換して比較
         }
+
 
         // 🔃 ソート
         $allowedSorts = ['id', 'title', 'status', 'created_at', 'updated_at'];

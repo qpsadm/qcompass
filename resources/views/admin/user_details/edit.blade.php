@@ -150,6 +150,9 @@
                             <option value="1" {{ old('avatar_type', $detail->avatar_type) == 1 ? 'selected' : '' }}>デフォルト</option>
                             <option value="2" {{ old('avatar_type', $detail->avatar_type) == 2 ? 'selected' : '' }}>パターン1</option>
                             <option value="3" {{ old('avatar_type', $detail->avatar_type) == 3 ? 'selected' : '' }}>パターン2</option>
+                            <option value="4" {{ old('avatar_type', $detail->avatar_type) == 4 ? 'selected' : '' }}>パターン3</option>
+                            <option value="5" {{ old('avatar_type', $detail->avatar_type) == 5 ? 'selected' : '' }}>パターン4</option>
+                            <option value="6" {{ old('avatar_type', $detail->avatar_type) == 6 ? 'selected' : '' }}>パターン5</option>
                         </select>
                     </td>
                 </tr>

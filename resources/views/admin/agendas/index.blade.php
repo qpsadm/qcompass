@@ -131,8 +131,14 @@
                         <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                         @endif
                     </td>
-                    <td class="border px-4 py-2">
-                        {{ $agenda->status === 'yes' ? '承認済み' : '下書き' }}
+                    <td class="border px-4 py-2 text-center">
+                        @if ($agenda->status === 'yes')
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">承認済み</span>
+                        @else
+                        <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">下書き</span>
+                        @endif
+
+
                     </td>
                     <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '-' }}</td>
                     <td class="border px-4 py-2">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
