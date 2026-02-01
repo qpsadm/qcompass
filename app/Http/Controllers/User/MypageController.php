@@ -212,7 +212,7 @@ class MypageController extends Controller
         $request->validate([
             'fontsize'    => 'nullable|integer|min:1|max:3',
             'theme_id'    => 'nullable|exists:themes,id',
-            'avatar_type' => 'nullable|in:1,2,3', // ← 追加
+            'avatar_type' => 'nullable|in:1,2,3,4,5,6', // ← 追加
         ]);
 
         $user = auth()->user();
@@ -251,7 +251,7 @@ class MypageController extends Controller
     public function updateAvatarType(Request $request)
     {
         $request->validate([
-            'avatar_type' => 'required|in:1,2,3',
+            'avatar_type' => 'required|in:1,2,3,4,5,6',
         ]);
 
         $user = auth()->user();

@@ -103,7 +103,7 @@ $nextOrder = $order === 'asc' ? 'desc' : 'asc';
                     </td>
                     <td class="border px-4 py-2 text-center">
                         <span class="px-2 py-1 {{ $jobOffer->is_show ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700' }} rounded-full text-xs">
-                            {{ $jobOffer->is_show ? '表示' : '非表示' }}
+                            {{ $jobOffer->is_show ? '公開' : '非公開' }}
                         </span>
                     </td>
                 </tr>

@@ -138,18 +138,27 @@
                 <tr>
                     <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示状態
                     </th>
-                    <td class="px-4 py-2">
-                        <div x-data="{ is_show: Number('{{ old('is_show', $JobOffer->is_show ?? 0) }}') }" class="flex gap-2">
-                            <label :class="is_show === 1 ? 'bg-green-600 text-white' : 'bg-gray-200'" class="px-4 py-2 rounded cursor-pointer">
-                                <input type="radio" name="is_show" value="1" class="hidden" x-model.number="is_show">
+
+                    {{-- 表示フラグ --}}
+                    @php
+                    $currentIsShow = old('is_show', $job_offer->is_show ?? 1);
+                    @endphp
+                    <td class="px-4 py-2" x-data="{ is_show: {{ $currentIsShow }} }">
+                        <div class="flex gap-2">
+                            <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                                class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
                                 公開
                             </label>
-                            <label :class="is_show === 0 ? 'bg-red-500 text-white' : 'bg-gray-200'" class="px-4 py-2 rounded cursor-pointer">
-                                <input type="radio" name="is_show" value="0" class="hidden" x-model.number="is_show">
+                            <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                                class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
                                 非公開
                             </label>
                         </div>
-                    </td>
+
+
+
                 </tr>
             </tbody>
         </table>
