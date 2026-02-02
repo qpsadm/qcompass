@@ -40,7 +40,7 @@
 
     /* font-size */
     --font-size: 18px;
-    
+
     /* text-color */
     --text-color-1: #F5F5F5;
     --text-color-2: #BFC4C9;
@@ -73,10 +73,10 @@
 
 .font-medium {
     font-size: 20px !important;
-    line-height: 30px !important;
+    line-height: 33px !important;
 }
 
 .font-large {
     font-size: 22px !important;
-    line-height: 33px !important;
+    line-height: 37.4px !important;
 }

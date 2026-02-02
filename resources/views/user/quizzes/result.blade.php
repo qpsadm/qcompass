@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="result-right">
-                <p class="hantei {{ $passFail === '合格' ? 'active' : '' }}">
+                <p class="decision {{ $passFail === '合格' ? 'active' : '' }}">
                     {{ $passFail }}
                 </p>
             </div>
@@ -45,8 +45,8 @@
                     <th class="table-number">No</th>
                     <th class="table-question">問題文</th>
                     <th class="table-select">選択肢<br>（正答は赤字）</th>
-                    <th class="table-seikai">あなたの回答</th>
-                    <th class="table-hantei">判定</th>
+                    <th class="table-answer">あなたの回答</th>
+                    <th class="table-decision">判定</th>
                 </tr>
 
                 @foreach ($results as $res)
@@ -70,7 +70,7 @@
                         </td>
 
                         <!-- ユーザー回答 -->
-                        <td class="table-seikai">
+                        <td class="table-answer">
                             @php
                                 $choiceMap = $res['question']->choices->pluck('choice_text', 'id');
                                 $userAnswer = $res['userAnswer'] ?? null;
@@ -86,7 +86,7 @@
                         </td>
 
                         <!-- 正誤判定 -->
-                        <td class="table-hantei">
+                        <td class="table-decision">
                             @if ($res['isCorrect'] === null)
                                 <p class="active">採点なし</p>
                             @elseif ($res['isCorrect'])
@@ -106,6 +106,6 @@
 
         <!-- パンくずリスト -->
         <x-f_bread_crumbs />
-        
+
     </div>
 @endsection

@@ -33,12 +33,17 @@
         @endphp
 
         <!-- コンテンツ一覧 -->
-        <div class="content-list">
+        <div class="content-list
+        @switch(session('settings.fontsize', 2))
+            @case(1)@break
+            @case(2) font-medium @break
+            @case(3) font-large @break
+        @endswitch">
             @forelse ($questions as $q)
                 <div class="qa-accordion">
                     <div class="question-container">
                         <div class="question-icon"><span>Q</span></div>
-                        <div>
+                        <div class="question-text">
                             <span>{!! nl2br($highlight($q->content)) !!}</span>
                         </div>
                         <div class="accordion-btn"><span></span></div>
@@ -46,7 +51,7 @@
                     <div class="answer-container">
                         <div class="answer-content">
                             <div class="answer-icon"><span>A</span></div>
-                            <div>
+                            <div class="answer-text">
                                 <span>{!! nl2br($highlight($q->answer ?? '-')) !!}</span>
                             </div>
                         </div>

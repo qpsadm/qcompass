@@ -1,6 +1,6 @@
 <x-guest-layout>
     <!-- セッションステータス -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-auth-session-status :status="session('status')" />
 
     <form class="login-form" method="POST" action="{{ route('login') }}">
         @csrf
@@ -21,11 +21,10 @@
                 : null;
                 @endphp
 
-                <span class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm bg-gray-100 p-2">
+                <span>
                     {{ $course->course_name ?? '不明なコース' }}
 
-                    <span class="ml-2 text-sm text-gray-600"
-                        @if ($endDate) title="終了日：{{ $endDate }}" @endif>
+                    <span>
                         @if (!$course?->isLoginable())
                         🔒 利用不可
                         @elseif ($days === null)
@@ -43,9 +42,7 @@
                 <select
                     id="course_id"
                     name="course_id"
-                    required
-                    class="block mt-1 w-full border-gray-300 rounded-md shadow-sm
-                               focus:ring-indigo-500 focus:border-indigo-500">
+                    required>
                     <option value="">選択してください</option>
 
                     @foreach ($courses as $course)
@@ -80,7 +77,6 @@
                 <label for="email">E-mail</label>
                 <x-text-input
                     id="email"
-                    class="block mt-1 w-full"
                     type="email"
                     name="email"
                     :value="old('email')"
@@ -97,7 +93,6 @@
                 <label for="password">パスワード</label>
                 <x-text-input
                     id="password"
-                    class="block mt-1 w-full"
                     type="password"
                     name="password"
                     placeholder="パスワードを入力してください"
@@ -116,7 +111,7 @@
         </p>
 
         <div class="login-btn-container">
-            <x-primary-button class="ms-3">
+            <x-primary-button>
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
