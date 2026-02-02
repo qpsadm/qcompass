@@ -209,6 +209,10 @@
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    font-weight: 400;
+    font-size: var(--font-size);
+    line-height: 27px;
+    letter-spacing: 1px;
 }
 
 .result-table,
@@ -220,9 +224,6 @@
 .result-table {
     width: 100%;
     min-width: 860px;
-    font-size: var(--font-size);
-    line-height: 27px;
-    letter-spacing: 1px;
     table-layout: fixed;
     border-collapse: collapse;
 }
@@ -247,6 +248,16 @@
 .table-select,
 .table-answer {
     width: 250px;
+}
+
+.font-medium .table-select,
+.font-medium .table-answer {
+    width: 275px;
+}
+
+.font-large .table-select,
+.font-large .table-answer {
+    width: 300px;
 }
 
 .result-table ul li {
@@ -285,4 +296,3 @@
         padding: 10px 20px 20px;
     }
 }
-

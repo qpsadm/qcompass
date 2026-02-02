@@ -54,17 +54,21 @@
 
     /* sub-color */
     --sub-color-1: #4B7DA1;
-    --sub-color-2: #4B7DA1;
-    --sub-color-3: #6179C7;
+    --sub-color-2: #275182;
+    /* --sub-color-3: #6179C7; */
+    --sub-color-3: #9eb5ff;
 
     /* accent-color */
-    --accent-color: #FFB84A;
+    --accent-color: #e3a13d;
 
     /* footer-color */
     --footer-color: #1B1B1B;
 
     /* background-color */
     --background-color: #1E2A3A;
+
+    /* submenu-background-color */
+    --submenu-background-color: #d3b85d;
 
     --filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(26%) hue-rotate(308deg) brightness(104%) contrast(100%);
 

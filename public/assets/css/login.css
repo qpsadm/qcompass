@@ -53,86 +53,32 @@
 
 .login-item label {
     width: 90px;
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 .login-item input,
 .login-item select {
+    flex: 1;
     padding: 10px;
     border: 1px solid var(--text-color-2);
     border-radius: 6px;
     background-color: var(--text-color-3);
-    font-size: 18px;
     font-weight: 500;
+    font-size: 18px;
     line-height: normal;
-    flex: 1;
 }
 
 .considerations {
     margin: 10px 0 0 120px;
 }
 
-.remember-me {
-    margin-top: 30px;
-}
-
-.remember-me label {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    border: 1px solid #000;
     padding: 0;
-}
-
-input[type="checkbox"] {
+    border: 1px solid #000;
     appearance: checkbox;
     -webkit-appearance: checkbox;
-}
-
-.login-btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-}
-
-.login-btn {
-    display: block;
-    padding: 13px 70px;
-    border-radius: 50px;
-    background-color: var(--accent-color);
-    color: var(--text-color-3);
-    font-size: 18px;
-}
-
-.random_arrange {
-    position: absolute;
-    opacity: 0;
-    animation: fadeInOut 5s ease-in-out infinite;
-    margin: 8px;
-    width: 75px;
-    opacity: 0;
-    transition: opacity 2s ease, transform 2s ease;
-}
-
-/* footer */
-.login-footer {
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-}
-
-.login-footer-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 30px;
-    color: var(--text-color-3);
 }
 
 .item-box.password {
@@ -166,7 +112,32 @@ input[type="checkbox"] {
     display: none;
 }
 
-/* 背景のアイコンランダム表示 */
+.login-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.login-btn {
+    display: block;
+    padding: 13px 70px;
+    border-radius: 50px;
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    font-size: var(--font-size);
+}
+
+.random_arrange {
+    position: absolute;
+    opacity: 0;
+    animation: fadeInOut 5s ease-in-out infinite;
+    margin: 8px;
+    width: 75px;
+    opacity: 0;
+    transition: opacity 2s ease, transform 2s ease;
+}
+
 .random_arrange.is-visible {
     opacity: 1;
     transform: translateY(0);
@@ -237,7 +208,6 @@ input[type="checkbox"] {
         opacity: 0;
     }
 }
-
 
 @media screen and (max-width: 600px) {
     .login-form-container {

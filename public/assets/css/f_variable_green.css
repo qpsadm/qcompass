@@ -66,6 +66,9 @@
     /* background-color */
     --background-color: #FCFCFC;
 
+    /* submenu-background-color */
+    --submenu-background-color: #ffe696;
+
     --filter: brightness(0) saturate(100%) invert(39%) sepia(15%) saturate(1879%) hue-rotate(73deg) brightness(98%) contrast(91%);
 
     --tag-filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);

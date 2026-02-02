@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/* =========================================
+    common
+========================================= */
 html {
     background-color: var(--background-color);
     color: var(--text-color-2);
@@ -25,8 +28,9 @@ input::placeholder {
     }
 }
 
-/* header
-------------------------------------- */
+/* =========================================
+    header
+========================================= */
 header,
 header::before,
 header::after {
@@ -159,28 +163,22 @@ header::after {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7486%) hue-rotate(146deg) brightness(101%) contrast(105%);
 }
 
-.header-container .site-logo,
-.header-container .hamburger-menu {
-    display: none;
+.gnav .menu-study:hover .gnav-sub {
+    display: flex;
 }
 
-/* sub-menu */
 .gnav-sub {
+    display: none;
+    justify-content: center;
+    gap: 30px;
     position: absolute;
     bottom: 0;
     left: 50%;
-    display: none;
-    gap: 30px;
-    justify-content: center;
     transform: translate(-50%, 100%);
     width: 800px;
     padding: 15px;
     border-radius: 15px;
-    background-color: #ffe696;
-}
-
-.gnav .menu-study:hover .gnav-sub {
-    display: flex;
+    background-color: var(--submenu-background-color);
 }
 
 .gnav-sub li {
@@ -196,14 +194,19 @@ header::after {
     display: block;
     width: 100%;
     padding: 15px 25px;
-    font-size: 18px;
-    font-weight: bold;
     color: var(--text-color-1);
+    font-weight: bold;
+    font-size: var(--font-size);
 }
 
 .gnav-sub li:hover a,
 .gnav-sub li.active a {
     color: var(--text-color-3);
+}
+
+.header-container .site-logo,
+.header-container .hamburger-menu {
+    display: none;
 }
 
 @media screen and (max-width: 1324px) {
@@ -224,15 +227,15 @@ header::after {
     }
 
     .header-container .site-logo img {
-        width: 100%;
+        width: 242px;
         height: 50px;
     }
 
     .hamburger-btn {
-        height: 30px;
         display: flex;
         align-items: center;
         z-index: 9999;
+        height: 30px;
         cursor: pointer;
     }
 
@@ -252,15 +255,15 @@ header::after {
     }
 
     .hamburger-btn span::before {
-        content: "";
         position: absolute;
         top: -10px;
+        content: "";
     }
 
     .hamburger-btn span::after {
-        content: "";
         position: absolute;
         top: 10px;
+        content: "";
     }
 
     .hamburger-btn.active span {
@@ -279,16 +282,16 @@ header::after {
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 999;
         width: 100vw;
         padding: 90px 30px 30px;
         background-color: var(--sub-color-1);
-        z-index: 999;
     }
 
     .hamburger-container {
         display: flex;
-        gap: 50px;
         justify-content: center;
+        gap: 50px;
     }
 
     .hamburger-menu-left {
@@ -345,7 +348,6 @@ header::after {
     }
 }
 
-
 /* =========================================
     aside .side-menu
 ========================================= */
@@ -362,13 +364,13 @@ header::after {
 
 .side-menu::before,
 .side-menu::after {
-    content: "";
     position: fixed;
     width: 15px;
     height: 15px;
     mask: url(../images/icon/frame-cut.svg) no-repeat;
     background-size: 100%;
     background-color: var(--sub-color-1);
+    content: "";
 }
 
 .side-menu::before {
@@ -404,13 +406,12 @@ header::after {
 .hamburger-menu .contents-box {
     position: relative;
     padding: 15px;
-    background-color: var(--main-color);
     border-radius: 15px;
+    background-color: var(--main-color);
 }
 
 .side-menu .contents-box::after,
 .hamburger-menu .contents-box::after {
-    content: "";
     position: absolute;
     top: 0;
     right: 20px;
@@ -419,7 +420,7 @@ header::after {
     background: url(../images/icon/f_tag.svg) no-repeat;
     background-size: 100%;
     filter: var(--tag-filter);
-    ;
+    content: "";
 }
 
 .side-menu .calendar,
@@ -427,6 +428,7 @@ header::after {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     height: 115px;
     border-radius: 15px 15px 5px 5px;
     background-color: var(--text-color-3);
@@ -483,6 +485,30 @@ header::after {
     background-color: var(--text-color-2);
 }
 
+.calendar.birthday-effect::before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: -10px;
+    background: url(../images/icon/f_birthday_2.svg) no-repeat;
+    background-size: 100%;
+    width: 40px;
+    aspect-ratio: 97 / 120;
+    transform: rotate(-25deg);
+}
+
+.calendar.birthday-effect::after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    right: -5px;
+    background: url(../images/icon/f_birthday_3.svg) no-repeat;
+    background-size: 100%;
+    width: 50px;
+    aspect-ratio: 149 / 209;
+    transform: rotate(70deg);
+}
+
 .side-menu .countdown,
 .hamburger-menu .countdown,
 .side-menu .today-short,
@@ -493,9 +519,9 @@ header::after {
 
 .countdown {
     display: flex;
-    gap: 80px;
-    align-items: flex-end;
     justify-content: center;
+    align-items: flex-end;
+    gap: 80px;
     padding: 30px 0 20px;
     border-bottom: 1px dashed var(--text-color-3);
 }
@@ -506,15 +532,15 @@ header::after {
 
 .data-number {
     position: absolute;
-    bottom: -5px;
     right: 25px;
+    bottom: -5px;
     width: 65px;
     color: var(--accent-color);
     font-size: 40px;
 }
 
 .data-sub-title {
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 .today-short {
@@ -537,7 +563,7 @@ header::after {
 }
 
 .today-short .short-text {
-    font-size: 18px;
+    font-size: var(--font-size);
     text-align: left;
 }
 
@@ -584,19 +610,19 @@ header::after {
     margin-left: 30px;
     padding-left: 60px;
     color: var(--text-color-1);
-    font-size: 18px;
     font-weight: bold;
+    font-size: var(--font-size);
 }
 
 .side-menu-list li a::before {
-    content: "";
     position: absolute;
     top: 50%;
     left: 25px;
     transform: translateY(-50%);
     width: 25px;
     height: 25px;
-    filter: var(--filter)
+    filter: var(--filter);
+    content: "";
 }
 
 .side-menu-list li a.calendar-list::before {
@@ -622,11 +648,10 @@ header::after {
     border-radius: 50px;
     background-color: var(--main-color);
     color: var(--text-color-3);
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 .logout-btn button::before {
-    content: "";
     position: absolute;
     top: 50%;
     left: 53px;
@@ -635,6 +660,7 @@ header::after {
     height: 25px;
     background: url(../images/icon/f_icon_logout.svg) no-repeat;
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7486%) hue-rotate(146deg) brightness(101%) contrast(105%);
+    content: "";
 }
 
 @media screen and (max-width: 1324px) {
@@ -652,7 +678,6 @@ header::after {
     }
 }
 
-
 /* =========================================
     main
 ========================================= */
@@ -663,14 +688,14 @@ header::after {
 
 .container::before,
 .container::after {
-    content: "";
     position: fixed;
+    z-index: 999;
     width: 15px;
     height: 15px;
-    z-index: 999;
     mask: url(../images/icon/frame-cut.svg) no-repeat;
     background-size: 100%;
     background-color: var(--sub-color-1);
+    content: "";
 }
 
 .container::before {
@@ -680,13 +705,13 @@ header::after {
 }
 
 .container::after {
-    bottom: 20px;
     right: 310px;
+    bottom: 20px;
     transform: rotate(90deg);
 }
 
 .page-content {
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 @media screen and (max-width: 1324px) {
@@ -739,8 +764,8 @@ footer {
 
 .footer-sns-icons {
     display: flex;
-    gap: 15px;
     align-items: center;
+    gap: 15px;
 }
 
 .footer-sns-icons img {
@@ -785,11 +810,6 @@ footer {
 .footer-menu-list li:nth-child(6) {
     grid-column: 2;
     grid-row: 2;
-}
-
-.footer-menu-list li:nth-child(7) {
-    grid-column: 2;
-    grid-row: 3;
 }
 
 .footer-menu-list li:hover {
@@ -842,8 +862,8 @@ footer {
     position: relative;
     width: calc(100% - 330px);
     padding-left: 52px;
-    font-size: 30px;
     font-weight: bold;
+    font-size: 30px;
 }
 
 .page-title:not(:has(.search)) h1 {
@@ -851,14 +871,14 @@ footer {
 }
 
 .page-title h1::before {
-    content: "";
     position: absolute;
-    background: url(../images/icon/f_icon_h1.svg) no-repeat;
-    background-size: 100%;
+    top: -10px;
     left: 0;
     width: 50px;
     height: 50px;
-    top: -10px;
+    background: url(../images/icon/f_icon_h1.svg) no-repeat;
+    background-size: 100%;
+    content: "";
 }
 
 .page-title h1[class^="user-news"]::before {
@@ -879,13 +899,11 @@ footer {
 
 .page-title h1[class^="user-job"]::before {
     background: url(../images/icon/f_icon_h1_job.svg) no-repeat;
-
 }
 
 .page-title h1[class^="user-mypage"]::before {
     background: url(../images/icon/f_icon_h1_mypage.svg) no-repeat;
 }
-
 
 @media screen and (max-width: 1024px) {
     .page-title {
@@ -906,7 +924,6 @@ footer {
     }
 }
 
-
 /* search
 ------------------------------------- */
 .search-container {
@@ -917,8 +934,8 @@ footer {
     width: 300px;
     padding: 12px 60px 12px 10px;
     border-radius: 10px;
-    font-size: 18px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    font-size: var(--font-size);
 }
 
 .search .search-submit {
@@ -939,7 +956,6 @@ footer {
     }
 }
 
-
 /* category-menu
 ------------------------------------- */
 .category-menu,
@@ -954,8 +970,8 @@ footer {
 .accordion-menu .menu-content ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 20px;
     align-items: center;
+    gap: 10px 20px;
     padding: 10px;
 }
 
@@ -964,8 +980,8 @@ footer {
 .accordion-menu .menu-content ul li a {
     display: block;
     padding: 10px 25px;
-    font-size: 18px;
     font-weight: bold;
+    font-size: var(--font-size);
 }
 
 .category-menu li a:hover,
@@ -977,7 +993,6 @@ footer {
     border-radius: 11px;
     background-color: var(--sub-color-1);
 }
-
 
 /* accordion-menu
 ------------------------------------- */
@@ -997,16 +1012,10 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 5px 5px 20px;
-    font-size: 18px;
     font-weight: bold;
-    transition: 0.5s;
+    font-size: var(--font-size);
     cursor: pointer;
-}
-
-.accordion-menu .menu-content {
-    display: none;
-    border-radius: 10px;
-    background-color: var(--text-color-3);
+    transition: 0.5s;
 }
 
 .accordion-btn span,
@@ -1022,16 +1031,21 @@ footer {
 }
 
 .accordion-btn span::before {
-    content: "";
     position: absolute;
     transform: rotate(90deg);
     transition: 0.5s;
+    content: "";
 }
 
 .accordion-menu.active .accordion-btn span::before {
     transform: rotate(0deg);
 }
 
+.accordion-menu .menu-content {
+    display: none;
+    border-radius: 10px;
+    background-color: var(--text-color-3);
+}
 
 /* content-list
 ------------------------------------- */
@@ -1046,8 +1060,8 @@ footer {
 .content-list tr {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px 20px;
     align-items: center;
+    gap: 15px 20px;
     padding-bottom: 25px;
     border-bottom: dashed 1px #5f5f5f;
 }
@@ -1058,7 +1072,7 @@ footer {
 
 .content-list .date {
     width: 90px;
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 .content-list .category p {
@@ -1080,7 +1094,7 @@ footer {
 
 .content-list .title {
     flex: 1;
-    font-size: 18px;
+    font-size: var(--font-size);
 }
 
 .content-list .title a:hover {
@@ -1227,7 +1241,6 @@ footer {
     }
 }
 
-
 /* impersonate banner
 ------------------------------------- */
 .impersonate-banner {
@@ -1285,37 +1298,4 @@ body.impersonating .side-menu::after {
     body.impersonating .hamburger-menu {
         padding: 130px 30px 30px;
     }
-}
-
-
-
-
-/* test_birthday */
-
-.calendar {
-    position: relative;
-}
-
-.calendar.birthday-effect::before {
-    content: "";
-    position: absolute;
-    bottom: -20px;
-    left: -10px;
-    background: url(../images/icon/f_birthday_2.svg) no-repeat;
-    background-size: 100%;
-    width: 40px;
-    aspect-ratio: 97 / 120;
-    transform: rotate(-25deg);
-}
-
-.calendar.birthday-effect::after {
-    content: "";
-    position: absolute;
-    bottom: -30px;
-    right: -5px;
-    background: url(../images/icon/f_birthday_3.svg) no-repeat;
-    background-size: 100%;
-    width: 50px;
-    aspect-ratio: 149 / 209;
-    transform: rotate(70deg);
 }

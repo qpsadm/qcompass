@@ -55,7 +55,7 @@
 
                         <!-- 問題文 -->
                         <td class="table-question">
-                            {!! nl2br($res['question']->question_text) !!}
+                            {!! nl2br(htmlspecialchars($res['question']->question_text)) !!}
                         </td>
 
                         <!-- 選択肢（正答は赤字で表示） -->
