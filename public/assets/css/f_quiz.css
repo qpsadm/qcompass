@@ -130,7 +130,7 @@
     padding: 15px;
     border: 1px solid #5e5e5e;
     border-radius: 10px;
-    background-color: var(--text-color-3);
+    background-color: var(--background-color-2);
     line-height: 27px;
     letter-spacing: 1px;
     resize: none;
@@ -163,6 +163,7 @@
     padding: 10px 0 20px 20px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    background-color: var(--background-color-2);
     font-size: var(--font-size);
 }
 
@@ -230,13 +231,14 @@
 
 .result-table th {
     padding: 20px 0;
-    background-color: #dddddd;
+    background-color: var(--background-color-table-1);
     text-align: center;
     vertical-align: middle;
 }
 
 .result-table td {
     padding: 10px;
+    background-color: var(--background-color-table-2);
     vertical-align: middle;
 }
 
@@ -279,8 +281,8 @@
     text-align: center;
 }
 
-.result-table tr:has(p.active) {
-    background-color: rgb(216, 235, 255);
+.result-table tr:has(p.active) td {
+    background-color: var(--background-color-table-3);
 }
 
 .result-back {

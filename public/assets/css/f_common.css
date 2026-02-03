@@ -4,7 +4,7 @@
     common
 ========================================= */
 html {
-    background-color: var(--background-color);
+    background-color: var(--background-color-1);
     color: var(--text-color-2);
     font-family: var(--font-family);
     font-weight: 500;
@@ -935,6 +935,7 @@ footer {
     padding: 12px 60px 12px 10px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    background-color: var(--background-color-2);
     font-size: var(--font-size);
 }
 
@@ -963,6 +964,7 @@ footer {
     margin-bottom: 50px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    background-color: var(--background-color-2);
 }
 
 .category-menu ul,
@@ -1044,7 +1046,8 @@ footer {
 .accordion-menu .menu-content {
     display: none;
     border-radius: 10px;
-    background-color: var(--text-color-3);
+    /* background-color: var(--text-color-3); */
+    background-color: var(--background-color-2);
 }
 
 /* content-list
