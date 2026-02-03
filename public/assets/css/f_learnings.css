@@ -97,7 +97,7 @@
     padding: 20px;
     overflow: hidden;
     border-radius: 15px;
-    background-color: #E9EEFF;
+    background-color: var(--background-color-content);
 }
 
 .learning-performance-container .performance-url {

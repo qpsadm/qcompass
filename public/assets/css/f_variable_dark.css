@@ -65,9 +65,12 @@
     --footer-color: #1B1B1B;
 
     /* background-color */
-    --background-color: #1E2A3A;
-
-    /* submenu-background-color */
+    --background-color-1: #1E2A3A;
+    --background-color-2: #3F3F3F;
+    --background-color-content: #275182;
+    --background-color-table-1: #3F3F3F;
+    --background-color-table-2: #636363;
+    --background-color-table-3: #3d6a9a;
     --submenu-background-color: #d3b85d;
 
     --filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(26%) hue-rotate(308deg) brightness(104%) contrast(100%);

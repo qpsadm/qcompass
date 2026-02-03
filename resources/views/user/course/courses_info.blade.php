@@ -3,7 +3,6 @@
 @section('title', '講座情報')
 
 @section('code-page-css')
-    <link rel="stylesheet" href="{{ asset('assets/css/f_editor.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/f_course.css') }}">
 @endsection
 

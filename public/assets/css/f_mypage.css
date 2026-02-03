@@ -313,7 +313,7 @@
 }
 
 .calendar .fc-scrollgrid-section-body {
-    background-color: var(--text-color-3);
+    background-color: var(--background-color-2);
 }
 
 .fc .fc-daygrid-day-number {
@@ -348,7 +348,7 @@
     padding: 15px;
     border: 1px solid #5e5e5e;
     border-radius: 15px;
-    background-color: var(--text-color-3);
+    background-color: var(--background-color-2);
     line-height: 27px;
     letter-spacing: 1px;
     resize: none;

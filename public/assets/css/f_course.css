@@ -2,6 +2,15 @@
 
 /* course
 ------------------------------------- */
+.page-content {
+    max-width: 1000px;
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: var(--font-size);
+    line-height: 27px;
+    letter-spacing: 1px;
+}
+
 table {
     width: 100%;
     border-radius: 15px;
@@ -67,6 +76,7 @@ td {
 .teacher-detail .teacher-profile {
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
     gap: 50px;
     max-width: 1000px;
     margin-bottom: 30px;
@@ -85,7 +95,7 @@ td {
 
 .profile-left .teacher-image {
     width: 80%;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     overflow: hidden;
     border-radius: 50%;
 }
@@ -115,7 +125,8 @@ td {
     gap: 15px;
 }
 
-.teacher-data h3 {
+.teacher-data h3,
+.teacher-data-flex h3 {
     position: relative;
     margin-bottom: 15px;
     padding-left: 20px;
@@ -123,7 +134,8 @@ td {
     font-size: 20px;
 }
 
-.teacher-data h3::before {
+.teacher-data h3::before,
+.teacher-data-flex h3::before {
     position: absolute;
     top: 50%;
     left: 0;
@@ -132,6 +144,11 @@ td {
     background-color: #74A0FF;
     content: "";
     transform: translateY(-50%);
+}
+
+.teacher-data p,
+.teacher-data-flex p {
+    font-weight: 400;
 }
 
 .bread-crumbs {
