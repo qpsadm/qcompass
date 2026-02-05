@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code', 50)->comment('クイズコード');
             $table->string('title', 255)->comment('クイズタイトル');
             $table->text('description')->nullable()->comment('クイズの説明文');
+            $table->unsignedBigInteger('category_id')->nullable()->comment('紐づくカテゴリID');
+            $table->integer('level')->nullable()->comment('レベル');
             $table->unsignedBigInteger('course_id')->nullable()->comment('紐づくコースID');
             $table->unsignedBigInteger('agenda_id')->nullable()->comment('紐づくアジェンダID');
 
@@ -30,7 +32,8 @@ return new class extends Migration
             $table->timestamp('active_from')->nullable()->comment('公開開始日時');
             $table->timestamp('active_to')->nullable()->comment('公開終了日時');
             $table->integer('created_by')->comment('作成者ユーザーID');
-
+            // 公開フラグを追加（デフォルト1=公開）
+            $table->boolean('is_show')->default(1)->comment('公開フラグ 1=公開 0=非公開');
             // 自動管理
             $table->timestamps(); // created_at / updated_at
             $table->softDeletes(); // deleted_at (ソフトデリート対応)

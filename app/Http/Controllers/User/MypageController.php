@@ -65,12 +65,12 @@ class MypageController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | 各種スケジュール（type_id = 7）
+        | 各種スケジュール（type_id = 6）
         |--------------------------------------------------------------------------
         */
         $currentCourseId = session('course_id'); // 現在ログイン中の講座ID
 
-        $scheduledAnnouncements = Announcement::where('type_id', 7)
+        $scheduledAnnouncements = Announcement::where('type_id', 6)
             ->where('is_show', 1)
             ->where('course_id', $currentCourseId) // 単一IDで絞る
             ->orderBy('updated_at', 'desc')
