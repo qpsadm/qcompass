@@ -64,7 +64,14 @@ class AnnouncementTypesSeeder extends Seeder
                 'updated_at' => now(),
                 'updated_user_name' => 'システム管理者',
             ],
-
+            [
+                'type_name' => 'スケジュール',
+                'is_show' => true,
+                'created_at' => now(),
+                'created_user_name' => 'システム管理者',
+                'updated_at' => now(),
+                'updated_user_name' => 'システム管理者',
+            ],
             [
                 'type_name' => 'その他',
                 'is_show' => true,
@@ -73,6 +80,7 @@ class AnnouncementTypesSeeder extends Seeder
                 'updated_at' => now(),
                 'updated_user_name' => 'システム管理者',
             ],
+
         ]);
 
         // 外部キー制約を再有効化

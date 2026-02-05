@@ -14,11 +14,13 @@ return new class extends Migration
             $table->id()->comment('主キー');
 
             // 種別 (1:書籍, 2:サイト, 3:資格)
-            $table->tinyInteger('type')->comment('種別');
+            $table->integer('type')
+                ->comment('種別（1:参考書籍、2:参考サイト、3:IT資格、4:制作品）');
 
             // タグID (nullable として外部キー)
-            $table->unsignedBigInteger('tag_id')->nullable()->comment('タグID');
-
+            $table->integer('tag_id')
+                ->nullable()
+                ->comment('タグID（1:WEB制作、2:WEBデザイン、3:プログラミング、4:OA、5:その他）');
             // タイトル
             $table->string('title', 255)->comment('タイトル');
 
@@ -31,8 +33,18 @@ return new class extends Migration
             // URL (nullable)
             $table->string('url', 255)->nullable()->comment('URL');
 
-            // レベル (nullable)
-            $table->tinyInteger('level')->nullable()->comment('レベル');
+            // レベル
+            $table->integer('level')
+                ->default(1)
+                ->comment('レベル（1:初級、2:中級、3:上級）');
+
+            $table->string('course_name', 100)
+                ->nullable()
+                ->comment('著者名、講座名＋チーム名＋人数');
+
+            $table->string('priod', 100)
+                ->nullable()
+                ->comment('制作品紹介用');
 
             // 表示フラグ
             $table->boolean('is_show')->default(true)->comment('表示フラグ');

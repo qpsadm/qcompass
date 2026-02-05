@@ -24,6 +24,14 @@ return new class extends Migration
             $table->string('emergency_contact', 50)->nullable()->comment('緊急連絡先');
             $table->string('avatar_path', 255)->nullable()->comment('写真パス');
 
+            $table->tinyInteger('avatar_type')
+                ->default(1)
+                ->comment('アバター種別');
+
+            $table->string('user_avatar_path', 255)
+                ->default(1)
+                ->comment('ユーザーアバターパス');
+
             $table->unsignedBigInteger('theme_id')->default(1)->comment('テーマID');
 
             $table->unsignedBigInteger('fontsize')->default(1)->comment('文字サイズ');

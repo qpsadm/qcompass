@@ -16,25 +16,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call([
-            // OrganizersSeeder::class,
-            // CategoriesSeeder::class,
-            // DivisionSeeder::class,
-            // RolesSeeder::class,
-            // ThemesSeeder::class,
-            // LevelsSeeder::class,
-            // TagsSeeder::class,
-            // AnnouncementTypesSeeder::class,
-            // UsersSeeder::class,
-            // CourseTypesSeeder::class,
-            // CoursesSeeder::class,
-            // CourseUserSeeder::class,
+            CategoriesSeeder::class,
+            AnnouncementTypesSeeder::class,
+            CoursesSeeder::class,
+            UsersSeeder::class,
+            CourseTypesSeeder::class,
+            CourseUserSeeder::class,
+            DivisionSeeder::class,
+            LevelsSeeder::class,
+            OrganizersSeeder::class,
+            RolesSeeder::class,
+            TagsSeeder::class,
+            ThemesSeeder::class,
+
 
         ]);
     }
