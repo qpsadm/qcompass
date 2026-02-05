@@ -2,8 +2,7 @@
 
 /* モーダル */
 .modal-profile,
-.modal-customize,
-.modal-avatar {
+.modal-customize {
     display: none;
     position: fixed;
     top: calc((100% - 95px) / 2 + 75px);
@@ -22,7 +21,10 @@
 }
 
 .modal-customize .form-container {
-    width: 420px;
+    display: flex;
+    align-items: flex-start;
+    gap: 50px;
+    width: 870px;
 }
 
 .modal-customize .form-left {
@@ -45,7 +47,7 @@
 }
 
 .modal-customize .radio-container input,
-.modal-avatar .img-container input {
+.modal-customize .img-container input {
     display: none;
 }
 
@@ -65,40 +67,62 @@
     margin-top: 15px;
 }
 
-.modal-avatar .img-container {
+.modal-customize .img-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 14px;
+    justify-content: space-between;
+    gap: 20px 0;
     margin-top: 10px;
 }
 
-.modal-avatar .img-container label {
+.modal-customize .img-container label {
     cursor: pointer;
     padding: 3px;
     border: 4px solid transparent;
     border-radius: 50%;
 }
 
-.modal-avatar .img-container label.selected {
+.modal-customize .img-container label.selected {
     border-color: var(--main-color);
 }
 
-.modal-avatar .avatar-img {
+.modal-customize .avatar-img {
     width: 100px;
     aspect-ratio: 1/ 1;
     border-radius: 50%;
 }
 
-.modal-customize>.btn-area,
-.modal-avatar>.btn-area {
+.modal-customize>.btn-area {
     margin-top: 20px;
 }
 
 @media screen and (max-width: 1324px) {
-    .modal-profile,
-    .modal-customize,
-    .modal-avatar {
+    .modal-profile {
         left: calc(50%);
+    }
+
+    .modal-customize {
+        left: calc(50%);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .modal-customize {
+        width: 535px;
+    }
+
+    .modal-customize .form-container {
+        flex-direction: column;
+        width: unset;
+    }
+
+    .modal-customize .font-size-select {
+        margin-bottom: 50px;
+    }
+
+    .modal-customize .form-left,
+    .modal-customize .form-right {
+        width: unset;
     }
 }
 
@@ -158,8 +182,7 @@
 
 /* section（プロフィール） */
 .profile {
-    /* width: 370px; */
-    width: 390px;
+    width: 370px;
 }
 
 .profile-icon {
@@ -349,26 +372,4 @@
     display: none;
     margin-top: 5px;
     color: green;
-}
-
-
-
-/* test */
-
-.select-image {
-    width: 120px;
-    cursor: pointer;
-}
-
-.preview {
-    width: 120px;
-    border: 1px solid #ccc;
-}
-
-.is-hidden {
-    display: none;
-}
-
-.modal-avatar .form-container {
-    width: 370px;
 }
