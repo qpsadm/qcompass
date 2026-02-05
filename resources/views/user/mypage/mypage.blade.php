@@ -35,59 +35,84 @@
                 @endphp
 
                 <div class="form-container">
-                    <div class="form-left">
 
-                        <!-- テーマカラー選択 -->
-                        <div class="theme-color-select">
-                            <p>テーマカラー</p>
-                            <div class="radio-container">
-                                @foreach ($themes as $theme)
-                                    <input type="radio" id="theme-{{ $theme->id }}" name="theme_id"
-                                        value="{{ $theme->id }}" {{ $initialTheme == $theme->id ? 'checked' : '' }}>
-                                    <label for="theme-{{ $theme->id }}">{{ $theme->name }}</label>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- フォントサイズ選択 -->
-                        <div class="font-size-select">
-                            <label for="">フォントサイズ</label>
-                            <div class="radio-container">
-                                <input type="radio" id="small" name="fontsize" value="1"
-                                    {{ $fontSize == 1 ? 'checked' : '' }}>
-                                <label for="small">標準</label>
-
-                                <input type="radio" id="medium" name="fontsize" value="2"
-                                    {{ $fontSize == 2 ? 'checked' : '' }}>
-                                <label for="medium">中</label>
-
-                                <input type="radio" id="large" name="fontsize" value="3"
-                                    {{ $fontSize == 3 ? 'checked' : '' }}>
-                                <label for="large">大</label>
-                            </div>
-                            <p class="note">※フォントサイズの変更は、各ページの詳細画面および日報作成フォーム内にのみ適用されます。</p>
+                    <!-- テーマカラー選択 -->
+                    <div class="theme-color-select">
+                        <p>テーマカラー</p>
+                        <div class="radio-container">
+                            @foreach ($themes as $theme)
+                                <input type="radio" id="theme-{{ $theme->id }}" name="theme_id"
+                                    value="{{ $theme->id }}" {{ $initialTheme == $theme->id ? 'checked' : '' }}>
+                                <label for="theme-{{ $theme->id }}">{{ $theme->name }}</label>
+                            @endforeach
                         </div>
                     </div>
 
-                    <div class="form-right">
+                    <!-- フォントサイズ選択 -->
+                    <div class="font-size-select">
+                        <label for="">フォントサイズ</label>
+                        <div class="radio-container">
+                            <input type="radio" id="small" name="fontsize" value="1"
+                                {{ $fontSize == 1 ? 'checked' : '' }}>
+                            <label for="small">標準</label>
 
-                        <!-- アバター画像選択 -->
-                        <div class="avatar">
-                            <label for="">アバター画像</label>
-                            <div class="img-container">
-                                @for ($i = 1; $i <= 6; $i++)
-                                    <input type="radio" id="avatar{{ $i }}" name="avatar_type"
-                                        value="{{ $i }}" {{ $avatarType == $i ? 'checked' : '' }}>
-                                    <label for="avatar{{ $i }}">
-                                        <img src="{{ asset("assets/images/f_profile_image{$i}.svg") }}" alt=""
-                                            class="avatar-img">
-                                    </label>
-                                @endfor
-                                <input type="file" id="avatar-add">
-                                <label for="avatar-add">
-                                    <img src="{{ asset("assets/images/f_profile_imageadd.svg") }}" alt="" class="avatar-img">
+                            <input type="radio" id="medium" name="fontsize" value="2"
+                                {{ $fontSize == 2 ? 'checked' : '' }}>
+                            <label for="medium">中</label>
+
+                            <input type="radio" id="large" name="fontsize" value="3"
+                                {{ $fontSize == 3 ? 'checked' : '' }}>
+                            <label for="large">大</label>
+                        </div>
+                        <p class="note">※フォントサイズの変更は、各ページの詳細画面および日報作成フォーム内にのみ適用されます。</p>
+                    </div>
+                </div>
+
+                <div class="btn-area">
+                    <button type="submit" class="change-btn">変更する</button>
+                </div>
+            </form>
+            <div class="btn-area">
+                <button class="close-btn">とじる</button>
+            </div>
+        </div>
+
+        <!-- アバターモーダル -->
+        <div class="modal-avatar">
+            <form id="customize-form" action="{{ route('user.settings.update') }}" method="POST">
+                @csrf
+
+                @php
+                    $avatarType = $user_details->avatar_type ?? 1;
+                @endphp
+
+                <div class="form-container">
+
+                    <!-- アバター画像選択 -->
+                    <div class="avatar">
+                        <label for="">アバター画像</label>
+                        <div class="img-container">
+                            @for ($i = 1; $i <= 6; $i++)
+                                <input type="radio" id="avatar{{ $i }}" name="avatar_type"
+                                    value="{{ $i }}" {{ $avatarType == $i ? 'checked' : '' }}>
+                                <label for="avatar{{ $i }}">
+                                    <img src="{{ asset("assets/images/f_profile_image{$i}.svg") }}" alt=""
+                                        class="avatar-img">
                                 </label>
-                            </div>
+                            @endfor
+                            <input type="radio" id="avatar99" name="avatar_type" value="99">
+
+                            <label for="avatar99" class="is-hidden">
+                                <img id="preview99" class="preview is-hidden avatar-img">
+                            </label>
+
+                            <label>
+                                <img src="{{ asset('assets/images/f_profile_imageadd.svg') }}"
+                                    class="avatar-img select-image" data-preview="preview99">
+                            </label>
+
+                            <input type="file" id="fileInput" accept="image/*" hidden>
+
                         </div>
                     </div>
                 </div>
@@ -131,6 +156,7 @@
 
                         <div class="btn-area">
                             <button class="open-btn-profile">プロフィールをみる</button>
+                            <button class="open-btn-avatar">アイコン変更</button>
                             <button class="open-btn-customize">カスタマイズ</button>
                         </div>
                     </div>
