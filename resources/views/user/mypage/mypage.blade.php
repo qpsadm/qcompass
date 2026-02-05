@@ -83,6 +83,10 @@
                                             class="avatar-img">
                                     </label>
                                 @endfor
+                                <input type="file" id="avatar-add">
+                                <label for="avatar-add">
+                                    <img src="{{ asset("assets/images/f_profile_imageadd.svg") }}" alt="" class="avatar-img">
+                                </label>
                             </div>
                         </div>
                     </div>
