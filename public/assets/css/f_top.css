@@ -65,6 +65,12 @@
     text-align: center;
 }
 
+@media screen and (max-width: 559px) {
+    .section-box {
+        padding: 35px 25px;
+    }
+}
+
 /* components > f_content_list.blade.php */
 .section-box .content-list {
     margin-bottom: 10px;

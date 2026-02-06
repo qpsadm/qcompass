@@ -678,6 +678,16 @@ header::after {
     }
 }
 
+@media screen and (max-width: 659px) {
+    .side-menu-list li {
+        width: 170px;
+    }
+
+    .side-menu-list li a {
+        margin-left: 0;
+    }
+}
+
 /* =========================================
     main
 ========================================= */
@@ -728,6 +738,12 @@ header::after {
 @media screen and (max-width: 768px) {
     .container {
         padding: 45px 35px 0;
+    }
+}
+
+@media screen and (max-width: 559px) {
+    .container {
+        padding: 35px 25px 0;
     }
 }
 
@@ -839,6 +855,16 @@ footer {
 
     .footer-menu-list {
         margin-top: 50px;
+    }
+}
+
+@media screen and (max-width: 559px) {
+    .footer-logo img {
+        width: 300px;
+    }
+
+    .footer-menu-list {
+        margin-right: 0;
     }
 }
 
