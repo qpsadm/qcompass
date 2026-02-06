@@ -243,7 +243,7 @@
                 borderColor: 'transparent',
                 extendedProps: {
                     isPending: false,
-                    url: '{{ route('reports.info', ['report' => $report->id]) }}'
+                    url: '{{ route('user.reports.info', ['report' => $report->id]) }}'
                 }
             },
             @endforeach
