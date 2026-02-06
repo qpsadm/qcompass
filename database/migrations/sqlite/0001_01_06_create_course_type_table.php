@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('course_types', function (Blueprint $table) {
+
+            $table->id()->comment('主キー');
+
+            $table->unsignedBigInteger('organizer_id')->nullable()->default(1)->comment('実施主体ID');
+
+            // $table->foreignId('organizer_id')
+            //     ->constrained('organizers')
+            //     ->onDelete('set null')
+            //     ->comment('実施主体ID');
+
+            $table->string('name', 255)->comment('名前');
+            $table->boolean('is_show')->default(true)->comment('表示フラグ');
+
+            // Laravel自動管理
+            $table->timestamps(); // created_at / updated_at
+            $table->softDeletes(); // deleted_at
+
+            // 追加のユーザー情報
+            $table->string('created_user_name', 50)->nullable()->comment('作成者名');
+            $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
+            $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+            $table->comment('講座分野マスタ');
+
+            $table->foreign('organizer_id')->references('id')->on('organizers')->onDelete('set null');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('course_types');
+    }
+};

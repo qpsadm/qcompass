@@ -6,10 +6,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Course;
 use App\Models\Quote;
 use App\Models\UserDetail; // ← 追加
 use Carbon\Carbon;           // ← 追加
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if (config('database.default') === 'sqlite') {
+            $this->loadMigrationsFrom(database_path('migrations/sqlite'));
+        } elseif (config('database.default') === 'mariadb') {
+            $this->loadMigrationsFrom(database_path('migrations/mariadb'));
+        }
+
         View::composer(['includes.f_side_menu', 'includes.f_header'], function ($view) {
             $user = Auth::user();
 

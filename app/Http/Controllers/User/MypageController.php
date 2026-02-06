@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DatePeriod;
 use DateInterval;
+use App\Models\Report;
 
 class MypageController extends Controller
 {
+
+
     public function index()
     {
         $user = auth()->user();
@@ -117,7 +120,7 @@ class MypageController extends Controller
     */
     private function getPendingDiariesByCourses($user, $courses)
     {
-        $pending = [];
+        $pending = collect();
 
         foreach ($courses as $course) {
             if (!$course->start_date || !$course->end_date) {
@@ -127,39 +130,37 @@ class MypageController extends Controller
             $start = Carbon::parse($course->start_date);
             $end   = Carbon::parse($course->end_date);
 
-            $period = new DatePeriod(
-                $start,
-                new DateInterval('P1D'),
-                $end->copy()->addDay()
-            );
+            // ① 提出済み日付を一気に取得（★重要）
+            $submittedDates = $user->reports()
+                ->where('course_id', $course->id)
+                ->pluck('date')
+                ->map(fn($d) => Carbon::parse($d)->format('Y-m-d'))
+                ->toArray();
 
-            foreach ($period as $date) {
-                $exists = $user->reports()
-                    ->where('course_id', $course->id)
-                    ->whereDate('date', $date)
-                    ->exists();
+            // ② 全期間を回す（DBアクセスなし）
+            for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
+                $dateStr = $date->format('Y-m-d');
 
-                if (!$exists) {
-                    $diary = new \stdClass();
-                    $diary->date = $date->format('Y-m-d');
-                    $diary->course_id = $course->id;
-                    $diary->course_name = $course->course_name;
-                    $diary->url = route('user.reports_create', [
-                        'course_id' => $course->id,
-                        'date'      => $date->format('Y-m-d'),
+                if (!in_array($dateStr, $submittedDates, true)) {
+                    $pending->push((object)[
+                        'date'        => $dateStr,
+                        'course_id'   => $course->id,
+                        'course_name' => $course->course_name,
+                        'url'         => route('user.reports_create', [
+                            'course_id' => $course->id,
+                            'date'      => $dateStr,
+                        ]),
                     ]);
-
-                    $pending[] = $diary;
                 }
             }
         }
 
-        // 同一日付は1件にまとめる
-        return collect($pending)
+        return $pending
             ->unique('date')
             ->values()
             ->all();
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -212,22 +213,53 @@ class MypageController extends Controller
         $request->validate([
             'fontsize'    => 'nullable|integer|min:1|max:3',
             'theme_id'    => 'nullable|exists:themes,id',
-            'avatar_type' => 'nullable|in:1,2,3,4,5,6', // ← 追加
+            'avatar_type' => 'nullable|in:1,2,3,4,5,6,99',
+            'avatar_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $user = auth()->user();
         $details = $user->detail ?? $user->detail()->create([]);
 
+        /* -------------------------
+     | フォントサイズ
+     |------------------------- */
         if ($request->filled('fontsize')) {
             $details->fontsize = $request->fontsize;
         }
 
+        /* -------------------------
+     | テーマ
+     |------------------------- */
         if ($request->filled('theme_id')) {
             $details->theme_id = $request->theme_id;
         }
 
+        /* -------------------------
+     | アバター処理
+     |------------------------- */
         if ($request->filled('avatar_type')) {
-            $details->avatar_type = $request->avatar_type; // ← 追加
+
+            // ★ カスタム画像（99）
+            if ((int)$request->avatar_type === 99 && $request->hasFile('avatar_file')) {
+
+                // 既存カスタム画像削除
+                if ($details->user_avatar_path) {
+                    Storage::disk('public')->delete($details->user_avatar_path);
+                }
+
+                $filename = 'avatar_' . $user->id . '_' . Str::uuid() . '.' .
+                    $request->file('avatar_file')->getClientOriginalExtension();
+
+                $path = $request->file('avatar_file')
+                    ->storeAs('avatars', $filename, 'public');
+
+                $details->avatar_type = 99;
+                $details->user_avatar_path = $path;
+            } else {
+                // ★ 既存アバター（1〜6）
+                $details->avatar_type = $request->avatar_type;
+                $details->user_avatar_path = null;
+            }
         }
 
         $details->save();
@@ -251,7 +283,7 @@ class MypageController extends Controller
     public function updateAvatarType(Request $request)
     {
         $request->validate([
-            'avatar_type' => 'required|in:1,2,3,4,5,6',
+            'avatar_type' => 'required|in:1,2,3,4,5,6,99',
         ]);
 
         $user = auth()->user();

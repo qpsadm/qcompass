@@ -28,9 +28,7 @@ return new class extends Migration
                 ->default(1)
                 ->comment('アバター種別');
 
-            $table->string('user_avatar_path', 255)
-                ->default(1)
-                ->comment('ユーザーアバターパス');
+            $table->string('user_avatar_path', 255)->nullable()->comment('ユーザーアバターパス');
 
             $table->unsignedBigInteger('theme_id')->default(1)->comment('テーマID');
 
