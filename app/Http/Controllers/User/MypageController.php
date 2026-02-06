@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use DatePeriod;
 use DateInterval;
 use App\Models\Report;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MypageController extends Controller
 {
@@ -21,7 +23,7 @@ class MypageController extends Controller
     {
         $user = auth()->user();
         $user_details = $user->detail;
-
+        $userAvatarPath = $user_details?->user_avatar_path ?? null;
         /*
         |--------------------------------------------------------------------------
         | 表示用講座の決定
@@ -104,6 +106,7 @@ class MypageController extends Controller
         return view('user.mypage.mypage', compact(
             'user',
             'user_details',
+            'userAvatarPath', // ← 追加
             'courses',
             'pending_diaries',
             'submitted_reports',
@@ -216,6 +219,7 @@ class MypageController extends Controller
             'avatar_type' => 'nullable|in:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,99',
             'avatar_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
 
         $user = auth()->user();
         $details = $user->detail ?? $user->detail()->create([]);
