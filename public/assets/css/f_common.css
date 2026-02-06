@@ -860,7 +860,7 @@ footer {
 
 @media screen and (max-width: 559px) {
     .footer-logo img {
-        width: 300px;
+        width: 250px;
     }
 
     .footer-menu-list {
