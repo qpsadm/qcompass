@@ -26,7 +26,8 @@ class UserDetail extends Model
 
         // アバター
         'avatar_path', // 管理画面用（アップロード画像）
-        'avatar_type', // ユーザー画面用（1:default, 2:pattern1, 3:pattern2）
+        'avatar_type', // ユーザー画面用（1:default, 2:pattern1, 3:pattern2...99:custom）
+        'user_avatar_path', // ユーザー画面用
 
         // UI設定
         'theme_id',
