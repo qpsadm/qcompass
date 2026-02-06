@@ -1186,16 +1186,18 @@ footer {
     display: block;
     width: 0;
     height: 0;
-    margin-right: 10px;
-    border-width: 12px 20px 12px 0;
     border-style: solid;
 }
 
 .pagination .prev a {
+    margin-right: 10px;
+    border-width: 12px 20px 12px 0;
     border-color: transparent var(--accent-color) transparent transparent;
 }
 
 .pagination .next a {
+    margin-left: 10px;
+    border-width: 12px 0 12px 20px;
     border-color: transparent transparent transparent var(--accent-color);
 }
 
