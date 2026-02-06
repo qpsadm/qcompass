@@ -133,21 +133,21 @@ class UserDetail extends Model
 
         // デフォルト
         return match ((int)$this->avatar_type) {
-            2 => asset('assets/images/f_profile_image2.svg'),
-            3 => asset('assets/images/f_profile_image3.svg'),
-            4 => asset('assets/images/f_profile_image4.svg'),
-            5 => asset('assets/images/f_profile_image5.svg'),
-            6 => asset('assets/images/f_profile_image6.svg'),
-            7 => asset('assets/images/f_profile_image7.svg'),
-            8 => asset('assets/images/f_profile_image8.svg'),
-            9 => asset('assets/images/f_profile_image9.svg'),
-            10 => asset('assets/images/f_profile_image10.svg'),
-            11 => asset('assets/images/f_profile_image11.svg'),
-            12 => asset('assets/images/f_profile_image12.svg'),
-            13 => asset('assets/images/f_profile_image13.svg'),
-            14 => asset('assets/images/f_profile_image14.svg'),
-            15 => asset('assets/images/f_profile_image15.svg'),
-            default => asset('assets/images/f_profile_image1.svg'),
+            2 => asset('assets/images/profile/f_profile_image2.svg'),
+            3 => asset('assets/images/profile/f_profile_image3.svg'),
+            4 => asset('assets/images/profile/f_profile_image4.svg'),
+            5 => asset('assets/images/profile/f_profile_image5.svg'),
+            6 => asset('assets/images/profile/f_profile_image6.svg'),
+            7 => asset('assets/images/profile/f_profile_image7.svg'),
+            8 => asset('assets/images/profile/f_profile_image8.svg'),
+            9 => asset('assets/images/profile/f_profile_image9.svg'),
+            10 => asset('assets/images/profile/f_profile_image10.svg'),
+            11 => asset('assets/images/profile/f_profile_image11.svg'),
+            12 => asset('assets/images/profile/f_profile_image12.svg'),
+            13 => asset('assets/images/profile/f_profile_image13.svg'),
+            14 => asset('assets/images/profile/f_profile_image14.svg'),
+            15 => asset('assets/images/profile/f_profile_image15.svg'),
+            default => asset('assets/images/profile/f_profile_image1.svg'),
         };
     }
 }
