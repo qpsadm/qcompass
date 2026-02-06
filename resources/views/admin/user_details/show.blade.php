@@ -101,7 +101,7 @@
         },
 
         '自己紹介' => $detail->bio ?? '-',
-        '備考' => $detail->memo ?? '-',
+        'メモ（内部用）' => $detail->memo ?? '-',
 
         '入校日 / 入社日' => $detail->joining_date?->format('Y-m-d') ?? '-',
         '退校日 / 退社日' => $detail->leaving_date?->format('Y-m-d') ?? '-',

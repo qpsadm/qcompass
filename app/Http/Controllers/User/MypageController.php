@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DatePeriod;
 use DateInterval;
+use App\Models\Report;
 
 class MypageController extends Controller
 {
+
+
     public function index()
     {
         $user = auth()->user();
@@ -117,7 +120,7 @@ class MypageController extends Controller
     */
     private function getPendingDiariesByCourses($user, $courses)
     {
-        $pending = [];
+        $pending = collect();
 
         foreach ($courses as $course) {
             if (!$course->start_date || !$course->end_date) {
@@ -127,39 +130,37 @@ class MypageController extends Controller
             $start = Carbon::parse($course->start_date);
             $end   = Carbon::parse($course->end_date);
 
-            $period = new DatePeriod(
-                $start,
-                new DateInterval('P1D'),
-                $end->copy()->addDay()
-            );
+            // ① 提出済み日付を一気に取得（★重要）
+            $submittedDates = $user->reports()
+                ->where('course_id', $course->id)
+                ->pluck('date')
+                ->map(fn($d) => Carbon::parse($d)->format('Y-m-d'))
+                ->toArray();
 
-            foreach ($period as $date) {
-                $exists = $user->reports()
-                    ->where('course_id', $course->id)
-                    ->whereDate('date', $date)
-                    ->exists();
+            // ② 全期間を回す（DBアクセスなし）
+            for ($date = $start->copy(); $date->lte($end); $date->addDay()) {
+                $dateStr = $date->format('Y-m-d');
 
-                if (!$exists) {
-                    $diary = new \stdClass();
-                    $diary->date = $date->format('Y-m-d');
-                    $diary->course_id = $course->id;
-                    $diary->course_name = $course->course_name;
-                    $diary->url = route('user.reports_create', [
-                        'course_id' => $course->id,
-                        'date'      => $date->format('Y-m-d'),
+                if (!in_array($dateStr, $submittedDates, true)) {
+                    $pending->push((object)[
+                        'date'        => $dateStr,
+                        'course_id'   => $course->id,
+                        'course_name' => $course->course_name,
+                        'url'         => route('user.reports_create', [
+                            'course_id' => $course->id,
+                            'date'      => $dateStr,
+                        ]),
                     ]);
-
-                    $pending[] = $diary;
                 }
             }
         }
 
-        // 同一日付は1件にまとめる
-        return collect($pending)
+        return $pending
             ->unique('date')
             ->values()
             ->all();
     }
+
 
     /*
     |--------------------------------------------------------------------------

@@ -109,19 +109,10 @@
 
                 {{-- メモ（内部用） --}}
                 <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">メモ</th>
+                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">メモ（内部用）</th>
                     <td class="px-4 py-2">
                         <textarea name="note" rows="4"
                             class="border rounded px-3 py-2 w-full">{{ old('note', $detail->note) }}</textarea>
-                    </td>
-                </tr>
-
-                {{-- 備考（短文） --}}
-                <tr class="border-b">
-                    <th class="px-4 py-2 bg-gray-100 text-right font-medium">備考</th>
-                    <td class="px-4 py-2">
-                        <textarea name="memo" rows="2"
-                            class="border rounded px-3 py-2 w-full">{{ old('memo', $detail->memo) }}</textarea>
                     </td>
                 </tr>
 
