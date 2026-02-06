@@ -1,5 +1,7 @@
 <div class="page-title">
-    <h1 class="{{ str_replace('.', '-', request()->route()->getName()) }}">{{ $title }}</h1>
+    <h1 class="{{ str_replace('.', '-', request()->route()->getName()) }}">
+        {{!! $title!!}}
+    </h1>
 
     @if ($search)
     <div class="search">
