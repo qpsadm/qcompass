@@ -106,18 +106,28 @@ class UserDetail extends Model
             1 => 'デフォルト',
             2 => 'パターン1',
             3 => 'パターン2',
+            4 => 'パターン3',
+            5 => 'パターン4',
+            6 => 'パターン5',
+            99 => 'カスタム',
         ][$this->avatar_type] ?? '未設定';
     }
 
     public function getAvatarTypeImageAttribute()
     {
-        return match ($this->avatar_type) {
-            2 => asset('assets\images\f_profile_image2.svg'),
-            3 => asset('assets\images\f_profile_image3.svg'),
-            4 => asset('assets\images\f_profile_image4.svg'),
-            5 => asset('assets\images\f_profile_image5.svg'),
-            6 => asset('assets\images\f_profile_image6.svg'),
-            default => asset('assets\images\f_profile_image1.svg'),
+        // カスタム画像
+        if ($this->avatar_type == 99 && $this->user_avatar_path) {
+            return asset('storage/' . $this->user_avatar_path);
+        }
+
+        // デフォルト
+        return match ((int)$this->avatar_type) {
+            2 => asset('assets/images/f_profile_image2.svg'),
+            3 => asset('assets/images/f_profile_image3.svg'),
+            4 => asset('assets/images/f_profile_image4.svg'),
+            5 => asset('assets/images/f_profile_image5.svg'),
+            6 => asset('assets/images/f_profile_image6.svg'),
+            default => asset('assets/images/f_profile_image1.svg'),
         };
     }
 }

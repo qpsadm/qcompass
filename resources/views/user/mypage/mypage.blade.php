@@ -3,102 +3,102 @@
 @section('title', 'マイページ')
 
 @section('code-page-css')
-    <link rel="stylesheet" href="{{ asset('assets/css/f_mypage.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/f_mypage.css') }}">
 @endsection
 
 @section('main-content')
-    <div class="container">
+<div class="container">
 
-        <!-- プロフィールモーダル -->
-        <div class="modal-profile">
-            <div class="profile-data">
-                <h4>{{ $user->name }}</h4>
-                <p class="mail">{{ $user->email ?? '未登録' }}</p>
-                <p class="tel">{{ $user_details?->phone1 ?? '未登録' }}</p>
-                <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
+    <!-- プロフィールモーダル -->
+    <div class="modal-profile">
+        <div class="profile-data">
+            <h4>{{ $user->name }}</h4>
+            <p class="mail">{{ $user->email ?? '未登録' }}</p>
+            <p class="tel">{{ $user_details?->phone1 ?? '未登録' }}</p>
+            <p class="birthday">{{ $user_details?->birthday ? $user_details->birthday->format('Y/m/d') : '未登録' }}</p>
 
-                <div class="btn-area">
-                    <button class="close-btn">とじる</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- カスタマイズモーダル -->
-        <div class="modal-customize">
-            <form id="customize-form" action="{{ route('user.settings.update') }}" method="POST">
-                @csrf
-
-                @php
-                    $initialTheme = $user->detail->theme_id ?? 1;
-                    $fontSize = $user_details->fontsize ?? 2;
-                    $avatarType = $user_details->avatar_type ?? 1;
-                @endphp
-
-                <div class="form-container">
-
-                    <!-- テーマカラー選択 -->
-                    <div class="theme-color-select">
-                        <p>テーマカラー</p>
-                        <div class="radio-container">
-                            @foreach ($themes as $theme)
-                                <input type="radio" id="theme-{{ $theme->id }}" name="theme_id"
-                                    value="{{ $theme->id }}" {{ $initialTheme == $theme->id ? 'checked' : '' }}>
-                                <label for="theme-{{ $theme->id }}">{{ $theme->name }}</label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- フォントサイズ選択 -->
-                    <div class="font-size-select">
-                        <label for="">フォントサイズ</label>
-                        <div class="radio-container">
-                            <input type="radio" id="small" name="fontsize" value="1"
-                                {{ $fontSize == 1 ? 'checked' : '' }}>
-                            <label for="small">標準</label>
-
-                            <input type="radio" id="medium" name="fontsize" value="2"
-                                {{ $fontSize == 2 ? 'checked' : '' }}>
-                            <label for="medium">中</label>
-
-                            <input type="radio" id="large" name="fontsize" value="3"
-                                {{ $fontSize == 3 ? 'checked' : '' }}>
-                            <label for="large">大</label>
-                        </div>
-                        <p class="note">※フォントサイズの変更は、各ページの詳細画面および日報作成フォーム内にのみ適用されます。</p>
-                    </div>
-                </div>
-
-                <div class="btn-area">
-                    <button type="submit" class="change-btn">変更する</button>
-                </div>
-            </form>
             <div class="btn-area">
                 <button class="close-btn">とじる</button>
             </div>
         </div>
+    </div>
 
-        <!-- アバターモーダル -->
-        <div class="modal-avatar">
-            <form id="customize-form" action="{{ route('user.settings.update') }}" method="POST">
-                @csrf
+    <!-- カスタマイズモーダル -->
+    <div class="modal-customize">
+        <form id="customize-form" action="{{ route('user.settings.update') }}" method="POST">
+            @csrf
 
-                @php
-                    $avatarType = $user_details->avatar_type ?? 1;
-                @endphp
+            @php
+            $initialTheme = $user->detail->theme_id ?? 1;
+            $fontSize = $user_details->fontsize ?? 2;
+            $avatarType = $user_details->avatar_type ?? 1;
+            @endphp
 
-                <div class="form-container">
+            <div class="form-container">
 
-                    <!-- アバター画像選択 -->
-                    <div class="avatar">
-                        <label for="">アバター画像</label>
-                        <div class="img-container">
-                            @for ($i = 1; $i <= 6; $i++)
-                                <input type="radio" id="avatar{{ $i }}" name="avatar_type"
-                                    value="{{ $i }}" {{ $avatarType == $i ? 'checked' : '' }}>
-                                <label for="avatar{{ $i }}">
-                                    <img src="{{ asset("assets/images/f_profile_image{$i}.svg") }}" alt=""
-                                        class="avatar-img">
-                                </label>
+                <!-- テーマカラー選択 -->
+                <div class="theme-color-select">
+                    <p>テーマカラー</p>
+                    <div class="radio-container">
+                        @foreach ($themes as $theme)
+                        <input type="radio" id="theme-{{ $theme->id }}" name="theme_id"
+                            value="{{ $theme->id }}" {{ $initialTheme == $theme->id ? 'checked' : '' }}>
+                        <label for="theme-{{ $theme->id }}">{{ $theme->name }}</label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- フォントサイズ選択 -->
+                <div class="font-size-select">
+                    <label for="">フォントサイズ</label>
+                    <div class="radio-container">
+                        <input type="radio" id="small" name="fontsize" value="1"
+                            {{ $fontSize == 1 ? 'checked' : '' }}>
+                        <label for="small">標準</label>
+
+                        <input type="radio" id="medium" name="fontsize" value="2"
+                            {{ $fontSize == 2 ? 'checked' : '' }}>
+                        <label for="medium">中</label>
+
+                        <input type="radio" id="large" name="fontsize" value="3"
+                            {{ $fontSize == 3 ? 'checked' : '' }}>
+                        <label for="large">大</label>
+                    </div>
+                    <p class="note">※フォントサイズの変更は、各ページの詳細画面および日報作成フォーム内にのみ適用されます。</p>
+                </div>
+            </div>
+
+            <div class="btn-area">
+                <button type="submit" class="change-btn">変更する</button>
+            </div>
+        </form>
+        <div class="btn-area">
+            <button class="close-btn">とじる</button>
+        </div>
+    </div>
+
+    <!-- アバターモーダル -->
+    <div class="modal-avatar">
+        <form id="customize-form" action="{{ route('user.settings.update') }}" method="POST">
+            @csrf
+
+            @php
+            $avatarType = $user_details->avatar_type ?? 1;
+            @endphp
+
+            <div class="form-container">
+
+                <!-- アバター画像選択 -->
+                <div class="avatar">
+                    <label for="">アバター画像</label>
+                    <div class="img-container">
+                        @for ($i = 1; $i <= 6; $i++)
+                            <input type="radio" id="avatar{{ $i }}" name="avatar_type"
+                            value="{{ $i }}" {{ $avatarType == $i ? 'checked' : '' }}>
+                            <label for="avatar{{ $i }}">
+                                <img src="{{ asset("assets/images/f_profile_image{$i}.svg") }}" alt=""
+                                    class="avatar-img">
+                            </label>
                             @endfor
                             <input type="radio" id="avatar99" name="avatar_type" value="99">
 
@@ -113,234 +113,235 @@
 
                             <input type="file" id="fileInput" accept="image/*" hidden>
 
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="btn-area">
-                    <button type="submit" class="change-btn">変更する</button>
-                </div>
-            </form>
             <div class="btn-area">
-                <button class="close-btn">とじる</button>
+                <button type="submit" class="change-btn">変更する</button>
             </div>
+        </form>
+        <div class="btn-area">
+            <button class="close-btn">とじる</button>
         </div>
-
-        <!-- オーバーレイ -->
-        <div class="overlay"></div>
-
-        <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title :search="false" title="マイページ" />
-
-        <!-- プロフィール -->
-        <div class="section-flex">
-            <div class="section-box profile">
-                <div class="box-title">
-                    <h3>プロフィール</h3>
-                </div>
-                <div class="box-content">
-                    <div class="profile-icon">
-                        <img src="{{ $user_details->avatar_type_image ?? asset('assets/images/f_profile_image1.svg') }}"
-                            alt="プロフィール画像">
-                    </div>
-                    <div class="profile-data">
-                        <h4>{{ $user->name }}</h4>
-                        <p class="mail">{{ $user->email ?? '未登録' }}</p>
-
-                        <p class="course">
-                            {{ session('current_course_name') ?? '未設定' }}
-                        </p>
-
-                        <p class="division">{{ $divisions->name ?? '未設定' }}</p>
-                        <p class="division-tel">（{{ $divisions->tel ?? '未設定' }}）</p>
-
-                        <div class="btn-area">
-                            <button class="open-btn-profile">プロフィールをみる</button>
-                            <button class="open-btn-avatar">アイコン変更</button>
-                            <button class="open-btn-customize">カスタマイズ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- カレンダー -->
-            <div class="section-box calendar">
-                <div class="box-title">
-                    <h3>日報カレンダー</h3>
-                </div>
-                <div class="box-content">
-                    <div id="calendar"></div>
-                    <p>※日報を提出した日はチェックマークが表示されます。<br>　提出し忘れていないかチェックしましょう。</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 各種スケジュール -->
-        <div class="section-box">
-            <div class="box-title">
-                <h3>各種スケジュール</h3>
-            </div>
-            <div class="box-content">
-                <x-f_content_list :items="$scheduledAnnouncements" />
-            </div>
-        </div>
-
-        <!-- メモ -->
-        <div class="section-box memo">
-            <div class="box-title">
-                <h3>メモ</h3>
-            </div>
-            <div class="box-content">
-                <form id="memo-form" class="memo-form" method="POST">
-                    @csrf
-                    <textarea name="memo" id="memo-textarea" rows="6">{{ $user_details->memo ?? '' }}</textarea>
-                    <button type="submit">保存</button>
-                </form>
-                <div id="memo-success">
-                    <p>メモを保存しました</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- パンくずリスト -->
-        <x-f_bread_crumbs />
-
     </div>
+
+    <!-- オーバーレイ -->
+    <div class="overlay"></div>
+
+    <!-- ページタイトル（検索フォームなし） -->
+    <x-f_page_title :search="false" title="マイページ" />
+
+    <!-- プロフィール -->
+    <div class="section-flex">
+        <div class="section-box profile">
+            <div class="box-title">
+                <h3>プロフィール</h3>
+            </div>
+            <div class="box-content">
+                <div class="profile-icon">
+                    <img src="{{ $user_details->avatar_type_image ?? asset('assets/images/f_profile_image1.svg') }}"
+                        alt="プロフィール画像">
+                </div>
+                <div class="profile-data">
+                    <h4>{{ $user->name }}</h4>
+                    <p class="mail">{{ $user->email ?? '未登録' }}</p>
+
+                    <p class="course">
+                        {{ session('current_course_name') ?? '未設定' }}
+                    </p>
+
+                    <p class="division">{{ $divisions->name ?? '未設定' }}</p>
+                    <p class="division-tel">（{{ $divisions->tel ?? '未設定' }}）</p>
+
+                    <div class="btn-area">
+                        <button class="open-btn-profile">プロフィールをみる</button>
+                        <button class="open-btn-avatar">アイコン変更</button>
+                        <button class="open-btn-customize">カスタマイズ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- カレンダー -->
+        <div class="section-box calendar">
+            <div class="box-title">
+                <h3>日報カレンダー</h3>
+            </div>
+            <div class="box-content">
+                <div id="calendar"></div>
+                <p>※日報を提出した日はチェックマークが表示されます。<br>　提出し忘れていないかチェックしましょう。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 各種スケジュール -->
+    <div class="section-box">
+        <div class="box-title">
+            <h3>各種スケジュール</h3>
+        </div>
+        <div class="box-content">
+            <x-f_content_list :items="$scheduledAnnouncements" />
+        </div>
+    </div>
+
+    <!-- メモ -->
+    <div class="section-box memo">
+        <div class="box-title">
+            <h3>メモ</h3>
+        </div>
+        <div class="box-content">
+            <form id="memo-form" class="memo-form" method="POST">
+                @csrf
+                <textarea name="memo" id="memo-textarea" rows="6">{{ $user_details->memo ?? '' }}</textarea>
+                <button type="submit">保存</button>
+            </form>
+            <div id="memo-success">
+                <p>メモを保存しました</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- パンくずリスト -->
+    <x-f_bread_crumbs />
+
+</div>
 @endsection
 
 @section('code-page-js')
-    <script src="{{ asset('assets/js/f_mypage.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+<script src="{{ asset('assets/js/f_mypage.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
 
-            // FullCalendar初期化
-            var calendarEl = document.getElementById('calendar');
+        // FullCalendar初期化
+        var calendarEl = document.getElementById('calendar');
 
-            var pendingEvents = [
-                @foreach ($pending_diaries as $diary)
-                    {
-                        title: '',
-                        start: '{{ $diary->date }}',
-                        allDay: true,
-                        backgroundColor: 'transparent',
-                        borderColor: 'transparent',
-                        extendedProps: {
-                            isPending: true,
-                            url: '{!! $diary->url !!}'
-                        }
-                    },
-                @endforeach
-            ];
-
-            var submittedEvents = [
-                @foreach ($submitted_reports as $report)
-                    {
-                        title: '',
-                        start: '{{ \Carbon\Carbon::parse($report->date)->format('Y-m-d') }}',
-                        allDay: true,
-                        backgroundColor: 'transparent',
-                        borderColor: 'transparent',
-                        extendedProps: {
-                            isPending: false,
-                            url: '{{ route('user.reports.info', ['report' => $report->id]) }}'
-                        }
-                    },
-                @endforeach
-            ];
-
-            window.APP_URL = "{{ url('/') }}";
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'ja',
-                timeZone: "Asia/Tokyo",
-                height: 'auto',
-                dayCellContent: function(arg) {
-                    return arg.date.getDate();
-                },
-                events: pendingEvents.concat(submittedEvents),
-                eventContent: function(arg) {
-                    if (arg.event.extendedProps.isPending) return {
-                        domNodes: []
-                    };
-                    const img = document.createElement('img');
-                    img.src = `${window.APP_URL}/assets/images/icon/f_icon_check.svg`;
-                    img.alt = "提出済";
-                    img.style.width = "40px";
-                    img.style.height = "40px";
-                    img.style.cursor = "pointer";
-                    img.style.filter = "var(--tag-filter)";
-                    return {
-                        domNodes: [img]
-                    };
-                },
-                eventClick: function(info) {
-                    if (info.event.extendedProps.url) window.location.href = info.event.extendedProps
-                        .url;
-                },
-                dateClick: function(info) {
-                    var event = calendar.getEvents().find(event => event.startStr === info.dateStr &&
-                        event.extendedProps.url);
-                    if (event) window.location.href = event.extendedProps.url;
-                },
-                datesSet: function() {
-                    document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
-                        const date = frame.parentElement.getAttribute('data-date');
-                        var hasEvent = calendar.getEvents().some(event => event.startStr ===
-                            date && event.extendedProps.url);
-                        frame.style.cursor = hasEvent ? 'pointer' : 'default';
-                        if (hasEvent) {
-                            frame.addEventListener('mouseenter', function() {
-                                frame.style.backgroundColor = '#fff9c4';
-                            });
-                            frame.addEventListener('mouseleave', function() {
-                                frame.style.backgroundColor = '';
-                            });
-                        }
-                    });
+        var pendingEvents = [
+            @foreach($pending_diaries as $diary) {
+                title: '',
+                start: '{{ $diary->date }}',
+                allDay: true,
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
+                extendedProps: {
+                    isPending: true,
+                    url: '{!! $diary->url !!}'
                 }
-            });
+            },
+            @endforeach
+        ];
 
-            calendar.render();
+        var submittedEvents = [
+            @foreach($submitted_reports as $report) {
+                title: '',
+                start: '{{ \Carbon\Carbon::parse($report->date)->format('
+                Y - m - d ') }}',
+                allDay: true,
+                backgroundColor: 'transparent',
+                borderColor: 'transparent',
+                extendedProps: {
+                    isPending: false,
+                    url: '{{ route('
+                    user.reports.info ', ['
+                    report ' => $report->id]) }}'
+                }
+            },
+            @endforeach
+        ];
 
-            // メモ保存
-            $('#memo-form').on('submit', function(e) {
-                e.preventDefault();
-                const memo = $('#memo-textarea').val();
-                const token = $('input[name="_token"]').val();
+        window.APP_URL = "{{ url('/') }}";
 
-                $.ajax({
-                    url: "{{ route('user.memo.save') }}",
-                    type: 'POST',
-                    data: {
-                        _token: token,
-                        memo: memo
-                    },
-                    success: function() {
-                        $('#memo-success').fadeIn().delay(2000).fadeOut();
-                    },
-                    error: function() {
-                        alert('保存に失敗しました');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ja',
+            timeZone: "Asia/Tokyo",
+            height: 'auto',
+            dayCellContent: function(arg) {
+                return arg.date.getDate();
+            },
+            events: pendingEvents.concat(submittedEvents),
+            eventContent: function(arg) {
+                if (arg.event.extendedProps.isPending) return {
+                    domNodes: []
+                };
+                const img = document.createElement('img');
+                img.src = `${window.APP_URL}/assets/images/icon/f_icon_check.svg`;
+                img.alt = "提出済";
+                img.style.width = "40px";
+                img.style.height = "40px";
+                img.style.cursor = "pointer";
+                img.style.filter = "var(--tag-filter)";
+                return {
+                    domNodes: [img]
+                };
+            },
+            eventClick: function(info) {
+                if (info.event.extendedProps.url) window.location.href = info.event.extendedProps
+                    .url;
+            },
+            dateClick: function(info) {
+                var event = calendar.getEvents().find(event => event.startStr === info.dateStr &&
+                    event.extendedProps.url);
+                if (event) window.location.href = event.extendedProps.url;
+            },
+            datesSet: function() {
+                document.querySelectorAll('.fc-daygrid-day-frame').forEach(frame => {
+                    const date = frame.parentElement.getAttribute('data-date');
+                    var hasEvent = calendar.getEvents().some(event => event.startStr ===
+                        date && event.extendedProps.url);
+                    frame.style.cursor = hasEvent ? 'pointer' : 'default';
+                    if (hasEvent) {
+                        frame.addEventListener('mouseenter', function() {
+                            frame.style.backgroundColor = '#fff9c4';
+                        });
+                        frame.addEventListener('mouseleave', function() {
+                            frame.style.backgroundColor = '';
+                        });
                     }
                 });
-            });
+            }
+        });
 
-            // アバター変更：ハイライトのみ（即時反映しない）
-            $(function() {
+        calendar.render();
 
-                // 初期ハイライト
-                $('.img-container input[name="avatar_type"]:checked').each(function() {
-                    $(`label[for="${this.id}"]`).addClass('selected');
-                });
+        // メモ保存
+        $('#memo-form').on('submit', function(e) {
+            e.preventDefault();
+            const memo = $('#memo-textarea').val();
+            const token = $('input[name="_token"]').val();
 
-                // 選択変更時
-                $('.img-container input[name="avatar_type"]').on('change', function() {
-                    $('.img-container label').removeClass('selected');
-                    $(`label[for="${this.id}"]`).addClass('selected');
-                });
+            $.ajax({
+                url: "{{ route('user.memo.save') }}",
+                type: 'POST',
+                data: {
+                    _token: token,
+                    memo: memo
+                },
+                success: function() {
+                    $('#memo-success').fadeIn().delay(2000).fadeOut();
+                },
+                error: function() {
+                    alert('保存に失敗しました');
+                }
             });
         });
-    </script>
+
+        // アバター変更：ハイライトのみ（即時反映しない）
+        $(function() {
+
+            // 初期ハイライト
+            $('.img-container input[name="avatar_type"]:checked').each(function() {
+                $(`label[for="${this.id}"]`).addClass('selected');
+            });
+
+            // 選択変更時
+            $('.img-container input[name="avatar_type"]').on('change', function() {
+                $('.img-container label').removeClass('selected');
+                $(`label[for="${this.id}"]`).addClass('selected');
+            });
+        });
+    });
+</script>
 @endsection

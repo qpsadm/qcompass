@@ -213,22 +213,53 @@ class MypageController extends Controller
         $request->validate([
             'fontsize'    => 'nullable|integer|min:1|max:3',
             'theme_id'    => 'nullable|exists:themes,id',
-            'avatar_type' => 'nullable|in:1,2,3,4,5,6', // ← 追加
+            'avatar_type' => 'nullable|in:1,2,3,4,5,6,99',
+            'avatar_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $user = auth()->user();
         $details = $user->detail ?? $user->detail()->create([]);
 
+        /* -------------------------
+     | フォントサイズ
+     |------------------------- */
         if ($request->filled('fontsize')) {
             $details->fontsize = $request->fontsize;
         }
 
+        /* -------------------------
+     | テーマ
+     |------------------------- */
         if ($request->filled('theme_id')) {
             $details->theme_id = $request->theme_id;
         }
 
+        /* -------------------------
+     | アバター処理
+     |------------------------- */
         if ($request->filled('avatar_type')) {
-            $details->avatar_type = $request->avatar_type; // ← 追加
+
+            // ★ カスタム画像（99）
+            if ((int)$request->avatar_type === 99 && $request->hasFile('avatar_file')) {
+
+                // 既存カスタム画像削除
+                if ($details->user_avatar_path) {
+                    Storage::disk('public')->delete($details->user_avatar_path);
+                }
+
+                $filename = 'avatar_' . $user->id . '_' . Str::uuid() . '.' .
+                    $request->file('avatar_file')->getClientOriginalExtension();
+
+                $path = $request->file('avatar_file')
+                    ->storeAs('avatars', $filename, 'public');
+
+                $details->avatar_type = 99;
+                $details->user_avatar_path = $path;
+            } else {
+                // ★ 既存アバター（1〜6）
+                $details->avatar_type = $request->avatar_type;
+                $details->user_avatar_path = null;
+            }
         }
 
         $details->save();
@@ -252,7 +283,7 @@ class MypageController extends Controller
     public function updateAvatarType(Request $request)
     {
         $request->validate([
-            'avatar_type' => 'required|in:1,2,3,4,5,6',
+            'avatar_type' => 'required|in:1,2,3,4,5,6,99',
         ]);
 
         $user = auth()->user();
