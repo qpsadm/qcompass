@@ -109,6 +109,16 @@ class UserDetail extends Model
             4 => 'パターン3',
             5 => 'パターン4',
             6 => 'パターン5',
+            7 => 'パターン6',
+            8 => 'パターン7',
+            9 => 'パターン8',
+            10 => 'パターン9',
+            11 => 'パターン10',
+            12 => 'パターン11',
+            13 => 'パターン12',
+            14 => 'パターン13',
+            15 => 'パターン14',
+
             99 => 'カスタム',
         ][$this->avatar_type] ?? '未設定';
     }
@@ -127,6 +137,15 @@ class UserDetail extends Model
             4 => asset('assets/images/f_profile_image4.svg'),
             5 => asset('assets/images/f_profile_image5.svg'),
             6 => asset('assets/images/f_profile_image6.svg'),
+            7 => asset('assets/images/f_profile_image7.svg'),
+            8 => asset('assets/images/f_profile_image8.svg'),
+            9 => asset('assets/images/f_profile_image9.svg'),
+            10 => asset('assets/images/f_profile_image10.svg'),
+            11 => asset('assets/images/f_profile_image11.svg'),
+            12 => asset('assets/images/f_profile_image12.svg'),
+            13 => asset('assets/images/f_profile_image13.svg'),
+            14 => asset('assets/images/f_profile_image14.svg'),
+            15 => asset('assets/images/f_profile_image15.svg'),
             default => asset('assets/images/f_profile_image1.svg'),
         };
     }
