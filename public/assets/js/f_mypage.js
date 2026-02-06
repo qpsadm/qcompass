@@ -74,3 +74,95 @@ $(function () {
         $(this).val('');
     });
 });
+
+// メモ保存
+
+$(function () {
+    $('.img-container input[name="avatar_type"]').each(function () {
+        if ($(this).is(':checked')) {
+            $(`label[for="${this.id}"]`).addClass('selected');
+        }
+    });
+    $('.img-container input[name="avatar_type"]').on('change', function () {
+        $('.img-container label').removeClass('selected');
+        $(`label[for="${this.id}"]`).addClass('selected');
+    });
+});
+
+// カレンダー初期化
+
+$(function () {
+    const calendarEl = $('#calendar')[0];
+    if (!calendarEl) return;
+
+    const pendingEvents = window.pendingEvents || [];
+    const submittedEvents = window.submittedEvents || [];
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'ja',
+        timeZone: 'Asia/Tokyo',
+        height: 'auto',
+        dayCellContent: arg => arg.date.getDate(),
+        events: pendingEvents.concat(submittedEvents),
+
+        eventContent: function (arg) {
+            if (arg.event.extendedProps.isPending) {
+                return { domNodes: [] };
+            }
+
+            const $img = $('<img>', {
+                src: `${window.APP_URL}/assets/images/icon/f_icon_check.svg`,
+                alt: '提出済'
+            }).css({
+                width: '40px',
+                height: '40px',
+                cursor: 'pointer',
+                filter: 'var(--tag-filter)'
+            });
+
+            return { domNodes: [$img[0]] };
+        },
+
+        eventClick: function (info) {
+            if (info.event.extendedProps.url) {
+                window.location.href = info.event.extendedProps.url;
+            }
+        },
+
+        dateClick: function (info) {
+            const event = calendar.getEvents().find(e =>
+                e.startStr === info.dateStr && e.extendedProps.url
+            );
+            if (event) {
+                window.location.href = event.extendedProps.url;
+            }
+        },
+
+        datesSet: function () {
+            $('.fc-daygrid-day-frame').each(function () {
+                const $frame = $(this);
+                const date = $frame.parent().data('date');
+
+                const hasEvent = calendar.getEvents().some(e =>
+                    e.startStr === date && e.extendedProps.url
+                );
+
+                $frame.css('cursor', hasEvent ? 'pointer' : 'default');
+
+                if (hasEvent) {
+                    $frame
+                        .off('mouseenter mouseleave')
+                        .on('mouseenter', function () {
+                            $frame.css('background-color', '#fff9c4');
+                        })
+                        .on('mouseleave', function () {
+                            $frame.css('background-color', '');
+                        });
+                }
+            });
+        }
+    });
+
+    calendar.render();
+});

@@ -286,18 +286,18 @@ return [
             customPreviewLabel.classList.remove('is-hidden');
         });
 
-        // ラジオ変更時ハイライト更新
-        document.querySelectorAll('.img-container input[name="avatar_type"]').forEach(input => {
-            input.addEventListener('change', () => {
-                document.querySelectorAll('.img-container label').forEach(l => l.classList.remove('selected'));
-                document.querySelector(`label[for="${input.id}"]`).classList.add('selected');
-            });
+        // // ラジオ変更時ハイライト更新
+        // document.querySelectorAll('.img-container input[name="avatar_type"]').forEach(input => {
+        //     input.addEventListener('change', () => {
+        //         document.querySelectorAll('.img-container label').forEach(l => l.classList.remove('selected'));
+        //         document.querySelector(`label[for="${input.id}"]`).classList.add('selected');
+        //     });
 
-            // 初期ロード時ハイライト
-            if (input.checked) {
-                document.querySelector(`label[for="${input.id}"]`).classList.add('selected');
-            }
-        });
+        //     // 初期ロード時ハイライト
+        //     if (input.checked) {
+        //         document.querySelector(`label[for="${input.id}"]`).classList.add('selected');
+        //     }
+        // });
 
         // 初期ロード時のカスタムプレビュー表示
         if (preview99.src && preview99.src !== window.location.href) {
