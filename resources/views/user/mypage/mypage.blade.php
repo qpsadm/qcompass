@@ -193,7 +193,7 @@
             <h3>メモ</h3>
         </div>
         <div class="box-content">
-            <form id="memo-form" class="memo-form" method="POST">
+            <form id="memo-form" class="memo-form" method="POST" action="{{ route('user.memo.save') }}">
                 @csrf
                 <textarea name="memo" id="memo-textarea" rows="6">{{ $user_details->memo ?? '' }}</textarea>
                 <button type="submit">保存</button>
@@ -249,6 +249,19 @@ return [
     window.pendingEvents = @json($pendingJs);
     window.submittedEvents = @json($submittedJs);
     window.APP_URL = "{{ url('/') }}";
+
+
+    $(document).ready(function() {
+        $('#memo-form').on('submit', function(e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), {
+                    _token: $('input[name="_token"]').val(),
+                    memo: $('#memo-textarea').val()
+                })
+                .done(() => $('#memo-success').fadeIn().delay(2000).fadeOut())
+                .fail(() => alert('保存に失敗しました'));
+        });
+    });
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
