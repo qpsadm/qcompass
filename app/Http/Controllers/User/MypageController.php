@@ -213,7 +213,7 @@ class MypageController extends Controller
         $request->validate([
             'fontsize'    => 'nullable|integer|min:1|max:3',
             'theme_id'    => 'nullable|exists:themes,id',
-            'avatar_type' => 'nullable|in:1,2,3,4,5,6,99',
+            'avatar_type' => 'nullable|in:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,99',
             'avatar_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -256,7 +256,7 @@ class MypageController extends Controller
                 $details->avatar_type = 99;
                 $details->user_avatar_path = $path;
             } else {
-                // ★ 既存アバター（1〜6）
+                // ★ 既存アバター（1〜15）
                 $details->avatar_type = $request->avatar_type;
                 $details->user_avatar_path = null;
             }
@@ -283,7 +283,7 @@ class MypageController extends Controller
     public function updateAvatarType(Request $request)
     {
         $request->validate([
-            'avatar_type' => 'required|in:1,2,3,4,5,6,99',
+            'avatar_type' => 'required|in:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,99',
         ]);
 
         $user = auth()->user();
