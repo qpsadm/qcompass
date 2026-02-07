@@ -225,48 +225,47 @@ class MypageController extends Controller
         $details = $user->detail ?? $user->detail()->create([]);
 
         /* -------------------------
-     | フォントサイズ
-     |------------------------- */
+        | フォントサイズ
+        |------------------------- */
         if ($request->filled('fontsize')) {
             $details->fontsize = $request->fontsize;
         }
 
         /* -------------------------
-     | テーマ
-     |------------------------- */
+        | テーマ
+        |------------------------- */
         if ($request->filled('theme_id')) {
             $details->theme_id = $request->theme_id;
         }
 
         /* -------------------------
-     | アバター処理
-     |------------------------- */
+        | アバター処理
+        |------------------------- */
         if ($request->filled('avatar_type')) {
+            $newType = (int)$request->avatar_type;
 
-            // ★ カスタム画像（99）
-            if ((int)$request->avatar_type === 99 && $request->hasFile('avatar_file')) {
+            // 新しいカスタム画像がアップロードされた場合のみ古い画像を削除
+            if ($newType === 99 && $request->hasFile('avatar_file')) {
 
-                // 既存カスタム画像削除
-                if ($details->user_avatar_path) {
+                if ($details->user_avatar_path && Storage::disk('public')->exists($details->user_avatar_path)) {
                     Storage::disk('public')->delete($details->user_avatar_path);
                 }
 
-                $filename = 'avatar_' . $user->id . '_' . Str::uuid() . '.' .
-                    $request->file('avatar_file')->getClientOriginalExtension();
-
-                $path = $request->file('avatar_file')
-                    ->storeAs('avatars', $filename, 'public');
+                $file = $request->file('avatar_file');
+                $filename = 'avatar_' . $user->id . '_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('avatars', $filename, 'public');
 
                 $details->avatar_type = 99;
                 $details->user_avatar_path = $path;
             } else {
-                // ★ 既存アバター（1〜15）
-                $details->avatar_type = $request->avatar_type;
-                $details->user_avatar_path = null;
+                // 標準アバター（1〜15）選択時は user_avatar_path はそのまま
+                $details->avatar_type = $newType;
             }
         }
 
         $details->save();
+
+
 
         session([
             'settings' => [

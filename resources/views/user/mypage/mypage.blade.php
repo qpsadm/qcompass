@@ -279,12 +279,42 @@ return [
             const file = e.target.files[0];
             if (!file) return;
 
+            // ラジオ選択状態にする
             avatar99Radio.checked = true;
 
+            // プレビュー表示
             preview99.src = URL.createObjectURL(file);
             preview99.style.visibility = 'visible';
             customPreviewLabel.classList.remove('is-hidden');
+
+            // ★ ここでハイライト更新
+            document.querySelectorAll('.img-container label').forEach(l => l.classList.remove('selected'));
+            customPreviewLabel.classList.add('selected');
         });
+
+        // ラジオ変更時のハイライト更新
+        document.querySelectorAll('.img-container input[name="avatar_type"]').forEach(input => {
+            input.addEventListener('change', () => {
+                document.querySelectorAll('.img-container label').forEach(l => l.classList.remove('selected'));
+                const label = document.querySelector(`label[for="${input.id}"]`);
+                if (label) label.classList.add('selected');
+            });
+
+            // 初期ロード時ハイライト
+            if (input.checked) {
+                const label = document.querySelector(`label[for="${input.id}"]`);
+                if (label) label.classList.add('selected');
+            }
+        });
+
+        // 初期ロード時のカスタムプレビュー表示
+        if (preview99.src && preview99.src !== window.location.href) {
+            preview99.style.visibility = 'visible';
+            customPreviewLabel.classList.remove('is-hidden');
+        } else {
+            preview99.style.visibility = 'hidden';
+            customPreviewLabel.classList.add('is-hidden');
+        }
 
         // // ラジオ変更時ハイライト更新
         // document.querySelectorAll('.img-container input[name="avatar_type"]').forEach(input => {
@@ -298,16 +328,6 @@ return [
         //         document.querySelector(`label[for="${input.id}"]`).classList.add('selected');
         //     }
         // });
-
-        // 初期ロード時のカスタムプレビュー表示
-        if (preview99.src && preview99.src !== window.location.href) {
-            preview99.style.visibility = 'visible';
-            customPreviewLabel.classList.remove('is-hidden');
-        } else {
-            preview99.style.visibility = 'hidden';
-            customPreviewLabel.classList.add('is-hidden');
-        }
-
     });
 </script>
 <script src="{{ asset('assets/js/f_calendar.js') }}"></script>
