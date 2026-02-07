@@ -166,3 +166,111 @@ $(function () {
 
     calendar.render();
 });
+
+//
+$(function () {
+    const els = cacheElements();
+
+    bindFileSelectButton(els);
+    bindFileChange(els);
+    bindAvatarRadioChange(els);
+    initHighlight(els);
+    initCustomPreview(els);
+});
+
+/* =========================
+   要素取得
+========================= */
+function cacheElements() {
+    return {
+        $fileInput: $('#fileInput'),
+        $btnSelectFile: $('#btnSelectFile'),
+        $avatar99Radio: $('#avatar99'),
+        $preview99: $('#preview99'),
+        $customPreviewLabel: $('#customPreviewLabel'),
+        $avatarRadios: $('.img-container input[name="avatar_type"]'),
+        $avatarLabels: $('.img-container label'),
+    };
+}
+
+/* =========================
+   ファイル選択ボタン
+========================= */
+function bindFileSelectButton({ $btnSelectFile, $fileInput }) {
+    $btnSelectFile.on('click', () => $fileInput.trigger('click'));
+}
+
+/* =========================
+   ファイル変更時
+========================= */
+function bindFileChange({
+    $fileInput,
+    $avatar99Radio,
+    $preview99,
+    $customPreviewLabel,
+    $avatarLabels,
+}) {
+    $fileInput.on('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        $avatar99Radio.prop('checked', true);
+        updatePreview($preview99, $customPreviewLabel, file);
+        updateHighlight($avatarLabels, $customPreviewLabel);
+    });
+}
+
+/* =========================
+   ラジオ変更時
+========================= */
+function bindAvatarRadioChange({ $avatarRadios, $avatarLabels }) {
+    $avatarRadios.on('change', function () {
+        const $label = $(`label[for="${this.id}"]`);
+        if ($label.length) {
+            updateHighlight($avatarLabels, $label);
+        }
+    });
+}
+
+/* =========================
+   ハイライト初期化
+========================= */
+function initHighlight({ $avatarRadios, $avatarLabels }) {
+    $avatarRadios.each(function () {
+        if ($(this).prop('checked')) {
+            const $label = $(`label[for="${this.id}"]`);
+            if ($label.length) {
+                updateHighlight($avatarLabels, $label);
+            }
+        }
+    });
+}
+
+/* =========================
+   カスタムプレビュー初期化
+========================= */
+function initCustomPreview({ $preview99, $customPreviewLabel }) {
+    if ($preview99.attr('src') && $preview99.attr('src') !== window.location.href) {
+        $preview99.css('visibility', 'visible');
+        $customPreviewLabel.removeClass('is-hidden');
+    } else {
+        $preview99.css('visibility', 'hidden');
+        $customPreviewLabel.addClass('is-hidden');
+    }
+}
+
+/* =========================
+   共通処理
+========================= */
+function updateHighlight($labels, $activeLabel) {
+    $labels.removeClass('selected');
+    $activeLabel.addClass('selected');
+}
+
+function updatePreview($preview, $label, file) {
+    $preview
+        .attr('src', URL.createObjectURL(file))
+        .css('visibility', 'visible');
+
+    $label.removeClass('is-hidden');
+}
