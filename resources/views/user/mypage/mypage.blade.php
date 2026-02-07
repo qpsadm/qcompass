@@ -251,17 +251,18 @@ return [
     window.APP_URL = "{{ url('/') }}";
 
 
-    $(document).ready(function() {
-        $('#memo-form').on('submit', function(e) {
-            e.preventDefault();
-            $.post($(this).attr('action'), {
-                    _token: $('input[name="_token"]').val(),
-                    memo: $('#memo-textarea').val()
-                })
-                .done(() => $('#memo-success').fadeIn().delay(2000).fadeOut())
-                .fail(() => alert('保存に失敗しました'));
-        });
-    });
+    // メモ関係（一時的に封印）
+    // $(document).ready(function() {
+    //     $('#memo-form').on('submit', function(e) {
+    //         e.preventDefault();
+    //         $.post($(this).attr('action'), {
+    //                 _token: $('input[name="_token"]').val(),
+    //                 memo: $('#memo-textarea').val()
+    //             })
+    //             .done(() => $('#memo-success').fadeIn().delay(2000).fadeOut())
+    //             .fail(() => alert('保存に失敗しました'));
+    //     });
+    // });
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
