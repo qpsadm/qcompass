@@ -167,7 +167,6 @@ $(function () {
     calendar.render();
 });
 
-//
 $(function () {
     const els = cacheElements();
 
@@ -178,9 +177,8 @@ $(function () {
     initCustomPreview(els);
 });
 
-/* =========================
-   要素取得
-========================= */
+// 要素取得
+
 function cacheElements() {
     return {
         $fileInput: $('#fileInput'),
@@ -193,16 +191,14 @@ function cacheElements() {
     };
 }
 
-/* =========================
-   ファイル選択ボタン
-========================= */
+// ファイル選択ボタン
+
 function bindFileSelectButton({ $btnSelectFile, $fileInput }) {
     $btnSelectFile.on('click', () => $fileInput.trigger('click'));
 }
 
-/* =========================
-   ファイル変更時
-========================= */
+// ファイル変更時
+
 function bindFileChange({
     $fileInput,
     $avatar99Radio,
@@ -220,9 +216,8 @@ function bindFileChange({
     });
 }
 
-/* =========================
-   ラジオ変更時
-========================= */
+// ラジオ変更時
+
 function bindAvatarRadioChange({ $avatarRadios, $avatarLabels }) {
     $avatarRadios.on('change', function () {
         const $label = $(`label[for="${this.id}"]`);
@@ -232,9 +227,8 @@ function bindAvatarRadioChange({ $avatarRadios, $avatarLabels }) {
     });
 }
 
-/* =========================
-   ハイライト初期化
-========================= */
+// ハイライト初期化
+
 function initHighlight({ $avatarRadios, $avatarLabels }) {
     $avatarRadios.each(function () {
         if ($(this).prop('checked')) {
@@ -246,9 +240,8 @@ function initHighlight({ $avatarRadios, $avatarLabels }) {
     });
 }
 
-/* =========================
-   カスタムプレビュー初期化
-========================= */
+// カスタムプレビュー初期化
+
 function initCustomPreview({ $preview99, $customPreviewLabel }) {
     if ($preview99.attr('src') && $preview99.attr('src') !== window.location.href) {
         $preview99.css('visibility', 'visible');
@@ -259,9 +252,8 @@ function initCustomPreview({ $preview99, $customPreviewLabel }) {
     }
 }
 
-/* =========================
-   共通処理
-========================= */
+// 共通処理
+
 function updateHighlight($labels, $activeLabel) {
     $labels.removeClass('selected');
     $activeLabel.addClass('selected');

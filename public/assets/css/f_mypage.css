@@ -91,16 +91,52 @@
     border-radius: 50%;
 }
 
+.select-image {
+    width: 120px;
+    cursor: pointer;
+}
+
+.preview {
+    width: 120px;
+    border: 1px solid #ccc;
+}
+
+.is-hidden {
+    display: none;
+}
+
+.modal-avatar .form-container {
+    width: 370px;
+}
+
 .modal-customize>.btn-area,
 .modal-avatar>.btn-area {
     margin-top: 20px;
 }
 
 @media screen and (max-width: 1324px) {
+
     .modal-profile,
     .modal-customize,
     .modal-avatar {
         left: calc(50%);
+    }
+}
+
+@media screen and (max-width: 559px) {
+
+    .modal-profile,
+    .modal-customize,
+    .modal-avatar {
+        padding: 25px;
+    }
+
+    .modal-customize .form-container {
+        width: 280px;
+    }
+
+    .modal-avatar .form-container {
+        width: 242px;
     }
 }
 
@@ -258,13 +294,41 @@
 
     .profile .box-content {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         gap: 50px;
     }
 
     .profile-icon {
-        width: calc(40%);
-        height: calc(40%);
+        width: calc(50%);
+        height: calc(50%);
         margin: 0;
+    }
+
+    .profile-data {
+        display: flex;
+        align-items: flex-end;
+        gap: 50px;
+    }
+}
+
+@media screen and (max-width: 759px) {
+    .profile-icon {
+        width: calc(70%);
+        height: calc(70%);
+    }
+
+    .profile-data {
+        flex-direction: column;
+        align-items: unset;
+        gap: 0;
+    }
+}
+
+@media screen and (max-width: 559px) {
+    .profile-icon {
+        width: 100%;
+        height: 100%;
     }
 }
 
@@ -312,6 +376,24 @@
     cursor: pointer;
 }
 
+@media screen and (max-width: 559px) {
+    #calendar td {
+        height: 75px;
+    }
+
+    .fc .fc-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .calendar .fc-h-event .fc-event-main img {
+        width: 25px !important;
+        height: 25px !important;
+        cursor: pointer;
+    }
+}
+
 /* section（メモ） */
 .memo .box-title {
     margin-bottom: 20px;
@@ -350,26 +432,4 @@
     display: none;
     margin-top: 5px;
     color: green;
-}
-
-
-
-/* test */
-
-.select-image {
-    width: 120px;
-    cursor: pointer;
-}
-
-.preview {
-    width: 120px;
-    border: 1px solid #ccc;
-}
-
-.is-hidden {
-    display: none;
-}
-
-.modal-avatar .form-container {
-    width: 370px;
 }
