@@ -61,8 +61,15 @@
 
     .quiz-menu {
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 559px) {
+    .quiz-menu {
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
