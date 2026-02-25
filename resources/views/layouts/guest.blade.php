@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>ログイン | QLIP-Compass</title>
+    <title>ログイン | QLiP-Compass</title>
 
     {{-- faviconを読み込む --}}
     <link href="{{ asset('assets/images/icon/favicon.png') }}" id="favicon" rel="icon">

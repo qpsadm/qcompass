@@ -41,6 +41,8 @@
 .page-content a {
     color: var(--sub-color-3);
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .page-content a:hover {
@@ -68,7 +70,16 @@
     text-decoration: none;
 }
 
+.page-content img {
+    max-width: 100%;
+}
+
 /* table */
+.page-content .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .page-content table,
 .page-content table tr,
 .page-content table td {
@@ -77,6 +88,7 @@
 
 .page-content table {
     width: 100%;
+    min-width: 800px;
 }
 
 .page-content table th,
