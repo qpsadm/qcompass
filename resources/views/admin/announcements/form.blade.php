@@ -10,7 +10,7 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 @endphp
 
 <div class="container mx-auto p-6">
-    <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold mb-4">
             {{ isset($announcement->id) ? 'お知らせ編集' : 'お知らせ新規作成' }}
         </h1>
@@ -41,7 +41,7 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 
                     {{-- タイトル --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                             タイトル
                             <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
                         </th>
@@ -54,7 +54,7 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 
                     {{-- カテゴリ --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                             カテゴリ
                             <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
                         </th>
@@ -73,7 +73,9 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 
                     {{-- 講座 --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">講座</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            講座
+                        </th>
                         <td class="px-4 py-2">
                             <select name="course_id" class="border rounded px-3 py-2 w-80">
                                 <option value="">全員向け</option>
@@ -89,25 +91,32 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 
                     {{-- 本文 --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">本文</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            本文
+                        </th>
                         <td class="px-4 py-2">
-                            <textarea name="content" id="announcement-content" rows="6"
-                                class="border rounded px-3 py-2 w-full">{{ old('content', $announcement->content ?? '') }}</textarea>
+                            <textarea name="content"
+                                id="announcement-content"
+                                class="border rounded px-3 py-2 w-full">
+                            {{ old('content', $announcement->content ?? '') }}
+                            </textarea>
                         </td>
                     </tr>
 
                     {{-- 表示フラグ --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            表示フラグ
+                        </th>
                         <td class="px-4 py-2" x-data="{ is_show: {{ $currentIsShow }} }">
                             <div class="flex gap-2">
                                 <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
-                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                    class="px-4 py-2 rounded-full cursor-pointer transition">
                                     <input type="radio" name="is_show" value="1" class="hidden" x-model="is_show">
                                     公開
                                 </label>
                                 <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
-                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                    class="px-4 py-2 rounded-full cursor-pointer transition">
                                     <input type="radio" name="is_show" value="0" class="hidden" x-model="is_show">
                                     非公開
                                 </label>
@@ -117,7 +126,9 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
 
                     {{-- 状態 --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">状態</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            状態
+                        </th>
                         <td class="px-4 py-2">
                             <select name="status" class="border rounded px-3 py-2 w-60">
                                 <option value="0" @selected($currentStatus==0)>下書き</option>
@@ -130,9 +141,9 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
                 </tbody>
             </table>
 
-            {{-- ファイル一覧（既存ロジックそのまま） --}}
+            {{-- ファイル一覧 --}}
             @if(isset($announcement) && $announcement->files->isNotEmpty())
-            <div class="mt-6 bg-gray-50 p-4 rounded border">
+            <div class="mt-8 bg-gray-50 p-4 rounded border">
                 <h2 class="text-lg font-semibold mb-3">登録済みファイル一覧</h2>
                 <table class="w-full table-auto border-collapse border">
                     <thead>
@@ -163,7 +174,7 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
                             </td>
                             <td class="border px-3 py-2">
                                 <button type="button"
-                                    class="bg-gray-200 px-2 py-1 rounded text-sm"
+                                    class="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-sm"
                                     onclick="navigator.clipboard.writeText('{{ $fileUrl }}').then(()=>alert('URLをコピーしました'))">
                                     URLコピー
                                 </button>
@@ -176,10 +187,12 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
             @endif
 
             {{-- ボタン --}}
-            <div class="mt-6 flex gap-3">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+            <div class="mt-8 flex gap-3">
+                <button type="submit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                     {{ isset($announcement->id) ? '更新' : '保存' }}
                 </button>
+
                 <a href="{{ route('admin.announcements.index') }}"
                     class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                     一覧に戻る
@@ -193,8 +206,10 @@ $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
     <script>
         CKEDITOR.replace('announcement-content', {
             language: 'ja',
-            allowedContent: true
+            allowedContent: true,
+            height: '70vh'
         });
+
         document.getElementById('announcement-form').addEventListener('submit', function() {
             for (var instance in CKEDITOR.instances) {
                 CKEDITOR.instances[instance].updateElement();
