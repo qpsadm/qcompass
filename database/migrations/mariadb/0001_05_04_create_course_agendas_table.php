@@ -12,16 +12,22 @@ return new class extends Migration
 
             $table->id(); // 主キー id
 
-            // 外部キー
-            $table->foreignId('course_id')
-                ->constrained('courses')
-                ->onDelete('set null')
-                ->comment('コースID');
+            // コースID
+            $table->unsignedBigInteger('course_id')->nullable()->comment('コースID');
 
-            $table->foreignId('agenda_id')
-                ->constrained('agendas')
-                ->onDelete('set null')
-                ->comment('アジェンダID');
+            // アジェンダID
+            $table->unsignedBigInteger('agenda_id')->nullable()->comment('アジェンダID');
+
+            // 外部キー
+            // $table->foreignId('course_id')
+            //     ->constrained('courses')
+            //     ->onDelete('set null')
+            //     ->comment('コースID');
+
+            // $table->foreignId('agenda_id')
+            //     ->constrained('agendas')
+            //     ->onDelete('set null')
+            //     ->comment('アジェンダID');
 
             $table->integer('order_no');
             $table->string('note', 255)->nullable();
@@ -34,6 +40,16 @@ return new class extends Migration
             $table->string('created_user_name', 50)->nullable()->comment('作成者名');
             $table->string('updated_user_name', 50)->nullable()->comment('更新者名');
             $table->string('deleted_user_name', 50)->nullable()->comment('削除者名');
+
+
+            // 外部キー制約
+            $table->foreign('course_id')
+                ->references('id')->on('courses')
+                ->onDelete('set null');
+
+            $table->foreign('agenda_id')
+                ->references('id')->on('agendas')
+                ->onDelete('set null');
         });
     }
 

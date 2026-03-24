@@ -18,7 +18,7 @@ return new class extends Migration
                 ->comment('種別（1:参考書籍、2:参考サイト、3:IT資格、4:制作品）');
 
             // タグID (nullable として外部キー)
-            $table->integer('tag_id')
+            $table->unsignedBigInteger('tag_id')
                 ->nullable()
                 ->comment('タグID（1:WEB制作、2:WEBデザイン、3:プログラミング、4:OA、5:その他）');
             // タイトル

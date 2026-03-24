@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('title', 255)->comment('タイトル');
 
             // 初期値：1=お知らせ
-            $table->unsignedBigInteger('type_id')->default(1)->comment('カテゴリID');
+            $table->unsignedBigInteger('type_id')->nullable()->default(1)->comment('カテゴリID');
 
             $table->text('content')->nullable()->comment('詳細内容');
 
