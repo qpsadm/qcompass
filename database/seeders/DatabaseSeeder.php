@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategoriesSeeder::class,
             AnnouncementTypesSeeder::class,
-            CoursesSeeder::class,
-            UsersSeeder::class,
+            // CoursesSeeder::class,
+            // UsersSeeder::class,
             CourseTypesSeeder::class,
-            CourseUserSeeder::class,
+            // CourseUserSeeder::class,
             DivisionSeeder::class,
             LevelsSeeder::class,
             OrganizersSeeder::class,
