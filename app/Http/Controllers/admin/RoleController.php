@@ -13,7 +13,7 @@ class RoleController extends Controller
         $order = $request->get('order', 'desc'); // デフォルトは降順
 
         // 1ページあたり10件でページネーション
-        $roles = Role::orderBy('role_id', $order)->paginate(10);
+        $roles = Role::orderBy('id', $order)->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
