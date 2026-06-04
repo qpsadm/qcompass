@@ -25,7 +25,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')
                 ->nullable()->comment('作成者');
 
-            $table->tinyInteger('status')->default(0)->comment('状態');
+            // $table->tinyInteger('status')->default(0)->comment('状態');
+            // 現状プログラム処理に合わせてデータ型を文字列に変更
+            // アジェンダの状態：yes=承認済 draft=下書き
+            $table->string('status', 8)->default('yes')->comment('状態');
 
             // Laravel 管理
             $table->timestamps();
