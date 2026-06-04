@@ -24,7 +24,7 @@ return [
         // =========================
         [
             'label' => 'ダッシュボード',
-            'icon'  => null,
+            'icon'  => 'b_system.svg',
             'route' => 'admin.dashboard',
             'roles' => [5, 6, 7, 8],
         ],
@@ -43,10 +43,18 @@ return [
                 ['label' => '講座種類',         'route' => 'admin.levels.index',              'roles' => [8]],
                 ['label' => '講座分野',         'route' => 'admin.course_type.index',         'roles' => [8]],
                 ['label' => '技術分類タグ',     'route' => 'admin.tags.index',                'roles' => [8]],
-                ['label' => 'カテゴリ',         'route' => 'admin.categories.index',          'roles' => [8]],
+                // ['label' => 'カテゴリ',         'route' => 'admin.categories.index',          'roles' => [8]],
                 ['label' => 'お知らせカテゴリ', 'route' => 'admin.announcement_types.index',  'roles' => [8]],
                 ['label' => '今日の一言',       'route' => 'admin.quotes.index',              'roles' => [8]],
             ],
+        ],
+
+        // カテゴリ管理をシステム管理グループからここに移動した
+        [
+            'label' => 'カテゴリ管理',
+            'icon'  => 'b_user.svg',
+            'route' => 'admin.categories.index',
+            'roles' => [6, 7, 8],
         ],
 
         // =========================
@@ -57,8 +65,8 @@ return [
             'icon'  => 'b_user.svg',
             'roles' => [6, 7, 8],
             'children' => [
-                ['label' => '受講者一覧', 'route' => 'admin.users.index',           'roles' => [6, 7, 8]],
-                ['label' => '社員一覧',   'route' => 'admin.course_teachers.index', 'roles' => [6, 7, 8]],
+                ['label' => 'ユーザー一覧', 'route' => 'admin.users.index',           'roles' => [6, 7, 8]],
+                ['label' => '講師一覧',   'route' => 'admin.course_teachers.index', 'roles' => [6, 7, 8]],
             ],
         ],
 
@@ -68,7 +76,7 @@ return [
         [
             'label' => '講座管理',
             'icon'  => 'b_course.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => '講座一覧',       'route' => 'admin.courses.index',        'roles' => [5, 6, 7, 8]],
                 ['label' => '講座・カテゴリー', 'route' => 'admin.course_category.index', 'roles' => [6, 7, 8]],
@@ -84,7 +92,7 @@ return [
         [
             'label' => 'アジェンダ管理',
             'icon'  => 'b_agenda.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => 'アジェンダ一覧', 'route' => 'admin.agendas.index', 'roles' => [5, 6, 7, 8]],
                 ['label' => 'アジェンダ登録', 'route' => 'admin.agendas.create', 'roles' => [6, 7, 8]],
@@ -98,7 +106,7 @@ return [
         [
             'label' => 'お知らせ管理',
             'icon'  => 'b_information.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => 'お知らせ一覧', 'route' => 'admin.announcements.index', 'roles' => [5, 6, 7, 8]],
                 ['label' => 'お知らせ投稿', 'route' => 'admin.announcements.create', 'roles' => [6, 7, 8]],
@@ -111,7 +119,7 @@ return [
         [
             'label' => '学習サポート',
             'icon'  => 'b_desk.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => '学習参考コンテンツ', 'route' => 'admin.learnings.index',      'roles' => [5, 6, 7, 8]],
                 ['label' => '就職支援',       'route' => 'admin.job_offers.index',      'roles' => [6, 7, 8]],
@@ -124,7 +132,7 @@ return [
         [
             'label' => 'クイズ管理',
             'icon'  => 'b_quiz.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => 'クイズ一覧', 'route' => 'admin.quizzes.index',  'roles' => [5, 6, 7, 8]],
                 ['label' => 'クイズ登録', 'route' => 'admin.quizzes.create', 'roles' => [6, 7, 8]],
@@ -137,7 +145,7 @@ return [
         [
             'label' => 'ファイル一覧',
             'icon'  => 'f_icon_agenda.svg',
-            'roles' => [5, 6, 7, 8],
+            'roles' => [4, 5, 6, 7, 8],
             'children' => [
                 ['label' => 'アジェンダファイル一覧', 'route' => 'admin.files.index', 'params' => ['type' => 'agenda'], 'roles' => [5, 6, 7, 8]],
                 ['label' => 'お知らせファイル一覧',   'route' => 'admin.files.index', 'params' => ['type' => 'announcement'], 'roles' => [5, 6, 7, 8]],

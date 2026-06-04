@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -18,7 +19,10 @@ class AuthenticatedSessionController extends Controller
     {
         // 管理側ONの講座をすべて表示
         $courses = Course::where('is_show', 1)
-            ->orderBy('course_name', 'asc')
+            ->where('end_date', '>=', Carbon::now()->subDays(90))
+            ->orderBy('course_code', 'asc')
+            // ->orderBy('organizer_id', 'asc')
+            ->orderBy('start_date', 'asc')
             ->get();
 
         $showCourse = $courses->isNotEmpty();
@@ -86,10 +90,18 @@ class AuthenticatedSessionController extends Controller
             }
 
             // 講師・生徒の場合のみ所属講座チェック
-            if (in_array($user->role_id, [3, 4, 5, 6])) {
+            // 1:ログイン不可
+            // 2:GUEST
+            // 3:生徒
+            // 4:アルバイト
+            // 5:パート
+            // 6:講師
+            // 7:事務
+            // 8:システム管理者
+            if (in_array($user->role_id, [3, 4])) {
                 $userCourseIds = match ($user->role_id) {
                     3 => $user->courses()->pluck('courses.id')->toArray(),
-                    4, 5, 6 => $user->teachingCourses()->pluck('courses.id')->toArray(),
+                    4 => $user->teachingCourses()->pluck('courses.id')->toArray(),
                 };
 
                 // 全員チェック
@@ -126,8 +138,8 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         return match ($user->role_id) {
-            2, 3, 4 => redirect()->route('user.top'),
-            5, 6, 7, 8 => redirect()->route('admin.dashboard'),
+            2, 3 => redirect()->route('user.top'),
+            4, 5, 6, 7, 8 => redirect()->route('admin.dashboard'),
             default => redirect()->route('user.top'),
         };
     }

@@ -56,7 +56,7 @@ Route::middleware([
     /* =============================
      * システム管理（7,8）
      * ============================= */
-    Route::middleware('role:7,8')->group(function () {
+    Route::middleware('role:6,7,8')->group(function () {
 
         // ★ 必ず resource より前
         Route::get('categories/trash', [CategoryController::class, 'trash'])
@@ -78,11 +78,15 @@ Route::middleware([
         Route::resource('daily_quotes', DailyQuoteController::class);
         Route::resource('quotes', QuoteController::class);
 
-        // なりすまし（システム管理者のみ）
+        // なりすまし（システム管理者のみ->role:6,7,8）
         Route::post(
             'users/{user}/impersonate',
             [AdminUserController::class, 'impersonate']
-        )->middleware('role:8');
+        );
+        // Route::post(
+        //     'users/{user}/impersonate',
+        //     [AdminUserController::class, 'impersonate']
+        // )->middleware('role:8');
     });
 
 
@@ -187,7 +191,7 @@ Route::middleware([
     /* =============================
      * 学習サポート（6,7,8）
      * ============================= */
-    Route::middleware('role:6,7,8')->group(function () {
+    Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('learnings', LearningController::class);
         Route::resource('job_offers', JobOfferController::class);
     });
@@ -195,7 +199,7 @@ Route::middleware([
     /* =============================
      * クイズ管理（6,7,8）※保留可
      * ============================= */
-    Route::middleware('role:6,7,8')->group(function () {
+    Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('quizzes', QuizController::class);
         Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
