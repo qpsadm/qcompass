@@ -33,7 +33,7 @@ class AgendaController extends Controller
 
         return DB::table('categories')
             ->whereIn('id', $categoryIds)
-            ->orderBy('sort', 'asc')
+            ->orderBy('code', 'asc')
             ->get();
     }
 
