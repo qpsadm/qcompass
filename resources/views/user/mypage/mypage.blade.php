@@ -195,8 +195,9 @@
         <!-- メモ -->
         <div class="section-box memo">
             <div class="box-title">
-                <h3>メモ</h3>
+                <h3>簡易メモエディター</h3>
             </div>
+
             <div class="box-content">
                 <form id="memo-form" class="memo-form" method="POST" action="{{ route('user.memo.save') }}">
                     @csrf
@@ -206,6 +207,12 @@
                 <div id="memo-success">
                     <p>メモを保存しました</p>
                 </div>
+            </div>
+            <div style="margin-top: 15px; padding: 10px; border-left: 4px solid #ffc107; border-radius: 4px;">
+                <p style="margin: 0; font-size: 14px; color: #664d03;">
+                    講習や就職支援や日報などの簡易メモとしてご利用ください。<br>
+                    <span style="color: #dc3545; font-weight: bold;">※プログラムのソースコードは記録しないようお願いいたします。</span>
+                </p>
             </div>
         </div>
 

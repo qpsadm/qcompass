@@ -15,7 +15,7 @@
         <!-- コンテンツ一覧 -->
         <div class="teacher-list">
             @if ($teachers->isEmpty())
-                <p>あなたの講座に担当の先生はいません。</p>
+                <p>本講座の担当先生はまだ指定いません。</p>
             @else
                 <ul>
                     @foreach ($teachers as $index => $teacher)
@@ -28,15 +28,15 @@
                 </ul>
 
                 <!-- ページネーション -->
-                <div>
+                {{-- <div>
                     {{ $teachers->links() }}
-                </div>
+                </div> --}}
             @endif
         </div>
 
         <!-- ボタンリスト -->
-        <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true" listUrl="{{ route('user.top') }}"
-            listLabel="トップへもどる" />
+        {{-- <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true" listUrl="{{ route('user.top') }}"
+            listLabel="トップへもどる" /> --}}
 
         <!-- パンくずリスト -->
         <x-f_bread_crumbs />

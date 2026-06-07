@@ -790,15 +790,15 @@ footer {
 }
 
 .footer-menu-list {
-    display: grid;
+    /* display: grid;
     grid-template-columns: auto auto;
-    gap: 20px 50px;
+    gap: 20px 50px; */
     position: relative;
     margin-right: 80px;
     padding-bottom: 30px;
 }
 
-.footer-menu-list li:nth-child(1) {
+/* .footer-menu-list li:nth-child(1) {
     grid-column: 1;
     grid-row: 1;
 }
@@ -826,6 +826,10 @@ footer {
 .footer-menu-list li:nth-child(6) {
     grid-column: 2;
     grid-row: 2;
+} */
+
+.footer-menu-list li {
+    margin: 16px;
 }
 
 .footer-menu-list li:hover {

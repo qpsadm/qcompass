@@ -6,7 +6,7 @@
 
     <aside id="sidebar"
         class="fixed top-12 left-0 w-64 h-[calc(100vh-4rem)]
-           bg-blue-300 p-6 z-40
+           bg-indigo-500  text-neutral-100 p-6 z-40
            transform transition-transform duration-300
            -translate-x-full lg:translate-x-0
            overflow-y-auto hide-scrollbar">
@@ -16,7 +16,7 @@
             ✕ 閉じる
         </button>
 
-        <h2 class="text-xl font-bold mb-4">管理メニュー</h2>
+        <h2 class="bg-blue-100 p-1 text-l text-gray-700 mb-4 text-center rounded">管理メニュー</h2>
 
         <nav class="space-y-2">
             @foreach ($menus as $menu)

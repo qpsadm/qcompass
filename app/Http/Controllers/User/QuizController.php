@@ -56,7 +56,7 @@ class QuizController extends Controller
         // カテゴリ一覧 + 件数
         $categories = DB::table('categories')
             ->whereIn('id', $accessibleCategoryIds)
-            ->orderBy('sort')
+            ->orderBy('code', 'asc')
             ->get()
             ->map(function ($cat) {
                 $cat->quiz_count = DB::table('quizzes')

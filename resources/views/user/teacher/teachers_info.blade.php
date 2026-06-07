@@ -28,8 +28,8 @@
             </div>
 
             <!-- ボタンリスト -->
-            <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true"
-                listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へもどる" />
+            {{-- <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true"
+                listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へもどる" /> --}}
 
             <!-- パンくずリスト -->
             <x-f_bread_crumbs />

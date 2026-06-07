@@ -14,12 +14,12 @@ return new class extends Migration
 
             $table->string('title', 255)->comment('求人票のタイトル');
             $table->text('description')->nullable()->comment('説明文');
-            $table->string('file_path', 255)->nullable()->comment('PDFファイル保存パス');
+            $table->string('file_path1', 255)->nullable()->comment('PDFファイル保存パス');
 
-            // $table->string('file_path2', 255)->nullable()->comment('PDFファイル保存パス②');
-            // $table->string('file_path3', 255)->nullable()->comment('PDFファイル保存パス③');
-            // $table->string('file_path4', 255)->nullable()->comment('PDFファイル保存パス④');
-            // $table->string('file_path5', 255)->nullable()->comment('PDFファイル保存パス⑤');
+            $table->string('file_path2', 255)->nullable()->comment('PDFファイル保存パス②');
+            $table->string('file_path3', 255)->nullable()->comment('PDFファイル保存パス③');
+            $table->string('file_path4', 255)->nullable()->comment('PDFファイル保存パス④');
+            $table->string('file_path5', 255)->nullable()->comment('PDFファイル保存パス⑤');
 
             $table->timestamp('start_datetime')->nullable()->comment('表示開始日時');
             $table->timestamp('end_datetime')->nullable()->comment('表示終了日時');
