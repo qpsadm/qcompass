@@ -22,9 +22,9 @@
                 <li><a href="{{ route('user.course.courses_info') }}">講座情報</a></li>
                 <li><a href="{{ route('user.teacher.teachers_list') }}">講師紹介</a></li>
 
-                <!-- <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>-->
+                {{-- ダウンロード機能を無効させた　福島　2026-06-08 --}}
+                {{-- <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>
                 <li>
-                    {{-- ダウンロード専用ページへ --}}
                     @php
                         $downloadAgenda = \App\Models\Agenda::where('category_id', 53)->first();
                     @endphp
@@ -32,7 +32,7 @@
                     @if ($downloadAgenda)
                         <a href="{{ route('user.download', $downloadAgenda->id) }}">ダウンロード</a>
                     @endif
-                </li>
+                </li> --}}
 
                 <li><a href="{{ url('user/rule') }}">職業訓練受講規則</a></li>
 

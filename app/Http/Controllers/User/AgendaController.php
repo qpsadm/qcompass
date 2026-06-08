@@ -48,7 +48,8 @@ class AgendaController extends Controller
             ? session('impersonator_course_id')
             : session('course_id'); // 通常ユーザーの現在講座IDも優先
 
-        $excludeCategoryIds = [52, 53];
+        // 排除処理を無くした。　福島　2026-06-08
+        $excludeCategoryIds = [];
 
         // ユーザーがアクセス可能なカテゴリID
         $accessibleCategoryIds = DB::table('course_categories')

@@ -19,7 +19,7 @@ class JobOffer extends Model
     protected $fillable = [
         'title',
         'description',
-        'file_path',
+        'file_path1',
         'file_path2',
         'file_path3',
         'file_path4',
@@ -72,7 +72,7 @@ class JobOffer extends Model
     public function getFilePathsAttribute()
     {
         return array_filter([
-            $this->file_path,
+            $this->file_path1,
             $this->file_path2,
             $this->file_path3,
             $this->file_path4,

@@ -24,7 +24,7 @@ class UserController extends Controller
         $courseId   = $request->input('course_id');   // 講座IDフィルタ
         $unassigned = $request->input('unassigned');  // 未所属フラグ
         $sort       = $request->input('sort', 'id');
-        $order      = $request->input('order', 'asc');
+        $order      = $request->input('order', 'desc');
 
         $users = User::query()
             ->with(['role', 'courses']);
@@ -50,14 +50,21 @@ class UserController extends Controller
         }
 
         // 🔽 並び替え
-        if (in_array($sort, ['id', 'code', 'name'])) {
+        // if (in_array($sort, ['id', 'code'])) {
+        //     $users->orderBy($sort, $order);
+        // }
+
+        if (in_array($sort, ['id', 'code'])) {
             $users->orderBy($sort, $order);
+        } else {
+            // 該当しない（不正な値や空欄の）場合は、デフォルトでIDの降順（新しい順）にする
+            $users->orderBy('id', 'desc');
         }
 
         $users = $users->paginate(10)->appends($request->query());
 
         // プルダウン用講座一覧
-        $courses = Course::orderBy('course_name')->get();
+        $courses = Course::orderBy('id', 'desc')->get();
 
         return view('admin.users.index', compact('users', 'courses'));
     }
