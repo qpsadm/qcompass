@@ -7,6 +7,8 @@ use App\Models\Report;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReportSubmitted;
 
 class ReportController extends Controller
 {
@@ -103,7 +105,7 @@ class ReportController extends Controller
             'email'        => 'required|email',
         ]);
 
-        Report::create([
+        $report = Report::create([
             'user_id'           => Auth::id(),
             'course_id'         => $course->id, // ← session 由来
             'date'              => $validated['date'],
@@ -117,6 +119,42 @@ class ReportController extends Controller
 
         // 必要ならここで session 破棄も可
         // session()->forget('course_id');
+
+        // 日報送信処理
+        // 送信先（提出者＋先生＋CC）
+        // $recipients = [
+        //     Auth::user()->email,
+
+        //     'teacher@qlipinternational.co.jp', // ※ここを実際の講師（上司）のメールアドレス、または動的な変数に変更
+        // ];
+
+        // foreach ($recipients as $email) {
+        //     // queue から send に変更
+        //     Mail::to($email)->send(new ReportSubmitted($report));
+        // }
+
+        // 1. To（送信先）の配列を作成
+        $recipients = [
+            Auth::user()->email, // 提出者本人
+        ];
+
+        // .env から講師のアドレス（MAIL_SEND_ADDRESS）を取得して追加
+        $teacherEmail = config('mail.send_address');
+        if ($teacherEmail) {
+            $recipients[] = $teacherEmail;
+        }
+
+        // 2. メール送信処理（CCの判定付き）
+        $mail = Mail::to($recipients);
+
+        // .env にCCアドレス（MAIL_CC_ADDRESS）が設定されていればCCに追加
+        // $ccEmail = config('mail.cc_address');
+        // if (!empty($ccEmail)) {
+        //     $mail->cc($ccEmail);
+        // }
+
+        // queue から send に変更して同期送信（前回の対策）
+        $mail->send(new ReportSubmitted($report));
 
         return redirect()
             ->route('user.reports.complete')

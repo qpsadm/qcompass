@@ -115,4 +115,7 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'send_address' => env('MAIL_SEND_ADDRESS', 'teacher@qlipinternational.co.jp'),
+    'cc_address' => env('MAIL_CC_ADDRESS', null),
+
 ];

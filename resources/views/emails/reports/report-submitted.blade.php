@@ -1,6 +1,6 @@
 受信者各位：
 
-本メールは、「QLIP Compass」システムより自動配信されています。
+本メールは、「QLIP Compass」講習管理システムより自動配信されています。
 
 提出者: {{ $report->created_user_name }}
 提出日: {{ $report->date }}
@@ -22,5 +22,5 @@
 
 ━━━━━━━━━━━━━━━━━━━━
 QLIPプログラミングスクール
-QLIP Compass 管理システム
+「QLIP Compass」講習管理システム
 ━━━━━━━━━━━━━━━━━━━━
