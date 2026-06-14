@@ -39,8 +39,8 @@ class JobOfferController extends Controller
             ->paginate(5)
             ->appends($request->query());
 
-        // おまけで Agenda も取得
-        $agendas = Agenda::where('category_id', 52)
+        // おまけで Agenda も取得 ダウンロードカテゴリ（34固定）
+        $agendas = Agenda::where('category_id', 34)
             ->where('status', 'yes')
             ->where('is_show', 1)
             ->orderBy('updated_at', 'desc')
@@ -83,9 +83,9 @@ class JobOfferController extends Controller
             ->orderBy('id')
             ->first();
 
-        // カテゴリ52のアジェンダ取得
+        // カテゴリダウンロード（id=34）のアジェンダ取得
         $agendaController = new UserAgendaController();
-        $agendas = $agendaController->getAgendasDataByCategoryPaginate(52, 5);
+        $agendas = $agendaController->getAgendasDataByCategoryPaginate(34, 5);
 
         return view('user.job.job_offers_info', [
             'jobOffer' => $jobOffer,

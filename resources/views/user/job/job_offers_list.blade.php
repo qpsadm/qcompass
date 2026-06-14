@@ -36,7 +36,7 @@
                     <table>
                         @forelse ($jobs as $job)
                             <tr>
-                                <td class="date">{{ $job->created_at->format('Y/m/d') }}</td>
+                                <td class="date">{{ $job->updated_at->format('Y-m-d H:i') }}</td>
                                 <td class="title">
                                     <a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a>
                                 </td>
@@ -64,9 +64,9 @@
                     <table>
                         @forelse ($agendas as $agenda)
                             <tr>
-                                <td class="date">{{ $agenda->created_at->format('Y/m/d') }}</td>
+                                <td class="date">{{ $agenda->updated_at->format('Y-m-d H:i') }}</td>
                                 <td class="title">
-                                    @if ($agenda->category_id == 52)
+                                    @if ($agenda->category_id == 34)
                                         <a href="{{ route('user.job.job_dl_info', ['agenda' => $agenda->id]) }}">
                                             {{ $agenda->agenda_name }}
                                         </a>

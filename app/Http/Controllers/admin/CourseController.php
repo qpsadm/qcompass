@@ -18,7 +18,7 @@ class CourseController extends Controller
     {
         $query = $request->input('search');
         $sort = $request->input('sort', 'id');
-        $order = $request->input('order', 'asc');
+        $order = $request->input('order', 'desc');
 
         $courses = Course::withCount('students');
 

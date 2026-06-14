@@ -1104,7 +1104,8 @@ footer {
 }
 
 .content-list .date {
-    width: 90px;
+    /* width: 90px; */
+    width: 140px;
     font-size: var(--font-size);
 }
 

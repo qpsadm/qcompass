@@ -20,7 +20,7 @@
             <table>
                 @forelse ($agendas as $agenda)
                     <tr>
-                        <td class="date">{{ \Carbon\Carbon::parse($agenda->updated_at)->format('Y/m/d') }}</td>
+                        <td class="date">{{ \Carbon\Carbon::parse($agenda->updated_at)->format('Y-m-d H:i') }}</td>
                         <td class="title">
                             <a href="{{ route('user.agenda.info', $agenda) }}">
                                 {{ $agenda->agenda_name }}

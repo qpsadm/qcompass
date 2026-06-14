@@ -137,7 +137,7 @@ class AgendaController extends Controller
             ? session('impersonator_course_id')
             : session('course_id');
 
-        $excludeCategoryIds = [52, 53];
+        $excludeCategoryIds = [];
 
         // ユーザーがアクセス可能なカテゴリID
         $accessibleCategoryIds = DB::table('course_categories')
@@ -204,19 +204,25 @@ class AgendaController extends Controller
             ->paginate($perPage);
     }
 
+    /**
+     * jobDlInfo function
+     *
+     * @param Agenda $agenda
+     * @return void
+     */
     public function jobDlInfo(Agenda $agenda)
     {
-        if ($agenda->category_id != 52) {
+        if ($agenda->category_id != 34) {
             return redirect()->route('user.agenda.info', $agenda);
         }
 
         $prevAgenda = Agenda::where('id', '<', $agenda->id)
-            ->where('category_id', 52)
+            ->where('category_id', 34)
             ->orderBy('id', 'desc')
             ->first();
 
         $nextAgenda = Agenda::where('id', '>', $agenda->id)
-            ->where('category_id', 52)
+            ->where('category_id', 34)
             ->orderBy('id')
             ->first();
 
@@ -229,7 +235,7 @@ class AgendaController extends Controller
 
     public function download(Agenda $agenda)
     {
-        if ($agenda->category_id != 53) abort(404);
+        if ($agenda->category_id != 34) abort(404);
         return view('user.download', compact('agenda'));
     }
 }
