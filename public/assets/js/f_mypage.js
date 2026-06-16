@@ -1,36 +1,36 @@
 "use-strict";
 
 const overlay = $(".overlay");
-const modalProfile = $(".modal-profile")
-const modalCustomize = $(".modal-customize")
-const modalAvatar = $(".modal-avatar")
-const openBtnProfile = $(".open-btn-profile")
-const openBtnCustomize = $(".open-btn-customize")
-const openBtnAvatar = $(".open-btn-avatar")
-const closeBtn = $(".close-btn")
+const modalProfile = $(".modal-profile");
+const modalCustomize = $(".modal-customize");
+const modalAvatar = $(".modal-avatar");
+const openBtnProfile = $(".open-btn-profile");
+const openBtnCustomize = $(".open-btn-customize");
+const openBtnAvatar = $(".open-btn-avatar");
+const closeBtn = $(".close-btn");
 
 // プロフィールモーダル表示
 
-openBtnProfile.on('click', function () {
+openBtnProfile.on("click", function () {
     overlay.fadeIn(400);
     modalProfile.fadeIn(400);
-    $('body').addClass("no-scroll")
+    $("body").addClass("no-scroll");
 });
 
 // カスタマイズモーダル表示
 
-openBtnCustomize.on('click', function () {
+openBtnCustomize.on("click", function () {
     overlay.fadeIn(400);
     modalCustomize.fadeIn(400);
-    $('body').addClass("no-scroll")
+    $("body").addClass("no-scroll");
 });
 
 // アバターモーダル表示
 
-openBtnAvatar.on('click', function () {
+openBtnAvatar.on("click", function () {
     overlay.fadeIn(400);
     modalAvatar.fadeIn(400);
-    $('body').addClass("no-scroll")
+    $("body").addClass("no-scroll");
 });
 
 // モーダル非表示
@@ -40,7 +40,7 @@ function closeModal() {
     modalProfile.fadeOut(400);
     modalCustomize.fadeOut(400);
     modalAvatar.fadeOut(400);
-    $('body').removeClass("no-scroll")
+    $("body").removeClass("no-scroll");
 }
 
 closeBtn.on("click", closeModal);
@@ -48,30 +48,30 @@ closeBtn.on("click", closeModal);
 // アバター選択画像のプレビュー
 
 $(function () {
-    const $fileInput = $('#fileInput');
+    const $fileInput = $("#fileInput");
     let $currentPreviewImg = null;
     let $currentPreviewLabel = null;
 
-    $('.select-image').on('click', function () {
-        const previewId = $(this).data('preview');
+    $(".select-image").on("click", function () {
+        const previewId = $(this).data("preview");
 
-        $currentPreviewImg = $('#' + previewId);
-        $currentPreviewLabel = $currentPreviewImg.closest('label');
+        $currentPreviewImg = $("#" + previewId);
+        $currentPreviewLabel = $currentPreviewImg.closest("label");
 
-        $fileInput.trigger('click');
+        $fileInput.trigger("click");
     });
 
-    $fileInput.on('change', function (e) {
+    $fileInput.on("change", function (e) {
         const file = e.target.files[0];
         if (!file || !$currentPreviewImg || !$currentPreviewLabel) return;
 
         const imageUrl = URL.createObjectURL(file);
-        $currentPreviewImg.attr('src', imageUrl);
+        $currentPreviewImg.attr("src", imageUrl);
 
-        $currentPreviewImg.removeClass('is-hidden');
-        $currentPreviewLabel.removeClass('is-hidden');
+        $currentPreviewImg.removeClass("is-hidden");
+        $currentPreviewLabel.removeClass("is-hidden");
 
-        $(this).val('');
+        $(this).val("");
     });
 });
 
@@ -79,31 +79,30 @@ $(function () {
 
 $(function () {
     $('.img-container input[name="avatar_type"]').each(function () {
-        if ($(this).is(':checked')) {
-            $(`label[for="${this.id}"]`).addClass('selected');
+        if ($(this).is(":checked")) {
+            $(`label[for="${this.id}"]`).addClass("selected");
         }
     });
-    $('.img-container input[name="avatar_type"]').on('change', function () {
-        $('.img-container label').removeClass('selected');
-        $(`label[for="${this.id}"]`).addClass('selected');
+    $('.img-container input[name="avatar_type"]').on("change", function () {
+        $(".img-container label").removeClass("selected");
+        $(`label[for="${this.id}"]`).addClass("selected");
     });
 });
 
 // カレンダー初期化
-
 $(function () {
-    const calendarEl = $('#calendar')[0];
+    const calendarEl = $("#calendar")[0];
     if (!calendarEl) return;
 
     const pendingEvents = window.pendingEvents || [];
     const submittedEvents = window.submittedEvents || [];
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'ja',
-        timeZone: 'Asia/Tokyo',
-        height: 'auto',
-        dayCellContent: arg => arg.date.getDate(),
+        initialView: "dayGridMonth",
+        locale: "ja",
+        timeZone: "Asia/Tokyo",
+        height: "auto",
+        dayCellContent: (arg) => arg.date.getDate(),
         events: pendingEvents.concat(submittedEvents),
 
         eventContent: function (arg) {
@@ -111,14 +110,14 @@ $(function () {
                 return { domNodes: [] };
             }
 
-            const $img = $('<img>', {
+            const $img = $("<img>", {
                 src: `${window.APP_URL}/assets/images/icon/f_icon_check.svg`,
-                alt: '提出済'
+                alt: "提出済",
             }).css({
-                width: '40px',
-                height: '40px',
-                cursor: 'pointer',
-                filter: 'var(--tag-filter)'
+                width: "40px",
+                height: "40px",
+                cursor: "pointer",
+                filter: "var(--tag-filter)",
             });
 
             return { domNodes: [$img[0]] };
@@ -131,37 +130,39 @@ $(function () {
         },
 
         dateClick: function (info) {
-            const event = calendar.getEvents().find(e =>
-                e.startStr === info.dateStr && e.extendedProps.url
-            );
+            const event = calendar
+                .getEvents()
+                .find(
+                    (e) => e.startStr === info.dateStr && e.extendedProps.url,
+                );
             if (event) {
                 window.location.href = event.extendedProps.url;
             }
         },
 
         datesSet: function () {
-            $('.fc-daygrid-day-frame').each(function () {
+            $(".fc-daygrid-day-frame").each(function () {
                 const $frame = $(this);
-                const date = $frame.parent().data('date');
+                const date = $frame.parent().data("date");
 
-                const hasEvent = calendar.getEvents().some(e =>
-                    e.startStr === date && e.extendedProps.url
-                );
+                const hasEvent = calendar
+                    .getEvents()
+                    .some((e) => e.startStr === date && e.extendedProps.url);
 
-                $frame.css('cursor', hasEvent ? 'pointer' : 'default');
+                $frame.css("cursor", hasEvent ? "pointer" : "default");
 
                 if (hasEvent) {
                     $frame
-                        .off('mouseenter mouseleave')
-                        .on('mouseenter', function () {
-                            $frame.css('background-color', '#fff9c4');
+                        .off("mouseenter mouseleave")
+                        .on("mouseenter", function () {
+                            $frame.css("background-color", "#fff9c4");
                         })
-                        .on('mouseleave', function () {
-                            $frame.css('background-color', '');
+                        .on("mouseleave", function () {
+                            $frame.css("background-color", "");
                         });
                 }
             });
-        }
+        },
     });
 
     calendar.render();
@@ -181,20 +182,20 @@ $(function () {
 
 function cacheElements() {
     return {
-        $fileInput: $('#fileInput'),
-        $btnSelectFile: $('#btnSelectFile'),
-        $avatar99Radio: $('#avatar99'),
-        $preview99: $('#preview99'),
-        $customPreviewLabel: $('#customPreviewLabel'),
+        $fileInput: $("#fileInput"),
+        $btnSelectFile: $("#btnSelectFile"),
+        $avatar99Radio: $("#avatar99"),
+        $preview99: $("#preview99"),
+        $customPreviewLabel: $("#customPreviewLabel"),
         $avatarRadios: $('.img-container input[name="avatar_type"]'),
-        $avatarLabels: $('.img-container label'),
+        $avatarLabels: $(".img-container label"),
     };
 }
 
 // ファイル選択ボタン
 
 function bindFileSelectButton({ $btnSelectFile, $fileInput }) {
-    $btnSelectFile.on('click', () => $fileInput.trigger('click'));
+    $btnSelectFile.on("click", () => $fileInput.trigger("click"));
 }
 
 // ファイル変更時
@@ -206,11 +207,11 @@ function bindFileChange({
     $customPreviewLabel,
     $avatarLabels,
 }) {
-    $fileInput.on('change', function () {
+    $fileInput.on("change", function () {
         const file = this.files[0];
         if (!file) return;
 
-        $avatar99Radio.prop('checked', true);
+        $avatar99Radio.prop("checked", true);
         updatePreview($preview99, $customPreviewLabel, file);
         updateHighlight($avatarLabels, $customPreviewLabel);
     });
@@ -219,7 +220,7 @@ function bindFileChange({
 // ラジオ変更時
 
 function bindAvatarRadioChange({ $avatarRadios, $avatarLabels }) {
-    $avatarRadios.on('change', function () {
+    $avatarRadios.on("change", function () {
         const $label = $(`label[for="${this.id}"]`);
         if ($label.length) {
             updateHighlight($avatarLabels, $label);
@@ -231,7 +232,7 @@ function bindAvatarRadioChange({ $avatarRadios, $avatarLabels }) {
 
 function initHighlight({ $avatarRadios, $avatarLabels }) {
     $avatarRadios.each(function () {
-        if ($(this).prop('checked')) {
+        if ($(this).prop("checked")) {
             const $label = $(`label[for="${this.id}"]`);
             if ($label.length) {
                 updateHighlight($avatarLabels, $label);
@@ -243,26 +244,29 @@ function initHighlight({ $avatarRadios, $avatarLabels }) {
 // カスタムプレビュー初期化
 
 function initCustomPreview({ $preview99, $customPreviewLabel }) {
-    if ($preview99.attr('src') && $preview99.attr('src') !== window.location.href) {
-        $preview99.css('visibility', 'visible');
-        $customPreviewLabel.removeClass('is-hidden');
+    if (
+        $preview99.attr("src") &&
+        $preview99.attr("src") !== window.location.href
+    ) {
+        $preview99.css("visibility", "visible");
+        $customPreviewLabel.removeClass("is-hidden");
     } else {
-        $preview99.css('visibility', 'hidden');
-        $customPreviewLabel.addClass('is-hidden');
+        $preview99.css("visibility", "hidden");
+        $customPreviewLabel.addClass("is-hidden");
     }
 }
 
 // 共通処理
 
 function updateHighlight($labels, $activeLabel) {
-    $labels.removeClass('selected');
-    $activeLabel.addClass('selected');
+    $labels.removeClass("selected");
+    $activeLabel.addClass("selected");
 }
 
 function updatePreview($preview, $label, file) {
     $preview
-        .attr('src', URL.createObjectURL(file))
-        .css('visibility', 'visible');
+        .attr("src", URL.createObjectURL(file))
+        .css("visibility", "visible");
 
-    $label.removeClass('is-hidden');
+    $label.removeClass("is-hidden");
 }

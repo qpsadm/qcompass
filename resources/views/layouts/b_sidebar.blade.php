@@ -16,7 +16,7 @@
             ✕ 閉じる
         </button>
 
-        <h2 class="bg-blue-100 p-1 text-l text-gray-700 mb-4 text-center rounded">管理メニュー</h2>
+        <h2 class="bg-blue-100 p-1 text-l font-medium text-gray-700 mb-4 text-center rounded">管理メニュー</h2>
 
         <nav class="space-y-2">
             @foreach ($menus as $menu)
@@ -28,10 +28,11 @@
                 {{-- 単体リンク --}}
                 @if (isset($menu['route']))
                     <a href="{{ route($menu['route'], $menu['params'] ?? []) }}"
-                        class="flex items-center p-2 rounded hover:bg-blue-700 hover:text-white">
+                        class="flex items-center p-2 rounded text-white hover:bg-blue-700 transition-colors duration-200">
 
                         @if (!empty($menu['icon']))
-                            <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2" alt="icon">
+                            <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2" alt="icon"
+                                style="filter: brightness(0) invert(1);">
                         @endif
 
                         {{ $menu['label'] }}
@@ -41,13 +42,12 @@
                 @elseif (isset($menu['children']))
                     <div class="accordion">
                         <button type="button"
-                            class="accordion-btn w-full flex justify-between items-center
-                               font-semibold p-2 rounded hover:bg-blue-400">
+                            class="accordion-btn w-full flex justify-between items-center font-semibold p-2 rounded text-white hover:bg-blue-400 transition-colors duration-200">
 
-                            <span>
+                            <span class="flex items-center">
                                 @if (!empty($menu['icon']))
-                                    <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}"
-                                        class="h-4 w-4 mr-2 inline" alt="icon">
+                                    <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2"
+                                        alt="icon" style="filter: brightness(0) invert(1);">
                                 @endif
                                 {{ $menu['label'] }}
                             </span>
@@ -82,11 +82,9 @@
         {{-- ログアウト --}}
         <form method="POST" action="{{ route('logout') }}" class="mt-6">
             @csrf
-            {{-- <button class="w-full text-left p-2 rounded hover:bg-red-600 hover:text-white">
-                ログアウト
-            </button> --}}
             <button type="submit" class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-600 hover:text-white">
-                <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5">
+                <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
+                    style="filter: brightness(0) invert(1);">
                 <span class="hidden md:inline">ログアウト</span>
             </button>
         </form>

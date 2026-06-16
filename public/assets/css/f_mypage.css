@@ -277,10 +277,15 @@
     width: 250px;
     padding: 13px 30px;
     border-radius: 50px;
-    background-color: var(--main-color);
+    background-color: var(--sub-color-3);
     color: var(--text-color-3);
     font-size: 18px;
     text-align: center;
+}
+
+.btn-area button:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
 }
 
 .btn-area .change-btn {
@@ -350,20 +355,12 @@
 }
 
 .calendar .fc-col-header tr {
-    background-color: var(--accent-color);
+    background-color: var(--sub-color-3);
     color: var(--text-color-3);
 }
 
 .calendar .fc-scrollgrid-section-body {
     background-color: var(--background-color-2);
-}
-
-.fc .fc-daygrid-day-number {
-    padding: 10px;
-}
-
-.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
-    margin-bottom: 0 !important;
 }
 
 .calendar .fc-h-event .fc-event-main {
@@ -374,6 +371,71 @@
     width: 40px !important;
     height: 40px !important;
     cursor: pointer;
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 10px;
+}
+
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+    margin-bottom: 0 !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+    padding: 6px 4px;
+}
+
+
+
+.fc-prev-button {
+    margin-right: 5px !important;
+}
+
+.fc .fc-button-primary {
+    background-color: var(--sub-color-3) !important;
+}
+
+.fc .fc-today-button {
+    padding: 8px 20px;
+    margin-right: 20px;
+    font-weight: bold !important;
+    /* background-color: var(--main-color) !important; */
+}
+
+.fc .fc-button-primary:hover {
+    background-color: var(--accent-color) !important;
+}
+
+/* カレンダーの当日のセルの背景色を変更する */
+.fc .fc-day-today {
+    background-color: var(--accent-color) !important;
+}
+
+/* 今日の日付の文字色を「濃い青」にする場合 */
+.fc .fc-day-today .fc-col-header-cell-cushion,
+/* 曜日の文字色 */
+.fc .fc-day-today .fc-daygrid-day-number {
+    /* 日付の数字 */
+    color: var(--text-color-3) !important;
+    /* 💡お好みの色コードに変えてください */
+    font-weight: bold;
+    /* ついでに太字にするとさらに目立ちます */
+}
+
+/* --- カレンダーの日付マスにマウスが乗ったとき（ホバー時） --- */
+.fc .fc-daygrid-day:hover {
+    background-color: #f0fdf4 !important;
+    /* 💡背景色（例：優しい薄グリーン） */
+    cursor: pointer;
+    /* マウスカーソルをポインター（手の形）にする */
+}
+
+/* --- ホバーしたマスの「日付の数字」の色も同時に変える --- */
+.fc .fc-daygrid-day:hover .fc-daygrid-day-number {
+    color: #166534 !important;
+    /* 💡文字色（例：濃いグリーン） */
+    font-weight: bold;
+    /* ついでに文字を太字にして強調 */
 }
 
 @media screen and (max-width: 559px) {
@@ -419,13 +481,18 @@
     position: absolute;
     top: -50px;
     right: 0;
-    width: 100px;
-    padding: 7px 0;
+    width: 120px;
+    padding: 10px 0;
     border-radius: 10px;
-    background-color: var(--accent-color);
+    background-color: var(--sub-color-3);
     color: var(--text-color-3);
     font-size: 16px;
     text-align: center;
+}
+
+.memo-form button:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
 }
 
 #memo-success {

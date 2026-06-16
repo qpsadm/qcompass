@@ -136,11 +136,13 @@ header::after {
 .gnav .main-menu.active {
     border-radius: 20px 20px 0 0;
     background-color: var(--accent-color);
+    transition: 0.2s;
 }
 
 .gnav .main-menu:hover>a,
 .gnav .main-menu.active>a {
     color: var(--text-color-3);
+    transition: 0.2s;
 }
 
 .gnav .main-menu:hover::after,
@@ -156,6 +158,7 @@ header::after {
     border-style: solid;
     border-color: var(--accent-color) transparent transparent transparent;
     content: "";
+    transition: 0.2s;
 }
 
 .gnav .main-menu:hover>a::before,
@@ -170,28 +173,32 @@ header::after {
 .gnav-sub {
     display: none;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 100%);
-    width: 800px;
+    width: 900px;
     padding: 15px;
     border-radius: 15px;
-    background-color: var(--submenu-background-color);
+    background-color: var(--background-color-table-3);
+    border: solid #eee8aa 2px;
 }
 
 .gnav-sub li {
+    padding-left: 25px;
     border-radius: 15px;
 }
 
 .gnav-sub li:hover,
 .gnav-sub li.active {
-    background-color: var(--accent-color);
+    background-color: var(--main-color);
+    transition: 0.2s;
 }
 
 .gnav-sub a {
     display: block;
+    position: relative;
     width: 100%;
     padding: 15px 25px;
     color: var(--text-color-1);
@@ -202,6 +209,42 @@ header::after {
 .gnav-sub li:hover a,
 .gnav-sub li.active a {
     color: var(--text-color-3);
+    transition: 0.2s;
+}
+
+/* アイコン共通の土台（before要素） */
+.gnav-sub a::before {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 25px;
+    height: 25px;
+    filter: var(--filter);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -10px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    content: "";
+    /* 変化を滑らかにする（お好みで） */
+    transition: filter 1s;
+}
+
+/* -------------------------------------------
+   上から順番に別々のアイコン画像を割り当て
+------------------------------------------- */
+
+/* 1番目：クイズ */
+.gnav-sub li a::before {
+    background-image: url(../images/icon/f_icon_agenda.svg);
+}
+
+.gnav-sub li:hover a::before,
+.gnav-sub li.active a::before {
+    /* どんな色のSVGでもCSSで強制的に「真っ白」にするフィルター設定 */
+    filter: brightness(0) invert(1);
+    transition: 0.2s;
 }
 
 .header-container .site-logo,
@@ -400,6 +443,10 @@ header::after {
     display: block;
     width: 85%;
     margin: 0 auto;
+}
+
+.side-menu .site-logo img:hover {
+    opacity: 0.7;
 }
 
 .side-menu .contents-box,
@@ -663,6 +710,12 @@ header::after {
     content: "";
 }
 
+.logout-btn button:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+    transition: 0.2s;
+}
+
 @media screen and (max-width: 1324px) {
     .side-menu {
         width: 20px;
@@ -829,11 +882,21 @@ footer {
 } */
 
 .footer-menu-list li {
-    margin: 16px;
+    margin: 18px;
+    font-size: 1.2rem;
 }
 
 .footer-menu-list li:hover {
     color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-style: dashed;
+    /* 線を波線にする */
+    text-decoration-color: var(--accent-color);
+    /* 線の色 */
+    text-decoration-thickness: 2px;
+    /* 線の太さ */
+    transition: 0.2s;
 }
 
 .copyright {
@@ -1132,8 +1195,16 @@ footer {
 }
 
 .content-list .title a:hover {
-    color: var(--accent-color);
+    color: var(--main-color);
     text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-style: dashed;
+    /* 線を波線にする */
+    text-decoration-color: #ff4a5a;
+    /* 線の色 */
+    text-decoration-thickness: 2px;
+    /* 線の太さ */
+    transition: 0.2s;
 }
 
 @media screen and (max-width: 768px) {
@@ -1176,6 +1247,15 @@ footer {
     border-color: var(--accent-color);
     background-color: var(--accent-color);
     color: var(--text-color-3);
+}
+
+.pagination ul li:hover {
+    background-color: var(--sub-color-1);
+    /* ←ここにホバー時の好きな色を指定してください */
+    border-color: var(--sub-color-1);
+    /* 枠線も一緒に変えると綺麗です */
+    cursor: pointer;
+    /* マウスカーソルを指マークにする（推奨） */
 }
 
 .pagination ul li a:not(.prev a, .next a) {
@@ -1227,6 +1307,11 @@ footer {
     font-size: var(--font-size);
 }
 
+.btn-list ul li a:hover {
+    background-color: var(--sub-color-1);
+}
+
+
 .btn-list .short-btn a {
     padding: 13px 40px;
 }
@@ -1263,6 +1348,10 @@ footer {
     justify-content: center;
     align-items: center;
     column-gap: 1px;
+}
+
+.bread-crumbs li a:hover {
+    color: var(--accent-color);
 }
 
 .bread-crumbs li:not(:last-of-type)::after {

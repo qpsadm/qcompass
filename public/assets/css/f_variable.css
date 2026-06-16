@@ -58,7 +58,7 @@
     --sub-color-3: #7A92DF;
 
     /* accent-color */
-    --accent-color: #FFB71D;
+    --accent-color: #f4a460;
 
     /* footer-color */
     --footer-color: #414141;
@@ -70,7 +70,7 @@
     --background-color-table-1: #DDDDDD;
     --background-color-table-2: #FFF;
     --background-color-table-3: #D8EBFF;
-    --submenu-background-color: #ffe696;
+    --submenu-background-color: #fff8dc;
 
     --filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
 

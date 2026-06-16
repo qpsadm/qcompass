@@ -14,8 +14,9 @@
             <form action="{{ route('admin.users.impersonate', auth()->id()) }}" method="POST" class="inline-block">
                 @csrf
                 <button type="submit"
-                    class="flex items-center gap-2 bg-red-500 text-white border border-purple-600 px-4 py-1 rounded font-medium transition hover:bg-amber-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <img src="{{ asset('assets/images/icon/b_course.svg') }}" alt="なりすまし" class="h-5 w-5">
+                    class="flex items-center gap-2 text-white bg-red-500 border border-purple-600 px-4 py-1 rounded hover:bg-blue-400 hover:border-blue-500 hover:transition focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <img src="{{ asset('assets/images/icon/b_course.svg') }}" alt="なりすまし" class="h-5 w-5"
+                        style="filter: brightness(0) invert(1);">
                     <span class="hidden md:inline">なりすまし</span>
                 </button>
             </form>
@@ -41,7 +42,7 @@
                 @endphp
 
                 @if ($courseName)
-                    <span class="hidden md:inline  text-neutral-100 font-semibold">
+                    <span class="hidden md:inline text-neutral-100 font-semibold">
                         講座: {{ $courseName }}
                     </span>
                 @endif
@@ -50,8 +51,9 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="flex items-center gap-2 bg-yellow-400 text-black border border-gray-600 px-3 py-1 rounded hover:bg-gray-300 transition">
-                        <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5">
+                        class="flex items-center gap-2 text-white bg-amber-600 text-black border border-gray-600 px-3 py-1 rounded hover:bg-blue-400 hover:border-blue-500 hover:transition">
+                        <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
+                            style="filter: brightness(0) invert(1);">
                         <span class="hidden md:inline">ログアウト</span>
                     </button>
                 </form>

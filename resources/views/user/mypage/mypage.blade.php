@@ -223,8 +223,27 @@
 @endsection
 
 @section('code-page-js')
-    <script src="{{ asset('assets/js/f_mypage.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales/ja.global.min.js"></script>
+
+    <script src="{{ asset('assets/js/f_mypage.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ja', // 💡ロケールファイルを読み込んだことで、これが効くようになります
+                buttonText: {
+                    today: '本日' // 💡これで月を変えても「本日」に固定されます
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 
     <!-- PHP データを JS に渡す -->
     @php
@@ -262,4 +281,6 @@
         window.submittedEvents = @json($submittedJs);
         window.APP_URL = "{{ url('/') }}";
     </script>
+
+
 @endsection
