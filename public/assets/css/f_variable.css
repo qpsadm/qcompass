@@ -43,8 +43,10 @@
 
     /* text-color */
     --text-color-1: #000;
-    --text-color-2: #5E5E5E;
+    --text-color-2: #2d3748;
     --text-color-3: #FFF;
+    --text-color-4: #2563eb;
+    --text-color-5: #ffdd00;
 
     /* placeholder-color */
     --placeholder-color: #bababa;
@@ -58,7 +60,8 @@
     --sub-color-3: #7A92DF;
 
     /* accent-color */
-    --accent-color: #f4a460;
+    /* --accent-color: #ff9b0f; */
+    --accent-color: #e07b00;
 
     /* footer-color */
     --footer-color: #414141;
@@ -75,6 +78,8 @@
     --filter: brightness(0) saturate(100%) invert(19%) sepia(87%) saturate(2066%) hue-rotate(180deg) brightness(94%) contrast(102%);
 
     --tag-filter: brightness(0) saturate(100%) invert(74%) sepia(97%) saturate(1510%) hue-rotate(342deg) brightness(105%) contrast(102%);
+
+    /* --tag-filter: brightness(0) saturate(100%) invert(48%) sepia(87%) saturate(2035%) hue-rotate(15deg) brightness(97%) contrast(101%); */
 }
 
 .font-medium {

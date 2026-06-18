@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームあり） -->
-        <x-f_page_title :title="$selectedCategoryName ? 'クイズ一覧：' . $selectedCategoryName : 'クイズ一覧'" :search="false" />
+        <x-f_page_title :title="$selectedCategoryName ? '理解度チェック：' . $selectedCategoryName : '理解度チェック'" :search="false" />
 
         <!-- カテゴリ一覧 -->
         <x-f_category_accordion :categories="$categories" :selectedCategoryId="$selectedCategoryId" :routeFunction="fn($category) => $category
@@ -25,7 +25,6 @@
             @endphp
 
             @if ($categoryQuizzes->isNotEmpty())
-
                 <!-- カテゴリ -->
                 <span class="quiz-category">{{ $category->name }}</span>
 

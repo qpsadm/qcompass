@@ -76,15 +76,17 @@
 /* show
 ------------------------------------- */
 .quiz-form {
+    margin-top: 50px;
     margin-bottom: 50px;
-    font-weight: 400;
+    font-weight: 500;
     font-size: var(--font-size);
+    color: var(--text-color-2);
     line-height: 27px;
     letter-spacing: 1px;
 }
 
 .question-container {
-    max-width: 1000px;
+    max-width: 1280px;
     margin-bottom: 50px;
     padding-bottom: 50px;
     border-bottom: 1px dashed var(--text-color-1);
@@ -143,21 +145,41 @@
     resize: none;
 }
 
+.quizzes-btns {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 .submit-btn,
 .back-btn {
     display: block;
-    width: 250px;
+    width: 200px;
     margin: 0 auto 20px;
     padding: 13px 30px;
     border-radius: 50px;
     background-color: var(--main-color);
     color: var(--text-color-3);
     font-size: var(--font-size);
+    font-weight: 500;
     text-align: center;
 }
 
 .submit-btn {
     background-color: var(--accent-color);
+}
+
+.back-btn {
+    background-color: var(--sub-color-3);
+}
+
+.submit-btn:hover,
+.back-btn:hover {
+    background-color: var(--sub-color-1);
+    color: var(--main-color);
 }
 
 /* result
@@ -166,11 +188,13 @@
     display: flex;
     align-items: center;
     width: 400px;
+    margin-top: 50px;
     margin-bottom: 50px;
     padding: 10px 0 20px 20px;
     border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-    background-color: var(--background-color-2);
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); */
+    border: 2px solid var(--accent-color);
+    background-color: var(--background-color-1);
     font-size: var(--font-size);
 }
 
@@ -204,62 +228,98 @@
 
 .decision {
     margin-top: 10px;
-    color: rgb(115, 201, 255);
+    color: var(--main-color);
     font-size: 40px;
     text-align: center;
 }
 
+.failed {
+    color: red;
+}
+
 .decision.active {
-    color: #FF8282;
+    color: var(--main-color);
 }
 
 .result-container {
     width: 100%;
+    /* max-width: 1480px; */
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    font-weight: 400;
+    font-weight: 500;
     font-size: var(--font-size);
     line-height: 27px;
     letter-spacing: 1px;
 }
 
-.result-table,
-.result-table th,
-.result-table td {
-    border: 1px solid var(--text-color-1);
-}
-
 .result-table {
     width: 100%;
     min-width: 860px;
-    table-layout: fixed;
+    /* table-layout: fixed; */
     border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    /* 💡 角丸の設定 */
+    border: 2px solid var(--footer-color);
+    /* 外枠の線 */
+    border-radius: 8px;
+    /* 角丸のサイズ */
+    overflow: hidden;
+    /* 中のセルの背景が角からはみ出るのを防ぐ */
+    color: var(--text-color-2);
+    font-weight: 500;
 }
 
 .result-table th {
-    padding: 20px 0;
-    background-color: var(--background-color-table-1);
+    border-right: 1px solid var(--footer-color);
+    border-bottom: 1px solid var(--footer-color);
+    background-color: var(--sub-color-2);
+    padding: 20px;
     text-align: center;
+    /* font-size: 1.6rem; */
+    font-weight: 600;
     vertical-align: middle;
+    color: var(--text-color-1);
 }
 
 .result-table td {
-    padding: 10px;
-    background-color: var(--background-color-table-2);
+    padding: 12px;
+    border-bottom: 1px solid var(--footer-color);
+    border-right: 1px solid var(--footer-color);
     vertical-align: middle;
 }
 
+/* 一番右と一番下の余計な線を消す */
+.result-table td:last-child, .result-table th:last-child {
+    border-right: none;
+}
+
+.result-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* .result-table tr:nth-child(even) {
+    background-color: var(--background-color-2);
+} */
+
+
 .table-number {
-    width: 40px;
+    width: 80px;
     text-align: center;
+}
+
+.table-question {
+    width: 35%;
+    text-align: left;
 }
 
 .table-select,
 .table-answer {
-    width: 250px;
+    width: 25%;
+    text-align: left;
 }
 
-.font-medium .table-select,
+/* .font-medium .table-select,
 .font-medium .table-answer {
     width: 275px;
 }
@@ -267,7 +327,7 @@
 .font-large .table-select,
 .font-large .table-answer {
     width: 300px;
-}
+} */
 
 .result-table ul li {
     margin-left: 23px;
@@ -279,12 +339,12 @@
 }
 
 .choice-correct {
-    color: #FF8282 !important;
+    color: #ff0000 !important;
     font-weight: bold;
 }
 
 .table-decision {
-    width: 70px;
+    width: 100px;
     text-align: center;
 }
 

@@ -1,28 +1,29 @@
 @charset "UTF-8";
 
 .page-content {
-    max-width: 1000px;
-    margin-bottom: 50px;
-    font-weight: 400;
+    max-width: 1280px;
+    margin-bottom: 40px;
+    font-weight: Medium;
     font-size: var(--font-size);
-    line-height: 27px;
+    line-height: 1.8rem;
     letter-spacing: 1px;
 }
 
 .page-content h2 {
     margin-top: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     /* padding-bottom: 10px; */
     /* border-bottom: 1px dashed var(--sub-color-3); */
-    color: var(--sub-color-3);
+    color: var(--main-color);
     font-weight: bold;
-    font-size: 1.22em;
+    font-size: 1.2em;
 }
 
 .page-content h3 {
-    margin: 30px 20px 10px;
+    margin: 20px 20px 10px;
     font-weight: bold;
-    font-size: 1.11em;
+    font-size: 1.1em;
+    color: var(--main-color);
 }
 
 .page-content ol {
@@ -40,14 +41,19 @@
 }
 
 .page-content a {
-    color: var(--sub-color-3);
+    color: var(--text-color-4);
     text-decoration: underline;
+    text-decoration-style: dashed;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
     overflow-wrap: break-word;
     word-break: break-all;
+    margin-bottom: 30px;
 }
 
 .page-content a:hover {
     color: var(--accent-color);
+    transition: 0.2s;
 }
 
 .page-content .file {

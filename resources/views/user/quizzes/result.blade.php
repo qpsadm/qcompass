@@ -1,6 +1,6 @@
 @extends('layouts.f_layout')
 
-@section('title', 'クイズ結果')
+@section('title', '理解度チェックの結果')
 
 @section('code-page-css')
     <link rel="stylesheet" href="{{ asset('assets/css/f_quiz.css') }}">
@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title :search="false" title="クイズ [{{ $quiz->title }}] 結果" />
+        <x-f_page_title :search="false" title="「{{ $quiz->title }}」のチェック結果" />
 
         <!-- 結果判定 -->
         <div class="result">
@@ -21,20 +21,21 @@
                     <p>点</p>
                 </div>
                 <div class="count">
-                    <p>全{{ $totalQuestions }}問中</p>
+                    <p>全 {{ $totalQuestions }} 問中</p>
                     <span>{{ $correctCount }}</span>
-                    <p>問正解！</p>
+                    <p> 問正解！</p>
                 </div>
             </div>
             <div class="result-right">
-                <p class="decision {{ $passFail === '合格' ? 'active' : '' }}">
+                <p class="decision {{ $passFail === '合格' ? 'active' : 'failed' }}">
                     {{ $passFail }}
                 </p>
             </div>
         </div>
 
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
-        <div class="result-container
+        <div
+            class="result-container
             @switch(session('settings.fontsize', 2))
             @case(1)@break
             @case(2) font-medium @break
@@ -44,7 +45,7 @@
                 <tr>
                     <th class="table-number">No</th>
                     <th class="table-question">問題文</th>
-                    <th class="table-select">選択肢<br>（正答は赤字）</th>
+                    <th class="table-select">選択肢（正答は赤字）</th>
                     <th class="table-answer">あなたの回答</th>
                     <th class="table-decision">判定</th>
                 </tr>

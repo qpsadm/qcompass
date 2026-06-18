@@ -19,8 +19,16 @@
         </div>
         <div>
             <ul class="footer-menu-list">
-                <li><a href="{{ route('user.course.courses_info') }}">講座情報</a></li>
-                <li><a href="{{ route('user.teacher.teachers_list') }}">講師紹介</a></li>
+                <li><a class="footer-menu" href="{{ route('user.course.courses_info') }}">
+                        <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
+                            style="filter: brightness(0) invert(1);">
+                        <span>講座情報</span>
+                    </a></li>
+                <li><a class="footer-menu" href="{{ route('user.teacher.teachers_list') }}">
+                        <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
+                            style="filter: brightness(0) invert(1);">
+                        <span>講師紹介</span>
+                    </a></li>
 
                 {{-- ダウンロード機能を無効させた　福島　2026-06-08 --}}
                 {{-- <li><a href="{{ url('user/agenda/13') }}">ダウンロード</a></li>
@@ -34,10 +42,22 @@
                     @endif
                 </li> --}}
 
-                <li><a href="{{ url('user/rule') }}">職業訓練受講規則</a></li>
+                <li><a class="footer-menu" href="{{ url('user/rule') }}">
+                        <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
+                            style="filter: brightness(0) invert(1);">
+                        <span>職業訓練受講規則</span>
+                    </a></li>
 
-                <li><a href="{{ url('user/about') }}">本サイトについて</a></li>
-                <li><a href="{{ url('user/privacy') }}">利用規約・プライバシーポリシー</a></li>
+                <li><a class="footer-menu" href="{{ url('user/about') }}">
+                        <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
+                            style="filter: brightness(0) invert(1);">
+                        <span>本サイトについて</span>
+                    </a></li>
+                <li><a class="footer-menu" href="{{ url('user/privacy') }}">
+                        <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
+                            style="filter: brightness(0) invert(1);">
+                        <span>利用規約・プライバシーポリシー</span>
+                    </a></li>
 
             </ul>
         </div>

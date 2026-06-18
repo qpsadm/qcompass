@@ -13,7 +13,7 @@
                     <a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a>
                     <ul class="gnav-sub">
                         <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}">
-                            <a class="agenda" href="{{ route('user.quizzes.index') }}">クイズ</a>
+                            <a class="agenda" href="{{ route('user.quizzes.index') }}">理解度チェック</a>
                         </li>
                         <li><a class="agenda"
                                 href="{{ route('user.learnings.learnings_by_type', ['type' => 4]) }}">制作品紹介</a></li>
