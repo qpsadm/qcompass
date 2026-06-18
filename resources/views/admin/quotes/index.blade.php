@@ -59,9 +59,9 @@
         </div>
 
         {{-- ページネーション（上） --}}
-        <div class="mb-4">
+        {{-- <div class="mb-4">
             {{ $quotes->links() }}
-        </div>
+        </div> --}}
 
         {{-- テーブル --}}
         <div class="overflow-x-auto">

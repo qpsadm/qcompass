@@ -127,7 +127,7 @@
         </div>
 
         <div class="mt-4">
-            {{ $courses->appends(request()->query())->links('pagination::tailwind') }}
+            {{ $courses->appends(request()->query())->links() }}
         </div>
 
     </div>

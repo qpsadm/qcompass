@@ -101,9 +101,9 @@
         </div>
 
         <!-- ページネーション（上） -->
-        <div class="my-2">
-            {{ $users->appends(request()->query())->links('pagination::tailwind') }}
-        </div>
+        {{-- <div class="my-2">
+            {{ $users->appends(request()->query())->links() }}
+        </div> --}}
 
         <!-- ユーザーテーブル -->
         <div class="overflow-x-auto">
@@ -165,7 +165,7 @@
 
         <!-- ページネーション（下） -->
         <div class="mt-4">
-            {{ $users->appends(request()->query())->links('pagination::tailwind') }}
+            {{ $users->appends(request()->query())->links() }}
         </div>
 
     </div>

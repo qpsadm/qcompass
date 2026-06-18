@@ -11,7 +11,7 @@ use App\Models\Course;
 use App\Models\Quote;
 use App\Models\UserDetail; // ← 追加
 use Carbon\Carbon;           // ← 追加
-
+use Illuminate\Pagination\Paginator; // ← 追加
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Paginator::defaultView('pagination.qcompass_navi');
+
         if (config('database.default') === 'sqlite') {
             $this->loadMigrationsFrom(database_path('migrations/sqlite'));
         } elseif (config('database.default') === 'mariadb') {

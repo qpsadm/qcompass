@@ -10,6 +10,9 @@
     {{-- Vite（Tailwindはここだけ） --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- 自定義CSS --}}
+    <link href="{{ asset('assets/css/b_common.css') }}" rel="stylesheet">
+
     {{-- favicon --}}
     <link rel="icon" href="{{ asset('assets/images/icon/favicon.png') }}">
 </head>
@@ -26,8 +29,7 @@
         @include('layouts.b_sidebar')
 
         {{-- メインコンテンツ（ここだけスクロール） --}}
-        <main
-            id="mainContent"
+        <main id="mainContent"
             class="flex-1 ml-64 p-6 pb-24
                    overflow-y-auto hide-scrollbar
                    transition-all duration-300">
@@ -36,8 +38,7 @@
         </main>
 
         {{-- SP用 サイドバー開くボタン --}}
-        <button
-            id="sidebar-open"
+        <button id="sidebar-open"
             class="fixed top-20 left-0 z-50 p-2 rounded-r
                    bg-gray-800 text-white lg:hidden hidden">
             »

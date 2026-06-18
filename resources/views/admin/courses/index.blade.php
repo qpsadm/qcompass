@@ -85,9 +85,9 @@
         </script>
 
         <!-- ページネーション（上） -->
-        <div class="my-2">
-            {{ $courses->appends(request()->query())->links('pagination::tailwind') }}
-        </div>
+        {{-- <div class="my-2">
+            {{ $courses->appends(request()->query())->links() }}
+        </div> --}}
 
         <!-- テーブル -->
         <div class="overflow-x-auto">
@@ -181,7 +181,7 @@
 
         <!-- ページネーション（下） -->
         <div class="mt-4">
-            {{ $courses->appends(request()->query())->links('pagination::tailwind') }}
+            {{ $courses->appends(request()->query())->links() }}
         </div>
 
     </div>

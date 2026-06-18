@@ -1,0 +1,144 @@
+@charset "UTF-8";
+
+:root {
+    /* font */
+    --font-family: "Zen Maru Gothic", sans-serif;
+
+    /* font-size */
+    --font-size: 18px;
+
+    /* text-color */
+    --text-color-1: #000;
+    --text-color-2: #2d3748;
+    --text-color-3: #FFF;
+    --text-color-4: #2563eb;
+    --text-color-5: #ffdd00;
+
+    /* placeholder-color */
+    --placeholder-color: #bababa;
+
+    /* main-color */
+    --main-color: #005A87;
+
+    /* sub-color */
+    --sub-color-1: #B1DAF9;
+    --sub-color-2: #E9EEFF;
+    --sub-color-3: #7A92DF;
+
+    /* accent-color */
+    /* --accent-color: #ff9b0f; */
+    --accent-color: #e07b00;
+
+    /* footer-color */
+    --footer-color: #414141;
+
+    /* background-color */
+    --background-color-1: #FCFCFC;
+    --background-color-2: #FCFCFC;
+    --background-color-content: #E9EEFF;
+    --background-color-table-1: #DDDDDD;
+    --background-color-table-2: #FFF;
+    --background-color-table-3: #D8EBFF;
+    --submenu-background-color: #fff8dc;
+}
+
+/* テーブル関連 */
+
+/* 1. テーブル全体の枠組み */
+.table-auto {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--background-color-table-1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 2. 見出し（th）の枠線設定 */
+.table-auto th {
+    background-color: var(--sub-color-3);
+    color: var(--text-color-3);
+    padding: 12px;
+    border-right: 1px solid var(--background-color-table-1);
+    border-bottom: 1px solid var(--background-color-table-1);
+}
+
+/* 3. 本文データ（td）の枠線設定 */
+.table-auto td {
+    padding: 12px;
+    border-right: 1px solid var(--background-color-table-1);
+    border-bottom: 1px solid var(--background-color-table-1);
+}
+
+/* 4. 一番右側の縦線と、一番下の横線を消す（外枠の線と重なって太くなるのを防ぐ） */
+.table-auto th:last-child,
+.table-auto td:last-child {
+    border-right: none;
+}
+
+.table-auto tr:last-child td {
+    border-bottom: none;
+}
+
+.table-auto tr:nth-child(even) {
+    background-color: var(--sub-color-2);
+}
+
+
+/* ページネーション全体の基本スタイル（必要に応じて調整してください） */
+.pagination ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    align-items: center;
+}
+
+.pagination li {
+    margin: 0 4px;
+}
+
+/* ボタン共通のスタイル */
+.pagination li a,
+.pagination li span {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* ★ ホバー時の色（通常ボタン） */
+.pagination li a:hover {
+    background-color: #3b82f6;
+    /* ホバー時の背景色（例：青） */
+    color: #ffffff;
+    /* ホバー時の文字色（白） */
+    border-color: #3b82f6;
+    /* ホバー時の枠線色 */
+}
+
+/* 現在のページのスタイル（JavaScriptで active クラスが付くもの） */
+.pagination li.active a {
+    background-color: #1f2937;
+    /* 現在のページの背景色（例：濃いグレー） */
+    color: #ffffff;
+    border-color: #1f2937;
+    cursor: default;
+}
+
+/* 無効化されているボタン（前へ/次へ が押せないとき）のホバー無効化 */
+.pagination li.disabled span {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+}
+
+/* 三点リーダー（…）のスタイル */
+.pagination li.dots span {
+    border: none;
+    background: none;
+    cursor: default;
+}
