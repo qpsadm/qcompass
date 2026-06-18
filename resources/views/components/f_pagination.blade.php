@@ -4,34 +4,34 @@
         {{-- 前のページリンク --}}
         <li class="prev {{ $paginator->onFirstPage() ? 'disabled' : '' }}">
             @if (!$paginator->onFirstPage())
-            <a href="{{ $paginator->previousPageUrl() }}"></a>
+                <a href="{{ $paginator->previousPageUrl() }}"></a>
             @else
-            <span></span>
+                <span></span>
             @endif
         </li>
 
         {{-- ページ番号リンク --}}
         @foreach ($paginator->links()->elements as $element)
-        @if (is_string($element))
-        <li class="dots"><span>{{ $element }}</span></li>
-        @endif
+            @if (is_string($element))
+                <li class="dots"><span>{{ $element }}</span></li>
+            @endif
 
-        @if (is_array($element))
-        @foreach ($element as $page => $url)
-        <li class="page-item {{ $page == $paginator->currentPage() ? 'active' : '' }}"
-            data-page="{{ $page }}" data-url="{{ $url }}">
-            <a href="{{ $url }}">{{ $page }}</a>
-        </li>
-        @endforeach
-        @endif
+            @if (is_array($element))
+                @foreach ($element as $page => $url)
+                    <li class="page-item {{ $page == $paginator->currentPage() ? 'active' : '' }}"
+                        data-page="{{ $page }}" data-url="{{ $url }}">
+                        <a href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                @endforeach
+            @endif
         @endforeach
 
         {{-- 次のページリンク --}}
         <li class="next {{ $paginator->hasMorePages() ? '' : 'disabled' }}">
             @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}"></a>
+                <a href="{{ $paginator->nextPageUrl() }}"></a>
             @else
-            <span></span>
+                <span></span>
             @endif
         </li>
     </ul>
