@@ -45,6 +45,7 @@ class AnnouncementController extends Controller
 
         $announcements = $query
             ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->appends($request->query());
 
         return view('admin.announcements.index', [

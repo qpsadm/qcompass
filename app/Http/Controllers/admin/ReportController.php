@@ -106,7 +106,8 @@ class ReportController extends Controller
         $reports = $query
             ->with(['user', 'course'])
             ->orderBy($sort, $direction)
-            ->paginate(20)
+            ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->withQueryString();
 
         return view('admin.reports.index', compact('reports', 'sort', 'direction'));

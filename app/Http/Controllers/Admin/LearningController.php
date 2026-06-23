@@ -53,7 +53,8 @@ class LearningController extends Controller
         $query->orderBy($sort, $direction);
 
         $learnings = $query
-            ->paginate(15)
+            ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->withQueryString();
 
         return view('admin.learnings.index', compact('learnings'));

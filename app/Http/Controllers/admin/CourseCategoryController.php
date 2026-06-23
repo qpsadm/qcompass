@@ -30,7 +30,9 @@ class CourseCategoryController extends Controller
         }
 
         // ページネーション（1ページ 10件）
-        $courses = $query->paginate(10)->appends($request->query());
+        $courses = $query->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
+            ->appends($request->query());
 
         return view('admin.course_category.index', compact('courses'));
     }

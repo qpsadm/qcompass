@@ -154,6 +154,7 @@
 }
 
 .section-flex {
+    margin: 40px auto;
     display: flex;
     gap: 40px;
 }
@@ -189,6 +190,7 @@
 
 @media screen and (max-width: 959px) {
     .section-flex {
+        margin: 40px auto;
         flex-direction: column;
         gap: 0;
     }

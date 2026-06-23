@@ -13,6 +13,7 @@ use App\Models\UserDetail; // ← 追加
 use Carbon\Carbon;           // ← 追加
 use Illuminate\Pagination\Paginator; // ← 追加
 
+
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void {}

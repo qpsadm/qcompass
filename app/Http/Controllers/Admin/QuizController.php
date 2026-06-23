@@ -19,25 +19,46 @@ class QuizController extends Controller
     {
         $sort = $request->input('sort', 'id');
         $direction = $request->input('direction', 'desc');
+        $search     = $request->input('search');
+        $categoryId   = $request->input('category_id');   // カテゴリIDフィルタ
 
-        // 許可するソートカラム（安全対策）
-        $allowedSorts = ['id', 'title'];
+        // クエリ
+        $quizzes = Quiz::with('category');
+
+        // 文字列検索
+        if ($search = $request->search) {
+            $quizzes->where('title', 'like', "%{$search}%");
+        }
+
+        // カテゴリ絞り込み
+        if ($categoryId = $request->category_id) {
+            $quizzes->where('category_id', $categoryId);
+        }
+
+
+        // 許可するソートカラム
+        $allowedSorts = ['id', 'ceated_at'];
 
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'id';
         }
 
-        $quizzes = Quiz::with('category')
-            ->withCount('questions')
+        $quizzes = $quizzes->withCount('questions')
             ->orderBy($sort, $direction)
             ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->appends([
                 'sort' => $sort,
                 'direction' => $direction,
             ]);
 
+        // プルダウン用
+        $categories = Category::where('is_show', 1)
+            ->orderBy('code', 'asc')->get();
+
         return view('admin.quizzes.index', compact(
             'quizzes',
+            'categories',
             'sort',
             'direction'
         ));

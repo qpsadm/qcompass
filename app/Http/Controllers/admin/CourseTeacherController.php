@@ -13,7 +13,10 @@ class CourseTeacherController extends Controller
 {
     public function index()
     {
-        $course_teachers = CourseTeacher::with(['course', 'user'])->paginate(10);
+        $course_teachers = CourseTeacher::with(['course', 'user'])
+            ->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
+
         return view('admin.course_teachers.index', compact('course_teachers'));
     }
 

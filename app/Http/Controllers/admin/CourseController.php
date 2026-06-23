@@ -20,7 +20,7 @@ class CourseController extends Controller
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
-        $courses = Course::withCount('students');
+        $courses = Course::withCount('students', 'organizer');
 
         if ($query) {
             $courses->where(function ($q) use ($query) {
@@ -32,15 +32,24 @@ class CourseController extends Controller
             });
         }
 
-        if (in_array($sort, ['id', 'course_code', 'course_name'])) {
+        // 委託者で絞り込み
+        if ($organizerId = $request->organizer_id) {
+            $courses->where('organizer_id', $organizerId);
+        }
+
+        if (in_array($sort, ['id', 'course_code', 'updated_at'])) {
             $courses->orderBy($sort, $order);
         } else {
             $courses->orderBy('id', 'asc');
         }
 
-        $courses = $courses->paginate(20)->appends($request->query());
+        $courses = $courses->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
+            ->appends($request->query());
 
-        return view('admin.courses.index', compact('courses'));
+        $organizers = Organizer::orderBy('id')->get();
+
+        return view('admin.courses.index', compact('courses', 'organizers'));
     }
 
 

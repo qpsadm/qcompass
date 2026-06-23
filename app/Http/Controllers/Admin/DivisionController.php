@@ -11,7 +11,9 @@ class DivisionController extends Controller
     public function index()
     {
         // 1ページあたり10件表示
-        $divisions = Division::orderBy('id')->paginate(10);
+        $divisions = Division::orderBy('id')
+            ->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
 
         return view('admin.divisions.index', compact('divisions'));
     }

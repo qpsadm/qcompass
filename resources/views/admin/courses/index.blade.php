@@ -17,32 +17,42 @@
             <!-- 新規作成ボタン -->
             <a href="{{ route('admin.courses.create') }}"
                 class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
 
             <!-- 検索ボックス -->
             <div x-data="searchBox()" class="flex flex-wrap items-center gap-2 w-full lg:w-auto mt-2 lg:mt-0">
+
+                <form method="GET" action="{{ route('admin.courses.index') }}"
+                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0 justify-between gap-2" style="width: 460px;">
+                    {{-- 委託者 --}}
+                    <select name="organizer_id" class="border px-2 py-1 rounded">
+                        <option value="">全ての委託者</option>
+                        @foreach ($organizers as $organizer)
+                            <option value="{{ $organizer->id }}"
+                                {{ request('organizer_id') == $organizer->id ? 'selected' : '' }}>
+                                {{ $organizer->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <button class="text-white bg-emerald-600 px-3 py-2 rounded hover:bg-red-600">絞り込み</button>
+                </form>
+
                 <!-- 入力欄 -->
-                <div class="relative flex-1 min-w-[200px]">
-                    <input type="text" x-model="search" placeholder="講座コード・講座名で検索" @keydown.enter.prevent="submit()"
-                        class="border px-3 py-2 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-400 w-full">
-
-                    <!-- クリアボタン -->
-                    <button type="button" x-show="search" @click="clear()"
-                        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">&times;
-                    </button>
+                <div x-data="searchBox()" class="flex items-center space-x-2">
+                    <form :action="url" method="GET" class="relative flex-1">
+                        <input type="text" name="search" x-model="search" placeholder="講座名・コードで検索"
+                            @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
+                        <button type="button" x-show="search" @click="clear()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
+                        </button>
+                    </form>
+                    <button @click="submit()"
+                        class="bg-blue-600 px-4 py-2 rounded hover:bg-opacity-50 text-white">検索</button>
                 </div>
-
-                <!-- 検索ボタン -->
-                <button @click="submit()"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-md flex items-center justify-center space-x-2">
-                    <img src="{{ asset('assets/images/icon/b_search.svg') }}" class="w-4 h-4">
-                    <span>検索</span>
-                </button>
             </div>
-
-
         </div>
 
         <script>
@@ -94,7 +104,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="border px-4 py-2 w-12 text-center">
+                        <th class="border px-4 py-2 w-12 text-center" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $sort === 'id' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 No.
@@ -103,7 +113,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-24">
+                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_code', 'order' => $sort === 'course_code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 講座コード
@@ -112,20 +122,22 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2">
-                            <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_name', 'order' => $sort === 'course_name' ? $nextOrder : 'asc'])) }}"
-                                class="flex items-center gap-1 hover:underline">
-                                講座名
-                                @if ($sort === 'course_name')
+                        <th class="border px-4 py-2 w-48">講座名</th>
+                        {{-- <th class="border px-4 py-2 w-32">分野</th> --}}
+                        <th class="border px-4 py-2 w-40">訓練期間</th>
+                        <th class="border px-4 py-2 w-24">受講生人数</th>
+                        <th class="border px-4 py-2 w-20">受講生一覧</th>
+                        <th class="border px-4 py-2 w-20">表示</th>
+                        <th class="border px-4 py-2 w-24">作成日</th>
+                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                            <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日
+                                @if ($sort === 'updated_at')
                                     <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-80">分野</th>
-                        <th class="border px-4 py-2 text-center">期間</th>
-                        <th class="border px-4 py-2 text-center w-32">受講生人数</th>
-                        <th class="border px-4 py-2 text-center w-32">受講生確認</th>
-                        <th class="border px-4 py-2 text-center w-24">表示</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,12 +150,16 @@
                             <td class="border px-4 py-2">
                                 <a href="{{ route('admin.courses.show', $course->id) }}"
                                     class="text-blue-600 hover:underline">
-                                    {{ $course->course_name }}&nbsp;({{ $course->id }})
+                                    {{ $course->course_name }}&nbsp;({{ $course->id }})<br>
+                                    {{ $course->certification_number }}
                                 </a>
                             </td>
-                            <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td>
-                            <td class="border px-4 py-2">{{ $course->start_date }} ～ {{ $course->end_date }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $course->entering }}</td>
+                            {{-- <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td> --}}
+                            <td class="border px-4 py-2 text-center">{{ $course->start_date }} ～ {{ $course->end_date }}
+                            </td>
+                            <td class="border px-4 py-2 text-center">入校：{{ $course->entering }}人
+                                <br>修了：{{ $course->completed }}人
+                            </td>
                             <td class="border px-4 py-2 text-center">
                                 <a href="{{ route('admin.courses.students', $course->id) }}"
                                     class="inline-flex items-center justify-center
@@ -156,11 +172,9 @@
               hover:shadow-md
               transition"
                                     title="受講生一覧">
-                                    📋
+                                    <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
                                 </a>
                             </td>
-
-
 
                             <td class="border px-4 py-2 text-center">
                                 @if ($course->is_show)
@@ -169,6 +183,8 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
+                            <td class="border px-4 py-2 text-center">{{ $course->created_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $course->updated_at->format('Y-m-d H:i') }}</td>
                         </tr>
                     @empty
                         <tr>

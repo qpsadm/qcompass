@@ -27,13 +27,17 @@ class UserController extends Controller
         $order      = $request->input('order', 'desc');
 
         $users = User::query()
-            ->with(['role', 'courses']);
+            ->with(['detail', 'role', 'courses']);
 
         // 🔍 検索
         if ($search) {
             $users->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%");
+                    ->orWhere('code', 'like', "%{$search}%")
+                    // 👇 関連テーブル（detail）のカラムを検索対象にする
+                    ->orWhereHas('detail', function ($query) use ($search) {
+                        $query->where('phone1', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -54,17 +58,20 @@ class UserController extends Controller
         //     $users->orderBy($sort, $order);
         // }
 
-        if (in_array($sort, ['id', 'code'])) {
+        if (in_array($sort, ['id', 'code', 'updated_at'])) {
             $users->orderBy($sort, $order);
         } else {
             // 該当しない（不正な値や空欄の）場合は、デフォルトでIDの降順（新しい順）にする
             $users->orderBy('id', 'desc');
         }
 
-        $users = $users->paginate(10)->appends($request->query());
+        $users = $users->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
+            ->appends($request->query());
 
         // プルダウン用講座一覧
-        $courses = Course::orderBy('id', 'desc')->get();
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
 
         return view('admin.users.index', compact('users', 'courses'));
     }

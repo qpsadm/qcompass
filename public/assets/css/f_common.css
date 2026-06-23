@@ -967,6 +967,8 @@ footer {
     padding-left: 60px;
     font-weight: bold;
     font-size: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--main-color);
 }
 
 .page-title:not(:has(.search)) h1 {

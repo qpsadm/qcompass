@@ -60,15 +60,16 @@ class AgendaController extends Controller
             }
         }
 
-        $agendas = $query->paginate(10);
+        $agendas = $query->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
 
-        $categories = Category::all(); // プルダウン用
+        // プルダウン用
+        $categories = Category::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
 
         return view('admin.agendas.index', compact('agendas', 'categories', 'sort', 'direction'));
     }
-
-
-
 
 
     /**
@@ -117,7 +118,7 @@ class AgendaController extends Controller
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'required|integer',
             'is_show' => 'nullable|boolean',
-            'status' => 'required|in:yes,no',
+            'status' => 'required|in:yes,draft',
             'content' => 'nullable|string',
         ]);
 
@@ -159,7 +160,7 @@ class AgendaController extends Controller
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'required|integer',
             'is_show' => 'nullable|boolean',
-            'status' => 'required|in:yes,no',
+            'status' => 'required|in:yes,draft',
             'content' => 'nullable|string',
         ]);
 

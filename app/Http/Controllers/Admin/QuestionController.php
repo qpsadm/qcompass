@@ -42,7 +42,9 @@ class QuestionController extends Controller
     // 一覧
     public function index()
     {
-        $questions = Question::with(['course', 'responder', 'tag'])->paginate(20);
+        $questions = Question::with(['course', 'responder', 'tag'])
+            ->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
         return view('admin.questions.index', compact('questions'));
     }
 

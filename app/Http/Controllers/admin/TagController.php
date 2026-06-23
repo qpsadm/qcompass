@@ -51,7 +51,9 @@ class TagController extends Controller
             $direction = 'asc';
         }
 
-        $tags = Tag::orderBy($sort, $direction)->paginate(10);
+        $tags = Tag::orderBy($sort, $direction)
+            ->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
 
         return view('admin.tags.index', compact(
             'tags',

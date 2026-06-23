@@ -37,7 +37,8 @@ class CourseUserController extends Controller
 
         $courseUsers = $query
             ->select('course_users.*')
-            ->paginate(20)
+            ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->withQueryString();
 
         return view('admin.course_users.index', compact('courseUsers', 'sort', 'direction'));

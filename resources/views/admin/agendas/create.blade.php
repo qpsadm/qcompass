@@ -175,7 +175,7 @@
             var editor = CKEDITOR.replace('agenda-content', {
                 language: 'ja',
                 allowedContent: true,
-                height: '70vh'
+                height: '35vh'
             });
 
             document.getElementById('agenda-form').addEventListener('submit', function(e) {

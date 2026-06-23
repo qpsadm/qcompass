@@ -27,6 +27,7 @@ class JobOfferController extends Controller
 
         $job_offers = $job_offers->orderBy($sort, $order)
             ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->appends($request->query());
 
         return view('admin.job_offers.index', compact('job_offers', 'sort', 'order', 'search'));

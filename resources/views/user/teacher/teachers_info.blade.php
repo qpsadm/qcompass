@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- ページタイトル（検索フォームなし） -->
-        <x-f_page_title :search="false" title="講師紹介（{{ $teacher->name }} 先生）" />
+        <x-f_page_title :search="false" title="講師紹介" />
 
         <!-- コンテンツ詳細（文字サイズ変更対象） -->
         <div class="teacher-detail">
@@ -21,7 +21,7 @@
                         <img src="{{ asset('storage/' . $teacher->detail->avatar_path) }}" alt="avatar">
                     </div>
                     <div class="teacher-name">
-                        <p>{{ $teacher->name }} 先生<br>（{{ $teacher->furigana }}）</p>
+                        <p>{{ $teacher->name }} <br>（{{ $teacher->furigana }}）</p>
                     </div>
                 </div>
                 {!! $teacher->detail->bio !!}
@@ -31,9 +31,10 @@
             {{-- <x-f_btn_list :prevBtn="false" :nextBtn="false" :listBtn="true"
                 listUrl="{{ route('user.teacher.teachers_list') }}" listLabel="一覧へもどる" /> --}}
 
-            <!-- パンくずリスト -->
-            <x-f_bread_crumbs />
+
 
         </div>
+        <!-- パンくずリスト -->
+        <x-f_bread_crumbs />
     </div>
 @endsection

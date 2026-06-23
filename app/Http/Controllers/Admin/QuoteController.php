@@ -65,7 +65,9 @@ class QuoteController extends Controller
             $query->orderBy($sort, $direction);
         }
 
-        $quotes = $query->paginate(20)->withQueryString();
+        $quotes = $query->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
+            ->withQueryString();
 
         return view('admin.quotes.index', compact('quotes'));
     }

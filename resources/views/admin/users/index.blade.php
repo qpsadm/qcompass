@@ -26,8 +26,8 @@
                 </button>
             </form> --}}
                 <a href="{{ route('admin.users.create') }}"
-                    class="bg-blue-500 px-4 py-2 mr-1 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                    <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                    class="bg-blue-600 px-4 py-2 mr-1 text-white rounded hover:bg-blue-300 hover:text-white transition flex items-center space-x-1">
+                    {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                     <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>
                 <a href="{{ route('admin.users.trash') }}"
@@ -41,7 +41,7 @@
 
                 <!-- 講座選択 + 未所属 -->
                 <form method="GET" action="{{ route('admin.users.index') }}"
-                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0">
+                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0 justify-between gap-2" style="width: 550px;">
                     <select name="course_id" class="border px-2 py-1 rounded">
                         <option value="">全ての講座</option>
                         @foreach ($courses as $course)
@@ -57,19 +57,20 @@
                         <span>未所属</span>
                     </label>
 
-                    <button class="bg-emerald-600 px-3 py-2 rounded hover:bg-gray-300">絞り込み</button>
+                    <button class="text-white bg-emerald-600 px-3 py-2 rounded hover:bg-red-600">絞り込み</button>
                 </form>
 
                 <!-- 検索フォーム -->
                 <div x-data="searchBox()" class="flex items-center space-x-2">
                     <form :action="url" method="GET" class="relative flex-1">
-                        <input type="text" name="search" x-model="search" placeholder="ユーザー名・コードで検索"
+                        <input type="text" name="search" x-model="search" placeholder="ユーザー名・コード・電話番号で検索"
                             @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
                         <button type="button" x-show="search" @click="clear()"
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
                         </button>
                     </form>
-                    <button @click="submit()" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-white">検索</button>
+                    <button @click="submit()"
+                        class="bg-blue-600 px-4 py-2 rounded hover:bg-opacity-50 text-white">検索</button>
                 </div>
 
             </div>
@@ -110,7 +111,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 w-12 text-center">
+                        <th class="border px-4 py-2 w-12" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $sort === 'id' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 No.
@@ -119,7 +120,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-32">
+                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'code', 'order' => $sort === 'code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 ユーザーコード
@@ -128,9 +129,22 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2">氏名</th>
-                        <th class="border px-4 py-2">所属講座</th>
-                        <th class="border px-4 py-2">権限</th>
+                        <th class="border px-4 py-2 w-32">氏名</th>
+                        <th class="border px-4 py-2 w-40">所属講座</th>
+                        <th class="border px-4 py-2 w-24">電話番号</th>
+                        <th class="border px-4 py-2 w-24">権限</th>
+                        <th class="border px-4 py-2 w-16">状態</th>
+                        <th class="border px-4 py-2 w-16">表示</th>
+                        <th class="border px-4 py-2 w-24">作成日</th>
+                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                            <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日
+                                @if ($sort === 'updated_at')
+                                    <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -152,7 +166,20 @@
                                     未所属
                                 @endif
                             </td>
+                            <td class="border px-4 py-2">{{ $user->detail->phone1 ?? 'なし' }}</td>
                             <td class="border px-4 py-2">{{ $user->role->role_name ?? 'なし' }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $user->detail?->status_label }}</td>
+                            <td class="border px-4 py-2 text-center">
+                                @if ($course->is_show)
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                                @else
+                                    <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                                @endif
+                            </td>
+                            {{-- ->format('Y-m-d H:i') --}}
+                            <td class="border px-4 py-2 text-center">{{ $user->created_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $user->updated_at->format('Y-m-d H:i') }}</td>
+
                         </tr>
                     @empty
                         <tr>

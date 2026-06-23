@@ -56,6 +56,7 @@ class OrganizerController extends Controller
         // クエリ
         $organizers = Organizer::orderBy($sort, $direction)
             ->paginate(10)
+            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->appends($request->query()); // ページ遷移でも並び順保持
 
         return view('admin.organizers.index', compact(

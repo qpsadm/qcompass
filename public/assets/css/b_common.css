@@ -28,6 +28,7 @@
     /* accent-color */
     /* --accent-color: #ff9b0f; */
     --accent-color: #e07b00;
+    --accent-color2: #ff4500;
 
     /* footer-color */
     --footer-color: #414141;
@@ -42,6 +43,29 @@
     --submenu-background-color: #fff8dc;
 }
 
+.container input:focus,
+.container select:focus,
+.container textarea:focus,
+.container date:focus {
+    background-color: var(--submenu-background-color);
+}
+
+.container input[type="email"] {
+    width: 100%;
+    max-width: 400px;
+}
+
+.container select {
+    width: 100%;
+    max-width: 360px;
+}
+
+.container button:hover,
+.container a:hover {
+    background-color: var(--accent-color);
+    color: var(--background-color-1);
+}
+
 /* テーブル関連 */
 
 /* 1. テーブル全体の枠組み */
@@ -52,20 +76,21 @@
     border: 1px solid var(--background-color-table-1);
     border-radius: 8px;
     overflow: hidden;
+    font-weight: 400;
 }
 
 /* 2. 見出し（th）の枠線設定 */
 .table-auto th {
     background-color: var(--sub-color-3);
     color: var(--text-color-3);
-    padding: 12px;
+    padding: 12px 10px;
     border-right: 1px solid var(--background-color-table-1);
     border-bottom: 1px solid var(--background-color-table-1);
 }
 
 /* 3. 本文データ（td）の枠線設定 */
 .table-auto td {
-    padding: 12px;
+    padding: 12px 10px;
     border-right: 1px solid var(--background-color-table-1);
     border-bottom: 1px solid var(--background-color-table-1);
 }
@@ -84,6 +109,16 @@
     background-color: var(--sub-color-2);
 }
 
+.table-auto a:hover {
+    /* text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent-color2); */
+    background-color: inherit;
+    text-decoration: none;
+    color: var(--accent-color2);
+    font-weight: 500;
+}
 
 /* ページネーション全体の基本スタイル（必要に応じて調整してください） */
 .pagination ul {

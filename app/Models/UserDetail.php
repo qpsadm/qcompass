@@ -85,6 +85,21 @@ class UserDetail extends Model
         });
     }
 
+    // ユーザー状態の定義を定数（配列）として持たせておくと管理しやすいです
+    const STATUS_LABELS = [
+        0 => '無効',
+        1 => '有効',
+        2 => '停止',
+    ];
+
+    // status_label というカスタム属性を定義（Laravel 9以降の書き方）
+    public function statusLabel(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn() => self::STATUS_LABELS[$this->status] ?? '不明'
+        );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations

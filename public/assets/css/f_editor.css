@@ -3,10 +3,10 @@
 .page-content {
     max-width: 1280px;
     margin-bottom: 40px;
-    font-weight: Medium;
+    font-weight: 400;
     font-size: var(--font-size);
     line-height: 1.8rem;
-    letter-spacing: 1px;
+    /* letter-spacing: 0.1rem; */
 }
 
 .page-content h2 {

@@ -20,12 +20,12 @@
                 @csrf
                 @method('PUT')
 
-                <table class="w-full table-auto border-collapse">
+                <table class="w-full table-auto border-collapse" style="max-width: 1280px;">
                     <tbody>
 
                         {{-- アジェンダ名 --}}
                         <tr class="border-b">
-                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 アジェンダ名
                             </th>
                             <td class="px-4 py-2">
@@ -37,7 +37,7 @@
 
                         {{-- カテゴリ --}}
                         <tr class="border-b">
-                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 カテゴリ
                             </th>
                             <td class="px-4 py-2">
@@ -55,7 +55,7 @@
 
                         {{-- 表示フラグ --}}
                         <tr class="border-b">
-                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 表示フラグ
                             </th>
                             <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', $agenda->is_show ?? 0) }} }">
@@ -79,7 +79,7 @@
 
                         {{-- 承認状態 --}}
                         <tr class="border-b">
-                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 承認状態
                             </th>
                             <td class="px-4 py-2">
@@ -97,7 +97,7 @@
 
                         {{-- 内容 --}}
                         <tr class="border-b">
-                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 内容・概要
                             </th>
                             <td class="px-4 py-2">
@@ -114,17 +114,18 @@
                 @if (isset($agenda) && $agenda->id && $agenda->files->isNotEmpty())
                     <div class="mt-6 bg-gray-50 p-4 rounded">
                         <h2 class="text-lg font-semibold mb-2">登録済みファイル一覧</h2>
-                        <table class="w-full table-auto border-collapse border">
+                        <table class="w-full table-auto border-collapse border" style="max-width:900px;">
                             <thead>
                                 <tr class="bg-gray-100">
-                                    <th class="border px-3 py-2">ファイル名</th>
-                                    <th class="border px-3 py-2">サイズ</th>
-                                    <th class="border px-3 py-2">プレビュー</th>
-                                    <th class="border px-3 py-2">URLコピー</th>
+                                    <th class="border px-3 py-2 w16">No</th>
+                                    <th class="border px-3 py-2 ">ファイル名</th>
+                                    <th class="border px-3 py-2 w20">サイズ</th>
+                                    <th class="border px-3 py-2 w20">プレビュー</th>
+                                    <th class="border px-3 py-2 w20">URLコピー</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($agenda->files as $file)
+                                @foreach ($agenda->files as $key => $file)
                                     @php
                                         // typeパラメータを渡す
                                         $previewUrl = route('admin.files.preview', [
@@ -135,28 +136,35 @@
                                         $url = asset('storage/files/' . $file->file_name);
                                     @endphp
                                     <tr class="hover:bg-gray-50">
+                                        <td class="border px-3 py-2 text-center">{{ $key + 1 }}</td>
                                         <td class="border px-3 py-2">{{ $file->file_name }}</td>
                                         <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
                                         </td>
-                                        <td class="border px-3 py-2">
+                                        <td class="border px-3 py-2  text-center">
                                             @if (Str::startsWith($file->file_type, 'image/'))
                                                 <a href="{{ $previewUrl }}" target="_blank">
-                                                    <img src="{{ $previewUrl }}" class="w-20 h-20 object-cover rounded"
+                                                    <img src="{{ $previewUrl }}" class="w-20 object-cover rounded"
                                                         alt="プレビュー">
                                                 </a>
                                             @else
                                                 N/A
                                             @endif
                                         </td>
-                                        <td class="border px-3 py-2">
+                                        <td class="border px-3 py-2  text-center">
                                             @php
 
                                             @endphp
-                                            <button type="button"
+                                            {{-- <button type="button"
                                                 class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
                                                 onclick="navigator.clipboard.writeText('{{ $url }}').then(() => { alert('URLをコピーしました'); });">
                                                 URLコピー
+                                            </button> --}}
+                                            <button type="button"
+                                                class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
+                                                onclick="navigator.clipboard.writeText('{{ $url }}')">
+                                                URLコピー
                                             </button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -197,7 +205,7 @@
             CKEDITOR.replace('agenda-content', {
                 language: 'ja',
                 allowedContent: true,
-                height: '70vh'
+                height: '35vh'
             });
         </script>
 
