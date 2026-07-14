@@ -24,20 +24,20 @@
     <link href="{{ asset('assets/css/reset.css') }}" rel="stylesheet">
     {{-- variable.cssファイルを読み込む --}}
     @php
-    // ログインユーザーを取得
-    $user = auth()->user();
+        // ログインユーザーを取得
+        $user = auth()->user();
 
-    // ユーザー設定があればそれを使い、なければデフォルト1
-    $themeId = $user->detail->theme_id ?? 1;
+        // ユーザー設定があればそれを使い、なければデフォルト1
+        $themeId = $user?->detail?->theme_id ?? 1;
 
-    $themeClass = match($themeId) {
-    1 => '',
-    2 => '_dark',
-    3 => '_red',
-    4 => '_green',
-    5 => '_yellow',
-    default => ''
-    };
+        $themeClass = match ($themeId) {
+            1 => '',
+            2 => '_dark',
+            3 => '_red',
+            4 => '_green',
+            5 => '_yellow',
+            default => '',
+        };
     @endphp
 
     {{-- 共通cssファイルを読み込む --}}
@@ -58,17 +58,15 @@
 <body class="{{ session()->has('impersonator_id') ? 'impersonating' : '' }}">
 
     {{-- ★ なりすまし中バナー（最上部固定） --}}
-    @if(session()->has('impersonator_id'))
-    <div class="impersonate-banner">
-        <strong>⚠ なりすまし中（管理者）</strong>
+    @if (session()->has('impersonator_id'))
+        <div class="impersonate-banner">
+            <strong>⚠ なりすまし中（管理者）</strong>
 
-        <form method="POST"
-            action="{{ route('admin.users.impersonate.leave') }}"
-            class="impersonate-exit">
-            @csrf
-            <button>管理画面に戻る</button>
-        </form>
-    </div>
+            <form method="POST" action="{{ route('admin.users.impersonate.leave') }}" class="impersonate-exit">
+                @csrf
+                <button>管理画面に戻る</button>
+            </form>
+        </div>
     @endif
 
 

@@ -17,8 +17,9 @@ const menuTitle = $(".menu-title");
 
 menuTitle.click(function () {
     $(this).next().slideToggle(300);
-    accordionMenu.toggleClass("active");
+    $(this).closest(".accordion-menu").toggleClass("active");
 });
+
 
 // 質疑応答のアコーディオンメニュー open/close
 
@@ -36,9 +37,8 @@ questionContainer.click(function () {
 });
 
 // カレンダー・日報日付入力
-
-window.onload = function () {
-
+// window.onload = function () {
+$(function () {
     const today = new Date();
     const yyyy = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -51,38 +51,4 @@ window.onload = function () {
     if (!dateInput.val()) {
         dateInput.val(`${yyyy}-${month}-${day}`);
     }
-};
-
-// キャプチャ・コピペ・印刷・DevTools等制限
-
-// $(function () {
-//     $(document).on('copy', function (e) {
-//         e.preventDefault();
-//         e.originalEvent.clipboardData.setData(
-//             'text/plain',
-//             'コピーは禁止されています'
-//         );
-//     });
-
-//     $(document).on('contextmenu', function (e) {
-//         e.preventDefault();
-//     });
-
-//     $(document).on('keydown', function (e) {
-//         if (
-//             e.key === 'F12' ||
-//             (e.ctrlKey && e.shiftKey && (
-//                 e.key.toLowerCase() === 'i' ||
-//                 e.key.toLowerCase() === 'j' ||
-//                 e.key.toLowerCase() === 'c'
-//             )) ||
-//             (e.ctrlKey && (
-//                 e.key.toLowerCase() === 's' ||
-//                 e.key.toLowerCase() === 'u'
-//             ))
-//         ) {
-//             e.preventDefault();
-//             return false;
-//         }
-//     });
-// });
+});

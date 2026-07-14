@@ -8,7 +8,7 @@
                         href="{{ route('user.news.news_list') }}">お知らせ</a></li>
                 <li class="main-menu {{ request()->routeIs('user.agenda.*') ? 'active' : '' }}"><a class="agenda"
                         href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
-                <li
+                {{-- <li
                     class="main-menu menu-study {{ request()->routeIs('user.question.*', 'user.quizzes.*') ? 'active' : '' }}">
                     <a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a>
                     <ul class="gnav-sub">
@@ -25,7 +25,7 @@
                                 href="{{ route('user.learnings.learnings_by_type', ['type' => 2]) }}">参考サイト</a></li>
 
                     </ul>
-                </li>
+                </li> --}}
                 <li class="main-menu {{ request()->routeIs('user.job.*') ? 'active' : '' }}"><a class="work"
                         href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
 
