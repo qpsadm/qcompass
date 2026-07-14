@@ -37,8 +37,8 @@
 
             {{-- 新規作成 --}}
             <a href="{{ route('admin.announcements.create') }}"
-                class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                class="bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 transition flex items-center space-x-1">
+                {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span>新規作成</span>
             </a>
 
@@ -47,7 +47,7 @@
                 class="flex items-center space-x-2 flex-1 justify-end">
 
                 {{-- カテゴリー --}}
-                <select name="category_id" class="border px-2 py-1 rounded">
+                <select name="category_id" class="border px-2 py-2 rounded">
                     <option value="">全カテゴリー</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
@@ -57,7 +57,7 @@
                 </select>
 
                 {{-- 講座 --}}
-                <select name="course_id" class="border px-2 py-1 rounded">
+                <select name="course_id" class="border px-2 py-2 rounded">
                     <option value="">全講座</option>
                     @foreach ($courses as $course)
                         <option value="{{ $course->id }}" {{ request('course_id') == $course->id ? 'selected' : '' }}>
@@ -67,7 +67,7 @@
                 </select>
 
                 {{-- 状態 --}}
-                <select name="status" class="border px-2 py-1 rounded">
+                <select name="status" class="w-200 border px-2 py-2 rounded">
                     <option value="" {{ request('status', '') === '' ? 'selected' : '' }}>全状態</option>
                     <option value="0" {{ request('status', '') === '0' ? 'selected' : '' }}>下書き</option>
                     <option value="1" {{ request('status', '') === '1' ? 'selected' : '' }}>承認待ち</option>
@@ -76,16 +76,16 @@
 
                 {{-- キーワード --}}
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="タイトル検索"
-                    class="border px-2 py-1 rounded w-60">
+                    class="border px-2 py-2 rounded w-60">
 
                 {{-- 検索ボタン --}}
-                <button type="submit" class="bg-blue-500 px-4 py-1 text-white rounded hover:bg-blue-600 transition">
+                <button type="submit" class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
                     検索
                 </button>
                 @if (request()->query())
                     {{-- リセットボタン --}}
                     <a href="{{ route('admin.announcements.index') }}"
-                        class="bg-gray-300 px-4 py-1 text-gray-800 rounded hover:bg-gray-400 transition">
+                        class="bg-gray-300 px-4 py-2 text-gray-800 rounded hover:bg-gray-400 transition">
                         リセット
                     </a>
                 @endif

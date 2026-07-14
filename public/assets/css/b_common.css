@@ -24,6 +24,7 @@
     --sub-color-1: #B1DAF9;
     --sub-color-2: #E9EEFF;
     --sub-color-3: #7A92DF;
+    --sub-color-4: #4169E1;
 
     /* accent-color */
     /* --accent-color: #ff9b0f; */
@@ -56,8 +57,9 @@
 }
 
 .container select {
-    width: 100%;
+    width: auto;
     max-width: 360px;
+    min-width: 200px;
 }
 
 .container button:hover,
@@ -83,7 +85,7 @@
 .table-auto th {
     background-color: var(--sub-color-3);
     color: var(--text-color-3);
-    padding: 12px 10px;
+    padding: 12px 20px;
     border-right: 1px solid var(--background-color-table-1);
     border-bottom: 1px solid var(--background-color-table-1);
 }

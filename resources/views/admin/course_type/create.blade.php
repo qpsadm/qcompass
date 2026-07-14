@@ -60,29 +60,31 @@
                         </tr>
 
                         {{-- 表示フラグ --}}
-       <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
-                        <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', 1) }} }">
-                            <div class="flex gap-2">
-                                <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
-                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                                    <input type="radio" name="is_show" value="1" class="hidden" x-model.number="is_show">
-                                    公開
-                                </label>
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示フラグ</th>
+                            <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', 1) }} }">
+                                <div class="flex gap-2">
+                                    <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
+                                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                        <input type="radio" name="is_show" value="1" class="hidden"
+                                            x-model.number="is_show">
+                                        公開
+                                    </label>
 
-                                <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
-                                    class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
-                                    <input type="radio" name="is_show" value="0" class="hidden" x-model.number="is_show">
-                                    非公開
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
+                                    <label :class="is_show == 0 ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700'"
+                                        class="px-4 py-2 rounded-full cursor-pointer transition-colors duration-200">
+                                        <input type="radio" name="is_show" value="0" class="hidden"
+                                            x-model.number="is_show">
+                                        非公開
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
 
                     </tbody>
                 </table>
 
-                <div class="flex gap-3 mt-6 justify-center">
+                <div class="flex gap-3 mt-6 justify-start">
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-sm transition">
                         保存する

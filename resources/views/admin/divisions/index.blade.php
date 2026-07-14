@@ -7,8 +7,8 @@
         <div class="flex items-center justify-between mb-4">
             <!-- 新規作成 -->
             <a href="{{ route('admin.divisions.create') }}"
-                class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                class="bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
         </div>
@@ -20,7 +20,7 @@
         <div class="overflow-x-auto">
 
             <table class="table-auto border-collapse border w-full text-sm">
-                <thead class="bg-gray-100">
+                <thead class="bg-gray-800">
                     <tr>
                         <th class="border px-4 py-2 text-center w-12">No.</th>
                         <th class="border px-4 py-2">コード</th>

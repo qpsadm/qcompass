@@ -38,24 +38,29 @@
     }">
 
         <h1 class="text-2xl font-bold mb-4 text-gray-800">名言一覧</h1>
+        <!-- 上部操作バー -->
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-4 gap-3">
 
-        {{-- 新規作成 --}}
-        <div class="flex justify-between mb-4">
-            <a href="{{ route('admin.quotes.create') }}"
-                class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
-                <span class="hidden lg:inline ml-1">新規作成</span>
-            </a>
-        </div>
+            {{-- 新規作成 --}}
+            <div class="flex justify-between">
+                <a href="{{ route('admin.quotes.create') }}"
+                    class="bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                    {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
+                    <span class="hidden lg:inline ml-1">新規作成</span>
+                </a>
+            </div>
 
-        {{-- 検索 --}}
-        <div class="flex items-center mb-4 gap-2">
-            <input type="text" x-model="search" placeholder="原文・作者で検索" @keydown.enter.prevent="submitForm()"
-                class="border px-3 py-2 rounded w-full max-w-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button @click="submitForm()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                検索
-            </button>
-            <button x-show="search" @click="clearSearch()" class="text-gray-500 hover:text-gray-700 px-2 py-1">クリア</button>
+            {{-- 検索 --}}
+            <div class="flex items-center gap-2">
+                <input type="text" x-model="search" placeholder="原文・作者で検索" @keydown.enter.prevent="submitForm()"
+                    class="border px-3 py-2 rounded w-64 max-w-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button @click="submitForm()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                    検索
+                </button>
+                <button x-show="search" @click="clearSearch()"
+                    class="text-gray-500 hover:text-gray-700 px-2 py-1">クリア</button>
+            </div>
+
         </div>
 
         {{-- ページネーション（上） --}}

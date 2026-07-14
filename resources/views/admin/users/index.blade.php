@@ -26,7 +26,7 @@
                 </button>
             </form> --}}
                 <a href="{{ route('admin.users.create') }}"
-                    class="bg-blue-600 px-4 py-2 mr-1 text-white rounded hover:bg-blue-300 hover:text-white transition flex items-center space-x-1">
+                    class="bg-yellow-400 border border-gray-200 px-4 py-2 mr-1 text-black rounded hover:bg-blue-300 hover:text-white transition flex items-center space-x-1">
                     {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                     <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>

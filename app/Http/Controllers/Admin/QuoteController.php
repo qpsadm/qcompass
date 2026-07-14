@@ -85,11 +85,11 @@ class QuoteController extends Controller
         $request->validate([
             'quote_full' => 'required|string|max:255',
             'author_full' => 'required|string|max:255',
-            'quote_parts.A' => 'required|string|max:255',
-            'quote_parts.B' => 'required|string|max:255',
-            'quote_parts.C' => 'required|string|max:255',
-            'author_parts.A' => 'required|string|max:255',
-            'author_parts.B' => 'required|string|max:255',
+            // 'quote_parts.A' => 'required|string|max:255',
+            // 'quote_parts.B' => 'required|string|max:255',
+            // 'quote_parts.C' => 'required|string|max:255',
+            // 'author_parts.A' => 'required|string|max:255',
+            // 'author_parts.B' => 'required|string|max:255',
         ]);
 
         // 原文保存
@@ -100,24 +100,24 @@ class QuoteController extends Controller
         ]);
 
         // 名言パーツ保存
-        foreach ($request->quote_parts as $part => $text) {
-            QuotePart::create([
-                'quote_id' => $quote->id,
-                'part_type' => $part,
-                'text' => $text,
-                'weight' => 100,
-            ]);
-        }
+        // foreach ($request->quote_parts as $part => $text) {
+        //     QuotePart::create([
+        //         'quote_id' => $quote->id,
+        //         'part_type' => $part,
+        //         'text' => $text,
+        //         'weight' => 100,
+        //     ]);
+        // }
 
         // 作者パーツ保存
-        foreach ($request->author_parts as $part => $text) {
-            AuthorPart::create([
-                'quote_id' => $quote->id,
-                'part_type' => $part,
-                'text' => $text,
-                'weight' => 100,
-            ]);
-        }
+        // foreach ($request->author_parts as $part => $text) {
+        //     AuthorPart::create([
+        //         'quote_id' => $quote->id,
+        //         'part_type' => $part,
+        //         'text' => $text,
+        //         'weight' => 100,
+        //     ]);
+        // }
 
         return redirect()->route('admin.quotes.index')->with('success', '名言を登録しました。');
     }
@@ -135,11 +135,11 @@ class QuoteController extends Controller
         $request->validate([
             'quote_full' => 'required|string|max:255',
             'author_full' => 'nullable|string|max:255',
-            'quote_parts.A' => 'required|string|max:255',
-            'quote_parts.B' => 'required|string|max:255',
-            'quote_parts.C' => 'required|string|max:255',
-            'author_parts.A' => 'required|string|max:255',
-            'author_parts.B' => 'required|string|max:255',
+            // 'quote_parts.A' => 'required|string|max:255',
+            // 'quote_parts.B' => 'required|string|max:255',
+            // 'quote_parts.C' => 'required|string|max:255',
+            // 'author_parts.A' => 'required|string|max:255',
+            // 'author_parts.B' => 'required|string|max:255',
         ]);
 
         // 原文更新
@@ -149,32 +149,32 @@ class QuoteController extends Controller
         ]);
 
         // 名言パーツ更新
-        foreach ($request->quote_parts as $part => $text) {
-            $quotePart = $quote->quoteParts()->where('part_type', $part)->first();
-            if ($quotePart) {
-                $quotePart->update(['text' => $text]);
-            } else {
-                $quote->quoteParts()->create([
-                    'part_type' => $part,
-                    'text' => $text,
-                    'weight' => 100,
-                ]);
-            }
-        }
+        // foreach ($request->quote_parts as $part => $text) {
+        //     $quotePart = $quote->quoteParts()->where('part_type', $part)->first();
+        //     if ($quotePart) {
+        //         $quotePart->update(['text' => $text]);
+        //     } else {
+        //         $quote->quoteParts()->create([
+        //             'part_type' => $part,
+        //             'text' => $text,
+        //             'weight' => 100,
+        //         ]);
+        //     }
+        // }
 
         // 作者パーツ更新
-        foreach ($request->author_parts as $part => $text) {
-            $authorPart = $quote->authorParts()->where('part_type', $part)->first();
-            if ($authorPart) {
-                $authorPart->update(['text' => $text]);
-            } else {
-                $quote->authorParts()->create([
-                    'part_type' => $part,
-                    'text' => $text,
-                    'weight' => 100,
-                ]);
-            }
-        }
+        // foreach ($request->author_parts as $part => $text) {
+        //     $authorPart = $quote->authorParts()->where('part_type', $part)->first();
+        //     if ($authorPart) {
+        //         $authorPart->update(['text' => $text]);
+        //     } else {
+        //         $quote->authorParts()->create([
+        //             'part_type' => $part,
+        //             'text' => $text,
+        //             'weight' => 100,
+        //         ]);
+        //     }
+        // }
 
         return redirect()->route('admin.quotes.index')->with('success', '名言を更新しました。');
     }

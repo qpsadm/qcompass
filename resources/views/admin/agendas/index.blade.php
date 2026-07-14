@@ -10,8 +10,8 @@
 
             {{-- 新規作成 --}}
             <a href="{{ route('admin.agendas.create') }}"
-                class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
-                <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
+                class="bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
 
@@ -20,7 +20,7 @@
                 class="flex items-center space-x-2 flex-1 justify-end">
 
                 {{-- カテゴリー --}}
-                <select name="category_id" class="border px-2 py-1 rounded">
+                <select name="category_id" class="border px-2 py-2 rounded">
                     <option value="">全てのカテゴリー</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -30,7 +30,7 @@
                 </select>
 
                 {{-- ステータス --}}
-                <select name="status" class="border px-2 py-1 rounded">
+                <select name="status" class="border px-2 py-2 rounded">
                     <option value="">全てのステータス</option>
                     <option value="yes" {{ request('status') == 'yes' ? 'selected' : '' }}>承認済み</option>
                     <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>下書き</option>
@@ -38,10 +38,10 @@
 
                 {{-- キーワード --}}
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="アジェンダ名で検索"
-                    class="border px-2 py-1 rounded w-60">
+                    class="border px-2 py-2 rounded w-60">
 
                 {{-- 検索ボタン --}}
-                <button type="submit" class="bg-blue-500 px-4 py-1 text-white rounded hover:bg-blue-600 transition">
+                <button type="submit" class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
                     検索
                 </button>
 

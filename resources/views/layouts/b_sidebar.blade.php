@@ -6,10 +6,11 @@
 
     <aside id="sidebar"
         class="fixed top-12 left-0 w-64 h-[calc(100vh-4rem)]
-           bg-indigo-500  text-neutral-100 p-6 z-40
+           bg-gray-500 text-neutral-100 p-6 z-40
            transform transition-transform duration-300
            -translate-x-full lg:translate-x-0
-           overflow-y-auto hide-scrollbar">
+           overflow-y-auto hide-scrollbar"
+        style="background-color: #4682b4;">
 
         {{-- SP用 閉じる --}}
         <button id="sidebar-close" class="lg:hidden mb-4 text-sm text-right w-full text-gray-700">
