@@ -58,7 +58,8 @@
                             <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
                                 表示フラグ
                             </th>
-                            <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', $agenda->is_show ?? 0) }} }">
+
+                            <td class="px-4 py-2" x-data="{ is_show: {{ old('is_show', $agenda->is_show ?? 1) }} }">
                                 <div class="flex gap-2">
                                     <label :class="is_show == 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'"
                                         class="px-4 py-2 rounded-full cursor-pointer transition">

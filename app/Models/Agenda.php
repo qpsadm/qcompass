@@ -26,9 +26,9 @@ class Agenda extends Model
         'deleted_user_name',
     ];
 
-    protected $casts = [
-        'is_show' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'is_show' => 'boolean',
+    // ];
 
     /*
     |--------------------------------------------------------------------------

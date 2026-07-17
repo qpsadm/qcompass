@@ -117,7 +117,7 @@ class AgendaController extends Controller
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'required|integer',
-            'is_show' => 'nullable|boolean',
+            'is_show' => 'nullable|in:0,1',
             'status' => 'required|in:yes,draft',
             'content' => 'nullable|string',
         ]);
@@ -159,7 +159,7 @@ class AgendaController extends Controller
         $validated = $request->validate([
             'agenda_name' => 'required|string|max:255',
             'category_id' => 'required|integer',
-            'is_show' => 'nullable|boolean',
+            'is_show' => 'nullable|in:0,1',
             'status' => 'required|in:yes,draft',
             'content' => 'nullable|string',
         ]);

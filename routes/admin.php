@@ -25,7 +25,7 @@ use App\Http\Controllers\Admin\{
     QuizController,
     QuizQuestionController,
     ReportController,
-    AchievementController,
+    // AchievementController,
     AchievementsReleaseController,
     UserDetailController,
     QuizResultController,
@@ -208,8 +208,8 @@ Route::middleware([
     /* =============================
      * 実績管理（6,7,8）※保留
      * ============================= */
-    Route::middleware('role:6,7,8')->group(function () {
-        Route::resource('achievements', AchievementController::class);
-        Route::resource('achievements_release', AchievementsReleaseController::class);
-    });
+    // Route::middleware('role:6,7,8')->group(function () {
+    //     Route::resource('achievements', AchievementController::class);
+    //     Route::resource('achievements_release', AchievementsReleaseController::class);
+    // });
 });
