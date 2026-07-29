@@ -37,7 +37,7 @@
 
             {{-- 新規作成 --}}
             <a href="{{ route('admin.announcements.create') }}"
-                class="bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 transition flex items-center space-x-1">
+                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 transition flex items-center space-x-1">
                 {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span>新規作成</span>
             </a>
@@ -84,10 +84,10 @@
                 </button>
                 @if (request()->query())
                     {{-- リセットボタン --}}
-                    <a href="{{ route('admin.announcements.index') }}"
+                    {{-- <a href="{{ route('admin.announcements.index') }}"
                         class="bg-gray-300 px-4 py-2 text-gray-800 rounded hover:bg-gray-400 transition">
                         リセット
-                    </a>
+                    </a> --}}
                 @endif
             </form>
         </div>

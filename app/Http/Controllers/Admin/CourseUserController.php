@@ -15,13 +15,13 @@ class CourseUserController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->get('sort', 'created_at');
+        $sort = $request->get('sort', 'user');
         $direction = $request->get('direction', 'desc');
 
         // 許可するカラム
         $sortable = [
-            'user' => 'users.name',
-            'course' => 'courses.course_name',
+            'user' => 'users.id',
+            'course' => 'courses.course_code',
             'created_at' => 'course_users.created_at',
         ];
 
@@ -50,10 +50,14 @@ class CourseUserController extends Controller
     public function create()
     {
         $users = User::where('role_id', 3) // 受講生のみ
-            ->orderBy('name')
+            ->where('is_show', '1')
+            ->where('deleted_at', null)
+            ->orderBy('id', 'desc')
             ->get();
 
-        $courses = Course::orderBy('course_name')->get();
+        $courses = Course::where('is_show', '1')
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'desc')->get();
 
         return view('admin.course_users.create', compact('users', 'courses'));
     }
@@ -83,11 +87,16 @@ class CourseUserController extends Controller
         $courseUser = CourseUser::findOrFail($id);
 
         $users = User::where('role_id', 3) // 受講生のみ
-            ->orWhere('id', $courseUser->user_id) // 現在の受講者も含める
-            ->orderBy('name')
+            ->where('is_show', '1')
+            ->where('deleted_at', null)
+
+            // ->orWhere('id', $courseUser->user_id) // 現在の受講者も含める
+            ->orderBy('id', 'desc')
             ->get();
 
-        $courses = Course::orderBy('course_name')->get();
+        $courses = Course::where('is_show', '1')
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'desc')->get();
 
         return view('admin.course_users.edit', compact('courseUser', 'users', 'courses'));
     }

@@ -15,7 +15,7 @@
                 編集
             </a>
             <a href="{{ route('admin.levels.index') }}"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
+                class="back bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition">
                 一覧に戻る
             </a>
         </div>

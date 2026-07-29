@@ -125,12 +125,12 @@
 
                 <!-- 操作ボタン -->
                 <div class="mt-6 flex gap-3">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                    <button type="submit" class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                         {{ isset($quote) ? '更新する' : '登録する' }}
                     </button>
 
                     <a href="{{ route('admin.quotes.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+                        class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                         一覧に戻る
                     </a>
                 </div>

@@ -18,7 +18,8 @@
             </div>
             <a href="{{ route('admin.job_offers.edit', $job_offer->id) }}"
                 class="bg-blue-500 text-white px-4 py-2 rounded">編集</a>
-            <a href="{{ route('admin.job_offers.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">一覧に戻る</a>
+            <a href="{{ route('admin.job_offers.index') }}"
+                class="back bg-gray-500 text-white px-4 py-2 rounded ml-2">一覧に戻る</a>
         </div>
     </div>
 @endsection

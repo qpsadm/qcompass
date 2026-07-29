@@ -20,7 +20,7 @@
         @if (!empty($targetId))
             <div class="mb-4">
                 <a href="{{ route('admin.files.create', ['type' => $type, 'targetId' => $targetId]) }}"
-                    class="bg-yellow-400 border border-gray-200 text-black px-4 py-2 rounded hover:bg-blue-600">
+                    class="new bg-yellow-400 border border-gray-200 text-black px-4 py-2 rounded hover:bg-blue-600">
                     新規作成
                 </a>
             </div>

@@ -14,6 +14,6 @@
 
         </div>
         <a href="{{ route('admin.categories.edit', $Category->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded">編集</a>
-        <a href="{{ route('admin.categories.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">一覧に戻る</a>
+        <a href="{{ route('admin.categories.index') }}" class="back bg-gray-500 text-white px-4 py-2 rounded ml-2">一覧に戻る</a>
     </div>
 @endsection

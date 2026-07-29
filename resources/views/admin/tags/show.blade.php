@@ -17,7 +17,7 @@
                     編集
                 </a>
                 <a href="{{ route('admin.tags.index') }}"
-                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+                    class="back bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
                     一覧に戻る
                 </a>
             </div>

@@ -13,7 +13,7 @@
 
             <div class="mb-4 flex justify-between items-center">
                 <a href="{{ route('admin.notices.create') }}"
-                    class="px-4 py-2 rounded
+                    class="new px-4 py-2 rounded
           border border-blue-500
           text-gray-900
           hover:bg-blue-600 hover:text-white

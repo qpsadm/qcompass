@@ -42,11 +42,11 @@
                 <!-- ボタン -->
                 <div class="flex items-center gap-2 mt-4">
                     <button type="submit"
-                        class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
+                        class="save bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
                         更新
                     </button>
                     <a href="{{ route('admin.roles.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
+                        class="back bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded shadow-sm transition">
                         一覧に戻る
                     </a>
                 </div>

@@ -6,7 +6,7 @@
 
         <div class="flex items-center justify-between mb-4">
             <a href="{{ route('admin.achievements.create') }}"
-                class="bg-yellow-400 border border-gray-200 px-4 py-2 rounded hover:bg-blue-600 text-black flex items-center space-x-1">
+                class="new bg-yellow-400 border border-gray-200 px-4 py-2 rounded hover:bg-blue-600 text-black flex items-center space-x-1">
                 <span>新規作成</span>
             </a>
         </div>

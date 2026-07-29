@@ -7,10 +7,10 @@
 
             <!-- ヘッダー -->
             <div class="mb-6">
-                <a href="{{ route('admin.course_users.index') }}"
+                {{-- <a href="{{ route('admin.course_users.index') }}"
                     class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                     ← 講座受講者一覧に戻る
-                </a>
+                </a> --}}
                 <h1 class="text-2xl font-bold text-gray-800">
                     講座受講者 編集
                 </h1>
@@ -47,15 +47,15 @@
                                 <select name="user_id"
                                     class="w-full border rounded px-3 py-2
                                            focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required>
+                                    required disabled>
                                     <option value="">選択してください</option>
                                     @foreach ($users as $user)
-                                        @if ($user->role_id >= 4)
-                                            <option value="{{ $user->id }}"
-                                                {{ old('user_id', $courseUser->user_id) == $user->id ? 'selected' : '' }}>
-                                                {{ $user->name }}
-                                            </option>
-                                        @endif
+                                        {{-- @if ($user->role_id >= 4) --}}
+                                        <option value="{{ $user->id }}"
+                                            {{ old('user_id', $courseUser->user_id) == $user->id ? 'selected' : '' }}>
+                                            【{{ $user->code }}】 {{ $user->name }}
+                                        </option>
+                                        {{-- @endif --}}
                                     @endforeach
                                 </select>
                                 @error('user_id')
@@ -81,7 +81,7 @@
                                     @foreach ($courses as $course)
                                         <option value="{{ $course->id }}"
                                             {{ old('course_id', $courseUser->course_id) == $course->id ? 'selected' : '' }}>
-                                            {{ $course->course_name }}
+                                            【{{ $course->course_code }}】 {{ $course->course_name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -96,11 +96,11 @@
 
                 <!-- 操作ボタン -->
                 <div class="mt-6 flex gap-3">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                    <button type="submit" class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                         更新する
                     </button>
                     <a href="{{ route('admin.course_users.index') }}"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+                        class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                         一覧に戻る
                     </a>
                 </div>
