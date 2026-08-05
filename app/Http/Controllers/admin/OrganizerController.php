@@ -48,7 +48,7 @@ class OrganizerController extends Controller
         $direction = $request->get('direction', 'asc'); // asc / desc
 
         // ソート可能なカラムを限定（安全対策）
-        $sortable = ['id', 'name'];
+        $sortable = ['id', 'name', 'updated_at'];
         if (!in_array($sort, $sortable)) {
             $sort = 'id';
         }

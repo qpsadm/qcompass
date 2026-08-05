@@ -162,7 +162,9 @@
                             <p class="division-tel">（{{ $divisions->tel ?? '未設定' }}）</p>
                         </div>
                         <div class="btn-area">
-                            <button class="open-btn-profile">プロフィールをみる</button>
+                            {{-- 2026/07/31 fukushima コメントアウト --}}
+                            {{-- <button class="open-btn-profile">プロフィールをみる</button> --}}
+
                             <button class="open-btn-avatar">アイコン変更</button>
                             <button class="open-btn-customize">カスタマイズ</button>
                         </div>

@@ -34,11 +34,12 @@ class AgendaController extends Controller
         }
 
         // 並び替え用
-        $sort = $request->sort ?? null;
+        // $sort = $request->sort ?? null;
+        $sort = $request->get('sort', 'updated_at');          // デフォルト No.(id)
         $direction = $request->direction ?? 'desc';
 
         // ソート可能カラム
-        $allowedSort = ['agenda_name', 'status', 'created_user_name', 'created_at', 'updated_at', 'id'];
+        $allowedSort = ['agenda_name', 'status', 'created_user_name', 'created_at', 'updated_at', 'id', 'category_id'];
 
         if ($sort && in_array($sort, $allowedSort)) {
             $query->orderBy($sort, $direction)->orderBy('id', 'desc');

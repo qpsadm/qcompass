@@ -3,14 +3,14 @@
 @section('content')
     <div class="container mx-auto p-4 min-h-screen">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 w-full">
 
             <!-- ヘッダー -->
             <div class="mb-6">
-                <a href="{{ route('admin.categories.index') }}"
+                {{-- <a href="{{ route('admin.categories.index') }}"
                     class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                     ← カテゴリー一覧に戻る
-                </a>
+                </a> --}}
                 <h1 class="text-2xl font-bold text-gray-800">カテゴリー 作成</h1>
             </div>
 
@@ -28,7 +28,7 @@
             <div class="flex gap-6">
 
                 {{-- 左：親カテゴリ選択 --}}
-                <div class="w-1/3 bg-gray-50 p-4 rounded-lg border">
+                <div class="w-1/2 bg-gray-50 p-4 rounded-lg border">
                     <h2 class="font-semibold mb-3 text-gray-700">親カテゴリを選択</h2>
 
                     <ul class="space-y-2 text-sm">
@@ -59,7 +59,7 @@
 
                                 <!-- コード -->
                                 <tr class="border-b">
-                                    <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                                    <th class="w-1/3 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                                         コード
                                         <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                                             必須

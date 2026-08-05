@@ -129,7 +129,7 @@
                                 備考
                             </th>
                             <td class="px-4 py-3">
-                                <textarea name="memo" class="border rounded px-3 py-2 w-64">{{ old('memo', $division->memo ?? '') }}</textarea>
+                                <textarea name="memo" class="border rounded px-3 py-2 w-full">{{ old('memo', $division->memo ?? '') }}</textarea>
                             </td>
                         </tr>
                     </tbody>

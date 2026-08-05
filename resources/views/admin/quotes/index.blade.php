@@ -73,37 +73,24 @@
             <table class="table-auto w-full border border-gray-200 text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <th class="border px-4 py-2 text-center w-20 cursor-pointer" @click="toggleSort('id')">
-                            ID
+                        <th class="sort-cl border px-4 py-2 text-center w-24 cursor-pointer" @click="toggleSort('id')">
+                            No.
                             <span x-show="sort==='id'">
                                 <span x-show="direction==='asc'">&#9650;</span>
                                 <span x-show="direction==='desc'">&#9660;</span>
                             </span>
                         </th>
-                        <th class="border px-4 py-2 cursor-pointer" @click="toggleSort('quote_full')">
-                            原文
-                            <span x-show="sort==='quote_full'">
-                                <span x-show="direction==='asc'">&#9650;</span>
-                                <span x-show="direction==='desc'">&#9660;</span>
-                            </span>
-                        </th>
-                        <th class="border px-4 py-2 cursor-pointer" @click="toggleSort('author_full')">
-                            作者
-                            <span x-show="sort==='author_full'">
-                                <span x-show="direction==='asc'">&#9650;</span>
-                                <span x-show="direction==='desc'">&#9660;</span>
-                            </span>
-                        </th>
-                        <th class="border px-4 py-2 w-60 cursor-pointer" @click="toggleSort('updated_at')">
+                        <th class="border px-4 py-2 text-center">原文</th>
+                        <th class="border px-4 py-2 text-center w-40">作者名</th>
+                        <th class="border px-4 py-2">表示</th>
+                        <th class="sort-cl border px-4 py-2 w-40 cursor-pointer" @click="toggleSort('updated_at')">
                             更新日時
                             <span x-show="sort==='updated_at'">
                                 <span x-show="direction==='asc'">&#9650;</span>
                                 <span x-show="direction==='desc'">&#9660;</span>
                             </span>
                         </th>
-
-                        <th class="border px-4 py-2">表示</th>
-
+                        <th class="border px-4 py-2 w-32">更新者名</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -117,9 +104,6 @@
                                 </a>
                             </td>
                             <td class="border px-4 py-2">{{ $quote->author_full }}</td>
-
-                            <td class="border px-4 py-2 text-center">{{ $quote->updated_at }}</td>
-
                             <td class="border px-4 py-2 text-center">
                                 @if ($quote->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
@@ -131,7 +115,8 @@
                                     </span>
                                 @endif
                             </td>
-
+                            <td class="border px-4 py-2 text-center">{{ $quote->updated_at }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $quote->updated_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

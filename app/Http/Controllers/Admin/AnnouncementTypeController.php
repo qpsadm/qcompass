@@ -13,19 +13,22 @@ class AnnouncementTypeController extends Controller
     {
         // クエリパラメータでソート対象と方向を取得
         $sort = $request->query('sort', 'id'); // デフォルト id
-        $direction = $request->query('direction', 'desc'); // デフォルト desc
+        $direction = $request->query('direction', 'asc'); // デフォルト desc
 
         // 安全のため、許可するカラムのみ
-        $allowedSorts = ['id', 'type_name', 'is_show'];
+        $allowedSorts = ['id', 'is_show', 'updated_at'];
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'id';
         }
 
-        $direction = $direction === 'asc' ? 'asc' : 'desc';
+        $types = AnnouncementType::orderBy($sort, $direction)
+            ->paginate(20)
+            ->withQueryString();
 
-        $types = AnnouncementType::orderBy($sort, $direction)->paginate(20)->withQueryString();
-
-        return view('admin.announcement_types.index', compact('types', 'sort', 'direction'));
+        return view(
+            'admin.announcement_types.index',
+            compact('types', 'sort', 'direction')
+        );
     }
 
 

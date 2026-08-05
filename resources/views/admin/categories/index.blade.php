@@ -24,7 +24,8 @@
             </a>
         </div>
 
-        <div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto">
+        {{-- <div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto"> --}}
+        <div class="bg-white w-full py-2 overflow-x-auto">
             @include('admin.categories.partials.category-tree', ['categories' => $categories])
         </div>
 

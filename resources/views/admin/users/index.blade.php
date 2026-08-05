@@ -111,7 +111,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 w-12" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-20" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $sort === 'id' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 No.
@@ -120,7 +120,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'code', 'order' => $sort === 'code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 ユーザーコード
@@ -129,14 +129,14 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-32">氏名</th>
+                        <th class="border px-4 py-2 w-24">氏名</th>
                         <th class="border px-4 py-2 w-40">所属講座</th>
                         <th class="border px-4 py-2 w-24">電話番号</th>
-                        <th class="border px-4 py-2 w-24">権限</th>
-                        <th class="border px-4 py-2 w-16">状態</th>
+                        <th class="border px-4 py-2 w-20">権限</th>
+                        {{-- <th class="border px-4 py-2 w-16">状態</th> --}}
                         <th class="border px-4 py-2 w-16">表示</th>
-                        <th class="border px-4 py-2 w-24">作成日</th>
-                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                        <th class="border px-4 py-2 w-32">作成日</th>
+                        <th class="sort-cl border px-4 py-2 w-32" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 更新日
@@ -156,7 +156,7 @@
                             <td class="border px-4 py-2">{{ $user->code }}</td>
                             <td class="border px-4 py-2">
                                 <a href="{{ route('admin.users.show', $user->id) }}" class="text-blue-600 hover:underline">
-                                    {{ $user->name }} ({{ $user->id }})
+                                    {{ $user->name }}
                                 </a>
                             </td>
                             <td class="border px-4 py-2">
@@ -168,7 +168,7 @@
                             </td>
                             <td class="border px-4 py-2">{{ $user->detail->phone1 ?? 'なし' }}</td>
                             <td class="border px-4 py-2">{{ $user->role->role_name ?? 'なし' }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $user->detail?->status_label }}</td>
+                            {{-- <td class="border px-4 py-2 text-center">{{ $user->detail?->status_label }}</td> --}}
                             <td class="border px-4 py-2 text-center">
                                 @if ($course->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>

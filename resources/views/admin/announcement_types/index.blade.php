@@ -24,16 +24,11 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <!-- No.列（矢印なし） -->
-                        <th class="border px-4 py-2 text-center w-12">
-                            No.
-                        </th>
-
-                        <!-- ID列（ソート可能） -->
-                        <th class="border px-4 py-2 text-center w-16">
+                        <!-- No.列（IDでソート可能） -->
+                        <th class="sort-cl border px-4 py-2 text-center w-20">
                             <a href="{{ route('admin.announcement_types.index', ['sort' => 'id', 'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc']) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
-                                ID
+                                No.
                                 @if ($sort === 'id')
                                     <span class="text-xs">{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
@@ -41,10 +36,10 @@
                         </th>
 
                         <!-- 種別名 -->
-                        <th class="border px-4 py-2">
+                        <th class="border px-4 py-2 text-center">
                             <a href="{{ route('admin.announcement_types.index', ['sort' => 'type_name', 'direction' => $sort === 'type_name' && $direction === 'asc' ? 'desc' : 'asc']) }}"
                                 class="flex items-center gap-1 hover:underline">
-                                種別名
+                                カテゴリ名
                                 @if ($sort === 'type_name')
                                     <span class="text-xs">{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
@@ -53,14 +48,30 @@
 
                         <!-- 表示 -->
                         <th class="border px-4 py-2 text-center w-24">
-                            <a href="{{ route('admin.announcement_types.index', ['sort' => 'is_show', 'direction' => $sort === 'is_show' && $direction === 'asc' ? 'desc' : 'asc']) }}"
+                            表示
+                            {{-- <a href="{{ route('admin.announcement_types.index', ['sort' => 'is_show', 'direction' => $sort === 'is_show' && $direction === 'asc' ? 'desc' : 'asc']) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 表示
                                 @if ($sort === 'is_show')
                                     <span class="text-xs">{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
+                            </a> --}}
+                        </th>
+
+                        <th class="sort-cl border px-4 py-2 w-40">
+                            {{-- 更新日時 --}}
+                            <a href="{{ route('admin.announcement_types.index', [
+                                'sort' => 'updated_at',
+                                'direction' => $sort === 'updated_at' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日時
+                                @if ($sort === 'updated_at')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
                             </a>
                         </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
                     </tr>
                 </thead>
 
@@ -71,7 +82,7 @@
                             <td class="border px-4 py-2 text-center">
                                 {{ ($types->currentPage() - 1) * $types->perPage() + $loop->iteration }}
                             </td>
-                            <td class="border px-4 py-2 text-center">{{ $item->id }}</td>
+                            {{-- <td class="border px-4 py-2 text-center">{{ $item->id }}</td> --}}
                             <td class="border px-4 py-2">
                                 <a href="{{ route('admin.announcement_types.edit', $item->id) }}"
                                     class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
@@ -85,6 +96,8 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
+                            <td class="border px-4 py-2 text-center">{{ $item->updated_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $item->updated_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

@@ -25,18 +25,48 @@
                 <table class="table-auto border-collapse border w-full text-sm">
                     <thead class="bg-gray-100 text-gray-700">
                         <tr>
-                            <th class="border px-4 py-2 w-12 text-center">
-                                No.
+                            <th class="sort-cl border px-4 py-2 w-20 text-center">
+                                {{-- No. --}}
+                                <a href="{{ route('admin.course_type.index', [
+                                    'sort' => 'id',
+                                    'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
+                                ]) }}"
+                                    class="flex items-center justify-center gap-1 hover:underline">
+                                    No.
+                                    @if ($sort === 'id')
+                                        <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                    @endif
+                                </a>
                             </th>
-                            <th class="border px-4 py-2">
-                                分野名
+
+                            <th class="border px-4 py-2">分野名</th>
+                            <th class="sort-cl border px-4 py-2  w-64">
+                                <a href="{{ route('admin.course_type.index', [
+                                    'sort' => 'organizer_id',
+                                    'direction' => $sort === 'organizer_id' && $direction === 'asc' ? 'desc' : 'asc',
+                                ]) }}"
+                                    class="flex items-center justify-center gap-1 hover:underline">
+                                    実施団体
+                                    @if ($sort === 'organizer_id')
+                                        <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                    @endif
+                                </a>
                             </th>
-                            <th class="border px-4 py-2">
-                                実施団体
+                            <th class="border px-4 py-2 text-center w-24">表示</th>
+
+                            <th class="sort-cl border px-4 py-2 text-center w-40">
+                                <a href="{{ route('admin.course_type.index', [
+                                    'sort' => 'updated_at',
+                                    'direction' => $sort === 'updated_at' && $direction === 'asc' ? 'desc' : 'asc',
+                                ]) }}"
+                                    class="flex items-center justify-center gap-1 hover:underline">
+                                    更新日時
+                                    @if ($sort === 'updated_at')
+                                        <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                    @endif
+                                </a>
                             </th>
-                            <th class="border px-4 py-2 text-center w-24">
-                                表示
-                            </th>
+                            <th class="border px-4 py-2 text-center w-32">更新者名</th>
                         </tr>
                     </thead>
 
@@ -70,6 +100,9 @@
                                         </span>
                                     @endif
                                 </td>
+                                <td class="border px-4 py-2 text-center">{{ $courseType->updated_at->format('Y/m/d H:i') }}
+                                </td>
+                                <td class="border px-4 py-2">{{ $courseType->updated_user_name }}</td>
                             </tr>
                         @empty
                             <tr>

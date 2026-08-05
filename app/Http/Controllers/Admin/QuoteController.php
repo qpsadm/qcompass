@@ -60,7 +60,7 @@ class QuoteController extends Controller
 
         // ソート
         $sort = $request->input('sort', 'id');
-        $direction = $request->input('direction', 'desc');
+        $direction = $request->input('direction', 'asc');
         if (in_array($sort, ['id', 'quote_full', 'author_full', 'updated_at']) && in_array($direction, ['asc', 'desc'])) {
             $query->orderBy($sort, $direction);
         }

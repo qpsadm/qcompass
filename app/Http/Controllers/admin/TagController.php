@@ -42,7 +42,7 @@ class TagController extends Controller
         $direction = $request->get('direction', 'asc');
 
         // ホワイトリスト（安全対策）
-        $sortableColumns = ['id', 'name'];
+        $sortableColumns = ['id', 'code', 'name', 'updated_at'];
         if (!in_array($sort, $sortableColumns)) {
             $sort = 'id';
         }

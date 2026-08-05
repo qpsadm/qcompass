@@ -8,14 +8,31 @@ use Illuminate\Http\Request;
 
 class DivisionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'id');          // デフォルト No.
+        $direction = $request->get('direction', 'asc'); // asc / desc
+
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'code', 'name', 'is_show', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
         // 1ページあたり10件表示
-        $divisions = Division::orderBy('id')
+        $divisions = Division::orderBy($sort, $direction)
             ->paginate(10)
             ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
 
-        return view('admin.divisions.index', compact('divisions'));
+        return view(
+            'admin.divisions.index',
+            compact(
+                'divisions',
+                'sort',
+                'direction'
+            )
+        );
     }
 
     public function create()

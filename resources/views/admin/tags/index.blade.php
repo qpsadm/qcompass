@@ -24,7 +24,7 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <!-- No. 並び替え -->
-                        <th class="border px-4 py-2 w-12 text-center">
+                        <th class="sort-cl border px-4 py-2 w-12 text-center">
                             <a href="{{ route('admin.tags.index', [
                                 'sort' => 'id',
                                 'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
@@ -36,10 +36,23 @@
                                 @endif
                             </a>
                         </th>
-
+                        <th class="sort-cl border px-4 py-2 w-32">
+                            {{-- コード --}}
+                            <a href="{{ route('admin.tags.index', [
+                                'sort' => 'code',
+                                'direction' => $sort === 'code' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                タグコード
+                                @if ($sort === 'code')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
                         <!-- タグ名 並び替え -->
                         <th class="border px-4 py-2">
-                            <a href="{{ route('admin.tags.index', [
+                            タグ名
+                            {{-- <a href="{{ route('admin.tags.index', [
                                 'sort' => 'name',
                                 'direction' => $sort === 'name' && $direction === 'asc' ? 'desc' : 'asc',
                             ]) }}"
@@ -48,8 +61,25 @@
                                 @if ($sort === 'name')
                                     <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
+                            </a> --}}
+                        </th>
+                        <th class="border px-4 py-2 w-20">表示</th>
+                        <th class="sort-cl border px-4 py-2 w-40">
+                            {{-- 更新日時 --}}
+                            <a href="{{ route('admin.tags.index', [
+                                'sort' => 'updated_at',
+                                'direction' => $sort === 'updated_at' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日時
+                                @if ($sort === 'updated_at')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
                             </a>
                         </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
+                    </tr>
+
                     </tr>
                 </thead>
 
@@ -59,12 +89,21 @@
                             <td class="border px-4 py-2 text-center">
                                 {{ ($tags->currentPage() - 1) * $tags->perPage() + $loop->iteration }}
                             </td>
-
+                            <td class="border px-4 py-2">{{ $tag->code }}</td>
                             <td class="border px-4 py-2">
                                 <a href="{{ route('admin.tags.edit', $tag->id) }}" class="text-blue-600 hover:underline">
                                     {{ $tag->name }}
                                 </a>
                             </td>
+                            <td class="border px-4 py-2 text-center">
+                                @if ($tag->is_show)
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
+                                @else
+                                    <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
+                                @endif
+                            </td>
+                            <td class="border px-4 py-2 text-center">{{ $tag->updated_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $tag->updated_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

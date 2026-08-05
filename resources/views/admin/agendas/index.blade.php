@@ -46,12 +46,12 @@
                 </button>
 
                 {{-- リセットボタン --}}
-                @if (request()->query())
+                {{-- @if (request()->query())
                     <a href="{{ route('admin.agendas.index') }}"
                         class="bg-gray-300 px-4 py-1 text-gray-800 rounded hover:bg-gray-400 transition">
                         リセット
                     </a>
-                @endif
+                @endif --}}
             </form>
 
         </div>
@@ -70,24 +70,28 @@
                             $directionToggle = request('direction') === 'asc' ? 'desc' : 'asc';
                         @endphp
 
-                        <th class="border px-4 py-2 w-12" style="background-color: #2563eb;">
-                            <a
+                        <th class="border px-4 py-2 w-12">No.
+                            {{-- <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'id', 'direction' => $directionToggle])) }}">
                                 No.
                                 @if ($sort === 'id')
                                     <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
-                            </a>
+                            </a> --}}
                         </th>
                         <th class="border px-4 py-2 w-48">アジェンダ名</th>
-                        <th class="border px-4 py-2 w-32">カテゴリー
-                            @if ($sort === 'category_id')
-                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
-                            @endif
+
+                        <th class="sort-cl border px-4 py-2 w-32">
+                            <a
+                                href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'category_id', 'direction' => $directionToggle])) }}">
+                                カテゴリー
+                                @if ($sort === 'category_id')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
                             </a>
                         </th>
                         <th class="border px-4 py-2 w-20">表示</th>
-                        <th class="border px-4 py-2 w-20" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-20">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'status', 'direction' => $directionToggle])) }}">
                                 承認
@@ -98,7 +102,7 @@
                         </th>
                         <th class="border px-4 py-2 w-20">作成者</th>
                         <th class="border px-4 py-2 w-24">作成日</th>
-                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-24">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'updated_at', 'direction' => $directionToggle])) }}">
                                 更新日

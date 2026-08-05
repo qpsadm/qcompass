@@ -47,7 +47,7 @@
                                 <select name="user_id"
                                     class="w-full border rounded px-3 py-2
                                            focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required disabled>
+                                    required style="pointer-events: none;">
                                     <option value="">選択してください</option>
                                     @foreach ($users as $user)
                                         {{-- @if ($user->role_id >= 4) --}}

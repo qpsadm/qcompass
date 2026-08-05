@@ -22,11 +22,50 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-800">
                     <tr>
-                        <th class="border px-4 py-2 text-center w-12">No.</th>
-                        <th class="border px-4 py-2">コード</th>
-                        <th class="border px-4 py-2">部署名</th>
-                        <th class="border px-4 py-2">表示</th>
-                        <th class="border px-4 py-2">住所</th>
+                        <th class="sort-cl border px-4 py-2 text-center w-20">
+                            {{-- No. --}}
+                            <a href="{{ route('admin.divisions.index', [
+                                'sort' => 'id',
+                                'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                No.
+                                @if ($sort === 'id')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="sort-cl border px-4 py-2 w-32">
+                            {{-- コード --}}
+                            <a href="{{ route('admin.divisions.index', [
+                                'sort' => 'code',
+                                'direction' => $sort === 'code' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                部署コード
+                                @if ($sort === 'code')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border px-4 py-2 ">部署名</th>
+                        <th class="border px-4 py-2 w-40">電話番号</th>
+                        {{-- <th class="border px-4 py-2">住所</th> --}}
+                        <th class="border px-4 py-2 w-20">表示</th>
+                        <th class="sort-cl border px-4 py-2 w-40">
+                            {{-- 更新日時 --}}
+                            <a href="{{ route('admin.divisions.index', [
+                                'sort' => 'updated_at',
+                                'direction' => $sort === 'updated_at' && $direction === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日時
+                                @if ($sort === 'updated_at')
+                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +81,10 @@
                                     {{ $division->name }}
                                 </a>
                             </td>
+                            <td class="border px-4 py-2">{{ $division->tel }}</td>
+
+                            {{-- <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td> --}}
+
                             <td class="border px-4 py-2 text-center">
                                 @if ($division->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -49,7 +92,8 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
-                            <td class="border px-4 py-2">{{ $division->address ?? '-' }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $division->updated_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $division->updated_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

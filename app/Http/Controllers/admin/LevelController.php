@@ -18,7 +18,7 @@ class LevelController extends Controller
         $direction = $request->get('direction', 'asc'); // asc / desc
 
         // ソート可能カラム（安全対策）
-        $allowedSorts = ['id', 'code', 'name', 'is_show'];
+        $allowedSorts = ['id', 'code', 'name', 'is_show', 'updated_at'];
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'id';
         }
@@ -28,11 +28,14 @@ class LevelController extends Controller
             ->paginate(10)
             ->appends($request->query()); // ページ遷移時に保持
 
-        return view('admin.levels.index', compact(
-            'levels',
-            'sort',
-            'direction'
-        ));
+        return view(
+            'admin.levels.index',
+            compact(
+                'levels',
+                'sort',
+                'direction'
+            )
+        );
     }
 
     /**

@@ -7,10 +7,10 @@
 
             <!-- ヘッダー -->
             <div class="mb-6">
-                <a href="{{ route('admin.categories.index') }}"
+                {{-- <a href="{{ route('admin.categories.index') }}"
                     class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                     ← カテゴリー一覧に戻る
-                </a>
+                </a> --}}
                 <h1 class="text-2xl font-bold text-gray-800">カテゴリー 編集</h1>
             </div>
 

@@ -10,14 +10,24 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
-        $order = $request->get('order', 'desc'); // デフォルトは降順
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'id');          // デフォルト
+        $direction = $request->get('direction', 'asc'); // asc / desc
 
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'role_name', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
         // 1ページあたり10件でページネーション
-        $roles = Role::orderBy('id', $order)
+        $roles = Role::orderBy($sort, $direction)
             ->paginate(10)
             ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
 
-        return view('admin.roles.index', compact('roles'));
+        return view(
+            'admin.roles.index',
+            compact('roles', 'sort', 'direction')
+        );
     }
     public function create()
     {

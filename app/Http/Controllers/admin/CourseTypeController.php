@@ -43,13 +43,30 @@ class CourseTypeController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        // 1ページあたり10件でページネーション
-        $course_types = CourseType::with('organizer')->orderBy('name')->paginate(10);
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'id');    // デフォルト No.
+        $direction = $request->get('direction', 'asc');     // asc / desc
 
-        return view('admin.course_type.index', compact('course_types'));
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'organizer_id', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        // 1ページあたり10件でページネーション
+        $course_types = CourseType::with('organizer')
+            ->orderBy($sort, $direction)
+            ->paginate(10);
+
+        return view('admin.course_type.index', compact(
+            'course_types',
+            'sort',
+            'direction'
+        ));
     }
+
     public function create()
     {
         $organizers = Organizer::all();

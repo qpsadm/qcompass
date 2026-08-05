@@ -41,11 +41,13 @@
     --background-color-4: #4169E1;
     --background-color-5: #c47cb4;
     --background-color-6: #3450a4;
+    --background-color-7: #F4A460;
+
     --background-color-content: #E9EEFF;
     --background-color-table-1: #DDDDDD;
     --background-color-table-2: #FFF;
     --background-color-table-3: #D8EBFF;
-    --background-color-table-4: #F4A460;
+    --background-color-table-4: #DEB887;
     --submenu-background-color: #fff8dc;
 }
 
@@ -163,6 +165,10 @@
     color: var(--text-color-4);
 }
 
+/* ソート列のクラス */
+.sort-cl {
+    background-color: var(--background-color-5) !important;
+}
 
 /* ページネーション全体の基本スタイル（必要に応じて調整してください） */
 .pagination ul {
