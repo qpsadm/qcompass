@@ -82,7 +82,7 @@
                         <th class="px-4 py-2 bg-gray-100 text-right font-medium">住所1</th>
                         <td class="px-4 py-2">
                             <input type="text" name="address1" value="{{ old('address1', $detail->address1) }}"
-                                class="border rounded px-3 py-2 w-full">
+                                placeholder="都道府県・市区町村・番地" class="border rounded px-3 py-2 w-full">
                         </td>
                     </tr>
 
@@ -90,7 +90,7 @@
                         <th class="px-4 py-2 bg-gray-100 text-right font-medium">住所2</th>
                         <td class="px-4 py-2">
                             <input type="text" name="address2" value="{{ old('address2', $detail->address2) }}"
-                                class="border rounded px-3 py-2 w-full">
+                                placeholder="建物名・部屋番号" class="border rounded px-3 py-2 w-full">
                         </td>
                     </tr>
 
@@ -177,7 +177,7 @@
 
                     {{-- 理由 --}}
                     <tr class="border-b">
-                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">退社理由</th>
+                        <th class="px-4 py-2 bg-gray-100 text-right font-medium">退校・退社理由</th>
                         <td class="px-4 py-2">
                             <textarea name="leaving_reason" rows="3" class="border rounded px-3 py-2 w-full">{{ old('leaving_reason', $detail->leaving_reason) }}</textarea>
                         </td>

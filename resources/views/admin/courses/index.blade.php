@@ -25,7 +25,7 @@
             <div x-data="searchBox()" class="flex flex-wrap items-center gap-2 w-full lg:w-auto mt-2 lg:mt-0">
 
                 <form method="GET" action="{{ route('admin.courses.index') }}"
-                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0 justify-between gap-2" style="width: 460px;">
+                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0 justify-between gap-2">
                     {{-- 委託者 --}}
                     <select name="organizer_id" class="border px-2 py-1 rounded">
                         <option value="">全ての委託者</option>
@@ -104,7 +104,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="border px-4 py-2 w-12 text-center" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-12 text-center" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $sort === 'id' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 No.
@@ -113,7 +113,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                        <th class="sort-cl border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_code', 'order' => $sort === 'course_code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 講座コード
@@ -122,14 +122,14 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-48">講座名</th>
+                        <th class="border px-4 py-2 w-60">講座名</th>
                         {{-- <th class="border px-4 py-2 w-32">分野</th> --}}
                         <th class="border px-4 py-2 w-40">訓練期間</th>
-                        <th class="border px-4 py-2 w-24">受講生人数</th>
-                        <th class="border px-4 py-2 w-20">受講生一覧</th>
+                        <th class="border px-4 py-2 w-32">受講生人数</th>
+                        <th class="border px-4 py-2 w-32">受講生確認</th>
                         <th class="border px-4 py-2 w-20">表示</th>
-                        <th class="border px-4 py-2 w-24">作成日</th>
-                        <th class="border px-4 py-2 w-24" style="background-color: #2563eb;">
+                        <th class="border px-4 py-2 w-40">作成日</th>
+                        <th class="sort-cl border px-4 py-2 w-40" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 更新日
@@ -138,29 +138,31 @@
                                 @endif
                             </a>
                         </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($courses as $course)
                         <tr class="hover:bg-gray-50">
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 {{ ($courses->currentPage() - 1) * $courses->perPage() + $loop->iteration }}
                             </td>
-                            <td class="border px-4 py-2">{{ $course->course_code }}</td>
-                            <td class="border px-4 py-2">
+                            <td class="border px-2 py-2">{{ $course->course_code }}</td>
+                            <td class="border px-2 py-2">
                                 <a href="{{ route('admin.courses.show', $course->id) }}"
                                     class="text-blue-600 hover:underline">
-                                    {{ $course->course_name }}&nbsp;({{ $course->id }})<br>
+                                    {{ $course->course_name }}<br>
                                     {{ $course->certification_number }}
                                 </a>
                             </td>
-                            {{-- <td class="border px-4 py-2">{{ $course->courseType->name ?? '-' }}</td> --}}
-                            <td class="border px-4 py-2 text-center">{{ $course->start_date }} ～ {{ $course->end_date }}
+                            {{-- <td class="border px-2 py-2">{{ $course->courseType->name ?? '-' }}</td> --}}
+                            <td class="border px-2 py-2 text-center">開始日：{{ $course->start_date }}<br>
+                                修了日：{{ $course->end_date }}
                             </td>
-                            <td class="border px-4 py-2 text-center">入校：{{ $course->entering }}人
+                            <td class="border px-2 py-2 text-center">入校：{{ $course->entering }}人
                                 <br>修了：{{ $course->completed }}人
                             </td>
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 <a href="{{ route('admin.courses.students', $course->id) }}"
                                     class="inline-flex items-center justify-center
               w-9 h-9
@@ -176,19 +178,20 @@
                                 </a>
                             </td>
 
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 @if ($course->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
                                 @else
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
-                            <td class="border px-4 py-2 text-center">{{ $course->created_at->format('Y-m-d H:i') }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $course->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-center">{{ $course->created_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-center">{{ $course->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-left">{{ $course->updated_user_name }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="border px-4 py-2 text-center text-gray-500">データがありません</td>
+                            <td colspan="6" class="border px-2 py-2 text-center text-gray-500">データがありません</td>
                         </tr>
                     @endforelse
                 </tbody>

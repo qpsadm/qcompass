@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-4 max-w-5xl">
-        <h1 class="text-3xl font-bold mb-6">講座講師作成</h1>
+        <h1 class="text-3xl font-bold mb-6">講座・講師作成</h1>
 
         <form action="{{ route('admin.course_teachers.store') }}" method="POST">
             @csrf

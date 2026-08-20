@@ -11,20 +11,69 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseTeacherController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $course_teachers = CourseTeacher::with(['course', 'user'])
+        $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        $search     = $request->input('search');
+
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'id');          // デフォルト No.
+        $direction = $request->get('direction', 'asc'); // asc / desc
+
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'course_id', 'user_id', 'is_show', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        $course_teachers = CourseTeacher::query()
+            ->with(['course', 'user']);
+
+        // 🔍 検索
+        if ($search) {
+            $course_teachers->where(function ($q) use ($search) {
+                // user リレーション先の name カラムを検索
+                // もしコース名でも同時に検索したい場合は orWhereHas を追加
+                $q->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%");
+                })->orWhereHas('course', function ($courseQuery) use ($search) {
+                    $courseQuery->where('course_name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // 🎓 講座絞り込み
+        if ($courseId) {
+            $course_teachers->whereHas('course', function ($q) use ($courseId) {
+                $q->where('courses.id', $courseId);
+            });
+        }
+
+        $course_teachers = $course_teachers
+            ->orderBy($sort, $direction)
             ->paginate(10)
             ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
 
-        return view('admin.course_teachers.index', compact('course_teachers'));
+        // プルダウン用講座一覧
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
+        return view(
+            'admin.course_teachers.index',
+            compact(
+                'courses',
+                'course_teachers',
+                'sort',
+                'direction'
+            )
+        );
     }
 
     public function create()
     {
         $users = User::where('role_id', '>=', 4)->get();
         $courses = Course::where('is_show', 1)
-            ->orderBy('course_name', 'asc')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('admin.course_teachers.create', compact('users', 'courses'));

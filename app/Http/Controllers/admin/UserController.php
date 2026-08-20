@@ -83,8 +83,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $courses = Course::orderBy('course_name', 'asc')->get();
-        $divisions = Division::all();
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+        $divisions = Division::where('is_show', 1)->get();
 
         return view('admin.users.create', compact('roles', 'courses', 'divisions'));
     }
@@ -136,7 +137,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        $courses = Course::orderBy('course_name', 'asc')->get();
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
         $divisions = Division::where('is_show', 1)->get();
 
         return view('admin.users.edit', compact('user', 'roles', 'courses', 'divisions'));

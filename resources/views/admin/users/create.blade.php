@@ -82,7 +82,7 @@
 
                     {{-- 権限 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">権限</th>
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">ユーザー権限</th>
                         <td class="px-4 py-2">
                             <select name="role_id" class="border rounded px-3 py-2 w-64">
                                 <option value="">選択してください</option>
@@ -101,7 +101,7 @@
 
                     {{-- 担当講座 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">担当講座</th>
+                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">所属講座</th>
                         <td class="px-4 py-2">
                             <select name="courses_id" class="border rounded px-3 py-2 w-64">
                                 <option value="">選択してください</option>
@@ -120,7 +120,7 @@
 
                     {{-- 部署 --}}
                     <tr class="border-b">
-                        <th class="bg-gray-100 text-right font-medium px-4 py-2">部署</th>
+                        <th class="bg-gray-100 text-right font-medium px-4 py-2">所属部署・ハローワーク</th>
                         <td class="px-4 py-2">
                             <select name="division_id" class="border rounded px-3 py-2 w-64">
                                 <option value="">選択</option>

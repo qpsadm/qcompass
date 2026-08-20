@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
 
-        <h1 class="text-2xl font-bold mb-4 text-gray-800">講座受講者一覧</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">講座・受講者一覧</h1>
 
         <!-- 新規作成 -->
         <div class="flex justify-between mb-4">
