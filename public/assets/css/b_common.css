@@ -165,6 +165,31 @@
     color: var(--text-color-4);
 }
 
+.table-auto td .btn1 {
+    background-color: var(--background-color-4);
+    color: var(--text-color-3);
+}
+
+.table-auto td .btn2 {
+    background-color: var(--background-color-5);
+    color: var(--text-color-3);
+}
+
+.table-auto td .btn1:hover {
+    text-decoration: none;
+    background-color: var(--background-color-7);
+    color: var(--text-color-3);
+}
+
+.table-auto td .btn2:hover {
+    text-decoration: none;
+    background-color: var(--background-color-7);
+    color: var(--text-color-3);
+}
+
+
+
+
 /* ソート列のクラス */
 .sort-cl {
     background-color: var(--background-color-5) !important;

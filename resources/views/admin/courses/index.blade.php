@@ -116,7 +116,7 @@
                         <th class="sort-cl border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'course_code', 'order' => $sort === 'course_code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
-                                講座コード
+                                コード
                                 @if ($sort === 'course_code')
                                     <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
@@ -128,7 +128,7 @@
                         <th class="border px-4 py-2 w-32">受講生人数</th>
                         <th class="border px-4 py-2 w-32">受講生確認</th>
                         <th class="border px-4 py-2 w-20">表示</th>
-                        <th class="border px-4 py-2 w-40">作成日</th>
+                        {{-- <th class="border px-4 py-2 w-40">作成日</th> --}}
                         <th class="sort-cl border px-4 py-2 w-40" style="background-color: #2563eb;">
                             <a href="{{ route('admin.courses.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
@@ -138,7 +138,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-32">更新者名</th>
+                        {{-- <th class="border px-4 py-2 w-32">更新者名</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -185,9 +185,9 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
-                            <td class="border px-2 py-2 text-center">{{ $course->created_at->format('Y-m-d H:i') }}</td>
+                            {{-- <td class="border px-2 py-2 text-center">{{ $course->created_at->format('Y-m-d H:i') }}</td> --}}
                             <td class="border px-2 py-2 text-center">{{ $course->updated_at->format('Y-m-d H:i') }}</td>
-                            <td class="border px-2 py-2 text-left">{{ $course->updated_user_name }}</td>
+                            {{-- <td class="border px-2 py-2 text-left">{{ $course->updated_user_name }}</td> --}}
                         </tr>
                     @empty
                         <tr>

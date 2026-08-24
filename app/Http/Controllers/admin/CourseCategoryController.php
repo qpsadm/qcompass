@@ -105,7 +105,10 @@ class CourseCategoryController extends Controller
     public function edit($courseId)
     {
         $course = Course::with('categories')->findOrFail($courseId);
-        $categories = Category::all();
+
+        // 💡 all() から withCount('agendas')->get() に変更
+        $categories = Category::withCount('agendas')->get();
+
         $selectedCategories = $course->categories->pluck('id')->toArray();
 
         return view('admin.course_category.edit', compact('course', 'categories', 'selectedCategories'));
