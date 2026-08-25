@@ -10,7 +10,7 @@
             {
                 $direction = request('direction') === 'asc' ? 'desc' : 'asc';
                 if (request('sort') !== $column) {
-                    $direction = 'asc';
+                    $direction = 'desc';
                 }
 
                 $query = array_merge(request()->query(), [
@@ -75,7 +75,7 @@
                 </select>
 
                 {{-- キーワード --}}
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="タイトル検索"
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="タイトル・内容検索"
                     class="border px-2 py-2 rounded w-60">
 
                 {{-- 検索ボタン --}}
@@ -102,15 +102,16 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 text-center w-12">No.</th>
-                        <th class="border px-4 py-2">{!! sortLink('タイトル', 'title') !!}</th>
-                        <th class="border px-4 py-2">カテゴリー</th>
-                        <th class="border px-4 py-2">講座</th>
-                        <th class="border px-4 py-2 text-center">表示</th>
-                        <th class="border px-4 py-2">{!! sortLink('状態', 'status') !!}</th>
-                        <th class="border px-4 py-2">作成者</th>
-                        <th class="border px-4 py-2">{!! sortLink('作成日', 'created_at') !!}</th>
-                        <th class="border px-4 py-2">{!! sortLink('更新日', 'updated_at') !!}</th>
+                        <th class="border px-4 py-2 text-center w-20">No.</th>
+                        <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
+                        <th class="border px-4 py-2 w-20">カテゴリー</th>
+                        <th class="border px-4 py-2 w-20">対象講座</th>
+                        <th class="border px-4 py-2 text-center w-20">表示</th>
+                        <th class="sort-cl border px-4 py-2 w-20">{!! sortLink('状態', 'status') !!}</th>
+
+                        <th class="sort-cl border px-4 py-2 w-32">{!! sortLink('更新日', 'updated_at') !!}</th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
+                        <th class="sort-cl border px-4 py-2 w-32">{!! sortLink('作成日', 'created_at') !!}</th>
                     </tr>
                 </thead>
 
@@ -155,16 +156,15 @@
                                 </span>
                             </td>
 
+                            <td class="border px-4 py-2 text-center">
+                                {{ $announcement->updated_at->format('Y-m-d H:i') }}
+                            </td>
                             <td class="border px-4 py-2">
-                                {{ $announcement->created_user_name ?? '-' }}
+                                {{ $announcement->updated_user_name ?? '-' }}
                             </td>
 
-                            <td class="border px-4 py-2">
-                                {{ $announcement->created_at->format('Y-m-d') }}
-                            </td>
-
-                            <td class="border px-4 py-2">
-                                {{ $announcement->updated_at->format('Y-m-d') }}
+                            <td class="border px-4 py-2 text-center">
+                                {{ $announcement->created_at->format('Y-m-d H:i') }}
                             </td>
                         </tr>
                     @empty

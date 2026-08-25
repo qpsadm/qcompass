@@ -16,7 +16,8 @@ class AnnouncementController extends Controller
 
         // 🔍 検索
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%' . $request->search . '%')
+                ->orwhere('content', 'like', '%' . $request->search . '%');
         }
 
         // 🗂 カテゴリー
@@ -35,13 +36,17 @@ class AnnouncementController extends Controller
             $query->where('status', (int)$status); // 文字列でも整数に変換して比較
         }
 
+        $sort = $request->input('sort', 'updated_at');
+        $direction = $request->input('direction', 'desc');
 
         // 🔃 ソート
         $allowedSorts = ['id', 'title', 'status', 'created_at', 'updated_at'];
-        $sort = in_array($request->sort, $allowedSorts) ? $request->sort : 'updated_at';
-        $direction = $request->direction === 'asc' ? 'asc' : 'desc';
 
-        $query->orderBy($sort, $direction);
+        if (in_array($sort, $allowedSorts)) {
+            $query->orderBy($sort, $direction);
+        } else {
+            $query->orderBy('updated_at', 'desc');
+        }
 
         $announcements = $query
             ->paginate(10)
@@ -51,7 +56,7 @@ class AnnouncementController extends Controller
         return view('admin.announcements.index', [
             'announcements' => $announcements,
             'categories'    => AnnouncementType::all(),
-            'courses'       => Course::orderBy('course_name', 'asc')->get(), // 名前順
+            'courses'       => Course::orderBy('id', 'desc')->get(), // 名前順
             'sort'          => $sort,
             'direction'     => $direction,
         ]);

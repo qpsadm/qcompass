@@ -80,9 +80,10 @@ class AgendaController extends Controller
     {
         $course->load(['categories' => function ($q) {
             $q->whereNull('categories.deleted_at') // ← テーブル名を明示
+                ->orderBy('categories.id', 'asc') // 👈 category ID の昇順を追加
                 ->with(['agendas' => function ($q2) {
                     $q2->whereNull('deleted_at')   // agendasテーブルだけなのでOK
-                        ->orderBy('id', 'desc');
+                        ->orderBy('id', 'asc');
                 }]);
         }]);
 

@@ -70,18 +70,19 @@
                             $directionToggle = request('direction') === 'asc' ? 'desc' : 'asc';
                         @endphp
 
-                        <th class="border px-4 py-2 w-12">No.
-                            {{-- <a
+                        <th class="sort-cl border px-4 py-2 w-12">
+                            {{-- No. --}}
+                            <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'id', 'direction' => $directionToggle])) }}">
                                 No.
                                 @if ($sort === 'id')
                                     <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
-                            </a> --}}
+                            </a>
                         </th>
-                        <th class="border px-4 py-2 w-48">アジェンダ名</th>
+                        <th class="border px-4 py-2 w-60">アジェンダ名</th>
 
-                        <th class="sort-cl border px-4 py-2 w-32">
+                        <th class="sort-cl border px-4 py-2 w-40">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'category_id', 'direction' => $directionToggle])) }}">
                                 カテゴリー
@@ -90,7 +91,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-20">表示</th>
+
                         <th class="sort-cl border px-4 py-2 w-20">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'status', 'direction' => $directionToggle])) }}">
@@ -100,8 +101,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-20">作成者</th>
-                        <th class="border px-4 py-2 w-24">作成日</th>
+                        <th class="border px-4 py-2 w-20">表示</th>
                         <th class="sort-cl border px-4 py-2 w-24">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'updated_at', 'direction' => $directionToggle])) }}">
@@ -111,6 +111,9 @@
                                 @endif
                             </a>
                         </th>
+                        <th class="border px-4 py-2 w-20">更新者名</th>
+
+                        <th class="border px-4 py-2 w-24">作成日</th>
                     </tr>
                 </thead>
 
@@ -129,6 +132,14 @@
                             <td class="border px-4 py-2">
                                 {{ $agenda->category->name ?? '未分類' }}
                             </td>
+
+                            <td class="border px-4 py-2 text-center">
+                                @if ($agenda->status === 'yes')
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">承認済み</span>
+                                @else
+                                    <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">下書き</span>
+                                @endif
+                            </td>
                             <td class="border px-4 py-2 text-center">
                                 @if ($agenda->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">表示</span>
@@ -136,18 +147,9 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
-                            <td class="border px-4 py-2 text-center">
-                                @if ($agenda->status === 'yes')
-                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">承認済み</span>
-                                @else
-                                    <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">下書き</span>
-                                @endif
-
-
-                            </td>
-                            <td class="border px-4 py-2">{{ $agenda->created_user_name ?? '-' }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
                             <td class="border px-4 py-2 text-center">{{ $agenda->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $agenda->updated_user_name ?? '-' }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
                         </tr>
                     @empty
                         <tr>

@@ -40,7 +40,7 @@
 
                         {{-- タイトル --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 タイトル
                                 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded ml-1">必須</span>
                             </th>

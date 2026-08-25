@@ -19,7 +19,7 @@
                 <div class="mb-4 grid grid-cols-1 gap-2">
                     @foreach ($categories as $category)
                         <div
-                            class="flex flex-row items-center space-x-2 border px-3 py-2 rounded cursor-pointer hover:bg-gray-300">
+                            class="flex flex-row items-center space-x-2 border px-3 py-2 rounded cursor-pointer hover:bg-gray-300 w-full">
                             <div class="w-1/2">
                                 @if (!is_null($category->parent_id))
                                     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>

@@ -15,33 +15,92 @@ class CourseUserController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->get('sort', 'user');
-        $direction = $request->get('direction', 'desc');
+        // $sort = $request->get('sort', 'user');
+        // $direction = $request->get('direction', 'desc');
 
-        // 許可するカラム
-        $sortable = [
-            'user' => 'users.id',
-            'course' => 'courses.course_code',
-            'created_at' => 'course_users.created_at',
-        ];
+        // // 許可するカラム
+        // $sortable = [
+        //     'user' => 'users.id',
+        //     'course' => 'courses.course_code',
+        //     'created_at' => 'course_users.created_at',
+        // ];
 
-        $query = CourseUser::query()
-            ->with(['user', 'course'])
-            ->join('users', 'course_users.user_id', '=', 'users.id')
-            ->join('courses', 'course_users.course_id', '=', 'courses.id')
-            ->where('users.role_id', 3); // 受講生のみ
 
-        if (isset($sortable[$sort])) {
-            $query->orderBy($sortable[$sort], $direction);
+        // $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        // $search     = $request->input('search');
+
+
+        // $query = CourseUser::query()
+        //     ->with(['user', 'course'])
+        //     ->join('users', 'course_users.user_id', '=', 'users.id')
+        //     ->join('courses', 'course_users.course_id', '=', 'courses.id')
+        //     ->where('users.role_id', 3); // 受講生のみ
+
+        // if (isset($sortable[$sort])) {
+        //     $query->orderBy($sortable[$sort], $direction);
+        // }
+
+        // $courseUsers = $query
+        //     ->select('course_users.*')
+        //     ->paginate(10)
+        //     ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
+        //     ->withQueryString();
+
+        $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        $search     = $request->input('search');
+
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'course_id');          // デフォルト No.
+        $direction = $request->get('direction', 'desc'); // asc / desc
+
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'course_id', 'user_id', 'is_show', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
         }
 
-        $courseUsers = $query
-            ->select('course_users.*')
-            ->paginate(10)
-            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
-            ->withQueryString();
+        $courseUsers = CourseUser::query()
+            ->with(['user', 'course']);
 
-        return view('admin.course_users.index', compact('courseUsers', 'sort', 'direction'));
+        // 🔍 検索
+        if ($search) {
+            $courseUsers->where(function ($q) use ($search) {
+                // user リレーション先の name カラムを検索
+                // もしコース名でも同時に検索したい場合は orWhereHas を追加
+                $q->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%");
+                })->orWhereHas('course', function ($courseQuery) use ($search) {
+                    $courseQuery->where('course_name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // 🎓 講座絞り込み
+        if ($courseId) {
+            $courseUsers->whereHas('course', function ($q) use ($courseId) {
+                $q->where('courses.id', $courseId);
+            });
+        }
+
+        $courseUsers = $courseUsers
+            ->orderBy($sort, $direction)
+            ->paginate(10)
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
+
+
+        // プルダウン用講座一覧
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
+        return view(
+            'admin.course_users.index',
+            compact(
+                'courseUsers',
+                'courses',
+                'sort',
+                'direction'
+            )
+        );
     }
 
     /**

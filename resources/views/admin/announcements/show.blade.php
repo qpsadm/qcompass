@@ -6,13 +6,13 @@
         {{-- お知らせ詳細カード --}}
         <div class="bg-white rounded-lg shadow-md p-6">
             {{-- タイトル --}}
-            <h1 class="text-2xl font-bold mb-4">{{ $announcement->title }}</h1>
+            <h1 class="font-bold mb-4">{{ $announcement->title }}</h1>
 
             {{-- メタ情報 --}}
-            <div class="text-gray-500 mb-4 text-sm">
-                <span>種別: {{ $announcement->type->type_name ?? '-' }}</span> /
-                <span>コース: {{ $announcement->course->course_name ?? '全員向け' }}</span> /
-                <span>投稿日: {{ $announcement->created_at->format('Y-m-d') }}</span>
+            <div class="text-blue-600 mb-4 flex flex-row gap-6">
+                <div>種別: {{ $announcement->type->type_name ?? '-' }}</div>
+                <div>対象講座: {{ $announcement->course->course_name ?? '全員向け' }}</div>
+                <div>投稿日: {{ $announcement->created_at->format('Y-m-d H:i') }}</div>
             </div>
 
             {{-- 本文 --}}

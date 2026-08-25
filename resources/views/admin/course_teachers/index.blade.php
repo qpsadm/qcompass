@@ -80,7 +80,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <th class="sort-cl border px-4 py-2 text-center w-12">
+                        <th class="sort-cl border px-4 py-2 text-center w-20">
                             {{-- No. --}}
                             <a href="{{ route('admin.course_teachers.index', [
                                 'sort' => 'id',
