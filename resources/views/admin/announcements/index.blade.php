@@ -105,7 +105,7 @@
                         <th class="border px-4 py-2 text-center w-20">No.</th>
                         <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
                         <th class="border px-4 py-2 w-20">カテゴリー</th>
-                        <th class="border px-4 py-2 w-20">対象講座</th>
+                        <th class="border px-4 py-2 w-40">対象講座</th>
                         <th class="border px-4 py-2 text-center w-20">表示</th>
                         <th class="sort-cl border px-4 py-2 w-20">{!! sortLink('状態', 'status') !!}</th>
 
