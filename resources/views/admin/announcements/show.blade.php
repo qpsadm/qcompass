@@ -6,7 +6,7 @@
         {{-- お知らせ詳細カード --}}
         <div class="bg-white rounded-lg shadow-md p-6">
             {{-- タイトル --}}
-            <h1 class="font-bold mb-4">{{ $announcement->title }}</h1>
+            <h1 class="text-2xl font-bold mb-4">{{ $announcement->title }}</h1>
 
             {{-- メタ情報 --}}
             <div class="text-blue-600 mb-4 flex flex-row gap-6">

@@ -114,6 +114,7 @@
                         <th class="border px-4 py-2 w-20">更新者名</th>
 
                         <th class="border px-4 py-2 w-24">作成日</th>
+                        <th class="border px-4 py-2 w-20">印刷</th>
                     </tr>
                 </thead>
 
@@ -150,6 +151,13 @@
                             <td class="border px-4 py-2 text-center">{{ $agenda->updated_at->format('Y-m-d H:i') }}</td>
                             <td class="border px-4 py-2">{{ $agenda->updated_user_name ?? '-' }}</td>
                             <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-4 py-2 text-center">
+                                <a href="{{ route('admin.agendas.preview', $agenda->id) }}" target="_blank"
+                                    class="px-4 py-2 bg-blue-200 text-gray-700 rounded hover:bg-blue-600"
+                                    style="color:white; background-color:blueviolet">
+                                    印刷
+                                </a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
