@@ -40,12 +40,73 @@ class QuestionController extends Controller
     }
 
     // 一覧
-    public function index()
+    public function index(Request $request)
     {
-        $questions = Question::with(['course', 'responder', 'tag'])
+        // 絞り込む・検索
+        $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        $tagId   = $request->input('tag_id');   // タグIDフィルタ
+        $search     = $request->input('search');
+
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'updated_at');  // デフォルト 更新日
+        $direction = $request->get('direction', 'asc'); // asc / desc
+
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'course_id', 'tag_id', 'is_show', 'updated_at'];
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'updated_at';
+        }
+
+        $questions = Question::query()->with(['course', 'tag']);
+
+        // 🔍 検索
+        if ($search) {
+            $questions->where(function ($q) use ($search) {
+                $q->Where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%")
+                    ->orWhere('answer', 'like', "%{$search}%");
+            });
+        }
+
+        // 🎓 タグ絞り込み
+        if ($tagId) {
+            $questions->whereHas('tag', function ($q) use ($tagId) {
+                $q->where('tags.id', $tagId);
+            });
+        }
+
+        // 🎓 講座絞り込み
+        if ($courseId) {
+            $questions->whereHas('course', function ($q) use ($courseId) {
+                $q->where('courses.id', $courseId);
+            });
+        }
+
+        $questions = $questions
+            ->orderBy($sort, $direction)
             ->paginate(10)
-            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす
-        return view('admin.questions.index', compact('questions'));
+            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
+
+
+        // プルダウン用講座一覧
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
+        // プルダウン用タグ一覧
+        $tags = Tag::where('is_show', 1)
+            ->orderBy('id', 'asc')->get();
+
+        return view(
+            'admin.questions.index',
+            compact(
+                'courses',
+                'tags',
+                'questions',
+                'sort',
+                'direction'
+            )
+        );
     }
 
     // 作成画面

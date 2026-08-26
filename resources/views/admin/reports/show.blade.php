@@ -12,7 +12,7 @@
                 </tr>
 
                 <tr class="border-b">
-                    <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">日付</th>
+                    <th class="w-1/3 px-4 py-2 bg-gray-100 text-right font-medium">受講（報告）日</th>
                     <td class="px-4 py-2">{{ $report->date ?? '-' }}</td>
                 </tr>
 

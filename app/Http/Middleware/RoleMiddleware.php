@@ -49,18 +49,39 @@ class RoleMiddleware
             }
         }
 
-        // role 5 の制限付きアクセス
-        if ($roleId == 5) {
+        // パート社員に禁止する機能（URLパス）
+        // if ($roleId == 5) {
+        //     $restricted = [
+        //         'roles',
+        //         'users',
+        //         'levels',
+        //         'organizers',
+        //         // 'announcements',
+        //         'achievements_release'
+        //     ];
+        //     foreach ($restricted as $r) {
+        //         if ($request->is("admin/$r*")) {
+        //             abort(403, 'アクセス権限がありません。');
+        //         }
+        //     }
+        // }
+
+        // アルバイトとパート社員に禁止する機能（URLパス）
+        if (in_array($roleId, [4, 5], true)) {
             $restricted = [
                 'roles',
                 'users',
                 'levels',
                 'organizers',
+                'courses',
                 'announcements',
-                'achievements_release'
+                'achievements_release',
+                'course_teacher', // 講師機能
             ];
+
             foreach ($restricted as $r) {
-                if ($request->is("admin/$r*")) {
+                // 「admin/users」ピッタリ、または「admin/users/123」のようにスラッシュが続く場合のみ禁止
+                if ($request->is("admin/$r") || $request->is("admin/$r/*")) {
                     abort(403, 'アクセス権限がありません。');
                 }
             }

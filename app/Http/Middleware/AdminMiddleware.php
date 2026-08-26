@@ -14,8 +14,8 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        // 管理画面に入れる人（講師以上）
-        if (!in_array(Auth::user()->role_id, [6, 7, 8])) {
+        // 管理画面に入れる人（アルバイト以上）
+        if (!in_array(Auth::user()->role_id, [4, 5, 6, 7, 8])) {
             return redirect()->route('user.top')
                 ->with('error', '管理画面にアクセスできません。');
         }

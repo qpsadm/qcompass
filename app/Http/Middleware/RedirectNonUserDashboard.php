@@ -11,7 +11,7 @@ class RedirectNonUserDashboard
     public function handle(Request $request, Closure $next)
     {
         // 管理者専用ページにユーザーがアクセスした場合
-        if (Auth::check() && $request->is('admin/*') && !in_array(Auth::user()->role_id, [6, 7, 8])) {
+        if (Auth::check() && $request->is('admin/*') && !in_array(Auth::user()->role_id, [4, 5, 6, 7, 8])) {
             return redirect()->route('user.top');
         }
 

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReportSubmitted;
+use App\Models\Course;
 
 class ReportController extends Controller
 {
@@ -31,7 +32,8 @@ class ReportController extends Controller
 
         // role 5: 制限付き編集可
         if ($roleId == 5) {
-            $allowed = ['reports', 'course_teacher', 'questions', 'agenda'];
+            // $allowed = ['reports', 'course_teacher', 'questions', 'agenda'];
+            $allowed = ['questions', 'agenda'];
             $path = request()->path();
             foreach ($allowed as $a) {
                 if (str_contains($path, $a)) {
@@ -45,36 +47,65 @@ class ReportController extends Controller
     // 一覧
     public function index(Request $request)
     {
-        $query = Report::query();
+        // $query = Report::query();
 
         /*
     |--------------------------------------------------------------------------
     | 検索
     |--------------------------------------------------------------------------
     */
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
+        $courseId   = $request->input('course_id');   // 講座IDフィルタ
+        $search     = $request->input('search');
+
+        // 並び替えパラメータ
+        $sort = $request->get('sort', 'course_id');          // デフォルト No.
+        $direction = $request->get('direction', 'desc'); // asc / desc
+
+        // ソート可能カラム（安全対策）
+        $allowedSorts = ['id', 'course_id', 'user_id', 'is_show', 'updated_at'];
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+
+        $reports = Report::query()
+            ->with(['user', 'course']);
+
+        // ユーザーネーム、日報タイトル
+        if ($search) {
+            $reports->where(function ($q) use ($search) {
+                // ユーザ名
                 $q->whereHas('user', function ($uq) use ($search) {
                     $uq->where('name', 'like', "%{$search}%");
                 })
-                    ->orWhereHas('course', function ($cq) use ($search) {
-                        $cq->where('course_name', 'like', "%{$search}%");
-                    })
+                    // // コース名
+                    // ->orWhereHas('course', function ($cq) use ($search) {
+                    //     $cq->where('course_name', 'like', "%{$search}%");
+                    // })
+
+                    // 日報タイトル
                     ->orWhere('title', 'like', "%{$search}%");
+            });
+        }
+
+        // 🎓 講座絞り込み
+        if ($courseId) {
+            $reports->whereHas('course', function ($q) use ($courseId) {
+                $q->where('courses.id', $courseId);
             });
         }
 
         /*
     |--------------------------------------------------------------------------
-    | 日付範囲検索
+    | 日付範囲検索（未使用）
     |--------------------------------------------------------------------------
     */
         if ($from = $request->input('from_date')) {
-            $query->whereDate('date', '>=', $from);
+            $reports->whereDate('date', '>=', $from);
         }
 
         if ($to = $request->input('to_date')) {
-            $query->whereDate('date', '<=', $to);
+            $reports->whereDate('date', '<=', $to);
         }
 
         /*
@@ -82,8 +113,6 @@ class ReportController extends Controller
     | ソート処理
     |--------------------------------------------------------------------------
     */
-        $sort = $request->input('sort', 'date');
-        $direction = $request->input('direction', 'desc');
 
         // 許可するソートカラム
         $sortable = [
@@ -103,14 +132,26 @@ class ReportController extends Controller
     | データ取得
     |--------------------------------------------------------------------------
     */
-        $reports = $query
-            ->with(['user', 'course'])
+        $reports = $reports
             ->orderBy($sort, $direction)
             ->paginate(10)
             ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->withQueryString();
 
-        return view('admin.reports.index', compact('reports', 'sort', 'direction'));
+        // プルダウン用講座一覧
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
+
+        return view(
+            'admin.reports.index',
+            compact(
+                'courses',
+                'reports',
+                'sort',
+                'direction'
+            )
+        );
     }
 
 

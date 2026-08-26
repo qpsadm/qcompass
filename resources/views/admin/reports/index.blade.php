@@ -3,12 +3,26 @@
 @section('content')
     <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
 
-        <h1 class="text-2xl font-bold mb-4">日報管理</h1>
+        <h1 class="text-2xl font-bold mb-4">日報一覧</h1>
 
         <!-- 検索 -->
-        <div class="flex justify-end mb-4" x-data="searchBox()">
+        <div class="flex justify-end mb-4 gap-4" x-data="searchBox()">
+            <!-- 講座選択 -->
+            <form method="GET" action="{{ route('admin.reports.index') }}"
+                class="flex items-center space-x-2 mb-2 lg:mb-0 justify-end gap-2" style="width: 550px;">
+                <select name="course_id" class="border px-2 py-1 rounded">
+                    <option value="">全ての講座</option>
+                    @foreach ($courses as $course)
+                        <option value="{{ $course->id }}" {{ request('course_id') == $course->id ? 'selected' : '' }}>
+                            {{ $course->course_name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="text-white bg-emerald-600 px-3 py-2 rounded hover:bg-red-600">絞り込み</button>
+            </form>
+
             <form :action="url" method="GET" class="relative w-72">
-                <input type="text" name="search" x-model="search" placeholder="タイトル・提出者で検索"
+                <input type="text" name="search" x-model="search" placeholder="タイトル・報告者名で検索"
                     @keydown.enter.prevent="submit()" class="w-full border px-3 py-2 rounded pr-8">
 
                 <button type="button" x-show="search" @click="clear()"
@@ -32,8 +46,26 @@
                     <tr>
                         <th class="border px-4 py-2 w-12 text-center">No.</th>
 
-                        <th class="border px-4 py-2">
+                        <th class="sort-cl border px-4 py-2 w-32">
                             <a href="{{ route(
+                                'admin.reports.index',
+                                array_merge(request()->query(), [
+                                    'sort' => 'date',
+                                    'direction' => request('direction') === 'asc' ? 'desc' : 'asc',
+                                ]),
+                            ) }}"
+                                class="hover:underline">
+                                受講（報告）日
+                                @if (request('sort') === 'date')
+                                    {{ request('direction') === 'asc' ? '▲' : '▼' }}
+                                @endif
+                            </a>
+                        </th>
+
+                        <th class="border px-4 py-2 w-80">日報タイトル</th>
+
+                        <th class="border px-4 py-2 w-32">報告者名
+                            {{-- <a href="{{ route(
                                 'admin.reports.index',
                                 array_merge(request()->query(), [
                                     'sort' => 'user_id',
@@ -41,14 +73,14 @@
                                 ]),
                             ) }}"
                                 class="hover:underline">
-                                提出者
+                                報告者名
                                 @if (request('sort') === 'user_id')
                                     {{ request('direction') === 'asc' ? '▲' : '▼' }}
                                 @endif
-                            </a>
+                            </a> --}}
                         </th>
 
-                        <th class="border px-4 py-2">
+                        <th class="sort-cl border px-4 py-2 w-60">
                             <a href="{{ route(
                                 'admin.reports.index',
                                 array_merge(request()->query(), [
@@ -57,14 +89,14 @@
                                 ]),
                             ) }}"
                                 class="hover:underline">
-                                講座
+                                講座名
                                 @if (request('sort') === 'course_id')
                                     {{ request('direction') === 'asc' ? '▲' : '▼' }}
                                 @endif
                             </a>
                         </th>
 
-                        <th class="border px-4 py-2">
+                        {{-- <th class="border px-4 py-2">
                             <a href="{{ route(
                                 'admin.reports.index',
                                 array_merge(request()->query(), [
@@ -78,11 +110,9 @@
                                     {{ request('direction') === 'asc' ? '▲' : '▼' }}
                                 @endif
                             </a>
-                        </th>
+                        </th> --}}
 
-                        <th class="border px-4 py-2">タイトル</th>
-
-                        <th class="border px-4 py-2">
+                        <th class="sort-cl border px-4 py-2 w-40">
                             <a href="{{ route(
                                 'admin.reports.index',
                                 array_merge(request()->query(), [
@@ -111,15 +141,7 @@
                                 {{ $counter++ }}
                             </td>
 
-                            <td class="border px-4 py-2">
-                                {{ $report->user->name ?? '-' }}
-                            </td>
-
-                            <td class="border px-4 py-2">
-                                {{ $report->course->course_name ?? '-' }}
-                            </td>
-
-                            <td class="border px-4 py-2">
+                            <td class="border px-4 py-2 text-center">
                                 {{ $report->date }}
                             </td>
 
@@ -131,6 +153,14 @@
                             </td>
 
                             <td class="border px-4 py-2">
+                                {{ $report->user->name ?? '-' }}
+                            </td>
+
+                            <td class="border px-4 py-2">
+                                {{ $report->course->course_name ?? '-' }}
+                            </td>
+
+                            <td class="border px-4 py-2 text-center">
                                 {{ $report->created_at->format('Y-m-d H:i') }}
                             </td>
                         </tr>

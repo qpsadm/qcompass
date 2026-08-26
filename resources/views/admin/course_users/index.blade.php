@@ -5,7 +5,7 @@
 
         <h1 class="text-2xl font-bold mb-4 text-gray-800">講座・受講者一覧</h1>
 
-        <!-- 新規作成 -->
+        <!-- 新規作成・検索 -->
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between">
 
             <!-- 左側: 新規作成 / ゴミ箱 / なりすまし -->
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <!-- 右側: 絞り込み + 検索 -->
-            <div class="flex flex-col lg:flex-row items-end lg:items-center gap-4">
+            <div class="flex flex-col lg:flex-row items-end lg:items-center gap-4 mb-4">
 
                 <!-- 講座選択 + 未所属 -->
                 <form method="GET" action="{{ route('admin.course_users.index') }}"

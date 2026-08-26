@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
 class AdminStrictMiddleware
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         // システム管理者・事務のみ
         if (!in_array(Auth::user()->role_id, [7, 8])) {

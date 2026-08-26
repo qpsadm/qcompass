@@ -75,8 +75,8 @@ Route::middleware([
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('tags', TagController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
-        Route::resource('daily_quotes', DailyQuoteController::class);
-        Route::resource('quotes', QuoteController::class);
+        // Route::resource('daily_quotes', DailyQuoteController::class);
+        // Route::resource('quotes', QuoteController::class);
 
         // なりすまし（システム管理者のみ->role:6,7,8）
         Route::post(
@@ -184,7 +184,7 @@ Route::middleware([
     /* =============================
      * お知らせ管理（6,7,8）
      * ============================= */
-    Route::middleware('role:6,7,8')->group(function () {
+    Route::middleware('role:5,6,7,8')->group(function () {
         Route::resource('announcements', AnnouncementController::class);
     });
 
@@ -203,6 +203,8 @@ Route::middleware([
         Route::resource('quizzes', QuizController::class);
         Route::resource('quizzes.quiz_questions', QuizQuestionController::class);
         Route::get('quizzes/{quiz}/play', [QuizController::class, 'play'])->name('quizzes.play');
+        Route::resource('daily_quotes', DailyQuoteController::class);
+        Route::resource('quotes', QuoteController::class);
     });
 
     /* =============================

@@ -15,36 +15,6 @@ class CourseUserController extends Controller
      */
     public function index(Request $request)
     {
-        // $sort = $request->get('sort', 'user');
-        // $direction = $request->get('direction', 'desc');
-
-        // // 許可するカラム
-        // $sortable = [
-        //     'user' => 'users.id',
-        //     'course' => 'courses.course_code',
-        //     'created_at' => 'course_users.created_at',
-        // ];
-
-
-        // $courseId   = $request->input('course_id');   // 講座IDフィルタ
-        // $search     = $request->input('search');
-
-
-        // $query = CourseUser::query()
-        //     ->with(['user', 'course'])
-        //     ->join('users', 'course_users.user_id', '=', 'users.id')
-        //     ->join('courses', 'course_users.course_id', '=', 'courses.id')
-        //     ->where('users.role_id', 3); // 受講生のみ
-
-        // if (isset($sortable[$sort])) {
-        //     $query->orderBy($sortable[$sort], $direction);
-        // }
-
-        // $courseUsers = $query
-        //     ->select('course_users.*')
-        //     ->paginate(10)
-        //     ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
-        //     ->withQueryString();
 
         $courseId   = $request->input('course_id');   // 講座IDフィルタ
         $search     = $request->input('search');
