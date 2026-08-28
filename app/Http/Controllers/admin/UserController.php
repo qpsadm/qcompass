@@ -265,8 +265,6 @@ class UserController extends Controller
         return redirect()->route('user.mypage');
     }
 
-
-
     /**
      * なりすまし解除
      */
@@ -287,6 +285,8 @@ class UserController extends Controller
             session()->forget(['impersonator_id', 'impersonator_course_id']);
         }
 
-        return redirect()->route('admin.users.index');
+        // return redirect()->route('admin.users.index');
+        // dashboardにリダイレクト
+        return redirect()->route('admin.dashboard');
     }
 }

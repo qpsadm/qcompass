@@ -83,7 +83,7 @@
         {{-- ログアウト --}}
         <form method="POST" action="{{ route('logout') }}" class="mt-6">
             @csrf
-            <button type="submit" class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-600 hover:text-white">
+            <button type="submit" class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-500 hover:text-white">
                 <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
                     style="filter: brightness(0) invert(1);">
                 <span class="hidden md:inline">ログアウト</span>

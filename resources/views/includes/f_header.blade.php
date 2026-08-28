@@ -10,13 +10,14 @@
                         href="{{ route('user.agenda.agendas_list') }}">アジェンダ</a></li>
                 {{-- <li
                     class="main-menu menu-study {{ request()->routeIs('user.question.*', 'user.quizzes.*') ? 'active' : '' }}">
-                    <a class="study" href="{{ route('user.quizzes.index') }}">学習支援</a>
+                    <a class="study" href="{{ route('user.quizzes.index') }}">講習支援</a>
                     <ul class="gnav-sub">
                         <li class="{{ request()->routeIs('user.quizzes.*') ? 'active' : '' }}">
                             <a class="agenda" href="{{ route('user.quizzes.index') }}">理解度チェック</a>
                         </li>
                         <li><a class="agenda"
-                                href="{{ route('user.learnings.learnings_by_type', ['type' => 4]) }}">制作品紹介</a></li>
+                                href="{{ route('user.learnings.learnings_by_type', ['type' => 4]) }}">修了生の制作品紹介</a>
+                        </li>
                         <li><a class="agenda"
                                 href="{{ route('user.learnings.learnings_by_type', ['type' => 3]) }}">IT資格</a></li>
                         <li><a class="agenda"
@@ -26,6 +27,7 @@
 
                     </ul>
                 </li> --}}
+
                 <li class="main-menu {{ request()->routeIs('user.job.*') ? 'active' : '' }}"><a class="work"
                         href="{{ route('user.job.job_offers_list') }}">就職支援</a></li>
 

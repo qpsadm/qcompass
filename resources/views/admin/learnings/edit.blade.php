@@ -4,7 +4,7 @@
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-6">
-                学習コンテンツ編集：{{ $learning->title ?? '新規作成' }}
+                参考用コンテンツ編集：{{ $learning->title ?? '新規作成' }}
             </h1>
 
             {{-- バリデーション --}}
@@ -19,9 +19,17 @@
             @endif
 
             @php
-                $types = ['book' => '参考書籍', 'site' => '参考サイト', 'video' => 'IT資格', 'article' => '制作品'];
-                $levels = [1 => '初級', 2 => '上級'];
-                $tags = [1 => 'WEB制作', 2 => 'WEBデザイン', 3 => 'プログラミング', 4 => 'OA', 5 => 'その他'];
+                $types = [
+                    '1' => '参考書籍',
+                    '2' => '参考サイト',
+                    '3' => 'IT資格',
+                    '4' => '制作品',
+                ];
+
+                $levels = ['1' => '初級', '2' => '中級', '3' => '上級'];
+
+                // $tags = [1 => 'WEB制作', 2 => 'WEBデザイン', 3 => 'プログラミング', 4 => 'OA', 5 => 'その他'];
+
             @endphp
 
             <form action="{{ route('admin.learnings.update', $learning->id) }}" method="POST" enctype="multipart/form-data"
@@ -36,9 +44,21 @@
                 <table class="w-full table-auto border-collapse">
                     <tbody>
 
+                        {{-- タイトル --}}
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                タイトル
+                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <input type="text" name="title" value="{{ old('title', $learning->title) }}"
+                                    class="border rounded px-3 py-2 w-full" required>
+                            </td>
+                        </tr>
+
                         {{-- 種類 --}}
                         <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-1/4">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-60">
                                 種類
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
@@ -52,15 +72,50 @@
                             </td>
                         </tr>
 
-                        {{-- タイトル --}}
+                        {{-- タグ --}}
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                タイトル
+                                タグ
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
                             <td class="px-4 py-2">
-                                <input type="text" name="title" value="{{ old('title', $learning->title) }}"
-                                    class="border rounded px-3 py-2 w-full" required>
+                                <div class="flex flex-wrap gap-4">
+                                    {{-- @foreach ($tags as $id => $label)
+                                        <label class="inline-flex items-center gap-1">
+                                            <input type="radio" name="tag_id" value="{{ $id }}"
+                                                {{ old('tag_id', $learning->tag_id) == $id ? 'checked' : '' }}>
+                                            {{ $label }}
+                                        </label>
+                                    @endforeach --}}
+
+                                    @foreach ($tags as $tag)
+                                        <label class="inline-flex items-center gap-4 mr-4">
+                                            <input type="radio" name="tag_id" value="{{ $tag->id }}"
+                                                {{ old('tag_id', $learning->tag_id) == $tag->id ? 'checked' : '' }}
+                                                required>
+                                            {{ $tag->name }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </td>
+                        </tr>
+
+                        {{-- レベル --}}
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                レベル
+                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <select name="level" class="border rounded px-3 py-2 w-60" required>
+                                    <option value="">選択してください</option>
+                                    @foreach ($levels as $id => $label)
+                                        <option value="{{ $id }}"
+                                            {{ old('level', $learning->level) == $id ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </td>
                         </tr>
 
@@ -97,47 +152,13 @@
                             </td>
                         </tr>
 
-                        {{-- レベル --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                レベル
-                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <select name="level" class="border rounded px-3 py-2 w-60" required>
-                                    <option value="">選択してください</option>
-                                    @foreach ($levels as $id => $label)
-                                        <option value="{{ $id }}"
-                                            {{ old('level', $learning->level) == $id ? 'selected' : '' }}>
-                                            {{ $label }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        </tr>
-
-                        {{-- タグ --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                タグ
-                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <div class="flex flex-wrap gap-4">
-                                    @foreach ($tags as $id => $label)
-                                        <label class="inline-flex items-center gap-1">
-                                            <input type="radio" name="tag_id" value="{{ $id }}"
-                                                {{ old('tag_id', $learning->tag_id) == $id ? 'checked' : '' }}>
-                                            {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </td>
-                        </tr>
-
                         {{-- 制作品専用 --}}
-                        <tr class="border-b" x-show="type === 'article'">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">訓練科名</th>
+                        {{-- <tr class="border-b" x-show="type === 4"> --}}
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                訓練科名
+                                <span class="bg-blue-500 text-white text-xs px-2 py-2 rounded ml-1">制作品専用</span>
+                            </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="course_name"
                                     value="{{ old('course_name', $learning->course_name) }}"
@@ -145,8 +166,12 @@
                             </td>
                         </tr>
 
-                        <tr class="border-b" x-show="type === 'article'">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">制作期間</th>
+                        {{-- <tr class="border-b" x-show="type === 4"> --}}
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                訓練期間
+                                <span class="bg-blue-500 text-white text-xs px-2 py-2 rounded ml-1">制作品専用</span>
+                            </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="priod" value="{{ old('priod', $learning->priod) }}"
                                     class="border rounded px-3 py-2 w-full">

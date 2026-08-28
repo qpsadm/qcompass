@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Learning;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Course;
 
 class LearningController extends Controller
 {
@@ -42,9 +43,9 @@ class LearningController extends Controller
         }
 
         // --- ソート ---
-        $sortable = ['id', 'title', 'level', 'type'];
+        $sortable = ['id', 'title', 'level', 'type', 'tag_id', 'updated_at'];
         $sort = $request->get('sort', 'id');
-        $direction = $request->get('direction', 'desc');
+        $direction = $request->get('direction', 'asc');
 
         if (!in_array($sort, $sortable)) {
             $sort = 'id';
@@ -52,12 +53,14 @@ class LearningController extends Controller
 
         $query->orderBy($sort, $direction);
 
+        $tags = Tag::all();
+
         $learnings = $query
             ->paginate(10)
             ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
             ->withQueryString();
 
-        return view('admin.learnings.index', compact('learnings'));
+        return view('admin.learnings.index', compact('learnings', 'tags'));
     }
 
 
@@ -67,7 +70,12 @@ class LearningController extends Controller
     public function create()
     {
         $tags = Tag::all();
-        return view('admin.learnings.create', compact('tags'));
+
+        // プルダウン用講座一覧
+        $courses = Course::where('is_show', 1)
+            ->orderBy('id', 'desc')->get();
+
+        return view('admin.learnings.create', compact('tags', 'courses'));
     }
 
     /**
@@ -76,7 +84,8 @@ class LearningController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:book,site,video,article,other',
+            // 'type' => 'required|in:book,site,video,article,other',
+            'type' => 'required|integer',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string|max:255',
@@ -108,8 +117,8 @@ class LearningController extends Controller
             $validated['image'] = $path;
         }
 
-
         $validated['is_show'] = $request->boolean('is_show');
+        // $validated['created_user_name'] = auth()->user()->name ?? 'system';
 
         Learning::create($validated);
 
@@ -121,8 +130,9 @@ class LearningController extends Controller
      */
     public function show($id)
     {
+        $tags = Tag::all();
         $learning = Learning::with('tag')->findOrFail($id);
-        return view('admin.learnings.show', compact('learning'));
+        return view('admin.learnings.show', compact('learning', 'tags'));
     }
 
     /**
@@ -144,7 +154,8 @@ class LearningController extends Controller
 
         // バリデーション
         $validated = $request->validate([
-            'type' => 'required|in:book,site,video,article,other',
+            // 'type' => 'required|in:book,site,video,article,other',
+            'type' => 'required|integer',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|string|max:255',
@@ -161,6 +172,7 @@ class LearningController extends Controller
         // description は空送信でも元値を保持
         $validated['description'] = $request->input('description', $learning->description);
         $validated['is_show'] = $request->boolean('is_show');
+        // $validated['updated_user_name'] = auth()->user()->name;
 
         // 画像削除
         if ($request->boolean('delete_image') && $learning->image) {
@@ -187,8 +199,6 @@ class LearningController extends Controller
         return redirect()->route('admin.learnings.show', $learning->id)
             ->with('success', 'Learning更新完了');
     }
-
-
 
     /**
      * 削除処理

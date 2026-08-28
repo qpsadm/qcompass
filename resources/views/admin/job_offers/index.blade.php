@@ -27,7 +27,7 @@
             <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
 
                 <!-- 検索フォーム -->
-                <div x-data="searchBox()" class="flex items-center space-x-2">
+                <div x-data="searchBox()" class="flex items-center space-x-2 w-96">
                     <form :action="url" method="GET" class="relative flex-1">
                         <input type="text" name="search" x-model="search" placeholder="求人タイトルで検索"
                             @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
@@ -70,7 +70,7 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 w-16 text-center">
+                        <th class="sort-cl border px-4 py-2 w-20 text-center">
                             <a href="{{ route('admin.job_offers.index', array_merge(request()->query(), ['sort' => 'id', 'order' => $sort === 'id' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 No.@if ($sort === 'id')
@@ -86,7 +86,7 @@
                                 @endif
                             </a>
                         </th> --}}
-                        <th class="border w-48 px-4 py-2">
+                        <th class="sort-cl border w-60 px-4 py-2">
                             <a href="{{ route('admin.job_offers.index', array_merge(request()->query(), ['sort' => 'title', 'order' => $sort === 'title' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
                                 求人タイトル @if ($sort === 'title')
@@ -96,8 +96,22 @@
                         </th>
                         <th class="border px-4 py-2 w-48 text-center">公開期間</th>
                         <th class="border px-4 py-2 w-20 text-center">表示</th>
-                        <th class="border px-4 py-2 w-24 text-center">作成日</th>
-                        <th class="border px-4 py-2 w-24 text-center">更新日</th>
+
+                        <th class="sort-cl border px-4 py-2 w-40">
+                            {{-- 更新日時 --}}
+                            <a href="{{ route('admin.job_offers.index', [
+                                'sort' => 'updated_at',
+                                'order' => $sort === 'updated_at' && $order === 'asc' ? 'desc' : 'asc',
+                            ]) }}"
+                                class="flex items-center justify-center gap-1 hover:underline">
+                                更新日時
+                                @if ($sort === 'updated_at')
+                                    <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40 text-center">作成日</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,8 +140,10 @@
                                     {{ $jobOffer->is_show ? '公開' : '非公開' }}
                                 </span>
                             </td>
-                            <td class="border px-4 py-2 text-center">{{ $jobOffer->created_at->format('Y-m-d H:i') }}</td>
+
                             <td class="border px-4 py-2 text-center">{{ $jobOffer->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-left">{{ $jobOffer->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $jobOffer->created_at->format('Y-m-d H:i') }}</td>
                         </tr>
                     @empty
                         <tr>

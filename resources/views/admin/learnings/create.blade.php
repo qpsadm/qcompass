@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6">学習コンテンツ作成（管理画面）</h1>
+            <h1 class="text-2xl font-bold mb-6">参考用コンテンツ作成</h1>
 
             {{-- バリデーション --}}
             @if ($errors->any())
@@ -17,20 +17,29 @@
             @endif
 
             @php
+                // $types = [
+                //     'book' => '参考書籍',
+                //     'site' => '参考サイト',
+                //     'video' => 'IT資格',
+                //     'article' => '制作品',
+                // ];
                 $types = [
-                    'book' => '参考書籍',
-                    'site' => '参考サイト',
-                    'video' => 'IT資格',
-                    'article' => '制作品',
+                    '1' => '参考書籍',
+                    '2' => '参考サイト',
+                    '3' => 'IT資格',
+                    '4' => '制作品',
                 ];
-                $levels = [1 => '初級', 2 => '上級'];
-                $tags = [
-                    1 => 'WEB制作',
-                    2 => 'WEBデザイン',
-                    3 => 'プログラミング',
-                    4 => 'OA',
-                    5 => 'その他',
-                ];
+
+                $levels = ['1' => '初級', '2' => '中級', '3' => '上級'];
+
+                // $tags = [
+                //     1 => 'WEB制作',
+                //     2 => 'WEBデザイン',
+                //     3 => 'プログラミング',
+                //     4 => 'OA',
+                //     5 => 'その他',
+                // ];
+
             @endphp
 
             <form action="{{ route('admin.learnings.store') }}" method="POST" enctype="multipart/form-data"
@@ -39,10 +48,21 @@
 
                 <table class="w-full table-auto border-collapse">
                     <tbody>
+                        {{-- タイトル --}}
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-60">
+                                タイトル
+                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <input type="text" name="title" value="{{ old('title') }}"
+                                    class="border rounded px-3 py-2 w-full" required>
+                            </td>
+                        </tr>
 
                         {{-- 種類 --}}
                         <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-1/4">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-60">
                                 種類
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
@@ -58,15 +78,29 @@
                             </td>
                         </tr>
 
-                        {{-- タイトル --}}
+                        {{-- タグ --}}
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                タイトル
+                                タグ
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
-                            <td class="px-4 py-2">
-                                <input type="text" name="title" value="{{ old('title') }}"
-                                    class="border rounded px-3 py-2 w-full" required>
+                            <td class="px-4 py-4">
+                                <div class="flex flex-wrap gap-2">
+                                    {{-- @foreach ($tags as $id => $label)
+                                        <label class="inline-flex items-center gap-1">
+                                            <input type="radio" name="tag_id" value="{{ $id }}"
+                                                {{ old('tag_id') == $id ? 'checked' : '' }} required>
+                                            {{ $label }}
+                                        </label>
+                                    @endforeach --}}
+                                    @foreach ($tags as $tag)
+                                        <label class="inline-flex items-center gap-4 mr-4">
+                                            <input type="radio" name="tag_id" value="{{ $tag->id }}"
+                                                {{ old('tag_id') == $tag->id ? 'checked' : '' }} required>
+                                            {{ $tag->name }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </td>
                         </tr>
 
@@ -88,32 +122,13 @@
                             </td>
                         </tr>
 
-                        {{-- タグ --}}
-                        <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
-                                タグ
-                                <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
-                            </th>
-                            <td class="px-4 py-2">
-                                <div class="flex flex-wrap gap-4">
-                                    @foreach ($tags as $id => $label)
-                                        <label class="inline-flex items-center gap-1">
-                                            <input type="radio" name="tag_id" value="{{ $id }}"
-                                                {{ old('tag_id') == $id ? 'checked' : '' }} required>
-                                            {{ $label }}
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </td>
-                        </tr>
-
                         {{-- 説明 --}}
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">説明</th>
                             <td class="px-4 py-2">
                                 <textarea name="description" x-model="description" rows="5" class="border rounded px-3 py-2 w-full"></textarea>
 
-                                <button type="button"
+                                {{-- <button type="button"
                                     class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                                     @click="
                                     if(!previewWindow || previewWindow.closed){
@@ -123,7 +138,7 @@
                                     previewWindow.document.body.innerHTML = description.replace(/\n/g,'<br>');
                                 ">
                                     プレビュー
-                                </button>
+                                </button> --}}
                             </td>
                         </tr>
 
@@ -147,19 +162,35 @@
                         </tr>
 
                         {{-- article専用 --}}
-                        <tr class="border-b" x-show="type === 'article'">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">訓練科名</th>
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                訓練科名
+                                <span class="bg-blue-500 text-white text-xs px-2 py-2 rounded ml-1">制作品専用</span>
+                            </th>
                             <td class="px-4 py-2">
-                                <input type="text" name="course_name" class="border rounded px-3 py-2 w-full"
-                                    value="{{ old('course_name') }}">
+                                <input type="text" name="course_name" value="{{ old('course_name') }}"
+                                    placeholder="例： WEBプログラマー養成科第23期: 憩チーム(7人)" class="border rounded px-3 py-2 w-full">
+
+                                {{-- <select name="course_name" class="border px-2 py-1 rounded">
+                                    <option value="">講座を選んでください</option>
+                                    @foreach ($courses as $id => $course)
+                                        <option value="{{ $course->course_name }}"
+                                            {{ request('course_name') === $course->course_name ? 'selected' : '' }}>
+                                            {{ $course->course_name }}
+                                        </option>
+                                    @endforeach
+                                </select> --}}
                             </td>
                         </tr>
 
-                        <tr class="border-b" x-show="type === 'article'">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">制作期間</th>
+                        <tr class="border-b">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                                訓練期間
+                                <span class="bg-blue-500 text-white text-xs px-2 py-2 rounded ml-1">制作品専用</span>
+                            </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="priod" class="border rounded px-3 py-2 w-full"
-                                    value="{{ old('priod') }}">
+                                    placeholder="例： 2026年3月26日～2026年9月25日" value="{{ old('priod') }}">
                             </td>
                         </tr>
 

@@ -2,6 +2,48 @@
     $sort = request('sort', 'id');
     $order = request('order', 'asc');
     $nextOrder = $order === 'asc' ? 'desc' : 'asc';
+
+    // クイズの種別
+    $types = [
+        '1' => '試験',
+        '2' => '理解度チェック',
+        '3' => '練習',
+    ];
+    // 難易度
+    $levels = [
+        '1' => '初級',
+        '2' => '中級',
+        '3' => '上級',
+    ];
+
+    /**
+     * テーブルヘッダ用ソートリンク
+     */
+    function sort_link($label, $column)
+    {
+        $currentSort = request('sort', 'id');
+        $currentDirection = request('direction', 'asc');
+
+        $direction = $currentSort === $column && $currentDirection === 'asc' ? 'desc' : 'asc';
+
+        $arrow = '';
+        if ($currentSort === $column) {
+            $arrow = $currentDirection === 'asc' ? ' ▲' : ' ▼';
+        }
+
+        $url = request()->fullUrlWithQuery([
+            'sort' => $column,
+            'direction' => $direction,
+        ]);
+
+        return '<a href="' .
+            e($url) .
+            '" class="flex items-center justify-center gap-1 hover:underline">' .
+            e($label) .
+            $arrow .
+            '</a>';
+    }
+
 @endphp
 
 @extends('layouts.app')
@@ -27,6 +69,28 @@
             <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
                 <form method="GET" action="{{ route('admin.quizzes.index') }}"
                     class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0">
+
+                    {{-- 種類 --}}
+                    <select name="type" class="border px-2 py-1 rounded">
+                        <option value="">全ての種類</option>
+                        @foreach ($types as $key => $label)
+                            <option value="{{ $key }}" {{ request('type') == $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    {{-- レベル --}}
+                    <select name="level" class="border px-2 py-1 rounded">
+                        <option value="">全てのレベル</option>
+                        @foreach ($levels as $id => $label)
+                            <option value="{{ $id }}" {{ request('level') == $id ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    {{-- カテゴリ --}}
                     <select name="category_id" class="border px-2 py-1 rounded">
                         <option value="">全てのカテゴリ</option>
                         @foreach ($categories as $category)
@@ -88,69 +152,69 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <!-- ID ソート -->
-                        <th class="border px-4 py-2 w-12" style="background-color: #2563eb;">
-                            <a href="{{ route('admin.quizzes.index', [
-                                'sort' => 'id',
-                                'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
-                            ]) }}"
-                                class="flex items-center justify-center gap-1 hover:underline">
-                                ID
-                                @if ($sort === 'id')
-                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
-                                @endif
-                            </a>
+                        <th class="sort-cl border px-2 py-2 w-12" style="background-color: #2563eb;">
+                            {!! sort_link('No.', 'id') !!}
                         </th>
-
                         <!-- タイトル ソート -->
-                        <th class="border px-4 py-2 w-48">クイズタイトル</th>
-                        <th class="border px-4 py-2 w-32">カテゴリ(科目名)</th>
-                        <th class="border px-4 py-2 w-20">レベル</th>
-                        <th class="border px-4 py-2 w-20 text-center">問題数</th>
-                        <th class="border px-4 py-2 w-24 text-center">表示</th>
-                        <th class="border px-4 py-2 w-24 text-center">作成日</th>
-                        <th class="border px-4 py-2 w-24 text-center" style="background-color: #2563eb;">
-                            <a href="{{ route('admin.quizzes.index', [
-                                'sort' => 'updated_at',
-                                'direction' => $sort === 'updated_at' && $direction === 'asc' ? 'desc' : 'asc',
-                            ]) }}"
-                                class="flex items-center justify-center gap-1 hover:underline">
-                                更新日
-                                @if ($sort === 'updated_at')
-                                    <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
-                                @endif
-                            </a>
-
+                        <th class="sort-cl border px-2 py-2 w-48">
+                            {{-- クイズタイトル --}}
+                            {!! sort_link('クイズタイトル', 'title') !!}
                         </th>
+                        <th class="sort-cl border px-2 py-2 w-20">
+                            {{-- 種別 --}}
+                            {!! sort_link('種別', 'type') !!}
+                        </th>
+                        <th class="sort-cl border px-2 py-2 w-20">
+                            {{-- 難易度 --}}
+                            {!! sort_link('難易度', 'level') !!}
+                        </th>
+                        <th class="border px-2 py-2 w-32">カテゴリ(科目名)</th>
+                        {{-- <th class="border px-2 py-2 w-32">講座名</th> --}}
+                        <th class="border px-2 py-2 w-20">問題数</th>
+                        <th class="border px-2 py-2 w-20">表示</th>
+
+                        <th class="sort-cl border px-2 py-2 w-24" style="background-color: #2563eb;">
+                            {!! sort_link('更新日', 'updated_at') !!}
+                        </th>
+                        {{-- <th class="border px-2 py-2 w-24 text-center">更新者名</th> --}}
+                        <th class="border px-2 py-2 w-24">作成日</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @forelse ($quizzes as $quiz)
                         <tr class="hover:bg-gray-50">
-                            <td class="border px-4 py-2 text-center">
+                            {{-- <td class="border px-2 py-2 text-center">
                                 {{ $quiz->id }}
+                            </td> --}}
+                            <td class="border px-2 py-2 text-center">
+                                {{ ($quizzes->currentPage() - 1) * $quizzes->perPage() + $loop->iteration }}
                             </td>
 
-                            <td class="border px-4 py-2">
+                            <td class="border px-2 py-2">
                                 <a href="{{ route('admin.quizzes.show', $quiz->id) }}"
                                     class="text-blue-600 hover:underline">
                                     {{ $quiz->title }}
                                 </a>
                             </td>
 
-                            <td class="border px-4 py-2">
-                                {{ $quiz->category?->name ?? '-' }}
+                            <td class="border px-2 py-2">{{ $types[$quiz->type] }}</td>
+
+                            <td class="border px-2 py-2">{{ $levels[$quiz->level] }}</td>
+
+                            <td class="border px-2 py-2">
+                                {{ $quiz->category?->name ?? '全カテゴリ' }}
                             </td>
 
-                            <td class="border px-4 py-2 text-center">
-                                {{ $quiz->level ?? '-' }}
-                            </td>
+                            {{-- <td class="border px-2 py-2">
+                                {{ $quiz->course?->name ?? '全講座' }}
+                            </td> --}}
 
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 {{ $quiz->questions_count }}
                             </td>
 
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 @if ($quiz->is_show)
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
                                         公開
@@ -161,12 +225,13 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="border px-4 py-2 text-center">{{ $quiz->created_at->format('Y-m-d H:i') }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $quiz->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-center">{{ $quiz->created_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-2 py-2 text-center">{{ $quiz->updated_at->format('Y-m-d H:i') }}</td>
+                            {{-- <td class="border px-2 py-2 ">{{ $quiz->updated_user_name }}</td> --}}
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="border px-4 py-2 text-center text-gray-500">
+                            <td colspan="6" class="border px-2 py-2 text-center text-gray-500">
                                 データがありません
                             </td>
                         </tr>

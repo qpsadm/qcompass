@@ -118,12 +118,12 @@ return [
         // 学習サポート
         // =========================
         [
-            'label' => '学習サポート',
+            'label' => '訓練サポート',
             'icon'  => 'b_desk.svg',
             'roles' => [4, 5, 6, 7, 8],
             'children' => [
-                ['label' => '学習参考コンテンツ', 'route' => 'admin.learnings.index',      'roles' => [4, 5, 6, 7, 8]],
-                ['label' => '就職支援',       'route' => 'admin.job_offers.index',      'roles' => [6, 7, 8]],
+                ['label' => '参考用コンテンツ', 'route' => 'admin.learnings.index',      'roles' => [4, 5, 6, 7, 8]],
+                ['label' => '就職支援・求人情報',       'route' => 'admin.job_offers.index',      'roles' => [6, 7, 8]],
             ],
         ],
 

@@ -35,7 +35,7 @@
                     @method('PUT')
                 @endif
 
-                <table class="w-full table-auto border-collapse" style="max-width: 1280px;">
+                <table class="w-full table-auto border-collapse">
                     <tbody>
 
                         {{-- タイトル --}}

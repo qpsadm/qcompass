@@ -19,7 +19,10 @@ class QuizController extends Controller
     {
         $sort = $request->input('sort', 'id');
         $direction = $request->input('direction', 'desc');
+
         $search     = $request->input('search');
+        $type   = $request->input('type');   // 種別
+        $level   = $request->input('level');   // 難易度フィルタ
         $categoryId   = $request->input('category_id');   // カテゴリIDフィルタ
 
         // クエリ
@@ -30,6 +33,16 @@ class QuizController extends Controller
             $quizzes->where('title', 'like', "%{$search}%");
         }
 
+        // 種別絞り込み
+        if ($type = $request->type) {
+            $quizzes->where('type', $type);
+        }
+
+        // 難易度絞り込み
+        if ($level = $request->level) {
+            $quizzes->where('level', $level);
+        }
+
         // カテゴリ絞り込み
         if ($categoryId = $request->category_id) {
             $quizzes->where('category_id', $categoryId);
@@ -37,20 +50,20 @@ class QuizController extends Controller
 
 
         // 許可するソートカラム
-        $allowedSorts = ['id', 'ceated_at'];
+        $allowedSorts = ['id', 'level', 'type', 'updated_at'];
 
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'id';
         }
 
-        $quizzes = $quizzes->withCount('questions')
-            ->orderBy($sort, $direction)
+        $quizzes->orderBy($sort, $direction);
+
+        $quizzes = $quizzes
+            ->withCount('questions') // 👈 これを追加（questions_count を取得するため）
             ->paginate(10)
-            ->onEachSide(1)         //左にあるページネーションのボタン数を減らす
-            ->appends([
-                'sort' => $sort,
-                'direction' => $direction,
-            ]);
+            ->onEachSide(1)
+            ->withQueryString();
+
 
         // プルダウン用
         $categories = Category::where('is_show', 1)

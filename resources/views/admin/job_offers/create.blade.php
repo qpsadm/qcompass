@@ -46,7 +46,7 @@
 
                     {{-- 求人タイトル --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                             求人タイトル
                             <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                         </th>
@@ -58,10 +58,15 @@
 
                     {{-- 説明文 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">説明文</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
+                            説明文
+                            <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
+                        </th>
                         <td class="px-4 py-2">
                             <textarea x-ref="descriptionTextarea" x-model="description" name="description" rows="5"
-                                class="border rounded px-3 py-2 w-full">{{ old('description', $JobOffer->description ?? '') }}</textarea>
+                                class="border rounded px-3 py-2 w-full" required>
+                                {{ old('description', $JobOffer->description ?? '') }}
+                            </textarea>
 
                             <button type="button" @click="openPreview()"
                                 class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
@@ -99,7 +104,7 @@
                                 return ext;
                             }
                         }">
-                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 PDFファイル{{ $i }}
                             </th>
                             <td class="px-4 py-2 space-y-2">
@@ -154,7 +159,7 @@
 
                     {{-- 表示期間 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示期間</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">表示期間</th>
                         <td class="px-4 py-2 flex items-center gap-2">
                             <input type="date" name="start_datetime"
                                 value="{{ old('start_datetime', isset($JobOffer) && $JobOffer->start_datetime ? $JobOffer->start_datetime->format('Y-m-d') : '') }}"
@@ -168,7 +173,7 @@
 
                     {{-- 表示フラグ --}}
                     <tr>
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">表示状態
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">表示状態
                         </th>
                         <td class="px-4 py-2">
                             <div x-data="{ is_show: Number('{{ old('is_show', $JobOffer->is_show ?? 0) }}') }" class="flex gap-2">
@@ -190,7 +195,7 @@
 
                     {{-- 作成者名 --}}
                     <tr class="border-b">
-                        <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">作成者名</th>
+                        <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">作成者名</th>
                         <td class="px-4 py-2">
                             <input type="text" name="created_user_name"
                                 value="{{ old('created_user_name', $JobOffer->created_user_name ?? auth()->user()->name) }}"
