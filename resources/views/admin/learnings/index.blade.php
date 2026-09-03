@@ -117,7 +117,7 @@
 
                 {{-- キーワード --}}
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="タイトル検索"
-                    class="border px-2 py-1 rounded w-80">
+                    class="border px-2 py-1 rounded w-60">
 
                 <button type="submit"
                     class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 hover:text-white transition">
@@ -146,12 +146,12 @@
                             {!! sort_link('No.', 'id') !!}
                         </th>
 
-                        <th class="sort-cl border px-2 py-2 w-80">
+                        <th class="sort-cl border px-2 py-2 w-60">
                             {!! sort_link('タイトル', 'title') !!}
                         </th>
                         {{-- <th class="border px-4 py-2">説明</th> --}}
                         {{-- <th class="border px-4 py-2">画像</th> --}}
-                        <th class="border px-2 py-2 w-20">参照URL</th>
+                        <th class="border px-2 py-2 w-20">URL</th>
                         <th class="sort-cl border px-2 py-2 w-32">
                             {!! sort_link('種類', 'type') !!}
                         </th>
@@ -167,7 +167,7 @@
                             表示
                             {{-- {!! sort_link('表示', 'is_show') !!} --}}
                         </th>
-                        <th class="sort-cl border px-2 py-2 w-40">
+                        <th class="sort-cl border px-2 py-2 w-32">
                             {!! sort_link('更新日時', 'updated_at') !!}
                         </th>
                         <th class="border px-2 py-2 w-32">更新者名</th>

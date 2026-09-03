@@ -106,7 +106,7 @@ class QuizController extends Controller
 
         $quiz = Quiz::create([
             'title' => $validated['title'],
-            'code' => 'Q-' . strtoupper(Str::random(6)),
+            'code' => 'Q-' . strtoupper(Str::random(8)),
             'description' => $request->input('description'),
             'category_id' => $validated['category_id'] ?? null,
             'level' => $validated['level'] ?? null,
@@ -273,7 +273,8 @@ class QuizController extends Controller
     // -------------------------
     public function show($id)
     {
-        $quiz = Quiz::with(['questions.choices'])->findOrFail($id);
+        $quiz = Quiz::with(['questions.choices'])
+            ->withCount('questions')->findOrFail($id);
         $autoScore = $quiz->questions->sum('score');
 
         if ($quiz->total_score !== $autoScore) {

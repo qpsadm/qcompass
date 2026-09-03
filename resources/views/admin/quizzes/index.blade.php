@@ -66,9 +66,9 @@
             </div>
 
             <!-- 右側: 絞り込み + 検索 -->
-            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1">
                 <form method="GET" action="{{ route('admin.quizzes.index') }}"
-                    class="flex items-center space-x-2 mb-2 mr-6 lg:mb-0">
+                    class="flex items-center space-x-2 mb-2 lg:mb-0">
 
                     {{-- 種類 --}}
                     <select name="type" class="border px-2 py-1 rounded">
@@ -101,10 +101,15 @@
                         @endforeach
                     </select>
 
-                    <button class="text-white bg-emerald-600 px-3 py-2 rounded hover:bg-gray-300">絞り込み</button>
+                    <input type="text" name="search" x-model="search" placeholder="クイズタイトルで検索"
+                        @keydown.enter.prevent="submit()" class="w-40 border px-2 py-1 rounded pr-8">
+
+                    {{-- <button class="text-white bg-emerald-600 px-3 py-2 rounded hover:bg-gray-300">絞り込み</button> --}}
+
+                    <button @click="submit()" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-white">検索</button>
                 </form>
 
-                <div x-data="searchBox()" class="flex items-center space-x-2">
+                {{-- <div x-data="searchBox()" class="flex items-center space-x-2">
                     <form :action="url" method="GET" class="relative flex-1">
                         <input type="text" name="search" x-model="search" placeholder="タイトルで検索"
                             @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
@@ -140,7 +145,7 @@
                             }
                         }
                     </script>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -156,7 +161,7 @@
                             {!! sort_link('No.', 'id') !!}
                         </th>
                         <!-- タイトル ソート -->
-                        <th class="sort-cl border px-2 py-2 w-48">
+                        <th class="sort-cl border px-2 py-2 w-40">
                             {{-- クイズタイトル --}}
                             {!! sort_link('クイズタイトル', 'title') !!}
                         </th>

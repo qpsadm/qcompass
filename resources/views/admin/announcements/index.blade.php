@@ -67,7 +67,7 @@
                 </select>
 
                 {{-- 状態 --}}
-                <select name="status" class="w-200 border px-2 py-2 rounded">
+                <select name="status" class="border px-2 py-2 rounded">
                     <option value="" {{ request('status', '') === '' ? 'selected' : '' }}>全状態</option>
                     <option value="0" {{ request('status', '') === '0' ? 'selected' : '' }}>下書き</option>
                     <option value="1" {{ request('status', '') === '1' ? 'selected' : '' }}>承認待ち</option>
@@ -76,7 +76,7 @@
 
                 {{-- キーワード --}}
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="タイトル・内容検索"
-                    class="border px-2 py-2 rounded w-60">
+                    class="border px-2 py-2 rounded w-40">
 
                 {{-- 検索ボタン --}}
                 <button type="submit" class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
@@ -102,8 +102,8 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 text-center w-20">No.</th>
-                        <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
+                        <th class="border px-4 py-2 text-center w-12">No.</th>
+                        <th class="sort-cl border px-4 py-2 w-40">{!! sortLink('タイトル', 'title') !!}</th>
                         <th class="border px-4 py-2 w-20">カテゴリー</th>
                         <th class="border px-4 py-2 w-40">対象講座</th>
                         <th class="border px-4 py-2 text-center w-20">表示</th>

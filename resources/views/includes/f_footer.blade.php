@@ -63,6 +63,6 @@
         </div>
     </div>
     <div class="copyright">
-        <p>Copyright© 株式会社ＱＬＩＰプログラミングスクール</p>
+        <p>Copyright© 株式会社QLIPプログラミングスクール</p>
     </div>
 </footer>

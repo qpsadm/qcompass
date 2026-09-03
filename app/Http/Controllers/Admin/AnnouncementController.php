@@ -99,11 +99,26 @@ class AnnouncementController extends Controller
 
     public function edit(Announcement $announcement)
     {
-        return view('admin.announcements.edit', [
-            'announcement' => $announcement,
-            'types'        => AnnouncementType::all(),
-            'courses'      => Course::orderBy('course_name', 'asc')->get(), // 名前順
-        ]);
+        $announcement->load(['files' => function ($q) {
+            $q->withTrashed();
+        }]);
+
+        $types = AnnouncementType::all();
+        $courses = Course::orderBy('course_name', 'asc')->get(); // 名前順
+        // return view('admin.announcements.edit', [
+        //     'announcement',
+        //     'types'        => AnnouncementType::all(),
+        //     'courses'      => Course::orderBy('course_name', 'asc')->get(), // 名前順
+        // ]);
+
+        return view(
+            'admin.announcements.edit',
+            compact(
+                'announcement',
+                'types',
+                'courses'
+            )
+        );
     }
 
     public function update(Request $request, Announcement $announcement)

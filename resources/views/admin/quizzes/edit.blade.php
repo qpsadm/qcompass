@@ -8,11 +8,11 @@
         <div class="mb-6 flex gap-3">
             <a href="{{ route('admin.quizzes.quiz_questions.create', $quiz->id) }}"
                 class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                新しい問題を追加
+                クイズ問題を追加
             </a>
             <a href="{{ route('admin.quizzes.quiz_questions.index', $quiz->id) }}"
-                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
-                問題一覧
+                class="back bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+                クイズ問題一覧
             </a>
         </div>
 
