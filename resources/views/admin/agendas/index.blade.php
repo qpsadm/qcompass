@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4">アジェンダ一覧</h1>
 
@@ -10,7 +10,7 @@
 
             {{-- 新規作成 --}}
             <a href="{{ route('admin.agendas.create') }}"
-                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center space-x-1">
                 {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>
@@ -41,7 +41,7 @@
                     class="border px-2 py-2 rounded w-60">
 
                 {{-- 検索ボタン --}}
-                <button type="submit" class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
+                <button type="submit" class="save bg-blue-600 px-4 py-2 text-white rounded hover:bg-blue-600">
                     検索
                 </button>
 
@@ -153,8 +153,7 @@
                             <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <a href="{{ route('admin.agendas.preview', $agenda->id) }}" target="_blank"
-                                    class="px-4 py-2 bg-blue-200 text-gray-700 rounded hover:bg-blue-600"
-                                    style="color:white; background-color:blueviolet">
+                                    class="btn1 bg-red-500 text-white text-sm px-4 py-2 border rounded hover:bg-yellow-500">
                                     印刷
                                 </a>
                             </td>

@@ -60,8 +60,9 @@
     --sub-color-3: #7A92DF;
 
     /* accent-color */
-    /* --accent-color: #ff9b0f; */
-    --accent-color: #e07b00;
+    --accent-color: #ff9b0f;
+    --accent-color: #f18d00;
+    /* --accent-color: #ff4500; */
 
     /* footer-color */
     --footer-color: #414141;

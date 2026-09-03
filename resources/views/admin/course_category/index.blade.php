@@ -20,7 +20,7 @@
                 @endif
             </div>
 
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            <button type="submit" class="save bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 検索
             </button>
         </form>
@@ -138,7 +138,7 @@
                                     </a>
 
                                     <a href="{{ route('admin.courses.agendas', ['course' => $course->id]) }}"
-                                        class="btn2 border border-green-400 hover:bg-green-600 text-white px-3 py-2 rounded">
+                                        class="btn2 border text-white px-3 py-2 rounded">
                                         アジェンダ
                                     </a>
                                 </div>

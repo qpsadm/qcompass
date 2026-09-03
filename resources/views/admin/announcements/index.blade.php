@@ -37,7 +37,7 @@
 
             {{-- 新規作成 --}}
             <a href="{{ route('admin.announcements.create') }}"
-                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 transition flex items-center space-x-1">
+                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 flex items-center space-x-1">
                 {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span>新規作成</span>
             </a>
@@ -79,7 +79,7 @@
                     class="border px-2 py-2 rounded w-40">
 
                 {{-- 検索ボタン --}}
-                <button type="submit" class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
+                <button type="submit" class="save bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition">
                     検索
                 </button>
                 @if (request()->query())
@@ -103,7 +103,7 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="border px-4 py-2 text-center w-12">No.</th>
-                        <th class="sort-cl border px-4 py-2 w-40">{!! sortLink('タイトル', 'title') !!}</th>
+                        <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
                         <th class="border px-4 py-2 w-20">カテゴリー</th>
                         <th class="border px-4 py-2 w-40">対象講座</th>
                         <th class="border px-4 py-2 text-center w-20">表示</th>

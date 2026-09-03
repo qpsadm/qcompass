@@ -132,7 +132,7 @@
         {{-- ボタン --}}
         <div class="flex gap-2 mt-6">
             <a href="{{ route('admin.courses.edit', $course->id) }}"
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                class="save bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                 編集
             </a>
             <a href="{{ route('admin.courses.index') }}"

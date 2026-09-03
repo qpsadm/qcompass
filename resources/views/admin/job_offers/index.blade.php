@@ -7,7 +7,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
+    <div class="container mx-auto p-4 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4 text-gray-800">求人票一覧</h1>
 
@@ -17,7 +17,7 @@
             <div class="flex items-center space-x-2 mb-2 lg:mb-0">
                 {{-- <div class="flex items-center justify-start mb-2"> --}}
                 <a href="{{ route('admin.job_offers.create') }}"
-                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center space-x-1">
                     {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                     <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>
@@ -35,7 +35,8 @@
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
                         </button>
                     </form>
-                    <button @click="submit()" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-white">検索</button>
+                    <button @click="submit()"
+                        class="save bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 text-white">検索</button>
                 </div>
 
                 <script>

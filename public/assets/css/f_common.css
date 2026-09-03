@@ -904,9 +904,9 @@ footer {
     /* 線を波線にする */
     text-decoration-color: var(--accent-color);
     /* 線の色 */
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1px;
     /* 線の太さ */
-    transition: 0.2s;
+    transition: 0.1s;
 }
 
 .copyright {
@@ -1217,9 +1217,9 @@ footer {
     /* 線を波線にする */
     text-decoration-color: var(--accent-color);
     /* 線の色 */
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1px;
     /* 線の太さ */
-    transition: 0.2s;
+    transition: 0.1s;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen" x-data="{ deleteOpen: false }">
+    <div class="container mx-auto p-4" x-data="{ deleteOpen: false }">
 
         <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
 
@@ -159,7 +159,7 @@
                         この部署を削除すると、元に戻すことはできません。
                     </p>
 
-                    <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+                    <button @click="deleteOpen = true" class="delete bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
                         削除する
                     </button>
                 </div>

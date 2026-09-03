@@ -7,7 +7,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4 text-gray-800">ユーザー一覧</h1>
 
@@ -26,7 +26,7 @@
                 </button>
             </form> --}}
                 <a href="{{ route('admin.users.create') }}"
-                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 mr-1 text-black rounded hover:bg-blue-300 hover:text-white transition flex items-center space-x-1">
+                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 mr-1 text-black rounded hover:bg-blue-300 hover:text-white flex items-center space-x-1">
                     {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                     <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>
@@ -65,12 +65,12 @@
                     <form :action="url" method="GET" class="relative flex-1">
                         <input type="text" name="search" x-model="search" placeholder="ユーザー名・コード・電話番号で検索"
                             @keydown.enter.prevent="submit()" class="w-full border px-2 py-1 rounded pr-8">
-                        <button type="button" x-show="search" @click="clear()"
+                        {{-- <button type="button" x-show="search" @click="clear()"
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">&times;
-                        </button>
+                        </button> --}}
                     </form>
                     <button @click="submit()"
-                        class="bg-blue-600 px-4 py-2 rounded hover:bg-opacity-50 text-white">検索</button>
+                        class="save bg-blue-600 px-4 py-2 rounded hover:bg-opacity-50 text-white">検索</button>
                 </div>
 
             </div>

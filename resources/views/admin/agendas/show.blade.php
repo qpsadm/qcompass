@@ -83,17 +83,17 @@
                 </button> --}}
 
                 <a href="{{ route('admin.agendas.preview', $agenda->id) }}" target="_blank"
-                    class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+                    class="bg-green-500 hover:bg-red-600 text-white px-6 py-2 rounded">
                     プレビュー・印刷
                 </a>
 
                 <a href="{{ route('admin.agendas.edit', $agenda->id) }}"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                    class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                     編集
                 </a>
 
                 <a href="{{ route('admin.agendas.index') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
+                    class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
                     一覧に戻る
                 </a>
             </div>
@@ -108,7 +108,7 @@
                     このアジェンダを削除すると、元に戻すことはできません。
                 </p>
 
-                <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+                <button @click="deleteOpen = true" class="delete bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
                     削除する
                 </button>
             </div>

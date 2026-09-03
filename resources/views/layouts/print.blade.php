@@ -45,7 +45,7 @@
         }
 
         .btn-print {
-            padding: 1rem 1rem;
+            padding: 0.5rem 1rem;
             cursor: pointer;
             background: #2563eb;
             font-size: 16px;

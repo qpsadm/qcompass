@@ -60,22 +60,22 @@
                 <div class="flex gap-2">
                     @if ($prevQuestion)
                         <a href="{{ route('admin.questions.show', $prevQuestion->id) }}"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded">
+                            class="back bg-gray-200 hover:bg-gray-300 text-white px-4 py-2 rounded">
                             ← 前へ
                         </a>
                     @else
-                        <span class="bg-gray-100 text-gray-400 px-4 py-2 rounded cursor-not-allowed">
+                        <span class="back bg-gray-200 text-white px-4 py-2 rounded cursor-not-allowed">
                             ← 前へ
                         </span>
                     @endif
 
                     @if ($nextQuestion)
                         <a href="{{ route('admin.questions.show', $nextQuestion->id) }}"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded">
+                            class="back bg-green-500 hover:bg-green-300 text-white px-4 py-2 rounded">
                             次へ →
                         </a>
                     @else
-                        <span class="bg-gray-100 text-gray-400 px-4 py-2 rounded cursor-not-allowed">
+                        <span class="back bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed">
                             次へ →
                         </span>
                     @endif
@@ -84,7 +84,7 @@
                 {{-- 編集・一覧 --}}
                 <div class="flex gap-3">
                     <a href="{{ route('admin.questions.edit', $question->id) }}"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                        class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                         編集
                     </a>
 

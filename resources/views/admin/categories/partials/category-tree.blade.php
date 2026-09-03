@@ -62,7 +62,7 @@
                         @endif
 
                         <a href="{{ route('admin.categories.edit', $category->id) }}"
-                            class="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+                            class="save px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
                             編集
                         </a>
 
@@ -73,7 +73,7 @@
         name: '{{ $category->name }}',
         url: '{{ route('admin.categories.destroy', $category->id) }}'
     })"
-                            class="px-4 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600">
+                            class="delete px-4 py-2 text-sm bg-red-500 text-white rounded hover:bg-yellow-600">
                             削除
                         </button>
                     </div>

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }">
         <h1 class="text-2xl font-bold mb-4">部署一覧</h1>
 
         <div class="flex items-center justify-between mb-4">
             <!-- 新規作成 -->
             <a href="{{ route('admin.divisions.create') }}"
-                class="new bg-blue-600 border border-gray-200 px-4 py-2 text-white rounded hover:bg-red-600 hover:text-white transition flex items-center space-x-1">
+                class="new bg-blue-600 border border-gray-200 px-4 py-2 text-white rounded hover:bg-red-600 hover:text-white flex items-center space-x-1">
                 {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規作成</span>
             </a>

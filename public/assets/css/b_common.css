@@ -11,7 +11,7 @@
     --text-color-1: #000;
     --text-color-2: #2d3748;
     --text-color-3: #FFF;
-    --text-color-4: #2563eb;
+    --text-color-4: #4169E1;
     --text-color-5: #ffdd00;
 
     /* placeholder-color */
@@ -27,9 +27,9 @@
     --sub-color-4: #4169E1;
 
     /* accent-color */
-    --accent-color: #ff9b0f;
+    --accent-color: #ee8c04;
     /* --accent-color: #e07b00; */
-    --accent-color2: #ff4500;
+    --accent-color2: #ea5548;
 
     /* footer-color */
     --footer-color: #414141;
@@ -42,6 +42,7 @@
     --background-color-5: #c47cb4;
     --background-color-6: #3450a4;
     --background-color-7: #F4A460;
+    --background-color-8: #ff0000;
 
     --background-color-content: #E9EEFF;
     --background-color-table-1: #DDDDDD;
@@ -71,8 +72,10 @@
 
 .container button:hover,
 .container a:hover {
-    background-color: var(--accent-color);
-    color: var(--text-color-3);
+    /* background-color: var(--accent-color); */
+    /* color: var(--accent-color2); */
+    /* color: var(--background-color-4); */
+    text-underline-offset: 4px;
 }
 
 .container .new {
@@ -99,6 +102,16 @@
 
 .container .back:hover {
     background-color: var(--accent-color);
+}
+
+.container .delete {
+    background-color: var(--background-color-8);
+}
+
+.container .delete:hover {
+    background-color: var(--background-color-table-2);
+    color: var(--background-color-8);
+    border: 1px var(--accent-color2) solid;
 }
 
 /* テーブル関連 */
@@ -162,17 +175,21 @@
     text-underline-offset: 4px;
     text-decoration-thickness: 1px;
     background-color: inherit;
-    color: var(--text-color-4);
+    color: var(--accent-color2);
 }
 
 .table-auto td .btn1 {
     background-color: var(--background-color-4);
     color: var(--text-color-3);
+    font-size: 0.9rem;
+    border-radius: 5px;
 }
 
 .table-auto td .btn2 {
     background-color: var(--background-color-5);
     color: var(--text-color-3);
+    font-size: 0.9rem;
+    border-radius: 5px;
 }
 
 .table-auto td .btn1:hover {
@@ -216,7 +233,7 @@
     color: #374151;
     text-decoration: none;
     border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
 
 /* ★ ホバー時の色（通常ボタン） */

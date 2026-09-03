@@ -7,7 +7,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4 text-gray-800">講座一覧</h1>
 
@@ -50,7 +50,7 @@
                         </button>
                     </form>
                     <button @click="submit()"
-                        class="bg-blue-600 px-4 py-2 rounded hover:bg-opacity-50 text-white">検索</button>
+                        class="save bg-blue-600 px-4 py-2 rounded hover:bg-yellow-500 text-white">検索</button>
                 </div>
             </div>
         </div>
@@ -167,12 +167,12 @@
                                     class="inline-flex items-center justify-center
               w-9 h-9
               rounded-full
+              border
               bg-indigo-500
               text-white
               shadow
-              hover:bg-indigo-600
-              hover:shadow-md
-              transition"
+              hover:bg-red-500
+              hover:shadow-md"
                                     title="受講生一覧">
                                     <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4">
                                 </a>

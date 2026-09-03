@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }"
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }"
         x-on:open-delete.window="
          deleteUrl = $event.detail.url;
          deleteName = $event.detail.name;
@@ -12,7 +12,7 @@
 
         <div class="flex items-center mb-4 space-x-2">
             <a href="{{ route('admin.categories.create') }}"
-                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center space-x-1">
                 {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                 <span class="hidden lg:inline ml-1">新規登録</span>
             </a>

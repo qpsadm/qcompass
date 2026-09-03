@@ -126,7 +126,7 @@
                     このレベルを削除すると、元に戻すことはできません。
                 </p>
 
-                <button @click="deleteOpen = true" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
+                <button @click="deleteOpen = true" class="delete bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
                     削除する
                 </button>
             </div>

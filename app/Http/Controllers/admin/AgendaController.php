@@ -91,8 +91,6 @@ class AgendaController extends Controller
     }
 
 
-
-
     /**
      * 作成画面
      */
@@ -247,15 +245,19 @@ class AgendaController extends Controller
             abort(404, 'このアジェンダに関連するカテゴリが存在しません。');
         }
 
-        $course = $category->courses->first();
-        if (!$course) {
-            abort(404, 'このカテゴリに関連するコースが存在しません。');
-        }
+        // $course = $category->courses->first();
+        // if (!$course) {
+        //     abort(404, 'このカテゴリに関連するコースが存在しません。');
+        // }
+
+        // コースの取得（優先度1: アジェンダ直接のコース / 優先度2: カテゴリ経由のコース）
+        $course = $agenda->courses->first()
+            ?? $category?->courses?->first();
 
         return view('admin.agendas.preview', compact('agenda', 'category', 'course'));
     }
 
-    public function files(Agenda $agenda = null)
+    public function files(?Agenda $agenda = null)
     {
         $files = $agenda ? $agenda->files : \App\Models\AgendaFile::latest()->get();
         return view('admin.agendas.files', compact('agenda', 'files'));

@@ -142,7 +142,7 @@
                     この質疑応答を削除すると元に戻せません。
                 </p>
 
-                <button @click="deleteOpen = true" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded">
+                <button @click="deleteOpen = true" class="delete bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded">
                     削除する
                 </button>
             </div>
