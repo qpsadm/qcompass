@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto min-h-screen p-6">
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
-            <h1 class="text-2xl font-bold mb-4">
-                お知らせカテゴリ 作成
+    <div class="container mx-auto max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">
+                お知らせカテゴリ 新規作成
             </h1>
 
             {{-- バリデーションエラー --}}

@@ -81,31 +81,38 @@
 .container .new {
     background-color: var(--background-color-4);
     color: var(--text-color-3);
+    border: 1px var(--background-color-4) solid;
 }
 
 .container .new:hover {
     background-color: var(--accent-color);
     color: var(--text-color-3);
+    border: 1px var(--accent-color) solid;
 }
 
 .container .save {
     background-color: var(--background-color-4);
+    border: 1px var(--background-color-4) solid;
 }
 
 .container .save:hover {
     background-color: var(--accent-color);
+    border: 1px var(--accent-color) solid;
 }
 
 .container .back {
     background-color: var(--background-color-5);
+    border: 1px var(--background-color-5) solid;
 }
 
 .container .back:hover {
     background-color: var(--accent-color);
+    border: 1px var(--accent-color) solid;
 }
 
 .container .delete {
     background-color: var(--background-color-8);
+    border: 1px var(--accent-color2) solid;
 }
 
 .container .delete:hover {

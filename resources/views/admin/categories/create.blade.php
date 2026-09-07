@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen">
+    <div class="container mx-auto w-full">
 
-        <div class="bg-white rounded-lg shadow-md p-6 w-full">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
             <!-- ヘッダー -->
             <div class="mb-6">
@@ -11,7 +11,7 @@
                     class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                     ← カテゴリー一覧に戻る
                 </a> --}}
-                <h1 class="text-2xl font-bold text-gray-800">カテゴリー 作成</h1>
+                <h1 class="text-2xl font-bold text-gray-800">カテゴリー 新規作成</h1>
             </div>
 
             {{-- バリデーションエラー --}}
@@ -28,12 +28,12 @@
             <div class="flex gap-6">
 
                 {{-- 左：親カテゴリ選択 --}}
-                <div class="w-1/2 bg-gray-50 p-4 rounded-lg border">
+                <div class="w-2/3 bg-gray-50 p-4 rounded-lg border">
                     <h2 class="font-semibold mb-3 text-gray-700">親カテゴリを選択</h2>
 
-                    <ul class="space-y-2 text-sm">
+                    <ul class="space-y-2">
                         <li>
-                            <label class="flex items-center gap-2 cursor-pointer">
+                            <label class="flex items-center gap-2 cursor-pointer mb-4 text-red-500 font-medium">
                                 <input type="radio" name="parent_select" value="" checked>
                                 親なし（最上位）
                             </label>
@@ -59,7 +59,7 @@
 
                                 <!-- コード -->
                                 <tr class="border-b">
-                                    <th class="w-1/3 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                                    <th class="w-48 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                                         コード
                                         <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                                             必須
@@ -67,14 +67,14 @@
                                     </th>
                                     <td class="px-4 py-3">
                                         <input type="text" name="code" value="{{ old('code') }}"
-                                            class="border rounded px-3 py-2 w-64
-                                                  focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            class="border rounded px-3 py-2
+                                                  focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                                     </td>
                                 </tr>
 
                                 <!-- カテゴリー名 -->
                                 <tr class="border-b">
-                                    <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                                    <th class="w-48 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                                         カテゴリー名
                                         <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                                             必須
@@ -82,14 +82,14 @@
                                     </th>
                                     <td class="px-4 py-3">
                                         <input type="text" name="name" value="{{ old('name') }}" required
-                                            class="border rounded px-3 py-2 w-96
-                                                  focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            class="border rounded px-3 py-2
+                                                  focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                                     </td>
                                 </tr>
 
                                 <!-- 表示フラグ -->
                                 <tr class="border-b">
-                                    <th class="w-1/4 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
+                                    <th class="w-48 px-4 py-3 bg-gray-100 text-right font-medium align-middle">
                                         表示フラグ
                                     </th>
                                     <td class="px-4 py-3" x-data="{ is_show: {{ old('is_show', 0) }} }">
@@ -122,7 +122,7 @@
 
                         <!-- 操作ボタン -->
                         <div class="mt-6 flex gap-3">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                            <button type="submit" class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
                                 作成する
                             </button>
 

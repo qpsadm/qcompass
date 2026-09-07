@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen">
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+    <div class="container mx-auto max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-3xl font-bold mb-6">ユーザー基本情報作成</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">ユーザー基本情報 新規作成</h1>
 
             {{-- フォーム --}}
             <form action="{{ route('admin.users.store') }}" method="POST">
@@ -18,7 +18,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="code" value="{{ old('code') }}"
-                                    class="border rounded px-3 py-2 w-64">
+                                    class="border rounded px-3 py-2 w-80">
                                 @error('code')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -33,7 +33,7 @@
 
                             <td class="px-4 py-2">
                                 <input type="text" name="name" value="{{ old('name') }}"
-                                    class="border rounded px-3 py-2 w-64">
+                                    class="border rounded px-3 py-2 w-80">
                                 @error('name')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -47,7 +47,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="furigana" value="{{ old('furigana') }}"
-                                    class="border rounded px-3 py-2 w-64">
+                                    class="border rounded px-3 py-2 w-80">
                                 @error('furigana')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -61,7 +61,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="roman_name" value="{{ old('roman_name') }}"
-                                    class="border rounded px-3 py-2 w-64">
+                                    class="border rounded px-3 py-2 w-80">
                                 @error('roman_name')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -74,7 +74,7 @@
                                 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
                             </th>
                             <td class="px-4 py-2">
-                                <input type="password" name="password" class="border rounded px-3 py-2 w-64">
+                                <input type="password" name="password" class="border rounded px-3 py-2 w-80">
                                 <p class="text-gray-500 text-sm">※新規作成のため必須</p>
                                 @error('password')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -86,7 +86,7 @@
                         <tr class="border-b">
                             <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">ユーザー権限</th>
                             <td class="px-4 py-2">
-                                <select name="role_id" class="border rounded px-3 py-2 w-64">
+                                <select name="role_id" class="border rounded px-3 py-2 w-80">
                                     <option value="">選択してください</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}"
@@ -101,11 +101,11 @@
                             </td>
                         </tr>
 
-                        {{-- 担当講座 --}}
+                        {{-- 所属講座 --}}
                         <tr class="border-b">
                             <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">所属講座</th>
                             <td class="px-4 py-2">
-                                <select name="courses_id" class="border rounded px-3 py-2 w-64">
+                                <select name="courses_id" class="border rounded px-3 py-2 w-80">
                                     <option value="">選択してください</option>
                                     @foreach ($courses as $course)
                                         <option value="{{ $course->id }}"
@@ -124,7 +124,7 @@
                         <tr class="border-b">
                             <th class="bg-gray-100 text-right font-medium px-4 py-2">所属部署・ハローワーク</th>
                             <td class="px-4 py-2">
-                                <select name="division_id" class="border rounded px-3 py-2 w-64">
+                                <select name="division_id" class="border rounded px-3 py-2 w-80">
                                     <option value="">選択</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}"
@@ -141,7 +141,7 @@
                             <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">メールアドレス</th>
                             <td class="px-4 py-2">
                                 <input type="email" name="email" value="{{ old('email') }}"
-                                    class="border rounded px-3 py-2 w-80">
+                                    class="border rounded px-3 py-2 w-full">
                                 @error('email')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror

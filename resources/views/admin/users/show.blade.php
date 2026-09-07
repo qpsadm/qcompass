@@ -1,23 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
+    <div class="container mx-auto max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー詳細</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">ユーザーの基本情報・詳細情報</h1>
 
-            {{-- タブ --}}
-            <div class="flex mb-4 gap-2">
-                <button class="save px-6 py-2 rounded text-white"
-                    :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'basic' }" @click="tab = 'basic'">
+            <div class="flex mb-4 gap-2 w-full border-gray-400 shadow">
+                <!-- 「基本情報」タブ -->
+                <button type="button"
+                    class="px-6 py-3 font-semibold transition-all duration-150 rounded-t-lg border-t-2 border-x-2 -mb-[2px]"
+                    :class="tab === 'basic'
+                        ?
+                        'bg-blue-600 text-white border-blue-600 shadow-md' :
+                        'bg-blue-100 text-blue-900 border-blue-200 hover:bg-blue-200'"
+                    @click="tab = 'basic'">
                     基本情報
                 </button>
-                <button class="back px-6 py-2 font-semibold rounded text-white"
-                    :class="{ 'border-b-2 border-blue-500 text-blue-500': tab === 'detail' }" @click="tab = 'detail'">
+
+                <!-- 「詳細情報」タブ -->
+                <button type="button"
+                    class="px-6 py-3 font-semibold transition-all duration-150 rounded-t-lg border-t-2 border-x-2 -mb-[2px]"
+                    :class="tab === 'detail'
+                        ?
+                        'bg-blue-600 text-white border-blue-600 shadow-md' :
+                        'bg-blue-100 text-blue-900 border-blue-200 hover:bg-blue-200'"
+                    @click="tab = 'detail'">
                     詳細情報
                 </button>
             </div>
+
+            {{-- <div class="w-full">
+                <!-- タブヘッダー領域（下側に境界線を引いてコンテンツ枠と結合） -->
+                <div class="flex border-b-2 border-blue-600 gap-1">
+                    <!-- 「基本情報」タブ -->
+                    <button type="button"
+                        class="px-6 py-2.5 font-semibold transition-all duration-150 rounded-t-lg border-t-2 border-x-2 -mb-[2px]"
+                        :class="tab === 'basic'
+                            ?
+                            'bg-blue-600 text-white border-blue-600 shadow-sm' :
+                            'bg-blue-100 text-blue-900 border-blue-200 hover:bg-blue-200'"
+                        @click="tab = 'basic'">
+                        基本情報
+                    </button>
+
+                    <!-- 「詳細情報」タブ -->
+                    <button type="button"
+                        class="px-6 py-2.5 font-semibold transition-all duration-150 rounded-t-lg border-t-2 border-x-2 -mb-[2px]"
+                        :class="tab === 'detail'
+                            ?
+                            'bg-blue-600 text-white border-blue-600 shadow-sm' :
+                            'bg-blue-100 text-blue-900 border-blue-200 hover:bg-blue-200'"
+                        @click="tab = 'detail'">
+                        詳細情報
+                    </button>
+                </div>
+
+                <!-- タブコンテンツ領域（上のタブと結合するカード枠） -->
+                <div class="p-6 bg-white border-x-2 border-b-2 border-blue-600 rounded-b-lg shadow-sm">
+                    <div x-show="tab === 'basic'">
+                        <!-- 基本情報の中身 -->
+                        <p class="text-slate-700">基本情報のコンテンツがここに入ります。</p>
+                    </div>
+                    <div x-show="tab === 'detail'">
+                        <!-- 詳細情報の中身 -->
+                        <p class="text-slate-700">詳細情報のコンテンツがここに入ります。</p>
+                    </div>
+                </div>
+            </div> --}}
 
             {{-- メッセージ --}}
             @if (session('success'))
@@ -138,7 +189,7 @@
             <div class="flex gap-3 mt-6">
                 <a href="{{ route('admin.users.edit', ['user' => $user->id, 'tab' => 'basic']) }}"
                     class="bg-green-500 hover:bg-red-500 text-white px-5 py-2 rounded">
-                    基本情報編集
+                    基本情報を編集
                 </a>
 
                 @if ($user->detail)
@@ -147,18 +198,18 @@
                         'detail' => $user->detail->id,
                     ]) }}"
                         class="save bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded">
-                        詳細情報編集
+                        詳細情報を編集
                     </a>
                 @else
                     <a href="{{ route('admin.user_details.create', $user->id) }}"
                         class="save bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded">
-                        詳細情報作成
+                        詳細情報を作成
                     </a>
                 @endif
 
                 <a href="{{ route('admin.users.index') }}"
                     class="back bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded">
-                    一覧に戻る
+                    ユーザー一覧に戻る
                 </a>
             </div>
         </div>

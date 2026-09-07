@@ -2,11 +2,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-5xl">
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+    <div class="container mx-auto max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-3xl font-bold mb-6">
-                ユーザー詳細情報編集：{{ $user->name }}
+            <h1 class="text-2xl font-bold mb-6">
+                ユーザーの詳細情報 編集：{{ $user->name }}
             </h1>
 
             <form action="{{ route('admin.user_details.update', ['user' => $user->id, 'detail' => $detail->id]) }}"
@@ -217,7 +217,7 @@
 
                     <a href="{{ route('admin.users.show', ['user' => $user->id, 'tab' => 'detail']) }}"
                         class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">
-                        ユーザー詳細に戻る
+                        ユーザー情報確認画面に戻る
                     </a>
                 </div>
 

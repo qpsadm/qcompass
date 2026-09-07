@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4">質疑応答一覧</h1>
 
@@ -9,10 +9,10 @@
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between">
 
             <!-- 左側: 新規作成 -->
-            <div class="flex items-center space-x-2 mb-2 lg:mb-0">
+            <div class="flex items-center mb-2 lg:mb-0">
                 <div class="flex items-center justify-between mb-4">
                     <a href="{{ route('admin.questions.create') }}"
-                        class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center space-x-1">
+                        class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center">
                         {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                         <span class="hidden lg:inline ml-1">新規作成</span>
                     </a>
@@ -20,11 +20,11 @@
             </div>
 
             <!-- 右側: 絞り込み + 検索 -->
-            <div class="flex flex-col lg:flex-row items-end lg:items-center gap-4 mb-4">
+            <div class="flex flex-col lg:flex-row items-end lg:items-center mb-4">
 
                 <!-- 講座選択 -->
                 <form method="GET" action="{{ route('admin.questions.index') }}"
-                    class="flex items-center space-x-2 lg:mb-0 justify-end gap-2" style="width: 850px;">
+                    class="flex items-center space-x-2 lg:mb-0 justify-end gap-1">
 
                     <select name="course_id" class="border px-2 py-1 rounded">
                         <option value="">全ての講座</option>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4" x-data="{ deleteOpen: false }">
+    <div class="container mx-auto  max-w-5xl " x-data="{ deleteOpen: false }">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
             <!-- ヘッダー -->
             <div class="mb-6">

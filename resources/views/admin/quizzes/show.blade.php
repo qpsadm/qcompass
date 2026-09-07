@@ -60,7 +60,7 @@
                 {{-- 新しい問題追加 --}}
                 <div class="mb-6">
                     <a href="{{ route('admin.quizzes.quiz_questions.create', $quiz->id) }}"
-                        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-yellow-500">
+                        class="new px-4 py-2 bg-green-500 text-white rounded hover:bg-yellow-500">
                         クイズ問題追加
                     </a>
                 </div>
@@ -115,13 +115,13 @@
                                 {{-- 編集・削除ボタン --}}
                                 <div class="mt-4 flex gap-2 justify-end">
                                     <a href="{{ route('admin.quizzes.quiz_questions.edit', [$quiz->id, $q->id]) }}"
-                                        class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                        class="new px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
                                         編集
                                     </a>
 
                                     <button
                                         @click="document.getElementById('delete-{{ $q->id }}').classList.remove('hidden')"
-                                        class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                                        class="delete px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
                                         削除
                                     </button>
                                 </div>

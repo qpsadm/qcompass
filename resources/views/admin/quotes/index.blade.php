@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen bg-white rounded-lg shadow-md" x-data="{
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md" x-data="{
         search: '{{ request('search') }}',
         sort: '{{ request('sort', 'id') }}',
         direction: '{{ request('direction', 'desc') }}',
@@ -44,7 +44,7 @@
             {{-- 新規作成 --}}
             <div class="flex justify-between">
                 <a href="{{ route('admin.quotes.create') }}"
-                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white transition flex items-center space-x-1">
+                    class="new bg-yellow-400 border border-gray-200 px-4 py-2 text-black rounded hover:bg-blue-600 hover:text-white flex items-center space-x-1">
                     {{-- <img src="{{ asset('assets/images/icon/b_create.svg') }}" class="w-4 h-4"> --}}
                     <span class="hidden lg:inline ml-1">新規作成</span>
                 </a>
@@ -54,7 +54,8 @@
             <div class="flex items-center gap-2">
                 <input type="text" x-model="search" placeholder="原文・作者で検索" @keydown.enter.prevent="submitForm()"
                     class="border px-3 py-2 rounded w-64 max-w-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button @click="submitForm()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                <button @click="submitForm()"
+                    class="save bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                     検索
                 </button>
                 <button x-show="search" @click="clearSearch()"

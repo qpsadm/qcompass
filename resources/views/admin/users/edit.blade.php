@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4" x-data="{ deleteOpen: false }">
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+    <div class="container mx-auto max-w-5xl" x-data="{ deleteOpen: false }">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-3xl font-bold mb-6">ユーザー基本情報編集：{{ $user->name }}</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">ユーザーの基本情報編集：{{ $user->name }}</h1>
 
             {{-- 詳細情報作成／編集ボタン --}}
-            <div class="mb-6">
+            <div class="mb-6 flex justify-end">
                 @if ($user->detail)
                     <a href="{{ route('admin.user_details.edit', ['user' => $user->id, 'detail' => $user->detail->id]) }}"
-                        class="bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded shadow-sm transition">
-                        詳細情報を編集
+                        class="new bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded shadow-sm">
+                        ユーザーの詳細情報を編集
                     </a>
                 @else
                     <a href="{{ route('admin.user_details.create', ['user' => $user->id]) }}"
-                        class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-2 rounded shadow-sm transition">
-                        詳細情報を作成
+                        class="new bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-2 rounded shadow-sm">
+                        ユーザーの詳細情報を作成
                     </a>
                 @endif
             </div>
@@ -176,7 +176,7 @@
                         class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">更新する</button>
                     <a href="{{ route('admin.users.show', ['user' => $user->id, 'tab' => 'detail']) }}"
                         class="back bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
-                        ユーザー詳細に戻る
+                        ユーザー情報確認画面に戻る
                     </a>
                 </div>
             </form>

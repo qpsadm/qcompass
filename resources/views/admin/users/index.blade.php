@@ -37,7 +37,7 @@
             </div>
 
             <!-- 右側: 絞り込み + 検索 -->
-            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1">
 
                 <!-- 講座選択 + 未所属 -->
                 <form method="GET" action="{{ route('admin.users.index') }}"

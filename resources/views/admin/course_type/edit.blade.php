@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen" x-data="{ deleteOpen: false }">
+    <div class="container mx-auto max-w-5xl" x-data="{ deleteOpen: false }">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
             <!-- ヘッダー -->
             <div class="mb-6">
@@ -11,7 +11,7 @@
                 class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                 ← 講座分野一覧に戻る
             </a> --}}
-                <h1 class="text-2xl font-bold text-gray-800">
+                <h1 class="text-2xl font-bold mb-6 text-gray-800">
                     講座分野 編集
                 </h1>
             </div>
