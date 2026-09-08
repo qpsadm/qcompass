@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl">
+    <div class="container max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
             <h1 class="text-2xl font-bold mb-6">

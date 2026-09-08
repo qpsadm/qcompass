@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl" x-data="{ deleteOpen: false }">
+    <div class="container max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">ユーザーの基本情報編集：{{ $user->name }}</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">ユーザーの基本情報 編集：{{ $user->name }}</h1>
 
             {{-- 詳細情報作成／編集ボタン --}}
             <div class="mb-6 flex justify-end">
@@ -219,11 +219,10 @@
                 </div>
             </div>
         </div>
-
-        <style>
-            [x-cloak] {
-                display: none !important;
-            }
-        </style>
     </div>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 @endsection

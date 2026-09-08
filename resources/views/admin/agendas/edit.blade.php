@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">アジェンダ編集</h1>
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">アジェンダ 編集</h1>
 
             {{-- バリデーションエラー --}}
             @if ($errors->any())
@@ -25,8 +25,9 @@
 
                         {{-- アジェンダ名 --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 アジェンダ名
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
                             </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="agenda_name"
@@ -37,8 +38,9 @@
 
                         {{-- カテゴリ --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 カテゴリ
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
                             </th>
                             <td class="px-4 py-2">
                                 <select name="category_id" class="border rounded px-3 py-2 w-80">
@@ -55,7 +57,7 @@
 
                         {{-- 表示フラグ --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 表示フラグ
                             </th>
 
@@ -80,7 +82,7 @@
 
                         {{-- 承認状態 --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 承認状態
                             </th>
                             <td class="px-4 py-2">
@@ -98,7 +100,7 @@
 
                         {{-- 内容 --}}
                         <tr class="border-b">
-                            <th class="w-40 px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="w-60 px-4 py-2 bg-gray-100 text-right font-medium">
                                 内容・概要
                             </th>
                             <td class="px-4 py-2">

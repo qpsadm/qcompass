@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <h1 class="text-xl font-bold mb-4">お知らせの編集</h1>
+    <div class="container max-w-5xl">
+        <h1 class="text-xl font-bold mb-4">お知らせ 編集</h1>
 
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">

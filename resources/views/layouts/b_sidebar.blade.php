@@ -17,7 +17,8 @@
             ✕ 閉じる
         </button>
 
-        <h2 class="bg-blue-100 p-1 text-l font-medium text-gray-700 mb-4 text-center rounded">管理メニュー</h2>
+        <h2 class="bg-aa-100 p-2 text-xl font-medium mb-4 text-center text-white rounded border">管理メニュー
+        </h2>
 
         <nav class="space-y-2">
             @foreach ($menus as $menu)
@@ -78,17 +79,20 @@
                     </div>
                 @endif
             @endforeach
+
+            {{-- ログアウト --}}
+            {{-- <form method="POST" action="{{ route('logout') }}" class="mt-6">
+                @csrf
+                <button type="submit"
+                    class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-500 hover:text-white mt-4">
+                    <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
+                        style="filter: brightness(0) invert(1);">
+                    <span class="hidden md:inline">ログアウト</span>
+                </button>
+            </form> --}}
         </nav>
 
-        {{-- ログアウト --}}
-        <form method="POST" action="{{ route('logout') }}" class="mt-6">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-500 hover:text-white">
-                <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
-                    style="filter: brightness(0) invert(1);">
-                <span class="hidden md:inline">ログアウト</span>
-            </button>
-        </form>
+
     </aside>
 
     @include('partials.sidebar_js')

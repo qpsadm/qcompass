@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl" x-data="{ deleteOpen: false }">
+    <div class="container max-w-5xl" x-data="{ deleteOpen: false }">
 
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            {{-- <h1 class="text-2xl font-bold text-gray-800">お知らせカテゴリ 編集</h1> --}}
 
             <!-- ヘッダー -->
             <div class="mb-6">

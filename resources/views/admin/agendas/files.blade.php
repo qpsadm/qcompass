@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="p-6 max-w-4xl mx-auto bg-white rounded shadow">
+    <div class="container max-w-5xl">
 
         <h2 class="text-xl font-bold mb-4">
             @if ($agenda)

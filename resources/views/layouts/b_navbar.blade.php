@@ -10,14 +10,14 @@
                 </a>
             </div>
 
-            <!-- なりすましボタン（自分のIDで開始） -->
+            <!-- 受講者画面ボタン（自分のIDで開始） -->
             <form action="{{ route('admin.users.impersonate', auth()->id()) }}" method="POST" class="inline-block">
                 @csrf
                 <button type="submit"
-                    class="flex items-center gap-2 text-white bg-red-500 border px-4 py-2 rounded hover:bg-blue-400 hover:border-blue-500 hover:transition focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <img src="{{ asset('assets/images/icon/b_course.svg') }}" alt="なりすまし" class="h-5 w-5"
+                    class="flex items-center gap-2 text-white border bg-blue-600 px-4 py-2 rounded hover:bg-red-500 hover:border-red-500 hover:transition focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <img src="{{ asset('assets/images/icon/b_course.svg') }}" alt="受講者画面" class="h-5 w-5"
                         style="filter: brightness(0) invert(1);">
-                    <span class="hidden md:inline">なりすまし</span>
+                    <span class="hidden md:inline">受講者画面へ</span>
                 </button>
             </form>
 

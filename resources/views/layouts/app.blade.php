@@ -17,7 +17,7 @@
     <link rel="icon" href="{{ asset('assets/images/icon/favicon.png') }}">
 </head>
 
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="bg-gray-200 min-h-screen flex flex-col">
 
     {{-- ナビバー --}}
     @include('layouts.b_navbar')

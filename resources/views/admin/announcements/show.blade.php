@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-4xl" x-data="{ deleteOpen: false }">
+    <div class="container max-w-5xl" x-data="{ deleteOpen: false }">
 
         {{-- お知らせ詳細カード --}}
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
             {{-- タイトル --}}
-            <h1 class="text-2xl font-bold mb-4">{{ $announcement->title }}</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">{{ $announcement->title }}</h1>
 
             {{-- メタ情報 --}}
             <div class="text-blue-600 mb-4 flex flex-row gap-6">
@@ -22,13 +22,14 @@
 
             {{-- アクションボタン --}}
             <div class="flex gap-3 mb-6">
-                <a href="{{ route('admin.announcements.index') }}"
-                    class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
 
                 @if (isset($announcement->id))
                     <a href="{{ route('admin.announcements.edit', $announcement->id) }}"
                         class="save bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">編集</a>
                 @endif
+                <a href="{{ route('admin.announcements.index') }}"
+                    class="back bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded">一覧に戻る</a>
+
             </div>
 
             {{-- 危険操作ゾーン --}}

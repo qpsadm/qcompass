@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div class="container p-6 bg-white rounded-lg shadow-md">
 
         <h1 class="text-2xl font-bold mb-4">質疑応答一覧</h1>
 

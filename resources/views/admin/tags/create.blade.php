@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl ">
+    <div class="container max-w-5xl ">
 
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
@@ -11,7 +11,7 @@
                 class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
                 ← 技術分類タグ一覧に戻る
             </a> --}}
-                <h1 class="text-2xl font-bold text-gray-800">技術分類タグ 新規作成</h1>
+                <h1 class="text-2xl font-bold text-gray-800">技術分類タグ 作成</h1>
             </div>
 
             {{-- バリデーションエラー --}}

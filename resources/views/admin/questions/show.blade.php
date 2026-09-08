@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-5xl">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold mb-6">質疑応答詳細</h1>
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">質疑応答詳細</h1>
 
             <table class="table-auto w-full border-collapse">
                 <tbody>
@@ -11,7 +11,7 @@
                         <th class="px-4 py-2 bg-gray-100 text-right w-1/4">講座</th>
                         <td class="px-4 py-2">
                             {{ $question->course->course_name ?? '未設定' }}
-                            ({{ $question->course->course_code ?? '' }})
+                            {{-- ({{ $question->course->course_code ?? '-' }}) --}}
                         </td>
                     </tr>
 

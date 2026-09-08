@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-5xl">
-        <div class="bg-white rounded-lg shadow-md p-6" x-data="{ deleteOpen: false }">
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto" x-data="{ deleteOpen: false }">
 
-            <h1 class="text-3xl font-bold mb-6">質疑応答編集</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">質疑応答 編集</h1>
 
             {{-- ================= 編集フォーム ================= --}}
             <form action="{{ route('admin.questions.update', $question->id) }}" method="POST" x-data="questionForm()"

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-5xl" x-data="{ deleteOpen: false }">
+    <div class="container max-w-5xl" x-data="{ deleteOpen: false }">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-lg mx-auto">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">講座・講師編集</h1>
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">講座・講師 編集</h1>
 
             <form action="{{ route('admin.course_teachers.update', $CourseTeacher->id) }}" method="POST" class="space-y-4">
                 @csrf

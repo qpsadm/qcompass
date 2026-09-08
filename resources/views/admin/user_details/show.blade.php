@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
+    <div class="container max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
 
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー詳細</h1>
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">ユーザー情報確認</h1>
 
         {{-- タブ --}}
         <div class="flex border-b mb-6">

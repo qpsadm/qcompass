@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
+    <div class="container p-4">
         <h1 class="text-2xl font-bold mb-4">{{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} ファイルプレビュー</h1>
 
         <div class="bg-white rounded-lg shadow-md p-6">

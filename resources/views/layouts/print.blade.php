@@ -18,7 +18,7 @@
 
         .container {
             max-width: 1000px;
-            margin: 0 auto;
+            /* margin: 0 auto; */
         }
 
         h1 {

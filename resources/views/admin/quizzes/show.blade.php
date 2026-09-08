@@ -16,10 +16,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-5xl bg-white rounded-lg shadow-md">
-        <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-2xl font-bold mb-4">クイズ詳細：{{ $quiz->title }}</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">クイズの詳細：{{ $quiz->title }}</h1>
 
             {{-- クイズ情報 --}}
             <div class="border bg-white p-4 rounded mb-6 space-y-3">
@@ -157,6 +157,6 @@
                     </div>
                 </div>
             @endforeach
-        @endsection
+        </div>
     </div>
-</div>
+@endsection

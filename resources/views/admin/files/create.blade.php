@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
+    <div class="container max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-6">
                 {{ $type === 'agenda' ? 'アジェンダ' : 'お知らせ' }} ファイル作成
@@ -28,7 +28,7 @@
                     <input type="hidden" name="return_url" value="{{ $returnUrl }}">
                 @endif
 
-                <table class="w-full border-collapse">
+                <table class="table-auto w-full border-collapse">
                     <tbody>
                         <tr>
                             <th class="border px-4 py-2 bg-gray-100 text-right">ファイル</th>

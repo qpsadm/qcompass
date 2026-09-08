@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4">
+    <div class="container p-6 bg-white rounded-lg shadow-md">
 
         @php
             // タイプごとの日本語タイトル
@@ -32,36 +32,42 @@
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-100">
-                        <th class="border px-4 py-2">ファイル名</th>
-                        <th class="border px-4 py-2">種類</th>
-                        <th class="border px-4 py-2">サイズ</th>
-                        <th class="border px-4 py-2">説明</th>
-                        <th class="border px-4 py-2">作成者</th>
-                        <th class="border px-4 py-2">操作</th>
+                        <th class="border px-4 py-2 w-20">No.</th>
+                        <th class="border px-4 py-2 w-60">ファイル名</th>
+                        <th class="border px-4 py-2 w-32">種類</th>
+                        <th class="border px-4 py-2 w-32">サイズ</th>
+                        <th class="border px-4 py-2 w-40">説明</th>
+                        <th class="border px-4 py-2 w-40">作成日</th>
+                        <th class="border px-4 py-2 w-32">作成者</th>
+                        <th class="border px-4 py-2 w-48">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($files as $file)
                         <tr>
+                            <td class="border px-4 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="border px-4 py-2">{{ $file->file_name }}</td>
                             <td class="border px-4 py-2">{{ $file->file_type }}</td>
                             <td class="border px-4 py-2">{{ number_format($file->file_size / 1024, 2) }} KB</td>
                             <td class="border px-4 py-2">{{ $file->description ?? '-' }}</td>
+                            <td class="border px-4 py-2">{{ $file->updated_at->format('Y-m-d H:i') ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $file->created_user_name ?? '-' }}</td>
-                            <td class="border px-4 py-2 flex gap-2">
+                            <td class="border px-4 py-2 flex gap-2 justify-center">
                                 <a href="{{ route('admin.files.preview', ['type' => $type, 'id' => $file->id]) }}"
                                     target="_blank" rel="noopener"
-                                    class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
+                                    class="save bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
                                     プレビュー
                                 </a>
+
                                 <a href="{{ route('admin.files.edit', ['type' => $type, 'id' => $file->id]) }}"
-                                    class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">編集</a>
+                                    class="save bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">編集</a>
                                 <form method="POST"
                                     action="{{ route('admin.files.destroy', ['type' => $type, 'id' => $file->id]) }}"
                                     onsubmit="return confirm('削除してよろしいですか？');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+                                    <button type="submit"
+                                        class="delete bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
                                         削除
                                     </button>
                                 </form>

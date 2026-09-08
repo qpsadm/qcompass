@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6  max-w-5xl">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">学習コンテンツの詳細</h1>
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">学習コンテンツの詳細</h1>
 
             @php
                 $typeLabels = [

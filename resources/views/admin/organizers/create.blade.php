@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl">
+    <div class="container max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">講座開催者 新規作成</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">講座開催者 作成</h1>
 
             {{-- バリデーションエラー --}}
             @if ($errors->any())

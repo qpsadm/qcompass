@@ -73,9 +73,9 @@
 .container button:hover,
 .container a:hover {
     /* background-color: var(--accent-color); */
-    /* color: var(--accent-color2); */
+    /* color: var(--accent-color); */
     /* color: var(--background-color-4); */
-    text-underline-offset: 4px;
+    text-underline-offset: 5px;
 }
 
 .container .new {
@@ -84,7 +84,7 @@
     border: 1px var(--background-color-4) solid;
 }
 
-.container .new:hover {
+.new:hover {
     background-color: var(--accent-color);
     color: var(--text-color-3);
     border: 1px var(--accent-color) solid;
@@ -92,12 +92,15 @@
 
 .container .save {
     background-color: var(--background-color-4);
+    color: var(--text-color-3);
     border: 1px var(--background-color-4) solid;
 }
 
 .container .save:hover {
     background-color: var(--accent-color);
+    color: var(--text-color-3);
     border: 1px var(--accent-color) solid;
+    text-decoration: none;
 }
 
 .container .back {
@@ -119,6 +122,15 @@
     background-color: var(--background-color-table-2);
     color: var(--background-color-8);
     border: 1px var(--accent-color2) solid;
+}
+
+.dashboard a {
+    color: var(--text-color-4);
+}
+
+.dashboard a:hover {
+    color: var(--accent-color);
+    /* border: 1px var(--background-color-4) solid; */
 }
 
 /* テーブル関連 */

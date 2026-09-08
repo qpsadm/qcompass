@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 min-h-screen">
+    <div class="container max-w-5xl">
 
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
             <!-- ヘッダー -->
             <div class="mb-6">
@@ -12,7 +12,7 @@
                 ← 名言一覧に戻る
             </a> --}}
                 <h1 class="text-2xl font-bold text-gray-800">
-                    {{ isset($quote) ? '名言 編集' : '名言 新規登録' }}
+                    {{ isset($quote) ? '名言 編集' : '名言 作成' }}
                 </h1>
             </div>
 

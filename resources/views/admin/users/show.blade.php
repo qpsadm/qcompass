@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
+    <div class="container max-w-5xl" x-data="{ tab: '{{ request('tab', 'basic') }}' }">
 
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 

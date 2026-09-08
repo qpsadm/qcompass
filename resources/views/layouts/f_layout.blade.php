@@ -60,7 +60,7 @@
     {{-- ★ なりすまし中バナー（最上部固定） --}}
     @if (session()->has('impersonator_id'))
         <div class="impersonate-banner">
-            <strong>⚠ なりすまし中（管理者）</strong>
+            <strong>⚠ 管理者が確認中</strong>
 
             <form method="POST" action="{{ route('admin.users.impersonate.leave') }}" class="impersonate-exit">
                 @csrf

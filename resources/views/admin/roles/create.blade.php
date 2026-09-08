@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
+    <div class="container p-6">
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold mb-6 text-gray-800">権限作成</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">権限 作成</h1>
 
             <form action="{{ route('admin.roles.store') }}" method="POST" class="space-y-4">
                 @csrf

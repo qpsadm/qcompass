@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
+    <div class="container p-6">
         <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
             <h1 class="text-2xl font-bold mb-6 text-gray-800">
-                クイズ問題の編集：{{ $quiz->title }}
+                クイズ問題 編集：{{ $quiz->title }}
             </h1>
 
             {{-- バリデーションエラー表示 --}}

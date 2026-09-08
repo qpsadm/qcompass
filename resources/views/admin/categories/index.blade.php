@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }"
+    <div class="container p-6 bg-white rounded-lg shadow-md" x-data="{ open: false, deleteUrl: '', deleteName: '' }"
         x-on:open-delete.window="
          deleteUrl = $event.detail.url;
          deleteName = $event.detail.name;

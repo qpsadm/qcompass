@@ -9,10 +9,10 @@
         $storageBaseUrl = env('APP_STORAGE_URL', url('/storage'));
     @endphp
 
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-4">
-                {{ isset($announcement->id) ? 'お知らせ編集' : 'お知らせ新規作成' }}
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">
+                {{ isset($announcement->id) ? 'お知らせ 編集' : 'お知らせ 作成' }}
             </h1>
 
             {{-- バリデーション --}}

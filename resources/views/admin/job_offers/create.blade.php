@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-bold mb-6">
-                {{ isset($JobOffer) ? '求人票編集（管理画面）' : '求人票作成（管理画面）' }}
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">
+                {{ isset($JobOffer) ? '求人票 編集' : '求人票 作成' }}
             </h1>
 
             {{-- エラー表示 --}}

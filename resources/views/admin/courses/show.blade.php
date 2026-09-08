@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto max-w-5xl">
+    <div class="container max-w-5xl">
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
             <h1 class="text-2xl font-bold mb-6 text-gray-800">
 
@@ -41,13 +41,15 @@
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">申請日</th>
                             <td class="px-4 py-2">
-                                {{ $course->application_date ? \Carbon\Carbon::parse($course->application_date)->format('Y-m-d') : '-' }}
+                                {{ $course->application_date ? \Carbon\Carbon::parse($course->application_date)->format('Y年n月j日') : '-' }}
                             </td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">認定日</th>
                             <td class="px-4 py-2">
-                                {{ $course->certification_date ? \Carbon\Carbon::parse($course->certification_date)->format('Y-m-d') : '-' }}
+                                {{ $course->certification_date && \Carbon\Carbon::parse($course->certification_date)->year > 0
+                                    ? \Carbon\Carbon::parse($course->certification_date)->format('Y年n月j日')
+                                    : '-' }}
                             </td>
                         </tr>
                         <tr class="border-b">
@@ -57,27 +59,31 @@
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">期間</th>
                             <td class="px-4 py-2">
-                                {{ $course->start_date ?? '-' }} 〜 {{ $course->end_date ?? '-' }}
+                                {{ $course->start_date && \Carbon\Carbon::parse($course->start_date)->year > 0 ? \Carbon\Carbon::parse($course->start_date)->format('Y年n月j日') : '-' }}
+                                〜
+                                {{ $course->end_date && \Carbon\Carbon::parse($course->end_date)->year > 0 ? \Carbon\Carbon::parse($course->end_date)->format('Y年n月j日') : '-' }}
                             </td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">時間</th>
                             <td class="px-4 py-2">
-                                {{ $course->start_time ?? '-' }} 〜 {{ $course->finish_time ?? '-' }}
+                                {{ $course->start_time ? substr($course->start_time, 0, 5) : '-' }}
+                                〜
+                                {{ $course->finish_time ? substr($course->finish_time, 0, 5) : '-' }}
                             </td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">総授業時間 / 時限数</th>
                             <td class="px-4 py-2">
-                                {{ $course->total_hours ?? '-' }} / {{ $course->periods ?? '-' }}
+                                {{ $course->total_hours ?? '-' }}時間 / {{ $course->periods ?? '-' }}時限
                             </td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">閲覧期間</th>
                             <td class="px-4 py-2">
-                                {{ $course->start_viewing ? \Carbon\Carbon::parse($course->start_viewing)->format('Y-m-d') : '-' }}
+                                {{ $course->start_viewing ? \Carbon\Carbon::parse($course->start_viewing)->format('Y年n月j日') : '-' }}
                                 〜
-                                {{ $course->finish_viewing ? \Carbon\Carbon::parse($course->finish_viewing)->format('Y-m-d') : '-' }}
+                                {{ $course->finish_viewing ? \Carbon\Carbon::parse($course->finish_viewing)->format('Y年n月j日') : '-' }}
                             </td>
                         </tr>
                         <tr class="border-b">
@@ -87,7 +93,7 @@
                                     <a href="{{ asset('storage/' . $course->plan_path) }}" target="_blank"
                                         class="text-blue-500 underline">ファイルを確認</a>
                                 @else
-                                    -
+                                    該当PDFファイルがありません
                                 @endif
                             </td>
                         </tr>
@@ -98,14 +104,15 @@
                                     <a href="{{ asset('storage/' . $course->flier_path) }}" target="_blank"
                                         class="text-blue-500 underline">ファイルを確認</a>
                                 @else
-                                    -
+                                    該当PDFファイルがありません
                                 @endif
                             </td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">定員 / 入校者 / 修了者</th>
-                            <td class="px-4 py-2">{{ $course->capacity ?? '-' }} / {{ $course->entering ?? '-' }} /
-                                {{ $course->completed ?? '-' }}</td>
+                            <td class="px-4 py-2">{{ $course->capacity ?? '-' }}人 &nbsp;/&nbsp;
+                                {{ $course->entering ?? '-' }}人 &nbsp;/&nbsp;
+                                {{ $course->completed ?? '-' }}人</td>
                         </tr>
                         <tr class="border-b">
                             <th class="px-4 py-2 bg-gray-100 text-right font-medium">日報送信先</th>

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
-            <h1 class="text-3xl font-bold mb-6">求人票編集：{{ $job_offer->title ?? '新規作成' }}</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">求人票 編集：{{ $job_offer->title ?? '新規作成' }}</h1>
 
             <form
                 action="{{ isset($job_offer) ? route('admin.job_offers.update', $job_offer->id) : route('admin.job_offers.store') }}"

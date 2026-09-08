@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-6 max-w-lg">
+    <div class="container p-6 max-w-lg">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">講座種類詳細</h1>
 
         <div class="bg-white p-6 rounded-lg shadow-md mb-6">

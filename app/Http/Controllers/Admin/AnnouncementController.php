@@ -56,7 +56,8 @@ class AnnouncementController extends Controller
         return view('admin.announcements.index', [
             'announcements' => $announcements,
             'categories'    => AnnouncementType::all(),
-            'courses'       => Course::orderBy('id', 'desc')->get(), // 名前順
+            'courses'      => Course::where('is_show', 1)->whereNull('deleted_at')
+                ->orderBy('id', 'desc')->get(),
             'sort'          => $sort,
             'direction'     => $direction,
         ]);
@@ -67,7 +68,8 @@ class AnnouncementController extends Controller
         return view('admin.announcements.create', [
             'announcement' => new Announcement(),
             'types'        => AnnouncementType::all(),
-            'courses'      => Course::orderBy('course_name', 'asc')->get(), // 名前順
+            'courses'      => Course::where('is_show', 1)->whereNull('deleted_at')
+                ->orderBy('id', 'desc')->get(),
         ]);
     }
 
@@ -104,7 +106,9 @@ class AnnouncementController extends Controller
         }]);
 
         $types = AnnouncementType::all();
-        $courses = Course::orderBy('course_name', 'asc')->get(); // 名前順
+        $courses = Course::where('is_show', 1)->whereNull('deleted_at')
+            ->orderBy('id', 'desc')->get();
+
         // return view('admin.announcements.edit', [
         //     'announcement',
         //     'types'        => AnnouncementType::all(),
