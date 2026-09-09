@@ -55,10 +55,11 @@
 
 </head>
 
-<body class="{{ session()->has('impersonator_id') ? 'impersonating' : '' }}">
+{{-- なりします領域をサイドバーに移った　福島2026-09-09 --}}
+{{-- <body class="{{ session()->has('impersonator_id') ? 'impersonating' : '' }}"> --}}
 
-    {{-- ★ なりすまし中バナー（最上部固定） --}}
-    @if (session()->has('impersonator_id'))
+{{-- ★ なりすまし中バナー（最上部固定） --}}
+{{-- @if (session()->has('impersonator_id'))
         <div class="impersonate-banner">
             <strong>⚠ 管理者が確認中</strong>
 
@@ -67,9 +68,9 @@
                 <button>管理画面に戻る</button>
             </form>
         </div>
-    @endif
+    @endif --}}
 
-
+<body>
 
     {{-- ヘッダー --}}
     @include('includes.f_header')

@@ -109,7 +109,7 @@ class ReportController extends Controller
             'user_id'           => Auth::id(),
             'course_id'         => $course->id, // ← session 由来
             'date'              => $validated['date'],
-            'title'             => $course->course_name . ' -  就職支援訓練日報 ',
+            'title'             => $course->course_name . ' -  訓練日報 ',
             'content'           => $validated['daily_report'],
             'impression'        => $validated['impression'],
             'notice'            => $validated['message'] ?? null,

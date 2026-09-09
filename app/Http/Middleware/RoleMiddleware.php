@@ -21,18 +21,18 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        $roleId = $user->role_id;
+        $roleId = (int) $user->role_id;
 
-        // ログイン不可
-        if ($roleId == 1) {
+        // ログイン不可（role 1）
+        if ($roleId === 1) {
             Auth::logout();
             return redirect()->route('login')->withErrors([
-                'email' => 'このアカウントではログインできません。'
+                'email' => 'このアカウントではログインできません。',
             ]);
         }
 
-        // 管理画面不可（role 2,3）
-        if (in_array($roleId, [2, 3]) && $request->is('admin/*')) {
+        // 管理画面不可（role 2, 3）
+        if (in_array($roleId, [2, 3], true) && $request->is('admin/*')) {
             return redirect()->route('user.top')->with('error', '管理画面にアクセスできません。');
         }
 
@@ -44,29 +44,12 @@ class RoleMiddleware
             }
             $roles = array_map('intval', $roles);
 
-            if (!in_array($roleId, $roles)) {
+            if (!in_array($roleId, $roles, true)) {
                 abort(403, 'アクセス権限がありません。');
             }
         }
 
-        // パート社員に禁止する機能（URLパス）
-        // if ($roleId == 5) {
-        //     $restricted = [
-        //         'roles',
-        //         'users',
-        //         'levels',
-        //         'organizers',
-        //         // 'announcements',
-        //         'achievements_release'
-        //     ];
-        //     foreach ($restricted as $r) {
-        //         if ($request->is("admin/$r*")) {
-        //             abort(403, 'アクセス権限がありません。');
-        //         }
-        //     }
-        // }
-
-        // アルバイトとパート社員に禁止する機能（URLパス）
+        // アルバイト（role 4）とパート社員（role 5）に禁止する機能（URLパス）
         if (in_array($roleId, [4, 5], true)) {
             $restricted = [
                 'roles',
@@ -74,14 +57,19 @@ class RoleMiddleware
                 'levels',
                 'organizers',
                 'courses',
-                'announcements',
                 'achievements_release',
-                'course_teacher', // 講師機能
+                'course_teacher',
+                'course_users',
             ];
 
             foreach ($restricted as $r) {
-                // 「admin/users」ピッタリ、または「admin/users/123」のようにスラッシュが続く場合のみ禁止
                 if ($request->is("admin/$r") || $request->is("admin/$r/*")) {
+
+                    // users 配下であっても「なりすまし開始（impersonate）」は通過を許可
+                    if ($r === 'users' && $request->is('admin/users/*/impersonate')) {
+                        continue;
+                    }
+
                     abort(403, 'アクセス権限がありません。');
                 }
             }

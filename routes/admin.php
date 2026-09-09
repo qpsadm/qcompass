@@ -66,7 +66,7 @@ Route::middleware([
             ->name('categories.restore');
 
         Route::resource('categories', CategoryController::class)
-            ->except(['show']); // ← 詳細画面不要なら超おすすめ
+            ->except(['show']);
 
         Route::resource('divisions', DivisionController::class);
         Route::resource('roles', RoleController::class);
@@ -75,21 +75,15 @@ Route::middleware([
         Route::resource('course_type', CourseTypeController::class);
         Route::resource('tags', TagController::class);
         Route::resource('announcement_types', AnnouncementTypeController::class);
-        // Route::resource('daily_quotes', DailyQuoteController::class);
-        // Route::resource('quotes', QuoteController::class);
+    });
 
-        // なりすまし（システム管理者のみ->role:6,7,8）
+    // なりします管理者系ロール（4~8）のみが「開始」できる
+    Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::post(
             'users/{user}/impersonate',
             [AdminUserController::class, 'impersonate']
-        );
-        // Route::post(
-        //     'users/{user}/impersonate',
-        //     [AdminUserController::class, 'impersonate']
-        // )->middleware('role:8');
+        )->name('users.impersonate');
     });
-
-
 
     /* =============================
      * ユーザー管理
@@ -105,17 +99,6 @@ Route::middleware([
             ->name('users.restore');
 
         Route::resource('users', AdminUserController::class);
-
-        // なりすまし開始
-        Route::post(
-            'users/{user}/impersonate',
-            [AdminUserController::class, 'impersonate']
-        )->name('users.impersonate');
-        // なりすまし解除
-        Route::post(
-            'users/impersonate/leave',
-            [AdminUserController::class, 'leaveImpersonate']
-        )->name('users.impersonate.leave');
     });
 
     // ユーザー詳細（6,7,8）
@@ -171,7 +154,7 @@ Route::middleware([
         )->name('courses.agendas');
 
         Route::prefix('files')->name('files.')->group(function () {
-            Route::get('{type}/{targetId?}', [AgendaFileController::class, 'index'])->name('index'); // targetId optional
+            Route::get('{type}/{targetId?}', [AgendaFileController::class, 'index'])->name('index');
             Route::get('{type}/{targetId}/create', [AgendaFileController::class, 'create'])->name('create');
             Route::post('{type}/{targetId}', [AgendaFileController::class, 'store'])->name('store');
             Route::get('{type}/{id}/preview', [AgendaFileController::class, 'preview'])->name('preview');
@@ -182,14 +165,14 @@ Route::middleware([
     });
 
     /* =============================
-     * お知らせ管理（6,7,8）
+     * お知らせ管理（4,5,6,7,8）
      * ============================= */
-    Route::middleware('role:5,6,7,8')->group(function () {
+    Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('announcements', AnnouncementController::class);
     });
 
     /* =============================
-     * 学習サポート（6,7,8）
+     * 学習サポート（4,5,6,7,8）
      * ============================= */
     Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('learnings', LearningController::class);
@@ -197,7 +180,7 @@ Route::middleware([
     });
 
     /* =============================
-     * クイズ管理（6,7,8）※保留可
+     * クイズ管理（4,5,6,7,8）※保留可
      * ============================= */
     Route::middleware('role:4,5,6,7,8')->group(function () {
         Route::resource('quizzes', QuizController::class);
@@ -206,12 +189,14 @@ Route::middleware([
         Route::resource('daily_quotes', DailyQuoteController::class);
         Route::resource('quotes', QuoteController::class);
     });
+});
 
-    /* =============================
-     * 実績管理（6,7,8）※保留
-     * ============================= */
-    // Route::middleware('role:6,7,8')->group(function () {
-    //     Route::resource('achievements', AchievementController::class);
-    //     Route::resource('achievements_release', AchievementsReleaseController::class);
-    // });
+/* =========================================================================
+ * なりすまし解除（受講者 status: role 3 の状態で実行するためグループの外へ配置）
+ * ========================================================================= */
+Route::middleware(['auth'])->group(function () {
+    Route::post(
+        'admin/users/impersonate/leave',
+        [AdminUserController::class, 'leaveImpersonate']
+    )->name('admin.users.impersonate.leave');
 });

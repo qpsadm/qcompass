@@ -129,14 +129,13 @@
                                 </a>
 
                                 <!-- 詳細情報（Nullsafe 演算子で安全化） -->
-                                <!-- 詳細情報 -->
-                                <div class="text-sm ml-4 text-gray-500">
+                                <div class="text-sm ml-1 text-gray-500">
                                     (&nbsp;{{ $user->detail?->phone1 ?? '電話番号未登録' }}&nbsp;&nbsp;
                                     {{ $user->division?->name ?? '所属なし' }}&nbsp;)
                                     <span class="text-red-500 font-bold">
                                         {{-- 日付が正しく入っているかチェック（1900年以降等の判定） --}}
                                         {{ $user->detail?->leaving_date && \Carbon\Carbon::parse($user->detail->leaving_date)->year > 1900
-                                            ? '※' . \Carbon\Carbon::parse($user->detail->leaving_date)->format('Y-m-d') . '退校'
+                                            ? '※' . '退校'
                                             : '' }}</span>
                                 </div>
                             </li>
@@ -172,9 +171,9 @@
                                     class="font-medium text-blue-600 hover:underline">
                                     {{ $course->course_name }}
                                 </a>
-                                <div class="text-sm ml-4 text-gray-500">
-                                    (&nbsp;期間：{{ $course->start_date }} 〜
-                                    {{ $course->end_date }}&nbsp;&nbsp;入校：{{ $course->entering }}人&nbsp;)
+                                <div class="text-sm text-gray-500">
+                                    (&nbsp;{{ $course->start_date }} 〜
+                                    {{ $course->end_date }}&nbsp;)
                                 </div>
                             </li>
                         @endforeach

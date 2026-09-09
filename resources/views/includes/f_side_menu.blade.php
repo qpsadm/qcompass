@@ -20,52 +20,54 @@
                 </div>
 
                 @forelse ($courses as $course)
-                <div class="course-item">
-                    <div class="countdown">
-                        <p class="countdown-title">修了まであと</p>
-                        <div class="countdown-data">
-                            <span class="data-number">{{ $course->remaining_days }}</span>
-                            <span class="data-sub-title">日</span>
+                    <div class="course-item">
+                        <div class="countdown">
+                            <p class="countdown-title">修了まであと</p>
+                            <div class="countdown-data">
+                                <span class="data-number">{{ $course->remaining_days }}</span>
+                                <span class="data-sub-title">日</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @empty
-                <p>受講中の講座はありません</p>
+                    <p>受講中の講座はありません</p>
                 @endforelse
 
                 <div class="today-short">
                     <p class="short-title">今日のひとこと</p>
 
                     @if (!empty($todayQuote))
-                    <div class="short-text @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                        @if($isBirthday)
-                        お誕生日おめでとう！
-                        @elseif($quote_mode === 'mix')
-                        @foreach (session('mix_quote_parts', []) as $text)
-                        {{ $text ?? '' }}
-                        @endforeach
-                        @else
-                        {{ $todayQuote->quote_full }}
-                        @endif
-                    </div>
+                        <div
+                            class="short-text @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
+                            @if ($isBirthday)
+                                お誕生日おめでとう！
+                            @elseif($quote_mode === 'mix')
+                                @foreach (session('mix_quote_parts', []) as $text)
+                                    {{ $text ?? '' }}
+                                @endforeach
+                            @else
+                                {{ $todayQuote->quote_full }}
+                            @endif
+                        </div>
 
-                    <div class="short-name @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
-                        -
-                        @if($isBirthday)
-                        QLIP講師より
-                        @elseif($quote_mode === 'mix')
-                        @foreach (session('mix_author_parts', []) as $text)
-                        {{ $text ?? '' }}
-                        @endforeach
-                        @else
-                        {{ $todayQuote->author_full ?? '作者不明' }}
-                        @endif
-                        -
-                        {{-- <button class="inline-toggle" data-mode="{{ $quote_mode === 'full' ? 'mix' : 'full' }}"
+                        <div
+                            class="short-name @if ($isBirthday) birthday @endif {{ $quote_mode === 'mix' ? 'mix-mode' : 'full-mode' }}">
+                            -
+                            @if ($isBirthday)
+                                QLIP講師より
+                            @elseif($quote_mode === 'mix')
+                                @foreach (session('mix_author_parts', []) as $text)
+                                    {{ $text ?? '' }}
+                                @endforeach
+                            @else
+                                {{ $todayQuote->author_full ?? '作者不明' }}
+                            @endif
+                            -
+                            {{-- <button class="inline-toggle" data-mode="{{ $quote_mode === 'full' ? 'mix' : 'full' }}"
                         onclick="toggleQuoteMode(event);">.</button> --}}
-                    </div>
+                        </div>
                     @else
-                    <span class="short-text">名言が登録されていません</span>
+                        <span class="short-text">名言が登録されていません</span>
                     @endif
 
                 </div>
@@ -93,23 +95,39 @@
             <ul class="side-menu-list">
                 <li><a class="report" href="{{ route('user.reports_create') }}">日報作成</a></li>
                 @foreach ($courses as $course)
-                @if ($course->plan_path)
-                <li>
-                    <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}"
-                        target="_blank">
-                        日別計画表
-                    </a>
-                </li>
-                @endif
+                    @if ($course->plan_path)
+                        <li>
+                            <a class="calendar-list" href="{{ asset('storage/' . $course->plan_path) }}"
+                                target="_blank">
+                                日別計画表
+                            </a>
+                        </li>
+                    @endif
                 @endforeach
                 <li><a class="question" href="{{ route('user.question.questions_list') }}">質疑応答</a></li>
             </ul>
-            <div class="logout-btn">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">ログアウト</button>
-                </form>
-            </div>
+
+
+            @if (session()->has('impersonator_id'))
+                <div class="impersonate">
+                    <span class="warnning">⚠ 管理者が確認中</span>
+
+                    <form method="POST" action="{{ route('admin.users.impersonate.leave') }}"
+                        class="impersonate-exit">
+                        @csrf
+                        <button>管理画面に戻る</button>
+                    </form>
+                </div>
+            @else
+                {{-- 通常時：ログアウトボタンを表示 --}}
+                <div class="logout-btn">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">ログアウト</button>
+                    </form>
+                </div>
+            @endif
+
         </div>
     </div>
 </div>

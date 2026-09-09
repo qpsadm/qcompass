@@ -10,7 +10,7 @@
                 </a>
             </div>
 
-            <!-- 受講者画面ボタン（自分のIDで開始） -->
+            <!-- なりすまし：受講者画面ボタン（自分のIDで開始） -->
             <form action="{{ route('admin.users.impersonate', auth()->id()) }}" method="POST" class="inline-block">
                 @csrf
                 <button type="submit"

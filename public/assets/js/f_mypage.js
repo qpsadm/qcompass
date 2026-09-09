@@ -97,6 +97,10 @@ $(function () {
     const pendingEvents = window.pendingEvents || [];
     const submittedEvents = window.submittedEvents || [];
 
+    // 本日の日付文字列（YYYY-MM-DD）を取得
+    const today = new Date();
+    const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
         locale: "ja",
@@ -124,12 +128,22 @@ $(function () {
         },
 
         eventClick: function (info) {
+            // 💡 イベント自体のクリック時も未来日の場合は無視
+            if (info.event.startStr > todayStr) {
+                return;
+            }
+
             if (info.event.extendedProps.url) {
                 window.location.href = info.event.extendedProps.url;
             }
         },
 
         dateClick: function (info) {
+            // 💡 未来日のセルをクリックした場合は処理をブロック（日報入力画面へ遷移させない）
+            if (info.dateStr > todayStr) {
+                return;
+            }
+
             const event = calendar
                 .getEvents()
                 .find(
@@ -144,6 +158,13 @@ $(function () {
             $(".fc-daygrid-day-frame").each(function () {
                 const $frame = $(this);
                 const date = $frame.parent().data("date");
+
+                // 💡 未来日の場合はホバーイベントを解除し、カーソルをデフォルト（クリック不可）にする
+                if (date > todayStr) {
+                    $frame.css("cursor", "default");
+                    $frame.off("mouseenter mouseleave");
+                    return;
+                }
 
                 const hasEvent = calendar
                     .getEvents()
