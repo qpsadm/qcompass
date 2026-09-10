@@ -51,14 +51,15 @@ class AdminDashboardController extends Controller
 
 
         // 最新お知らせの取得（指定コース OR 全体向け(null)）
-        $latestAnnouncements = Announcement::where(function ($query) use ($selectedCourseId) {
-            if ($selectedCourseId) {
-                $query->where('course_id', $selectedCourseId)
-                    ->orWhereNull('course_id');
-            } else {
-                $query->whereNull('course_id'); // コース未指定時は全体向けのみ
-            }
-        })
+        $latestAnnouncements = Announcement::with(['type', 'course'])
+            ->where(function ($query) use ($selectedCourseId) {
+                if ($selectedCourseId) {
+                    $query->where('course_id', $selectedCourseId)
+                        ->orWhereNull('course_id');
+                } else {
+                    $query->whereNull('course_id'); // コース未指定時は全体向けのみ
+                }
+            })
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();

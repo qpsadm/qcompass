@@ -104,7 +104,7 @@
                     <tr>
                         <th class="border px-4 py-2 text-center w-20">No.</th>
                         <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
-                        <th class="border px-4 py-2 w-40">カテゴリー</th>
+                        <th class="border px-4 py-2 w-24">カテゴリー</th>
                         <th class="border px-4 py-2 w-40">対象講座</th>
                         <th class="border px-4 py-2 text-center w-20">表示</th>
                         <th class="sort-cl border px-4 py-2 w-20">{!! sortLink('状態', 'status') !!}</th>
@@ -134,7 +134,7 @@
                             </td>
 
                             <td class="border px-4 py-2">
-                                {{ $announcement->course?->course_name ?? '全体向け' }}
+                                {{ $announcement->course_id ? $announcement->course->course_name : '全体向け' }}
                             </td>
 
                             <td class="border px-4 py-2 text-center">
