@@ -102,16 +102,16 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="border px-4 py-2 text-center w-12">No.</th>
+                        <th class="border px-4 py-2 text-center w-20">No.</th>
                         <th class="sort-cl border px-4 py-2 w-60">{!! sortLink('タイトル', 'title') !!}</th>
-                        <th class="border px-4 py-2 w-20">カテゴリー</th>
+                        <th class="border px-4 py-2 w-40">カテゴリー</th>
                         <th class="border px-4 py-2 w-40">対象講座</th>
                         <th class="border px-4 py-2 text-center w-20">表示</th>
                         <th class="sort-cl border px-4 py-2 w-20">{!! sortLink('状態', 'status') !!}</th>
 
                         <th class="sort-cl border px-4 py-2 w-32">{!! sortLink('更新日', 'updated_at') !!}</th>
                         <th class="border px-4 py-2 w-32">更新者名</th>
-                        <th class="sort-cl border px-4 py-2 w-32">{!! sortLink('作成日', 'created_at') !!}</th>
+                        {{-- <th class="sort-cl border px-4 py-2 w-32">{!! sortLink('作成日', 'created_at') !!}</th> --}}
                     </tr>
                 </thead>
 
@@ -163,9 +163,9 @@
                                 {{ $announcement->updated_user_name ?? '-' }}
                             </td>
 
-                            <td class="border px-4 py-2 text-center">
+                            {{-- <td class="border px-4 py-2 text-center">
                                 {{ $announcement->created_at->format('Y-m-d H:i') }}
-                            </td>
+                            </td> --}}
                         </tr>
                     @empty
                         <tr>

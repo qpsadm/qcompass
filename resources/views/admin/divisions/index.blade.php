@@ -13,10 +13,6 @@
             </a>
         </div>
 
-        {{-- <div class="mb-4">
-        {{ $divisions->links() }}
-    </div> --}}
-
         <div class="overflow-x-auto">
 
             <table class="table-auto border-collapse border w-full text-sm">
@@ -48,8 +44,8 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 ">部署名</th>
-                        <th class="border px-4 py-2 w-40">電話番号</th>
+                        <th class="border px-4 py-2 w-60">部署名</th>
+                        <th class="border px-4 py-2 w-32">電話番号</th>
                         {{-- <th class="border px-4 py-2">住所</th> --}}
                         <th class="border px-4 py-2 w-20">表示</th>
                         <th class="sort-cl border px-4 py-2 w-40">

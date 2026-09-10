@@ -95,7 +95,7 @@
                             <td class="px-4 py-2">
                                 <div class="flex flex-wrap gap-3">
                                     <template x-for="tag in tags" :key="tag.id">
-                                        <label class="flex items-center space-x-1">
+                                        <label class="flex items-center">
                                             <input type="radio" name="tag_id" :value="tag.id"
                                                 :checked="tag.id == selectedTag">
                                             <span x-text="tag.name"></span>

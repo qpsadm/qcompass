@@ -36,7 +36,7 @@
                         </th>
 
                         <!-- 開催者名 並び替え -->
-                        <th class="border px-4 py-2 text-center">開催者名
+                        <th class="border px-4 py-2 text-center w-80">開催者名
                             {{-- <a href="{{ route('admin.organizers.index', [
                                 'sort' => 'name',
                                 'direction' => $sort === 'name' && $direction === 'asc' ? 'desc' : 'asc',
@@ -62,6 +62,9 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 text-center w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
+
                     </tr>
                 </thead>
 
@@ -80,6 +83,8 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $organizer->updated_at->format('Y/m/d H:i') }}</td>
                             <td class="border px-4 py-2 text-center">{{ $organizer->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $organizer->created_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $organizer->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

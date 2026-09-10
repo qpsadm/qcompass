@@ -115,9 +115,9 @@
                         </th>
                         <th class="border px-4 py-2 w-40">ユーザー名</th>
                         <th class="border px-4 py-2 w-32">所属部署</th>
-                        <th class="border px-4 py-2 w-20">ユーザー権限</th>
+                        <th class="border px-4 py-2 w-20">権限</th>
 
-                        <th class="border px-4 py-2 w-20">ユーザー表示</th>
+                        <th class="border px-4 py-2 w-20">表示</th>
 
                         <th class="sort-cl border px-4 py-2 w-40">
                             {{-- 更新日時 --}}

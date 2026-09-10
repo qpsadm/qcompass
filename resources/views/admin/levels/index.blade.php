@@ -36,7 +36,7 @@
                         </th>
 
                         <!-- 種類コード -->
-                        <th class="sort-cl border px-4 py-2 text-center w-1/6">
+                        <th class="sort-cl border px-4 py-2 text-center w-32">
                             <a href="{{ route('admin.levels.index', [
                                 'sort' => 'code',
                                 'direction' => $sort === 'code' && $direction === 'asc' ? 'desc' : 'asc',
@@ -50,7 +50,7 @@
                         </th>
 
                         <!-- 種類名 -->
-                        <th class="border px-4 py-2">種類名
+                        <th class="border px-4 py-2 w-60">種類名
                             {{-- <a href="{{ route('admin.levels.index', [
                                 'sort' => 'name',
                                 'direction' => $sort === 'name' && $direction === 'asc' ? 'desc' : 'asc',
@@ -89,6 +89,8 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 text-center w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
                     </tr>
                 </thead>
 
@@ -124,6 +126,8 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $level->updated_at->format('Y-m-d H:i') }}</td>
                             <td class="border px-4 py-2">{{ $level->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $level->created_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $level->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

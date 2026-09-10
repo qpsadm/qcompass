@@ -36,7 +36,7 @@
                         </th>
 
                         <!-- 種別名 -->
-                        <th class="border px-4 py-2 text-center">
+                        <th class="border px-4 py-2 text-center w-80">
                             <a href="{{ route('admin.announcement_types.index', ['sort' => 'type_name', 'direction' => $sort === 'type_name' && $direction === 'asc' ? 'desc' : 'asc']) }}"
                                 class="flex items-center gap-1 hover:underline">
                                 カテゴリ名
@@ -72,6 +72,8 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
                     </tr>
                 </thead>
 
@@ -98,6 +100,8 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $item->updated_at->format('Y/m/d H:i') }}</td>
                             <td class="border px-4 py-2 text-center">{{ $item->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $item->created_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $item->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

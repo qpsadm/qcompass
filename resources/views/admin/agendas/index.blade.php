@@ -70,7 +70,7 @@
                             $directionToggle = request('direction') === 'asc' ? 'desc' : 'asc';
                         @endphp
 
-                        <th class="sort-cl border px-4 py-2 w-12">
+                        <th class="sort-cl border px-4 py-2 w-20">
                             {{-- No. --}}
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'id', 'direction' => $directionToggle])) }}">
@@ -82,7 +82,7 @@
                         </th>
                         <th class="border px-4 py-2 w-60">アジェンダ名</th>
 
-                        <th class="sort-cl border px-4 py-2 w-40">
+                        <th class="sort-cl border px-4 py-2 w-60">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'category_id', 'direction' => $directionToggle])) }}">
                                 カテゴリー
@@ -102,7 +102,7 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 w-20">表示</th>
-                        <th class="sort-cl border px-4 py-2 w-24">
+                        <th class="sort-cl border px-4 py-2 w-40">
                             <a
                                 href="{{ route('admin.agendas.index', array_merge(request()->all(), ['sort' => 'updated_at', 'direction' => $directionToggle])) }}">
                                 更新日
@@ -111,9 +111,9 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-20">更新者名</th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
 
-                        <th class="border px-4 py-2 w-24">作成日</th>
+                        {{-- <th class="border px-4 py-2 w-24">作成日</th> --}}
                         <th class="border px-4 py-2 w-20">印刷</th>
                     </tr>
                 </thead>
@@ -150,7 +150,7 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $agenda->updated_at->format('Y-m-d H:i') }}</td>
                             <td class="border px-4 py-2">{{ $agenda->updated_user_name ?? '-' }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td>
+                            {{-- <td class="border px-4 py-2 text-center">{{ $agenda->created_at->format('Y-m-d H:i') }}</td> --}}
                             <td class="border px-4 py-2 text-center">
                                 <a href="{{ route('admin.agendas.preview', $agenda->id) }}" target="_blank"
                                     class="btn1 bg-red-500 text-white text-sm px-4 py-2 border rounded hover:bg-yellow-500">

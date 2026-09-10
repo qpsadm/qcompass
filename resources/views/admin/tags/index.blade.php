@@ -24,7 +24,7 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <!-- No. 並び替え -->
-                        <th class="sort-cl border px-4 py-2 w-12 text-center">
+                        <th class="sort-cl border px-4 py-2 w-20 text-center">
                             <a href="{{ route('admin.tags.index', [
                                 'sort' => 'id',
                                 'direction' => $sort === 'id' && $direction === 'asc' ? 'desc' : 'asc',
@@ -78,6 +78,8 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
                     </tr>
 
                     </tr>
@@ -104,6 +106,8 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $tag->updated_at->format('Y/m/d H:i') }}</td>
                             <td class="border px-4 py-2 text-center">{{ $tag->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $tag->created_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $tag->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

@@ -36,7 +36,7 @@
                         <th class="border px-4 py-2 w-60">ファイル名</th>
                         <th class="border px-4 py-2 w-32">種類</th>
                         <th class="border px-4 py-2 w-32">サイズ</th>
-                        <th class="border px-4 py-2 w-40">説明</th>
+                        {{-- <th class="border px-4 py-2 w-40">説明</th> --}}
                         <th class="border px-4 py-2 w-40">作成日</th>
                         <th class="border px-4 py-2 w-32">作成者</th>
                         <th class="border px-4 py-2 w-48">操作</th>
@@ -49,7 +49,7 @@
                             <td class="border px-4 py-2">{{ $file->file_name }}</td>
                             <td class="border px-4 py-2">{{ $file->file_type }}</td>
                             <td class="border px-4 py-2">{{ number_format($file->file_size / 1024, 2) }} KB</td>
-                            <td class="border px-4 py-2">{{ $file->description ?? '-' }}</td>
+                            {{-- <td class="border px-4 py-2">{{ $file->description ?? '-' }}</td> --}}
                             <td class="border px-4 py-2">{{ $file->updated_at->format('Y-m-d H:i') ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $file->created_user_name ?? '-' }}</td>
                             <td class="border px-4 py-2 flex gap-2 justify-center">

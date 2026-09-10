@@ -123,19 +123,19 @@
                         <th class="sort-cl border px-4 py-2 w-24" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'code', 'order' => $sort === 'code' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
-                                ユーザーコード
+                                コード
                                 @if ($sort === 'code')
                                     <span>{{ $order === 'asc' ? '▲' : '▼' }}</span>
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 w-24">氏名</th>
-                        <th class="border px-4 py-2 w-40">所属講座</th>
-                        <th class="border px-4 py-2 w-24">電話番号</th>
+                        <th class="border px-4 py-2 w-32">氏名</th>
+                        <th class="border px-4 py-2 w-48">所属講座</th>
+                        <th class="border px-4 py-2 w-32">電話番号</th>
                         <th class="border px-4 py-2 w-20">権限</th>
                         {{-- <th class="border px-4 py-2 w-16">状態</th> --}}
                         <th class="border px-4 py-2 w-16">表示</th>
-                        <th class="border px-4 py-2 w-32">作成日</th>
+                        {{-- <th class="border px-4 py-2 w-32">作成日</th> --}}
                         <th class="sort-cl border px-4 py-2 w-32" style="background-color: #2563eb;">
                             <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort' => 'updated_at', 'order' => $sort === 'updated_at' ? $nextOrder : 'asc'])) }}"
                                 class="flex items-center justify-center gap-1 hover:underline">
@@ -145,6 +145,7 @@
                                 @endif
                             </a>
                         </th>
+                        <th class="border px-4 py-2 w-32">更新者名</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,9 +177,9 @@
                                     <span class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非表示</span>
                                 @endif
                             </td>
-                            {{-- ->format('Y-m-d H:i') --}}
-                            <td class="border px-4 py-2 text-center">{{ $user->created_at->format('Y-m-d H:i') }}</td>
+                            {{-- <td class="border px-4 py-2 text-center">{{ $user->created_at->format('Y-m-d H:i') }}</td> --}}
                             <td class="border px-4 py-2 text-center">{{ $user->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $user->updated_user_name }}</td>
 
                         </tr>
                     @empty

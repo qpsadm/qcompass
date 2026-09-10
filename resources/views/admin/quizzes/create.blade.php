@@ -34,7 +34,7 @@
                             </th>
                             <td class="px-4 py-2">
                                 <input type="text" name="title" value="{{ old('title') }}"
-                                    class="border rounded px-3 py-2 w-64">
+                                    class="border rounded px-3 py-2 w-96">
                                 @error('title')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror

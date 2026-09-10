@@ -55,14 +55,14 @@
                                 ]),
                             ) }}"
                                 class="hover:underline">
-                                受講（報告）日
+                                受講・報告日
                                 @if (request('sort') === 'date')
                                     {{ request('direction') === 'asc' ? '▲' : '▼' }}
                                 @endif
                             </a>
                         </th>
 
-                        <th class="border px-4 py-2 w-80">日報タイトル</th>
+                        <th class="border px-4 py-2 w-90">日報タイトル</th>
 
                         <th class="border px-4 py-2 w-32">報告者名
                             {{-- <a href="{{ route(

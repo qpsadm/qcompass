@@ -16,16 +16,22 @@
             <table class="table-auto border-collapse border w-full text-sm">
                 <thead class="bg-gray-100">
                     <tr>
+                        <th class="border px-4 py-2 text-center w-20">No.</th>
                         <th class="border px-4 py-2 w-32">ユーザーコード</th>
-                        <th class="border px-4 py-2">氏名</th>
-                        <th class="border px-4 py-2">所属講座</th>
-                        <th class="border px-4 py-2">権限</th>
-                        <th class="border px-4 py-2 w-48 text-center">操作</th>
+                        <th class="border px-4 py-2 w-32">氏名</th>
+                        <th class="border px-4 py-2 w-60">所属講座</th>
+                        <th class="border px-4 py-2 w-32">権限</th>
+                        <th class="border px-4 py-2 w-40">削除日時</th>
+                        <th class="border px-4 py-2 w-32">削除者名</th>
+                        <th class="border px-4 py-2 w-24">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($trashedUsers as $user)
                         <tr>
+                            <td class="border px-4 py-2 text-center">
+                                {{ ($trashedUsers->currentPage() - 1) * $trashedUsers->perPage() + $loop->iteration }}
+                            </td>
                             <td class="border px-4 py-2">{{ $user->code }}</td>
                             <td class="border px-4 py-2">{{ $user->name }}</td>
                             <td class="border px-4 py-2">
@@ -36,17 +42,22 @@
                                 @endif
                             </td>
                             <td class="border px-4 py-2">{{ $user->role->role_name ?? 'なし' }}</td>
+
+                            <td class="border px-4 py-2 text-center">{{ $user->deleted_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $user->deleted_user_name }}</td>
+
                             <td class="border px-4 py-2 text-center">
                                 <div class="flex items-center justify-center space-x-2 flex-nowrap">
                                     <!-- 復元ボタン（モーダル起動） -->
                                     <button
                                         @click="restoreOpen = true; restoreUrl='{{ route('admin.users.restore', $user->id) }}'; restoreName='{{ $user->name }}';"
-                                        class="flex items-center text-green-600 hover:text-green-700">
-                                        <img src="{{ asset('assets/images/icon/b_recyclebox.svg') }}" class="w-4 h-4">
+                                        class="save flex items-center text-white bg-green-600 hover:text-yellow-500 px-4 py-1 rounded">
+                                        {{-- <img src="{{ asset('assets/images/icon/b_recyclebox_dl.svg') }}" class="w-4 h-4"> --}}
                                         <span class="hidden lg:inline ml-1">復元</span>
                                     </button>
                                 </div>
                             </td>
+
                         </tr>
                     @empty
                         <tr>

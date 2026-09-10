@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container max-w-5xl" x-data="{ deleteOpen: false }">
+    <div class="container max-w-6xl" x-data="{ deleteOpen: false }">
 
         <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
 
@@ -28,6 +28,24 @@
                         </th>
                         <td class="px-4 py-3">
                             {{ $agenda->category?->name ?? '未設定' }}
+                        </td>
+                    </tr>
+
+                    <tr class="border-b">
+                        <th class="px-4 py-3 bg-gray-100 text-right font-medium">
+                            内容概要
+                        </th>
+
+                        <td class="px-4 py-3">
+                            <div
+                                style="
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 10;
+                                overflow: hidden;
+                                    ">
+                                {!! $agenda->content !!}
+                            </div>
                         </td>
                     </tr>
 

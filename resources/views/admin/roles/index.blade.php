@@ -3,10 +3,6 @@
 @section('content')
     <div class="container p-6 bg-white rounded-lg shadow-md">
         <h1 class="text-2xl font-bold mb-4">権限一覧</h1>
-        <!-- ページネーション（上） -->
-        {{-- <div class="mb-4">
-        {{ $roles->links() }}
-    </div> --}}
 
         <div class="overflow-x-auto">
             <table class="table-auto border-collapse border w-full text-sm">
@@ -25,8 +21,8 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border px-4 py-2 text-center w-24">管理ID</th>
-                        <th class="border px-4 py-2">役割名</th>
+                        <th class="border px-4 py-2 text-center w-20">管理ID</th>
+                        <th class="border px-4 py-2 w-60">役割名</th>
                         <th class="sort-cl border px-4 py-2 w-40">
                             {{-- 更新日時 --}}
                             <a href="{{ route('admin.roles.index', [
@@ -41,6 +37,8 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +58,8 @@
                             </td>
                             <td class="border px-4 py-2 text-center">{{ $role->updated_at->format('Y/m/d H:i') }}</td>
                             <td class="border px-4 py-2">{{ $role->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $role->created_at->format('Y/m/d H:i') }}</td>
+                            <td class="border px-4 py-2">{{ $role->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

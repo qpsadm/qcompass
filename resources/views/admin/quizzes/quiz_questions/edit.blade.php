@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container p-6">
-        <div class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+    <div class="container max-w-5xl">
+        <div class="bg-white rounded-lg shadow-md p-6 mx-auto">
+
             <h1 class="text-2xl font-bold mb-6 text-gray-800">
                 クイズ問題 編集：{{ $quiz->title }}
             </h1>
@@ -27,7 +28,7 @@
 
                 {{-- 配点 --}}
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1">問題タイプ</label>
+                    <label class="block font-semibold mb-1">問題タイプ（変更不可）</label>
                     <select style="pointer-events: none;" name="type" id="questionType"
                         class="border rounded px-3 py-2 w-40">
                         <option value="single_2" @selected($quizQuestion->type == 'single_2')>2択</option>
@@ -40,7 +41,7 @@
                 {{-- 問題文 --}}
                 <div class="mb-4">
                     <label class="block font-semibold mb-1">問題文</label>
-                    <textarea name="question_text" rows="4" required class="w-full border rounded px-3 py-2">{{ old('question_text', $quizQuestion->question_text) }}</textarea>
+                    <textarea name="question_text" rows="6" required class="w-full border rounded px-3 py-2">{{ old('question_text', $quizQuestion->question_text) }}</textarea>
                 </div>
 
                 {{-- 配点 --}}
@@ -61,7 +62,7 @@
                                     {{-- 選択肢テキスト --}}
                                     <input type="text" name="choices[{{ $i }}][choice_text]"
                                         value="{{ old("choices.$i.choice_text", $choice->choice_text) }}" required
-                                        class="flex-1 border rounded px-3 py-2 w-24">
+                                        class="flex border rounded px-3 py-2 w-1/2">
 
                                     {{-- single --}}
                                     @if (in_array($quizQuestion->type, ['single_2', 'single_4']))

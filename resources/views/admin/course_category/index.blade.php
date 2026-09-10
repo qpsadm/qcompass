@@ -56,7 +56,7 @@
                         </th>
 
                         {{-- 講座名（検索キーワード保持） --}}
-                        <th class="border text-center px-4 py-2 w30">
+                        <th class="border text-center px-4 py-2 w-60">
                             講座名
                             {{-- <a href="{{ route('admin.course_category.index', [
                                 'sort' => 'course_name',

@@ -37,8 +37,8 @@
                             </a>
                         </th>
 
-                        <th class="border px-4 py-2">分野名</th>
-                        <th class="sort-cl border px-4 py-2  w-64">
+                        <th class="border px-4 py-2 w-60">分野名</th>
+                        <th class="sort-cl border px-4 py-2 w-60">
                             <a href="{{ route('admin.course_type.index', [
                                 'sort' => 'organizer_id',
                                 'direction' => $sort === 'organizer_id' && $direction === 'asc' ? 'desc' : 'asc',
@@ -65,6 +65,8 @@
                             </a>
                         </th>
                         <th class="border px-4 py-2 text-center w-32">更新者名</th>
+                        <th class="border px-4 py-2 w-40">作成日時</th>
+                        <th class="border px-4 py-2 w-32">作成者名</th>
                     </tr>
                 </thead>
 
@@ -101,6 +103,9 @@
                             <td class="border px-4 py-2 text-center">{{ $courseType->updated_at->format('Y/m/d H:i') }}
                             </td>
                             <td class="border px-4 py-2">{{ $courseType->updated_user_name }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $courseType->created_at->format('Y/m/d H:i') }}
+                            </td>
+                            <td class="border px-4 py-2">{{ $courseType->created_user_name }}</td>
                         </tr>
                     @empty
                         <tr>

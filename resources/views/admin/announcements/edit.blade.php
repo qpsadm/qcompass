@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container max-w-5xl">
+    <div class="container max-w-6xl">
         <h1 class="text-xl font-bold mb-4">お知らせ 編集</h1>
 
         @if (session('success'))

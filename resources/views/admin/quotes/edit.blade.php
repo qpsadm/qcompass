@@ -47,10 +47,15 @@
                                 </span>
                             </th>
                             <td class="px-4 py-3">
-                                <input type="text" name="quote_full"
+                                {{-- <input type="text" name="quote_full"
                                     value="{{ old('quote_full', $quote->quote_full ?? '') }}" required
                                     class="border rounded px-3 py-2 w-full
-                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500"> --}}
+
+                                <textarea name="quote_full" required row="4"
+                                    class="border rounded px-3 py-2 w-full
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('quote_full', $quote->quote_full ?? '') }}</textarea>
+                                <span class="text-sm py-1 text-gray-500">255文字まで</span>
                             </td>
                         </tr>
 

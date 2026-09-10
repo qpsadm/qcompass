@@ -95,7 +95,9 @@ class QuestionController extends Controller
 
         // プルダウン用タグ一覧
         $tags = Tag::where('is_show', 1)
-            ->orderBy('id', 'asc')->get();
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'asc')
+            ->get(); // tag情報を取得;
 
         return view(
             'admin.questions.index',
@@ -112,7 +114,12 @@ class QuestionController extends Controller
     // 作成画面
     public function create()
     {
-        $courses = Course::with('teachers')->get(); // 講座情報を取得
+        $courses = Course::with('teachers')
+            ->where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'desc')
+            ->get(); // 講座情報を取得
+
         $coursesTeachers = []; // 講座に紐づく教師情報を格納する配列
 
         // 各講座に紐づく教師情報を整理
@@ -125,7 +132,12 @@ class QuestionController extends Controller
             });
         }
 
-        $tags = Tag::all(); // タグ情報を取得
+        // タグ情報を取得
+        $tags = Tag::where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'asc')
+            ->get(); // tag情報を取得;
+
 
         // ビューに必要なデータを渡す
         return view('admin.questions.create', compact('courses', 'tags', 'coursesTeachers'));
@@ -153,8 +165,16 @@ class QuestionController extends Controller
     public function edit(Question $question)
     {
         // 編集するために講座とタグを取得
-        $courses = Course::with('teachers')->get();
-        $tags = Tag::all();
+        $courses = Course::with('teachers')
+            ->where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'desc')
+            ->get(); // 講座情報を取得
+
+        $tags = Tag::where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'asc')
+            ->get(); // tag情報を取得;
 
         // 各講座に紐づく教師情報を整理
         $coursesTeachers = [];
