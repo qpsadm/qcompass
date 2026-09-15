@@ -10,58 +10,72 @@
                 @csrf
                 @method('PUT')
 
-                {{-- 講座 --}}
-                <div>
-                    <label class="block mb-1 font-semibold">講座</label>
-                    <select name="course_id" class="w-full border rounded px-3 py-2">
-                        <option value="">選択してください</option>
-                        @foreach ($courses as $course)
-                            <option value="{{ $course->id }}"
-                                {{ old('course_id', $CourseTeacher->course_id) == $course->id ? 'selected' : '' }}>
-                                {{ $course->course_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('course_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                <table class="w-full table-auto border-collapse">
+                    <tbody>
+                        {{-- 講座 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講座 <span
+                                    class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
+                            <td class="px-4 py-2">
+                                <select name="course_id" class="w-full border rounded px-3 py-2">
+                                    <option value="">選択してください</option>
+                                    @foreach ($courses as $course)
+                                        <option value="{{ $course->id }}"
+                                            {{ old('course_id', $CourseTeacher->course_id) == $course->id ? 'selected' : '' }}>
+                                            {{ $course->course_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('course_id')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
 
-                {{-- 講師 --}}
-                <div>
-                    <label class="block font-medium mb-1">講師 <span class="text-red-500">*</span></label>
-                    <select name="user_id" class="border px-3 py-2 w-full rounded" required>
-                        <option value="">選択してください</option>
-                        @foreach ($users as $user)
-                            @if ($user->role_id >= 4)
-                                <option value="{{ $user->id }}"
-                                    {{ old('user_id', $CourseTeacher->user_id) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endif
-                        @endforeach
-                    </select>
-                    @error('user_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                        {{-- 講師 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">講師 <span
+                                    class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
+                            <td class="px-4 py-2">
+                                <select name="user_id" class="border px-3 py-2 w-full rounded" required>
+                                    <option value="">選択してください</option>
+                                    @foreach ($users as $user)
+                                        @if ($user->role_id >= 4)
+                                            <option value="{{ $user->id }}"
+                                                {{ old('user_id', $CourseTeacher->user_id) == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @error('user_id')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
 
-                {{-- 担当区分 --}}
-                <div>
-                    <label class="block font-medium mb-1">担当区分 <span class="text-red-500">*</span></label>
-                    <select name="role_in_course" class="border px-3 py-2 w-full rounded" required>
-                        @php
-                            $selectedRole = old('role_in_course', $CourseTeacher->role_in_course ?? '');
-                        @endphp
-                        <option value="1" {{ $selectedRole == 1 ? 'selected' : '' }}>責任者</option>
-                        <option value="2" {{ $selectedRole == 2 ? 'selected' : '' }}>講師</option>
-                        <option value="3" {{ $selectedRole == 3 ? 'selected' : '' }}>キャリコン</option>
-                        <option value="4" {{ $selectedRole == 4 ? 'selected' : '' }}>補助</option>
-                    </select>
-                    @error('role_in_course')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                        {{-- 担当区分 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">担当区分 <span
+                                    class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span></th>
+                            <td class="px-4 py-2">
+                                <select name="role_in_course" class="border px-3 py-2 w-full rounded" required>
+                                    @php
+                                        $selectedRole = old('role_in_course', $CourseTeacher->role_in_course ?? '');
+                                    @endphp
+                                    <option value="1" {{ $selectedRole == 1 ? 'selected' : '' }}>責任者</option>
+                                    <option value="2" {{ $selectedRole == 2 ? 'selected' : '' }}>講師</option>
+                                    <option value="3" {{ $selectedRole == 3 ? 'selected' : '' }}>キャリコン</option>
+                                    <option value="4" {{ $selectedRole == 4 ? 'selected' : '' }}>補助</option>
+                                </select>
+                                @error('role_in_course')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
 
                 <div class="flex gap-3 mt-4">
                     <button type="submit" class="save bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">

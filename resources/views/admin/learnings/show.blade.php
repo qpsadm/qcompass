@@ -41,7 +41,7 @@
                     {{ $levelLabels[$learning->level] ?? '未設定' }}</p>
 
                 <div class="flex flex-row">
-                    <p class="w-32 text-right font-bold px-4">説明:</p>
+                    <p class="flex-shrink-0 w-32 text-right font-bold px-4">説明:</p>
                     <p>{!! $learning->description ? nl2br(e($learning->description)) : 'なし' !!}</p>
                 </div>
 

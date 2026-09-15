@@ -46,7 +46,7 @@
                     <form :action="deleteUrl" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-600">
                             削除する
                         </button>
                     </form>

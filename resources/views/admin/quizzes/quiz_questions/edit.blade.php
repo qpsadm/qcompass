@@ -26,66 +26,81 @@
                 {{-- type を必ず送る --}}
                 {{-- <input type="hidden" name="type" value="{{ $quizQuestion->type }}"> --}}
 
-                {{-- 配点 --}}
-                <div class="mb-4">
-                    <label class="block font-semibold mb-1">問題タイプ（変更不可）</label>
-                    <select style="pointer-events: none;" name="type" id="questionType"
-                        class="border rounded px-3 py-2 w-40">
-                        <option value="single_2" @selected($quizQuestion->type == 'single_2')>2択</option>
-                        <option value="single_4" @selected($quizQuestion->type == 'single_4')>4択</option>
-                        <option value="multi" @selected($quizQuestion->type == 'multi')>複数選択</option>
-                        <!-- <option value="text" @selected($quizQuestion->type == 'text')>記述式</option> -->
-                    </select>
-                </div>
+                <table class="w-full table-auto border-collapse">
+                    <tbody>
 
-                {{-- 問題文 --}}
-                <div class="mb-4">
-                    <label class="block font-semibold mb-1">問題文</label>
-                    <textarea name="question_text" rows="6" required class="w-full border rounded px-3 py-2">{{ old('question_text', $quizQuestion->question_text) }}</textarea>
-                </div>
+                        {{-- 問題タイプ --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">問題タイプ（変更不可）</th>
+                            <td class="px-4 py-2">
+                                <select style="pointer-events: none;" name="type" id="questionType"
+                                    class="border rounded px-3 py-2 w-40">
+                                    <option value="single_2" @selected($quizQuestion->type == 'single_2')>2択</option>
+                                    <option value="single_4" @selected($quizQuestion->type == 'single_4')>4択</option>
+                                    <option value="multi" @selected($quizQuestion->type == 'multi')>複数選択</option>
+                                    <!-- <option value="text" @selected($quizQuestion->type == 'text')>記述式</option> -->
+                                </select>
+                            </td>
+                        </tr>
 
-                {{-- 配点 --}}
-                <div class="mb-4">
-                    <label class="block font-semibold mb-1">配点</label>
-                    <input type="number" name="score" min="0" value="{{ old('score', $quizQuestion->score) }}"
-                        class="border rounded px-3 py-2 w-32">
-                </div>
+                        {{-- 問題文 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">
+                                問題文
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
+                            </th>
+                            <td class="px-4 py-2">
+                                <textarea name="question_text" rows="4" required class="w-full border rounded px-3 py-2">{{ old('question_text', $quizQuestion->question_text) }}</textarea>
+                            </td>
+                        </tr>
 
-                {{-- 選択肢 --}}
-                @if ($quizQuestion->type !== 'text')
-                    <div class="mb-6">
-                        <label class="block font-semibold mb-2">選択肢</label>
+                        {{-- 配点 --}}
+                        <tr class="border-b">
+                            <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">配点</th>
+                            <td class="px-4 py-2">
+                                <input type="number" name="score" min="0"
+                                    value="{{ old('score', $quizQuestion->score) }}" class="border rounded px-3 py-2 w-32">
+                            </td>
+                        </tr>
 
-                        <div class="space-y-2">
-                            @foreach ($quizQuestion->choices as $i => $choice)
-                                <div class="flex items-center gap-6">
-                                    {{-- 選択肢テキスト --}}
-                                    <input type="text" name="choices[{{ $i }}][choice_text]"
-                                        value="{{ old("choices.$i.choice_text", $choice->choice_text) }}" required
-                                        class="flex border rounded px-3 py-2 w-1/2">
+                        {{-- 選択肢ブロック --}}
+                        @if ($quizQuestion->type !== 'text')
+                            <tr class="border-b" id="choiceBlockRow">
+                                <th class="w-1/4 px-4 py-2 bg-gray-100 text-right font-medium">選択肢</th>
+                                <td class="px-4 py-2">
+                                    @foreach ($quizQuestion->choices as $i => $choice)
+                                        <div class="flex items-center gap-6">
+                                            {{-- 選択肢テキスト --}}
+                                            <input type="text" name="choices[{{ $i }}][choice_text]"
+                                                value="{{ old("choices.$i.choice_text", $choice->choice_text) }}" required
+                                                class="flex border rounded px-3 py-2 w-1/2">
 
-                                    {{-- single --}}
-                                    @if (in_array($quizQuestion->type, ['single_2', 'single_4']))
-                                        <label class="flex items-center gap-1 font-bold text-blue-600">
-                                            <input type="radio" name="correct_choice" value="{{ $i }}"
-                                                @checked($choice->is_correct)>
-                                            正解
-                                        </label>
-                                    @endif
+                                            {{-- single --}}
+                                            @if (in_array($quizQuestion->type, ['single_2', 'single_4']))
+                                                <label class="flex items-center gap-1 font-bold text-blue-600">
+                                                    <input type="radio" name="correct_choice" value="{{ $i }}"
+                                                        @checked($choice->is_correct)>
+                                                    正解
+                                                </label>
+                                            @endif
 
-                                    {{-- multi --}}
-                                    @if ($quizQuestion->type === 'multi')
-                                        <label class="flex items-center gap-1 font-bold text-blue-600">
-                                            <input type="checkbox" name="choices[{{ $i }}][is_correct]"
-                                                value="1" @checked($choice->is_correct)>
-                                            正解
-                                        </label>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
+                                            {{-- multi --}}
+                                            @if ($quizQuestion->type === 'multi')
+                                                <label class="flex items-center gap-1 font-bold text-blue-600">
+                                                    <input type="checkbox" name="choices[{{ $i }}][is_correct]"
+                                                        value="1" @checked($choice->is_correct)>
+                                                    正解
+                                                </label>
+                                            @endif
+                                        </div>
+                                    @endforeach
+
+                                </td>
+                            </tr>
+                        @endif
+
+                    </tbody>
+                </table>
 
                 {{-- ボタン --}}
                 <div class="mt-6 flex gap-3">

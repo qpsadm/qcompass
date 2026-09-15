@@ -46,7 +46,7 @@
 
                         {{-- タイトル --}}
                         <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-1/4">
                                 タイトル
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
@@ -58,12 +58,12 @@
 
                         {{-- 種類 --}}
                         <tr class="border-b">
-                            <th class="px-4 py-2 bg-gray-100 text-right font-medium w-60">
+                            <th class="px-4 py-2 bg-gray-100 text-right font-medium">
                                 種類
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
                             <td class="px-4 py-2">
-                                <select name="type" x-model="type" class="border rounded px-3 py-2 w-60" required>
+                                <select name="type" x-model="type" class="border rounded px-3 py-2" required>
                                     <option value="">選択してください</option>
                                     @foreach ($types as $value => $label)
                                         <option value="{{ $value }}">{{ $label }}</option>
@@ -107,7 +107,7 @@
                                 <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded ml-1">必須</span>
                             </th>
                             <td class="px-4 py-2">
-                                <select name="level" class="border rounded px-3 py-2 w-60" required>
+                                <select name="level" class="border rounded px-3 py-2" required>
                                     <option value="">選択してください</option>
                                     @foreach ($levels as $id => $label)
                                         <option value="{{ $id }}"

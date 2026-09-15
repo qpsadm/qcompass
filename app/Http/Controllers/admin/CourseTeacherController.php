@@ -56,7 +56,9 @@ class CourseTeacherController extends Controller
 
         // プルダウン用講座一覧
         $courses = Course::where('is_show', 1)
-            ->orderBy('id', 'desc')->get();
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view(
             'admin.course_teachers.index',
@@ -71,8 +73,13 @@ class CourseTeacherController extends Controller
 
     public function create()
     {
-        $users = User::where('role_id', '>=', 4)->get();
+        $users = User::where('role_id', '>=', 4)
+            ->where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->get();
+
         $courses = Course::where('is_show', 1)
+            ->whereNull('deleted_at')
             ->orderBy('id', 'desc')
             ->get();
 
@@ -132,8 +139,16 @@ class CourseTeacherController extends Controller
     public function edit($id)
     {
         $CourseTeacher = CourseTeacher::findOrFail($id);
-        $courses = Course::orderBy('course_name', 'asc')->get();
-        $users = User::all();
+
+        $users = User::where('role_id', '>=', 4)
+            ->where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->get();
+
+        $courses = Course::where('is_show', 1)
+            ->whereNull('deleted_at')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.course_teachers.edit', compact('CourseTeacher', 'courses', 'users'));
     }

@@ -32,7 +32,7 @@
                                 <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">必須</span>
                             </th>
                             <td class="px-4 py-2">
-                                <textarea name="question_text" placeholder="問題文" rows="6" class="border rounded px-3 py-2 w-full" required>{{ old('question_text') }}</textarea>
+                                <textarea name="question_text" placeholder="問題文" rows="4" class="border rounded px-3 py-2 w-full" required>{{ old('question_text') }}</textarea>
                                 @error('question_text')
                                     <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
