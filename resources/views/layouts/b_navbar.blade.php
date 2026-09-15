@@ -1,4 +1,7 @@
-<nav class="fixed z-30 w-full bg-blue-600 border-b border-gray-200" style="background-color: #4682b4;">
+{{-- <nav class="fixed z-30 w-full bg-blue-600 border-b border-gray-200" style="background-color: #4682b4;"> --}}
+
+<nav class="fixed z-30 w-full min-w-[1280px] bg-blue-600 border-b border-gray-200" style="background-color: #4682b4;">
+
     <div class="px-3 py-3 md:px-4 lg:px-5">
         <div class="flex items-center justify-between">
 
@@ -14,10 +17,10 @@
             <form action="{{ route('admin.users.impersonate', auth()->id()) }}" method="POST" class="inline-block">
                 @csrf
                 <button type="submit"
-                    class="flex items-center gap-2 text-white border bg-blue-600 px-4 py-2 rounded hover:bg-red-500 hover:border-red-500 hover:transition focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    class="flex items-center gap-2 text-white border bg-blue-600 px-4 py-2 rounded hover:bg-yellow-600 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
                     <img src="{{ asset('assets/images/icon/b_course.svg') }}" alt="受講者画面" class="h-5 w-5"
                         style="filter: brightness(0) invert(1);">
-                    <span class="hidden md:inline">受講者画面へ</span>
+                    <span class="hidden lg:inline">受講者画面へ</span>
                 </button>
             </form>
 
@@ -25,7 +28,7 @@
             <div class="flex items-center space-x-2 md:space-x-4">
 
                 <!-- ユーザー名 + ロール（タブレット以上表示） -->
-                <span class="hidden md:inline text-neutral-100 whitespace-nowrap">
+                <span class="hidden sm:inline text-neutral-100 whitespace-nowrap">
                     {{ Auth::user()->name ?? 'ゲスト' }}
                     @if (Auth::check() && Auth::user()->role)
                         ({{ Auth::user()->role->role_name }})
@@ -42,7 +45,7 @@
                 @endphp
 
                 @if ($courseName)
-                    <span class="hidden md:inline text-neutral-100 font-semibold">
+                    <span class="hidden lg:inline text-neutral-100 font-semibold">
                         講座: {{ $courseName }}
                     </span>
                 @endif
@@ -51,10 +54,10 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="flex items-center gap-2 text-white bg-green-500 border px-4 py-2 rounded hover:bg-red-500 hover:transition">
+                        class="flex items-center gap-2 text-white bg-green-500 border px-4 py-2 rounded hover:bg-yellow-600 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
                             style="filter: brightness(0) invert(1);">
-                        <span class="hidden md:inline">ログアウト</span>
+                        <span class="hidden lg:inline">ログアウト</span>
                     </button>
                 </form>
             </div>

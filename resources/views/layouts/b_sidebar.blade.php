@@ -5,47 +5,42 @@
     @endphp
 
     <aside id="sidebar"
-        class="fixed top-12 left-0 w-64 h-[calc(100vh-4rem)]
+        class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)]
            bg-gray-500 text-neutral-100 p-6 z-40
            transform transition-transform duration-300
-           -translate-x-full lg:translate-x-0
-           overflow-y-auto hide-scrollbar"
+           overflow-y-auto hide-scrollbar
+           flex-shrink-0"
         style="background-color: #4682b4;">
 
-        {{-- SP用 閉じる --}}
-        <button id="sidebar-close" class="lg:hidden mb-4 text-sm text-right w-full text-gray-700">
-            ✕ 閉じる
-        </button>
+        {{-- 閉じるボタン --}}
+        <div class="text-left mb-4">
+            <button id="sidebar-close" type="button"
+                class="delete text-md font-bold text-white bg-black/20 hover:bg-black/40 px-3 py-1  transition-colors hidden rounded-md">
+                ✕ 閉じる
+            </button>
+        </div>
 
-        <h2 class="bg-aa-100 p-2 text-xl font-medium mb-4 text-center text-white rounded border">管理メニュー
-        </h2>
+        <h2 class="bg-aa-100 p-2 text-xl font-medium mb-4 text-center text-white rounded border">管理メニュー</h2>
 
         <nav class="space-y-2">
             @foreach ($menus as $menu)
-                {{-- 権限制御 --}}
                 @if (!isset($menu['roles']) || !in_array($roleId, $menu['roles']))
                     @continue
                 @endif
 
-                {{-- 単体リンク --}}
                 @if (isset($menu['route']))
                     <a href="{{ route($menu['route'], $menu['params'] ?? []) }}"
-                        class="flex items-center p-2 rounded text-white hover:bg-blue-700 transition-colors duration-200">
-
+                        class="flex items-center p-2 rounded text-white hover:bg-yellow-600 transition-colors duration-200">
                         @if (!empty($menu['icon']))
-                            <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2" alt="icon"
-                                style="filter: brightness(0) invert(1);">
+                            <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2"
+                                alt="icon" style="filter: brightness(0) invert(1);">
                         @endif
-
                         {{ $menu['label'] }}
                     </a>
-
-                    {{-- アコーディオン --}}
                 @elseif (isset($menu['children']))
                     <div class="accordion">
                         <button type="button"
                             class="accordion-btn w-full flex justify-between items-center font-semibold p-2 rounded text-white hover:bg-blue-400 transition-colors duration-200">
-
                             <span class="flex items-center">
                                 @if (!empty($menu['icon']))
                                     <img src="{{ asset('assets/images/icon/' . $menu['icon']) }}" class="h-4 w-4 mr-2"
@@ -53,7 +48,6 @@
                                 @endif
                                 {{ $menu['label'] }}
                             </span>
-
                             <span class="accordion-icon transition-transform">▼</span>
                         </button>
 
@@ -64,13 +58,11 @@
                                 @endif
                                 <li>
                                     <a href="{{ route($child['route'], $child['params'] ?? []) }}"
-                                        class="flex items-center px-2 py-1 rounded hover:bg-blue-700 hover:text-white">
-
+                                        class="flex items-center px-2 py-1 rounded hover:bg-yellow-600 hover:text-white">
                                         @if (!empty($child['icon']))
                                             <img src="{{ asset('assets/images/icon/' . $child['icon']) }}"
                                                 class="h-4 w-4 mr-2" alt="icon">
                                         @endif
-
                                         {{ $child['label'] }}
                                     </a>
                                 </li>
@@ -79,20 +71,7 @@
                     </div>
                 @endif
             @endforeach
-
-            {{-- ログアウト --}}
-            {{-- <form method="POST" action="{{ route('logout') }}" class="mt-6">
-                @csrf
-                <button type="submit"
-                    class="w-full flex items-center gap-2 p-2 rounded hover:bg-red-500 hover:text-white mt-4">
-                    <img src="{{ asset('assets/images/icon/b_exit.svg') }}" alt="ログアウト" class="h-5 w-5"
-                        style="filter: brightness(0) invert(1);">
-                    <span class="hidden md:inline">ログアウト</span>
-                </button>
-            </form> --}}
         </nav>
-
-
     </aside>
 
     @include('partials.sidebar_js')

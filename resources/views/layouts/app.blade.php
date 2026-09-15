@@ -22,31 +22,23 @@
     {{-- ナビバー --}}
     @include('layouts.b_navbar')
 
-    {{-- 全体ラッパー（画面自体はスクロールしない） --}}
-    <div class="flex pt-16 flex-1 overflow-hidden">
+    {{-- メインラッパー --}}
+    <div class="flex pt-16 flex-1 w-full">
 
         {{-- サイドバー --}}
         @include('layouts.b_sidebar')
 
-        {{-- メインコンテンツ（ここだけスクロール） --}}
-        <main id="mainContent"
-            class="flex-1 ml-64 p-6 pb-24
-                   overflow-y-auto hide-scrollbar
-                   transition-all duration-300">
-
+        {{-- メインコンテンツ（縦スクロールが正常に動くよう修正） --}}
+        <main id="mainContent" class="ml-64 flex-1 w-full p-6 pb-24 min-h-[calc(100vh-4rem)]">
             @yield('content')
         </main>
 
-        {{-- SP用 サイドバー開くボタン --}}
-        <button id="sidebar-open"
+        <button id="sidebar-open" type="button"
             class="fixed top-20 left-0 z-50 p-2 rounded-r
-                   bg-gray-800 text-white lg:hidden hidden">
+               bg-red-500 text-white font-bold hidden shadow-lg">
             »
         </button>
     </div>
-
-    {{-- ページ個別JS --}}
-    @yield('scripts')
 
     {{-- フッター --}}
     @include('layouts.b_footer')
