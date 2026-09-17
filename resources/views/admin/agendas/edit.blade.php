@@ -120,11 +120,11 @@
                         <table class="w-full table-auto border-collapse border" style="max-width:900px;">
                             <thead>
                                 <tr class="bg-gray-100">
-                                    <th class="border px-3 py-2 w16">No</th>
-                                    <th class="border px-3 py-2 ">ファイル名</th>
-                                    <th class="border px-3 py-2 w20">サイズ</th>
-                                    <th class="border px-3 py-2 w20">プレビュー</th>
-                                    <th class="border px-3 py-2 w20">URLコピー</th>
+                                    <th class="border px-3 py-2 w-12">No</th>
+                                    <th class="border px-3 py-2 w-60">ファイル名</th>
+                                    <th class="border px-3 py-2 w-32">サイズ</th>
+                                    <th class="border px-3 py-2 w-32">プレビュー</th>
+                                    <th class="border px-3 py-2 w-32">URLコピー</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,10 +143,10 @@
                                         <td class="border px-3 py-2">{{ $file->file_name }}</td>
                                         <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
                                         </td>
-                                        <td class="border px-3 py-2  text-center">
+                                        <td class="border px-3 py-2 text-center flex justify-center">
                                             @if (Str::startsWith($file->file_type, 'image/'))
                                                 <a href="{{ $previewUrl }}" target="_blank">
-                                                    <img src="{{ $previewUrl }}" class="w-20 object-cover rounded"
+                                                    <img src="{{ $previewUrl }}" class="h-12 w-12 object-cover rounded"
                                                         alt="プレビュー">
                                                 </a>
                                             @else
