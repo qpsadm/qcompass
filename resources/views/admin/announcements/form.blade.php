@@ -137,77 +137,79 @@
                     </tbody>
                 </table>
 
-                {{-- ファイル一覧 --}}
-                @if (isset($announcement) && $announcement->files->isNotEmpty())
-                    <div class="mt-8 bg-gray-50 p-4 rounded border">
-                        <h2 class="text-lg font-semibold mb-2">登録済みファイル一覧</h2>
-                        <table class="w-full table-auto border-collapse border" style="max-width:900px;">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="border px-3 py-2 w-12">No</th>
-                                    <th class="border px-3 py-2 w-60">ファイル名</th>
-                                    <th class="border px-3 py-2 w-32">サイズ</th>
-                                    <th class="border px-3 py-2 w-32">プレビュー</th>
-                                    <th class="border px-3 py-2 w-32">URLコピー</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($announcement->files as $key => $file)
-                                    @php
-                                        // $relativePath = str_replace('public/', '', $file->file_path);
-                                        // $fileUrl = rtrim($storageBaseUrl, '/') . '/' . $relativePath;
-                                        // typeパラメータを渡す
-                                        $previewUrl = route('admin.files.preview', [
-                                            'type' => 'announcement',
-                                            'id' => $file->id,
-                                        ]);
-                                        // ファイルのURLを取得 fukushima 2026-06-03
-                                        $url = asset('storage/files/' . $file->file_name);
-                                    @endphp
-                                    <tr>
-                                        <td class="border px-3 py-2 text-center">{{ $key + 1 }}</td>
-                                        <td class="border px-3 py-2 ">{{ $file->file_name }}</td>
-                                        <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
-                                        </td>
-                                        <td class="border px-3 py-2  text-center flex justify-center">
-                                            @if (Str::startsWith($file->file_type, 'image/'))
-                                                <a href="{{ $previewUrl }}" target="_blank">
-                                                    <img src="{{ $previewUrl }}" class="w-12 h-12 object-cover rounded">
-                                                </a>
-                                            @else
-                                                N/A
-                                            @endif
-                                        </td>
-                                        <td class="border px-3 py-2">
-                                            {{-- <button type="button"
+                @isset($announcement->id)
+                    {{-- ファイル一覧 --}}
+                    @if (isset($announcement) && $announcement->files->isNotEmpty())
+                        <div class="mt-8 bg-gray-50 p-4 rounded border">
+                            <h2 class="text-lg font-semibold mb-2">登録済みファイル一覧</h2>
+                            <table class="w-full table-auto border-collapse border" style="max-width:900px;">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border px-3 py-2 w-12">No</th>
+                                        <th class="border px-3 py-2 w-60">ファイル名</th>
+                                        <th class="border px-3 py-2 w-32">サイズ</th>
+                                        <th class="border px-3 py-2 w-32">プレビュー</th>
+                                        <th class="border px-3 py-2 w-32">URLコピー</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($announcement->files as $key => $file)
+                                        @php
+                                            // $relativePath = str_replace('public/', '', $file->file_path);
+                                            // $fileUrl = rtrim($storageBaseUrl, '/') . '/' . $relativePath;
+                                            // typeパラメータを渡す
+                                            $previewUrl = route('admin.files.preview', [
+                                                'type' => 'announcement',
+                                                'id' => $file->id,
+                                            ]);
+                                            // ファイルのURLを取得 fukushima 2026-06-03
+                                            $url = asset('storage/files/' . $file->file_name);
+                                        @endphp
+                                        <tr>
+                                            <td class="border px-3 py-2 text-center">{{ $key + 1 }}</td>
+                                            <td class="border px-3 py-2 ">{{ $file->file_name }}</td>
+                                            <td class="border px-3 py-2">{{ number_format($file->file_size / 1024, 2) }} KB
+                                            </td>
+                                            <td class="border px-3 py-2  text-center flex justify-center">
+                                                @if (Str::startsWith($file->file_type, 'image/'))
+                                                    <a href="{{ $previewUrl }}" target="_blank">
+                                                        <img src="{{ $previewUrl }}" class="w-12 h-12 object-cover rounded">
+                                                    </a>
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
+                                            <td class="border px-3 py-2">
+                                                {{-- <button type="button"
                                                 class="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-sm"
                                                 onclick="navigator.clipboard.writeText('{{ $fileUrl }}')">
                                                 URLコピー
                                             </button> --}}
-                                            <button type="button"
-                                                class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
-                                                onclick="navigator.clipboard.writeText('{{ $url }}')">
-                                                URLコピー
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
+                                                <button type="button"
+                                                    class="bg-gray-200 px-2 py-1 rounded text-sm hover:bg-gray-300"
+                                                    onclick="navigator.clipboard.writeText('{{ $url }}')">
+                                                    URLコピー
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
 
-                {{-- ファイル追加ボタン --}}
-                <div class="mt-6">
-                    <a href="{{ route('admin.files.create', [
-                        'type' => 'announcement',
-                        'targetId' => $announcement->id,
-                        'return' => route('admin.announcements.edit', $announcement->id),
-                    ]) }}"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                        ファイル追加
-                    </a>
-                </div>
+                    {{-- ファイル追加ボタン --}}
+                    <div class="mt-6">
+                        <a href="{{ route('admin.files.create', [
+                            'type' => 'announcement',
+                            'targetId' => $announcement->id,
+                            'return' => route('admin.announcements.edit', $announcement->id),
+                        ]) }}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                            ファイル追加
+                        </a>
+                    </div>
+                @endisset
 
                 {{-- ボタン --}}
                 <div class="mt-8 flex gap-3">
