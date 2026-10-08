@@ -38,12 +38,12 @@
 
 .question-icon,
 .answer-icon {
-    width: 44.5px;
-    padding: 5px 10px;
+    width: 60px;
+    padding: 10px 10px;
     border-radius: 15px;
     color: var(--text-color-3);
     font-weight: bold;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
 }
 

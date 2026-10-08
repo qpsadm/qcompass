@@ -108,7 +108,7 @@ class AgendaController extends Controller
                 ->orderBy('id', 'desc');
         }
 
-        $agendas = $query->paginate(5)->withQueryString();
+        $agendas = $query->paginate(10)->withQueryString();
 
         $selectedCategoryName = 'All';
         if ($categoryId && in_array($categoryId, $accessibleCategoryIds)) {

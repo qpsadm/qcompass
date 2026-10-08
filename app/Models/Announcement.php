@@ -80,4 +80,12 @@ class Announcement extends Model
         return $this->morphMany(AgendaFile::class, 'target')
             ->whereNull('deleted_at');
     }
+
+    /**
+     * 共通表示タイトルを取得
+     */
+    public function getDisplayTitleAttribute(): string
+    {
+        return $this->title;
+    }
 }

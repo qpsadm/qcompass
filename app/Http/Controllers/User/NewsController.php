@@ -91,7 +91,7 @@ class NewsController extends Controller
         $announcements = $query
             ->orderBy('updated_at', 'desc')
             ->orderBy('id', 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
 
         return view('user.news.news_list', [

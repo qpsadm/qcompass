@@ -29,22 +29,44 @@ class AgendaController extends Controller
 
         // ステータス絞り込み
         if ($status = $request->status) {
-            if ($status === 'yes') $query->where('status', 'yes');
-            else $query->where('status', 'draft');
+            if ($status === 'yes') {
+                $query->where('status', 'yes');
+            } else {
+                $query->where('status', 'draft');
+            }
         }
 
-        // 並び替え用
-        // $sort = $request->sort ?? null;
-        $sort = $request->get('sort', 'updated_at');          // デフォルト No.(id)
-        $direction = $request->direction ?? 'desc';
+        // ★ ソート条件の判定ロジック
+        // ユーザーが明示的にソートを指定していない場合（初期表示）
+        if (!$request->has('sort')) {
+            if ($categoryId) {
+                // カテゴリーで絞り込んでいる場合の初期値：ID昇順
+                $sort = 'id';
+                $direction = 'asc';
+            } else {
+                // 通常の初期値：更新日時降順
+                $sort = 'updated_at';
+                $direction = 'desc';
+            }
+        } else {
+            // ユーザーがヘッダーの並び替えをクリックした場合はその値を採用
+            $sort = $request->get('sort');
+            $direction = $request->get('direction', 'desc');
+        }
 
         // ソート可能カラム
         $allowedSort = ['agenda_name', 'status', 'created_user_name', 'created_at', 'updated_at', 'id', 'category_id'];
 
         if ($sort && in_array($sort, $allowedSort)) {
-            $query->orderBy($sort, $direction)->orderBy('id', 'desc');
+            // 方向の安全チェック
+            $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
+
+            $query->orderBy($sort, $direction);
+            if ($sort !== 'id') {
+                $query->orderBy('id', 'desc');
+            }
         } else {
-            // デフォルト：更新日降順 → カテゴリー順 → ID降順
+            // デフォルトのフォールバック処理（カテゴリーの並び順）
             $categoryOrder = Category::pluck('id')->toArray();
             if (!empty($categoryOrder)) {
                 $orderSql = "CASE category_id ";
@@ -62,16 +84,16 @@ class AgendaController extends Controller
         }
 
         $agendas = $query->paginate(10)
-            ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
+            ->onEachSide(1)
+            ->withQueryString(); // ページネーション時も検索・絞り込み・ソート条件を維持
 
         // プルダウン用
         $categories = Category::where('is_show', 1)
-            ->orderBy('id', 'desc')->get();
-
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('admin.agendas.index', compact('agendas', 'categories', 'sort', 'direction'));
     }
-
 
     /**
      * 講座ごとのアジェンダ一覧

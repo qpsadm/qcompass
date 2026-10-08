@@ -1189,6 +1189,13 @@ footer {
     font-size: var(--font-size);
 }
 
+.content-list .no {
+    /* width: 90px; */
+    width: 10px;
+    font-size: var(--font-size);
+    text-align: right;
+}
+
 .content-list .category p {
     width: 120px;
     padding: 7px 0;

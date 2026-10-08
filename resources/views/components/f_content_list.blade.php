@@ -30,6 +30,8 @@
             @endphp
 
             <tr>
+                <td class="no">{{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }}</td>
+
                 <td class="date">{{ $date }}</td>
 
                 {{-- ニュースのみカテゴリ表示 --}}

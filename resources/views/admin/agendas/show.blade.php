@@ -95,7 +95,7 @@
                 </button> --}}
 
                 <a href="{{ route('admin.agendas.preview', $agenda->id) }}" target="_blank"
-                    class="bg-green-500 hover:bg-red-600 text-white px-6 py-2 rounded">
+                    class="bg-green-500 hover:bg-yellow-600 text-white px-6 py-2 rounded">
                     プレビュー・印刷
                 </a>
 

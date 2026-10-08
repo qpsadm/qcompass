@@ -20,8 +20,15 @@
                 <ul>
                     @foreach ($teachers as $index => $teacher)
                         <li>
+
+
                             <a href="{{ route('user.teacher.teachers_info', $teacher->id) }}">
-                                <p>{{ $teacher->name }}（{{ $teacher->furigana }}）先生</p>
+                                <p>
+                                    <span
+                                        style="{text-align:right;}">{{ ($teachers->currentPage() - 1) * $teachers->perPage() + $loop->iteration }}&nbsp;&nbsp;</span>
+
+                                    {{ $teacher->name }}（{{ $teacher->furigana }}）先生
+                                </p>
                             </a>
                         </li>
                     @endforeach

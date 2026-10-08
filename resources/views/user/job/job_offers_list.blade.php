@@ -36,6 +36,9 @@
                     <table>
                         @forelse ($jobs as $job)
                             <tr>
+                                <td class="no">{{ ($jobs->currentPage() - 1) * $jobs->perPage() + $loop->iteration }}
+                                </td>
+
                                 <td class="date">{{ $job->updated_at->format('Y-m-d H:i') }}</td>
                                 <td class="title">
                                     <a href="{{ url('user/job/' . $job->id) }}">{{ $job->title }}</a>

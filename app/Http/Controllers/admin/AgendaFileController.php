@@ -12,19 +12,77 @@ use Illuminate\Support\Facades\DB;
 
 class AgendaFileController extends Controller
 {
-    public function index($type, $targetId = null)
+    // public function index($type, $targetId = null)
+    // {
+
+
+    //     if ($targetId) {
+    //         $query = AgendaFile::where('target_type', $this->getTargetClass($type))
+    //             ->where('target_id', $targetId)->orderBy('updated_at', 'desc');
+    //     } else {
+    //         // 全件表示
+    //         $query = AgendaFile::where('target_type', $this->getTargetClass($type))->orderBy('updated_at', 'desc');
+    //     }
+
+    //     $files = $query->paginate(1)
+    //         ->onEachSide(1);         //左にあるページネーションのボタン数を減らす;
+
+
+    //     return view('admin.files.index', compact('files', 'type', 'targetId'));
+    // }
+
+    public function index(Request $request, $type, $targetId = null)
     {
+        $sort = $request->input('sort', 'updated_at');
+        $direction = $request->input('direction', 'desc');
+        $search = $request->input('search');
+
+        // ソート条件の検証
+        $allowedSorts = ['id', 'file_name', 'updated_at'];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'updated_at';
+        }
+        $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
+
+        // ベースクエリの作成
+        $query = AgendaFile::with('target')
+            ->where('target_type', $this->getTargetClass($type));
+
         if ($targetId) {
-            $files = AgendaFile::where('target_type', $this->getTargetClass($type))
-                ->where('target_id', $targetId)
-                ->get();
-        } else {
-            // 全件表示
-            $files = AgendaFile::where('target_type', $this->getTargetClass($type))->get();
+            $query->where('target_id', $targetId);
         }
 
-        return view('admin.files.index', compact('files', 'type', 'targetId'));
+        // 🔍 検索ロジックの追加
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                // 1. ファイル名（file_name）で検索
+                $q->where('file_name', 'LIKE', "%{$search}%")
+                    // 2. リレーション先（Agenda / Announcement）の投稿タイトルで検索
+                    ->orWhereHasMorph('target', [\App\Models\Agenda::class, \App\Models\Announcement::class], function ($subQ, $type) use ($search) {
+                        if ($type === \App\Models\Agenda::class) {
+                            $subQ->where('agenda_name', 'LIKE', "%{$search}%");
+                        } elseif ($type === \App\Models\Announcement::class) {
+                            $subQ->where('title', 'LIKE', "%{$search}%");
+                        }
+                    });
+            });
+        }
+
+        // ソートおよびページネーションの実行
+        $files = $query->orderBy($sort, $direction)
+            ->paginate(10)
+            ->onEachSide(1)
+            ->withQueryString(); // 検索パラメータやソート順を保持
+
+        return view('admin.files.index', compact(
+            'files',
+            'type',
+            'targetId',
+            'sort',
+            'direction'
+        ));
     }
+
 
     private function getTargetClass($type)
     {

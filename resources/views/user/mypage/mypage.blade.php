@@ -10,7 +10,7 @@
     <div class="container">
 
         <!-- プロフィールモーダル -->
-        <div class="modal-profile">
+        {{-- <div class="modal-profile">
             <div class="profile-data">
                 <h4>{{ $user->name }}</h4>
                 <p class="mail">{{ $user->email ?? '未登録' }}</p>
@@ -21,7 +21,7 @@
                     <button class="close-btn">とじる</button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- カスタマイズモーダル -->
         <div class="modal-customize">

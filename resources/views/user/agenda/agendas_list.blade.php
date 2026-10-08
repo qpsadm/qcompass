@@ -20,6 +20,8 @@
             <table>
                 @forelse ($agendas as $agenda)
                     <tr>
+                        <td class="no">{{ ($agendas->currentPage() - 1) * $agendas->perPage() + $loop->iteration }}</td>
+
                         <td class="date">{{ \Carbon\Carbon::parse($agenda->updated_at)->format('Y-m-d H:i') }}</td>
                         <td class="title">
                             <a href="{{ route('user.agenda.info', $agenda) }}">

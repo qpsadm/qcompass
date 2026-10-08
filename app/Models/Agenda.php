@@ -110,4 +110,12 @@ class Agenda extends Model
             'content' => $this->content,
         ];
     }
+
+    /**
+     * 共通表示タイトルを取得
+     */
+    public function getDisplayTitleAttribute(): string
+    {
+        return $this->agenda_name;
+    }
 }
