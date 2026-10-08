@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 @empty
-                    <p>受講中の講座はありません</p>
+                    {{-- <p>受講中の講座はありません</p> --}}
                 @endforelse
 
                 <div class="today-short">
