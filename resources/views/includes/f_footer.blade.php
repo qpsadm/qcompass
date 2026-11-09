@@ -48,11 +48,11 @@
                         <span>職業訓練受講規則</span>
                     </a></li>
 
-                <li><a class="footer-menu" href="{{ url('user/about') }}">
+                {{-- <li><a class="footer-menu" href="{{ url('user/about') }}">
                         <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
                             style="filter: brightness(0) invert(1);">
                         <span>本サイトについて</span>
-                    </a></li>
+                    </a></li> --}}
                 <li><a class="footer-menu" href="{{ url('user/privacy') }}">
                         <img src="{{ asset('assets/images/icon/f_icon_agenda.svg') }}" alt="f_icon_agenda.svg"
                             style="filter: brightness(0) invert(1);">
