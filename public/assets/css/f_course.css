@@ -49,6 +49,40 @@ td {
     margin-bottom: 0;
 }
 
+.table-text a.path {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size);
+    padding: 5px;
+    border: 2px solid var(--accent-color);
+    border-radius: 50px;
+}
+
+/* .table-text a.path::before {
+    position: absolute;
+    top: 50%;
+    left: -25px;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 25px;
+    filter: var(--filter);
+    content: "";
+}
+
+
+.table-text a.path::before {
+    background: url(../images/icon/f_icon_agenda.svg) no-repeat;
+} */
+
+.table-text a.path:hover {
+
+    background-color: var(--accent-color);
+    color: var(--text-color-3);
+
+}
+
 /* teacher-list
 ------------------------------------- */
 .teacher-list {
