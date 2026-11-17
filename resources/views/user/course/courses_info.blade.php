@@ -59,7 +59,7 @@
                         <p>日別計画表</p>
                     </td>
                     <td class="table-text">
-                        @if (!$course->plan_path)
+                        @if ($course->plan_path)
                             <a href="{{ asset('storage/' . $course->plan_path) }}" target="_blank"
                                 class="path">日別計画表を開く</a>
                         @else
@@ -72,7 +72,7 @@
                         <p>講座のチラシ</p>
                     </td>
                     <td class="table-text">
-                        @if (!$course->flier_path)
+                        @if ($course->flier_path)
                             <a href="{{ asset('storage/' . $course->flier_path) }}" target="_blank"
                                 class="path">チラシを開く</a>
                         @else
