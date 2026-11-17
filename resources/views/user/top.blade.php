@@ -14,20 +14,6 @@
             <video id="kv-video" loop autoplay muted></video>
         </div>
 
-        <!-- アジェンダ一覧 -->
-        <div class="section-box">
-            <div class="box-title">
-                <h2>最新のアジェンダ</h2>
-            </div>
-            <div class="box-content">
-                <x-f_content_list :items="$agendas" title-field="agenda_name" link-route="user.agenda.info" param-name="id"
-                    :is-news="false" />
-                <div class="more-btn">
-                    <a href="{{ route('user.agenda.agendas_list') }}">more</a>
-                </div>
-            </div>
-        </div>
-
         <!-- 本講座のお知らせ一覧 -->
         <div class="section-box">
             <div class="box-title">
@@ -50,6 +36,20 @@
                 <x-f_content_list :items="$globalAnnouncements" :is-news="true" />
                 <div class="more-btn">
                     <a href="{{ route('user.news.main_news') }}">more</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- アジェンダ一覧 -->
+        <div class="section-box">
+            <div class="box-title">
+                <h2>最新のアジェンダ</h2>
+            </div>
+            <div class="box-content">
+                <x-f_content_list :items="$agendas" title-field="agenda_name" link-route="user.agenda.info" param-name="id"
+                    :is-news="false" />
+                <div class="more-btn">
+                    <a href="{{ route('user.agenda.agendas_list') }}">more</a>
                 </div>
             </div>
         </div>

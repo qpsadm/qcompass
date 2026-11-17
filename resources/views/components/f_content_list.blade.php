@@ -30,7 +30,13 @@
             @endphp
 
             <tr>
-                {{-- <td class="no">{{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }}</td> --}}
+                @if (request()->is('user/top'))
+                    {{-- トップページから呼ばれた時の表示 --}}
+                    <td class="no">{{ $loop->iteration }}</td>
+                @else
+                    {{-- それ以外のページから呼ばれた時の表示 --}}
+                    <td class="no">{{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }}</td>
+                @endif
 
                 <td class="date">{{ $date }}</td>
 
