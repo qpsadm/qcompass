@@ -7,82 +7,72 @@
 
         <!-- Course 選択 / 表示 -->
         @if ($showCourse)
-        <div class="login-item">
-            <div class="item-box">
-                <label for="course_id">講座名</label>
+            <div class="login-item">
+                <div class="item-box">
+                    <label for="course_id">講座名</label>
 
-                {{-- すでに講座が確定している場合 --}}
-                @if ($selected_course)
-                @php
-                $course = $courses->find($selected_course);
-                $days = $course?->loginRemainingDays;
-                $endDate = $course?->end_date
-                ? \Carbon\Carbon::parse($course->end_date)->format('Y/m/d')
-                : null;
-                @endphp
+                    {{-- すでに講座が確定している場合 --}}
+                    @if ($selected_course)
+                        @php
+                            $course = $courses->find($selected_course);
+                            $days = $course?->loginRemainingDays;
+                            $endDate = $course?->end_date
+                                ? \Carbon\Carbon::parse($course->end_date)->format('Y/m/d')
+                                : null;
+                        @endphp
 
-                <span>
-                    {{ $course->course_name ?? '不明なコース' }}
+                        <span>
+                            {{ $course->course_name ?? '不明なコース' }}
 
-                    <span>
-                        @if (!$course?->isLoginable())
-                        🔒 利用不可
-                        @elseif ($days === null)
-                        🔓 利用可
-                        @else
-                        🔓 {{ $days }}日
-                        @endif
-                    </span>
-                </span>
+                            <span>
+                                @if (!$course?->isLoginable())
+                                    🔒 終了
+                                @elseif ($days === null)
+                                    🔓 利用可
+                                @else
+                                    🔓 {{ $days }}日
+                                @endif
+                            </span>
+                        </span>
 
-                <input type="hidden" name="course_id" value="{{ $selected_course }}">
+                        <input type="hidden" name="course_id" value="{{ $selected_course }}">
 
-                {{-- 未選択：通常の select --}}
-                @else
-                <select
-                    id="course_id"
-                    name="course_id"
-                    required>
-                    <option value="">選択してください</option>
+                        {{-- 未選択：通常の select --}}
+                    @else
+                        <select id="course_id" name="course_id" required>
+                            <option value="">選択してください</option>
 
-                    @foreach ($courses as $course)
-                    @php
-                    $days = $course->loginRemainingDays;
-                    @endphp
+                            @foreach ($courses as $course)
+                                @php
+                                    $days = $course->loginRemainingDays;
+                                @endphp
 
-                    <option
-                        value="{{ $course->id }}"
-                        {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                        {{ $course->course_name }}
-                        @if (!$course->isLoginable())
-                        （🔒 利用不可）
-                        @elseif ($days === null)
-                        （🔓 利用可）
-                        @else
-                        （🔓 {{ $days }}日）
-                        @endif
-                    </option>
-                    @endforeach
-                </select>
-                @endif
+                                <option value="{{ $course->id }}"
+                                    {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                    {{ $course->course_name }}
+                                    @if (!$course->isLoginable())
+                                        （🔒 利用不可）
+                                    @elseif ($days === null)
+                                        （🔓 利用可）
+                                    @else
+                                        （🔓 {{ $days }}日）
+                                    @endif
+                                </option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+
+                <x-input-error :messages="$errors->get('course_id')" class="error-msg" />
             </div>
-
-            <x-input-error :messages="$errors->get('course_id')" class="error-msg" />
-        </div>
         @endif
 
         <!-- Email -->
         <div class="login-item">
             <div class="item-box">
                 <label for="email">E-mail</label>
-                <x-text-input
-                    id="email"
-                    type="email"
-                    name="email"
-                    :value="old('email')"
-                    placeholder="example@example.com"
-                    required
-                    autofocus />
+                <x-text-input id="email" type="email" name="email" :value="old('email')"
+                    placeholder="example@example.com" required autofocus />
             </div>
             <x-input-error :messages="$errors->get('email')" class="error-msg" />
         </div>
@@ -91,12 +81,7 @@
         <div class="login-item">
             <div class="item-box password">
                 <label for="password">パスワード</label>
-                <x-text-input
-                    id="password"
-                    type="password"
-                    name="password"
-                    placeholder="パスワードを入力してください"
-                    required
+                <x-text-input id="password" type="password" name="password" placeholder="パスワードを入力してください" required
                     autocomplete="current-password" />
                 <button class="eye-btn" type="button" onclick="togglePass()">
                     <img class="eye-open" src="{{ asset('assets/images/icon/f_icon_eye_open.svg') }}" alt="">
