@@ -26,7 +26,7 @@
 
                             <span>
                                 @if (!$course?->isLoginable())
-                                    🔒 終了
+                                    終了
                                 @elseif ($days === null)
                                     🔓 利用可
                                 @else
@@ -39,8 +39,8 @@
 
                         {{-- 未選択：通常の select --}}
                     @else
-                        <select id="course_id" name="course_id" required>
-                            <option value="">選択してください</option>
+                        <select id="course_id" name="course_id" required autofocus>
+                            <option value="")>選択してください</option>
 
                             @foreach ($courses as $course)
                                 @php
@@ -51,7 +51,7 @@
                                     {{ old('course_id') == $course->id ? 'selected' : '' }}>
                                     {{ $course->course_name }}
                                     @if (!$course->isLoginable())
-                                        （🔒 利用不可）
+                                        （終了）
                                     @elseif ($days === null)
                                         （🔓 利用可）
                                     @else
